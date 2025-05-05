@@ -1,0 +1,17 @@
+menu "File System Configuration"
+
+  config ROOT_FILE_SYSTEM_MOUNT
+    string "Root Filesystem Type"
+    default "initramfs"
+    help
+     mount init ramsystem type;
+
+
+  source "./fs/devfs/kconfig"
+  source "./fs/pipefs/kconfig"
+  source "./fs/ramfs/kconfig"
+
+
+
+
+endmenu

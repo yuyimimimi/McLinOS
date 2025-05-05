@@ -1,0 +1,366 @@
+ARM GAS  /tmp/ccH9zDYS.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"atomic.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./lib/atomic.c"
+  20              		.section	.text.raw_xchg_not_implemented,"ax",%progbits
+  21              		.align	1
+  22              		.global	raw_xchg_not_implemented
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	raw_xchg_not_implemented:
+  28              	.LFB0:
+   1:./lib/atomic.c **** void raw_xchg_not_implemented(void){}
+  29              		.loc 1 1 36 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 1 37 view .LVU1
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE0:
+  39              		.section	.text.raw_xchg_acquire_not_implemented,"ax",%progbits
+  40              		.align	1
+  41              		.global	raw_xchg_acquire_not_implemented
+  42              		.syntax unified
+  43              		.thumb
+  44              		.thumb_func
+  46              	raw_xchg_acquire_not_implemented:
+  47              	.LFB1:
+   2:./lib/atomic.c **** void raw_xchg_acquire_not_implemented(void){}
+  48              		.loc 1 2 44 view -0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53              		.loc 1 2 45 view .LVU3
+  54 0000 7047     		bx	lr
+  55              		.cfi_endproc
+  56              	.LFE1:
+  58              		.section	.text.raw_xchg_release_not_implemented,"ax",%progbits
+  59              		.align	1
+ARM GAS  /tmp/ccH9zDYS.s 			page 2
+
+
+  60              		.global	raw_xchg_release_not_implemented
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  65              	raw_xchg_release_not_implemented:
+  66              	.LFB2:
+   3:./lib/atomic.c **** void raw_xchg_release_not_implemented(void){}
+  67              		.loc 1 3 44 view -0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  72              		.loc 1 3 45 view .LVU5
+  73 0000 7047     		bx	lr
+  74              		.cfi_endproc
+  75              	.LFE2:
+  77              		.section	.text.raw_xchg_relaxed_not_implemented,"ax",%progbits
+  78              		.align	1
+  79              		.global	raw_xchg_relaxed_not_implemented
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	raw_xchg_relaxed_not_implemented:
+  85              	.LFB3:
+   4:./lib/atomic.c **** void raw_xchg_relaxed_not_implemented(void){}
+  86              		.loc 1 4 44 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  91              		.loc 1 4 45 view .LVU7
+  92 0000 7047     		bx	lr
+  93              		.cfi_endproc
+  94              	.LFE3:
+  96              		.section	.text.raw_cmpxchg_not_implemented,"ax",%progbits
+  97              		.align	1
+  98              		.global	raw_cmpxchg_not_implemented
+  99              		.syntax unified
+ 100              		.thumb
+ 101              		.thumb_func
+ 103              	raw_cmpxchg_not_implemented:
+ 104              	.LFB4:
+   5:./lib/atomic.c **** void raw_cmpxchg_not_implemented(void){}
+ 105              		.loc 1 5 39 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+ 110              		.loc 1 5 40 view .LVU9
+ 111 0000 7047     		bx	lr
+ 112              		.cfi_endproc
+ 113              	.LFE4:
+ 115              		.section	.text.raw_cmpxchg_acquire_not_implemented,"ax",%progbits
+ 116              		.align	1
+ 117              		.global	raw_cmpxchg_acquire_not_implemented
+ 118              		.syntax unified
+ 119              		.thumb
+ARM GAS  /tmp/ccH9zDYS.s 			page 3
+
+
+ 120              		.thumb_func
+ 122              	raw_cmpxchg_acquire_not_implemented:
+ 123              	.LFB5:
+   6:./lib/atomic.c **** void raw_cmpxchg_acquire_not_implemented(void){}
+ 124              		.loc 1 6 47 view -0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128              		@ link register save eliminated.
+ 129              		.loc 1 6 48 view .LVU11
+ 130 0000 7047     		bx	lr
+ 131              		.cfi_endproc
+ 132              	.LFE5:
+ 134              		.section	.text.raw_cmpxchg_release_not_implemented,"ax",%progbits
+ 135              		.align	1
+ 136              		.global	raw_cmpxchg_release_not_implemented
+ 137              		.syntax unified
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	raw_cmpxchg_release_not_implemented:
+ 142              	.LFB6:
+   7:./lib/atomic.c **** void raw_cmpxchg_release_not_implemented(void){}
+ 143              		.loc 1 7 47 view -0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		@ link register save eliminated.
+ 148              		.loc 1 7 48 view .LVU13
+ 149 0000 7047     		bx	lr
+ 150              		.cfi_endproc
+ 151              	.LFE6:
+ 153              		.section	.text.raw_cmpxchg_relaxed_not_implemented,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	raw_cmpxchg_relaxed_not_implemented
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	raw_cmpxchg_relaxed_not_implemented:
+ 161              	.LFB7:
+   8:./lib/atomic.c **** void raw_cmpxchg_relaxed_not_implemented(void){}
+ 162              		.loc 1 8 47 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 167              		.loc 1 8 48 view .LVU15
+ 168 0000 7047     		bx	lr
+ 169              		.cfi_endproc
+ 170              	.LFE7:
+ 172              		.section	.text.raw_cmpxchg64_not_implemented,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	raw_cmpxchg64_not_implemented
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	raw_cmpxchg64_not_implemented:
+ 180              	.LFB8:
+ARM GAS  /tmp/ccH9zDYS.s 			page 4
+
+
+   9:./lib/atomic.c **** void raw_cmpxchg64_not_implemented(void){}
+ 181              		.loc 1 9 41 view -0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 185              		@ link register save eliminated.
+ 186              		.loc 1 9 42 view .LVU17
+ 187 0000 7047     		bx	lr
+ 188              		.cfi_endproc
+ 189              	.LFE8:
+ 191              		.section	.text.raw_cmpxchg64_acquire_not_implemented,"ax",%progbits
+ 192              		.align	1
+ 193              		.global	raw_cmpxchg64_acquire_not_implemented
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 198              	raw_cmpxchg64_acquire_not_implemented:
+ 199              	.LFB9:
+  10:./lib/atomic.c **** void raw_cmpxchg64_acquire_not_implemented(void){}
+ 200              		.loc 1 10 49 view -0
+ 201              		.cfi_startproc
+ 202              		@ args = 0, pretend = 0, frame = 0
+ 203              		@ frame_needed = 0, uses_anonymous_args = 0
+ 204              		@ link register save eliminated.
+ 205              		.loc 1 10 50 view .LVU19
+ 206 0000 7047     		bx	lr
+ 207              		.cfi_endproc
+ 208              	.LFE9:
+ 210              		.section	.text.raw_cmpxchg64_release_not_implemented,"ax",%progbits
+ 211              		.align	1
+ 212              		.global	raw_cmpxchg64_release_not_implemented
+ 213              		.syntax unified
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	raw_cmpxchg64_release_not_implemented:
+ 218              	.LFB10:
+  11:./lib/atomic.c **** void raw_cmpxchg64_release_not_implemented(void){}
+ 219              		.loc 1 11 49 view -0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
+ 224              		.loc 1 11 50 view .LVU21
+ 225 0000 7047     		bx	lr
+ 226              		.cfi_endproc
+ 227              	.LFE10:
+ 229              		.section	.text.raw_cmpxchg64_relaxed_not_implemented,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	raw_cmpxchg64_relaxed_not_implemented
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	raw_cmpxchg64_relaxed_not_implemented:
+ 237              	.LFB11:
+  12:./lib/atomic.c **** void raw_cmpxchg64_relaxed_not_implemented(void){}
+ 238              		.loc 1 12 49 view -0
+ 239              		.cfi_startproc
+ARM GAS  /tmp/ccH9zDYS.s 			page 5
+
+
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242              		@ link register save eliminated.
+ 243              		.loc 1 12 50 view .LVU23
+ 244 0000 7047     		bx	lr
+ 245              		.cfi_endproc
+ 246              	.LFE11:
+ 248              		.section	.text.raw_cmpxchg128_not_implemented,"ax",%progbits
+ 249              		.align	1
+ 250              		.global	raw_cmpxchg128_not_implemented
+ 251              		.syntax unified
+ 252              		.thumb
+ 253              		.thumb_func
+ 255              	raw_cmpxchg128_not_implemented:
+ 256              	.LFB12:
+  13:./lib/atomic.c **** void raw_cmpxchg128_not_implemented(void){}
+ 257              		.loc 1 13 42 view -0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 262              		.loc 1 13 43 view .LVU25
+ 263 0000 7047     		bx	lr
+ 264              		.cfi_endproc
+ 265              	.LFE12:
+ 267              		.section	.text.raw_cmpxchg128_acquire_not_implemented,"ax",%progbits
+ 268              		.align	1
+ 269              		.global	raw_cmpxchg128_acquire_not_implemented
+ 270              		.syntax unified
+ 271              		.thumb
+ 272              		.thumb_func
+ 274              	raw_cmpxchg128_acquire_not_implemented:
+ 275              	.LFB13:
+  14:./lib/atomic.c **** void raw_cmpxchg128_acquire_not_implemented(void){}
+ 276              		.loc 1 14 50 view -0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 0
+ 279              		@ frame_needed = 0, uses_anonymous_args = 0
+ 280              		@ link register save eliminated.
+ 281              		.loc 1 14 51 view .LVU27
+ 282 0000 7047     		bx	lr
+ 283              		.cfi_endproc
+ 284              	.LFE13:
+ 286              		.section	.text.raw_cmpxchg128_release_not_implemented,"ax",%progbits
+ 287              		.align	1
+ 288              		.global	raw_cmpxchg128_release_not_implemented
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 293              	raw_cmpxchg128_release_not_implemented:
+ 294              	.LFB14:
+  15:./lib/atomic.c **** void raw_cmpxchg128_release_not_implemented(void){}
+ 295              		.loc 1 15 50 view -0
+ 296              		.cfi_startproc
+ 297              		@ args = 0, pretend = 0, frame = 0
+ 298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299              		@ link register save eliminated.
+ARM GAS  /tmp/ccH9zDYS.s 			page 6
+
+
+ 300              		.loc 1 15 51 view .LVU29
+ 301 0000 7047     		bx	lr
+ 302              		.cfi_endproc
+ 303              	.LFE14:
+ 305              		.section	.text.raw_cmpxchg128_relaxed_not_implemented,"ax",%progbits
+ 306              		.align	1
+ 307              		.global	raw_cmpxchg128_relaxed_not_implemented
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 312              	raw_cmpxchg128_relaxed_not_implemented:
+ 313              	.LFB15:
+  16:./lib/atomic.c **** void raw_cmpxchg128_relaxed_not_implemented(void){}
+ 314              		.loc 1 16 50 view -0
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318              		@ link register save eliminated.
+ 319              		.loc 1 16 51 view .LVU31
+ 320 0000 7047     		bx	lr
+ 321              		.cfi_endproc
+ 322              	.LFE15:
+ 324              		.text
+ 325              	.Letext0:
+ARM GAS  /tmp/ccH9zDYS.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 atomic.c
+     /tmp/ccH9zDYS.s:21     .text.raw_xchg_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:27     .text.raw_xchg_not_implemented:00000000 raw_xchg_not_implemented
+     /tmp/ccH9zDYS.s:40     .text.raw_xchg_acquire_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:46     .text.raw_xchg_acquire_not_implemented:00000000 raw_xchg_acquire_not_implemented
+     /tmp/ccH9zDYS.s:59     .text.raw_xchg_release_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:65     .text.raw_xchg_release_not_implemented:00000000 raw_xchg_release_not_implemented
+     /tmp/ccH9zDYS.s:78     .text.raw_xchg_relaxed_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:84     .text.raw_xchg_relaxed_not_implemented:00000000 raw_xchg_relaxed_not_implemented
+     /tmp/ccH9zDYS.s:97     .text.raw_cmpxchg_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:103    .text.raw_cmpxchg_not_implemented:00000000 raw_cmpxchg_not_implemented
+     /tmp/ccH9zDYS.s:116    .text.raw_cmpxchg_acquire_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:122    .text.raw_cmpxchg_acquire_not_implemented:00000000 raw_cmpxchg_acquire_not_implemented
+     /tmp/ccH9zDYS.s:135    .text.raw_cmpxchg_release_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:141    .text.raw_cmpxchg_release_not_implemented:00000000 raw_cmpxchg_release_not_implemented
+     /tmp/ccH9zDYS.s:154    .text.raw_cmpxchg_relaxed_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:160    .text.raw_cmpxchg_relaxed_not_implemented:00000000 raw_cmpxchg_relaxed_not_implemented
+     /tmp/ccH9zDYS.s:173    .text.raw_cmpxchg64_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:179    .text.raw_cmpxchg64_not_implemented:00000000 raw_cmpxchg64_not_implemented
+     /tmp/ccH9zDYS.s:192    .text.raw_cmpxchg64_acquire_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:198    .text.raw_cmpxchg64_acquire_not_implemented:00000000 raw_cmpxchg64_acquire_not_implemented
+     /tmp/ccH9zDYS.s:211    .text.raw_cmpxchg64_release_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:217    .text.raw_cmpxchg64_release_not_implemented:00000000 raw_cmpxchg64_release_not_implemented
+     /tmp/ccH9zDYS.s:230    .text.raw_cmpxchg64_relaxed_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:236    .text.raw_cmpxchg64_relaxed_not_implemented:00000000 raw_cmpxchg64_relaxed_not_implemented
+     /tmp/ccH9zDYS.s:249    .text.raw_cmpxchg128_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:255    .text.raw_cmpxchg128_not_implemented:00000000 raw_cmpxchg128_not_implemented
+     /tmp/ccH9zDYS.s:268    .text.raw_cmpxchg128_acquire_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:274    .text.raw_cmpxchg128_acquire_not_implemented:00000000 raw_cmpxchg128_acquire_not_implemented
+     /tmp/ccH9zDYS.s:287    .text.raw_cmpxchg128_release_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:293    .text.raw_cmpxchg128_release_not_implemented:00000000 raw_cmpxchg128_release_not_implemented
+     /tmp/ccH9zDYS.s:306    .text.raw_cmpxchg128_relaxed_not_implemented:00000000 $t
+     /tmp/ccH9zDYS.s:312    .text.raw_cmpxchg128_relaxed_not_implemented:00000000 raw_cmpxchg128_relaxed_not_implemented
+
+NO UNDEFINED SYMBOLS

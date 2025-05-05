@@ -1,0 +1,109 @@
+ARM GAS  /tmp/cc6uqCe7.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"port.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./port/port.c"
+  20              		.section	.text.early_printk,"ax",%progbits
+  21              		.align	1
+  22              		.weak	early_printk
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	early_printk:
+  28              	.LVL0:
+  29              	.LFB150:
+   1:./port/port.c **** #include <linux/kernel.h>
+   2:./port/port.c **** #include <linux/compiler.h>
+   3:./port/port.c **** 
+   4:./port/port.c **** void __weak early_printk(const char *fmt, ...){}  //系统早期启动时打印信息(需要实现)
+  30              		.loc 1 4 47 view -0
+  31              		.cfi_startproc
+  32              		@ args = 4, pretend = 16, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 1
+  34              		@ link register save eliminated.
+  35              		.loc 1 4 47 is_stmt 0 view .LVU1
+  36 0000 0FB4     		push	{r0, r1, r2, r3}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 0, -16
+  40              		.cfi_offset 1, -12
+  41              		.cfi_offset 2, -8
+  42              		.cfi_offset 3, -4
+  43              		.loc 1 4 48 is_stmt 1 view .LVU2
+  44 0002 04B0     		add	sp, sp, #16
+  45              	.LCFI1:
+  46              		.cfi_restore 3
+  47              		.cfi_restore 2
+  48              		.cfi_restore 1
+  49              		.cfi_restore 0
+  50              		.cfi_def_cfa_offset 0
+  51 0004 7047     		bx	lr
+  52              		.cfi_endproc
+  53              	.LFE150:
+  55              		.section	.text.printk,"ax",%progbits
+ARM GAS  /tmp/cc6uqCe7.s 			page 2
+
+
+  56              		.align	1
+  57              		.weak	printk
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	printk:
+  63              	.LVL1:
+  64              	.LFB151:
+   5:./port/port.c **** void __weak printk(const char *fmt, ...){}
+  65              		.loc 1 5 41 view -0
+  66              		.cfi_startproc
+  67              		@ args = 4, pretend = 16, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 1
+  69              		@ link register save eliminated.
+  70              		.loc 1 5 41 is_stmt 0 view .LVU4
+  71 0000 0FB4     		push	{r0, r1, r2, r3}
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 16
+  74              		.cfi_offset 0, -16
+  75              		.cfi_offset 1, -12
+  76              		.cfi_offset 2, -8
+  77              		.cfi_offset 3, -4
+  78              		.loc 1 5 42 is_stmt 1 view .LVU5
+  79 0002 04B0     		add	sp, sp, #16
+  80              	.LCFI3:
+  81              		.cfi_restore 3
+  82              		.cfi_restore 2
+  83              		.cfi_restore 1
+  84              		.cfi_restore 0
+  85              		.cfi_def_cfa_offset 0
+  86 0004 7047     		bx	lr
+  87              		.cfi_endproc
+  88              	.LFE151:
+  90              		.text
+  91              	.Letext0:
+ARM GAS  /tmp/cc6uqCe7.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 port.c
+     /tmp/cc6uqCe7.s:21     .text.early_printk:00000000 $t
+     /tmp/cc6uqCe7.s:27     .text.early_printk:00000000 early_printk
+     /tmp/cc6uqCe7.s:56     .text.printk:00000000 $t
+     /tmp/cc6uqCe7.s:62     .text.printk:00000000 printk
+
+NO UNDEFINED SYMBOLS

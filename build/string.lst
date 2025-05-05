@@ -1,0 +1,916 @@
+ARM GAS  /tmp/ccHhQHMu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"string.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./arch/arm_m/boot/compressed/string.c"
+  20              		.section	.text.memcpy,"ax",%progbits
+  21              		.align	1
+  22              		.global	memcpy
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	memcpy:
+  28              	.LVL0:
+  29              	.LFB25:
+   1:./arch/arm_m/boot/compressed/string.c **** // SPDX-License-Identifier: GPL-2.0
+   2:./arch/arm_m/boot/compressed/string.c **** /*
+   3:./arch/arm_m/boot/compressed/string.c ****  * arch/arm/boot/compressed/string.c
+   4:./arch/arm_m/boot/compressed/string.c ****  *
+   5:./arch/arm_m/boot/compressed/string.c ****  * Small subset of simple string routines
+   6:./arch/arm_m/boot/compressed/string.c ****  */
+   7:./arch/arm_m/boot/compressed/string.c **** 
+   8:./arch/arm_m/boot/compressed/string.c **** #define __NO_FORTIFY 
+   9:./arch/arm_m/boot/compressed/string.c **** #include <linux/string.h>
+  10:./arch/arm_m/boot/compressed/string.c **** #include <linux/compiler_attributes.h>
+  11:./arch/arm_m/boot/compressed/string.c **** /*
+  12:./arch/arm_m/boot/compressed/string.c ****  * The decompressor is built without KASan but uses the same redirects as the
+  13:./arch/arm_m/boot/compressed/string.c ****  * rest of the kernel when CONFIG_KASAN is enabled, defining e.g. memcpy()
+  14:./arch/arm_m/boot/compressed/string.c ****  * to __memcpy() but since we are not linking with the main kernel string
+  15:./arch/arm_m/boot/compressed/string.c ****  * library in the decompressor, that will lead to link failures.
+  16:./arch/arm_m/boot/compressed/string.c ****  *
+  17:./arch/arm_m/boot/compressed/string.c ****  * Undefine KASan's versions, define the wrapped functions and alias them to
+  18:./arch/arm_m/boot/compressed/string.c ****  * the right names so that when e.g. __memcpy() appear in the code, it will
+  19:./arch/arm_m/boot/compressed/string.c ****  * still be linked to this local version of memcpy().
+  20:./arch/arm_m/boot/compressed/string.c ****  */
+  21:./arch/arm_m/boot/compressed/string.c **** #ifdef CONFIG_KASAN
+  22:./arch/arm_m/boot/compressed/string.c **** #undef memcpy
+  23:./arch/arm_m/boot/compressed/string.c **** #undef memmove
+  24:./arch/arm_m/boot/compressed/string.c **** #undef memset
+  25:./arch/arm_m/boot/compressed/string.c **** void *__memcpy(void *__dest, __const void *__src, size_t __n) __alias(memcpy);
+  26:./arch/arm_m/boot/compressed/string.c **** void *__memmove(void *__dest, __const void *__src, size_t count) __alias(memmove);
+  27:./arch/arm_m/boot/compressed/string.c **** void *__memset(void *s, int c, size_t count) __alias(memset);
+  28:./arch/arm_m/boot/compressed/string.c **** #endif
+  29:./arch/arm_m/boot/compressed/string.c **** 
+ARM GAS  /tmp/ccHhQHMu.s 			page 2
+
+
+  30:./arch/arm_m/boot/compressed/string.c **** void *memcpy(void *__dest, __const void *__src, size_t __n)
+  31:./arch/arm_m/boot/compressed/string.c **** {
+  30              		.loc 1 31 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 31 1 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  32:./arch/arm_m/boot/compressed/string.c **** 	int i = 0;
+  40              		.loc 1 32 2 is_stmt 1 view .LVU2
+  41              	.LVL1:
+  33:./arch/arm_m/boot/compressed/string.c **** 	unsigned char *d = (unsigned char *)__dest, *s = (unsigned char *)__src;
+  42              		.loc 1 33 2 view .LVU3
+  34:./arch/arm_m/boot/compressed/string.c **** 
+  35:./arch/arm_m/boot/compressed/string.c **** 	for (i = __n >> 3; i > 0; i--) {
+  43              		.loc 1 35 2 view .LVU4
+  44              		.loc 1 35 15 is_stmt 0 view .LVU5
+  45 0002 4FEAD20C 		lsr	ip, r2, #3
+  46              	.LVL2:
+  33:./arch/arm_m/boot/compressed/string.c **** 	unsigned char *d = (unsigned char *)__dest, *s = (unsigned char *)__src;
+  47              		.loc 1 33 17 view .LVU6
+  48 0006 0346     		mov	r3, r0
+  49              		.loc 1 35 2 view .LVU7
+  50 0008 23E0     		b	.L2
+  51              	.LVL3:
+  52              	.L3:
+  36:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  53              		.loc 1 36 3 is_stmt 1 view .LVU8
+  54              		.loc 1 36 10 is_stmt 0 view .LVU9
+  55 000a 91F800E0 		ldrb	lr, [r1]	@ zero_extendqisi2
+  56              		.loc 1 36 8 view .LVU10
+  57 000e 83F800E0 		strb	lr, [r3]
+  37:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  58              		.loc 1 37 3 is_stmt 1 view .LVU11
+  59              	.LVL4:
+  60              		.loc 1 37 10 is_stmt 0 view .LVU12
+  61 0012 91F801E0 		ldrb	lr, [r1, #1]	@ zero_extendqisi2
+  62              		.loc 1 37 8 view .LVU13
+  63 0016 83F801E0 		strb	lr, [r3, #1]
+  38:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  64              		.loc 1 38 3 is_stmt 1 view .LVU14
+  65              	.LVL5:
+  66              		.loc 1 38 10 is_stmt 0 view .LVU15
+  67 001a 91F802E0 		ldrb	lr, [r1, #2]	@ zero_extendqisi2
+  68              		.loc 1 38 8 view .LVU16
+  69 001e 83F802E0 		strb	lr, [r3, #2]
+  39:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  70              		.loc 1 39 3 is_stmt 1 view .LVU17
+  71              	.LVL6:
+  72              		.loc 1 39 10 is_stmt 0 view .LVU18
+  73 0022 91F803E0 		ldrb	lr, [r1, #3]	@ zero_extendqisi2
+  74              		.loc 1 39 8 view .LVU19
+  75 0026 83F803E0 		strb	lr, [r3, #3]
+ARM GAS  /tmp/ccHhQHMu.s 			page 3
+
+
+  40:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  76              		.loc 1 40 3 is_stmt 1 view .LVU20
+  77              	.LVL7:
+  78              		.loc 1 40 10 is_stmt 0 view .LVU21
+  79 002a 91F804E0 		ldrb	lr, [r1, #4]	@ zero_extendqisi2
+  80              		.loc 1 40 8 view .LVU22
+  81 002e 83F804E0 		strb	lr, [r3, #4]
+  41:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  82              		.loc 1 41 3 is_stmt 1 view .LVU23
+  83              	.LVL8:
+  84              		.loc 1 41 10 is_stmt 0 view .LVU24
+  85 0032 91F805E0 		ldrb	lr, [r1, #5]	@ zero_extendqisi2
+  86              		.loc 1 41 8 view .LVU25
+  87 0036 83F805E0 		strb	lr, [r3, #5]
+  42:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  88              		.loc 1 42 3 is_stmt 1 view .LVU26
+  89              	.LVL9:
+  90              		.loc 1 42 10 is_stmt 0 view .LVU27
+  91 003a 91F806E0 		ldrb	lr, [r1, #6]	@ zero_extendqisi2
+  92              		.loc 1 42 8 view .LVU28
+  93 003e 83F806E0 		strb	lr, [r3, #6]
+  43:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+  94              		.loc 1 43 3 is_stmt 1 view .LVU29
+  95              	.LVL10:
+  96              		.loc 1 43 10 is_stmt 0 view .LVU30
+  97 0042 91F807E0 		ldrb	lr, [r1, #7]	@ zero_extendqisi2
+  98              		.loc 1 43 8 view .LVU31
+  99 0046 83F807E0 		strb	lr, [r3, #7]
+  35:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 100              		.loc 1 35 29 is_stmt 1 discriminator 3 view .LVU32
+ 101 004a 0CF1FF3C 		add	ip, ip, #-1
+ 102              	.LVL11:
+ 103              		.loc 1 43 12 is_stmt 0 view .LVU33
+ 104 004e 0831     		adds	r1, r1, #8
+ 105              	.LVL12:
+ 106              		.loc 1 43 5 view .LVU34
+ 107 0050 0833     		adds	r3, r3, #8
+ 108              	.LVL13:
+ 109              	.L2:
+  35:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 110              		.loc 1 35 23 is_stmt 1 discriminator 1 view .LVU35
+ 111 0052 BCF1000F 		cmp	ip, #0
+ 112 0056 D8DC     		bgt	.L3
+  44:./arch/arm_m/boot/compressed/string.c **** 	}
+  45:./arch/arm_m/boot/compressed/string.c **** 
+  46:./arch/arm_m/boot/compressed/string.c **** 	if (__n & 1 << 2) {
+ 113              		.loc 1 46 2 view .LVU36
+ 114              		.loc 1 46 5 is_stmt 0 view .LVU37
+ 115 0058 12F0040F 		tst	r2, #4
+ 116 005c 09D0     		beq	.L4
+  47:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 117              		.loc 1 47 3 is_stmt 1 view .LVU38
+ 118              	.LVL14:
+ 119              		.loc 1 47 10 is_stmt 0 view .LVU39
+ 120 005e 0C78     		ldrb	r4, [r1]	@ zero_extendqisi2
+ 121              		.loc 1 47 8 view .LVU40
+ 122 0060 1C70     		strb	r4, [r3]
+ARM GAS  /tmp/ccHhQHMu.s 			page 4
+
+
+  48:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 123              		.loc 1 48 3 is_stmt 1 view .LVU41
+ 124              	.LVL15:
+ 125              		.loc 1 48 10 is_stmt 0 view .LVU42
+ 126 0062 4C78     		ldrb	r4, [r1, #1]	@ zero_extendqisi2
+ 127              		.loc 1 48 8 view .LVU43
+ 128 0064 5C70     		strb	r4, [r3, #1]
+  49:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 129              		.loc 1 49 3 is_stmt 1 view .LVU44
+ 130              	.LVL16:
+ 131              		.loc 1 49 10 is_stmt 0 view .LVU45
+ 132 0066 8C78     		ldrb	r4, [r1, #2]	@ zero_extendqisi2
+ 133              		.loc 1 49 8 view .LVU46
+ 134 0068 9C70     		strb	r4, [r3, #2]
+  50:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 135              		.loc 1 50 3 is_stmt 1 view .LVU47
+ 136              	.LVL17:
+ 137              		.loc 1 50 10 is_stmt 0 view .LVU48
+ 138 006a CC78     		ldrb	r4, [r1, #3]	@ zero_extendqisi2
+ 139              		.loc 1 50 8 view .LVU49
+ 140 006c DC70     		strb	r4, [r3, #3]
+ 141              		.loc 1 50 12 view .LVU50
+ 142 006e 0431     		adds	r1, r1, #4
+ 143              	.LVL18:
+ 144              		.loc 1 50 5 view .LVU51
+ 145 0070 0433     		adds	r3, r3, #4
+ 146              	.LVL19:
+ 147              	.L4:
+  51:./arch/arm_m/boot/compressed/string.c **** 	}
+  52:./arch/arm_m/boot/compressed/string.c **** 
+  53:./arch/arm_m/boot/compressed/string.c **** 	if (__n & 1 << 1) {
+ 148              		.loc 1 53 2 is_stmt 1 view .LVU52
+ 149              		.loc 1 53 5 is_stmt 0 view .LVU53
+ 150 0072 12F0020F 		tst	r2, #2
+ 151 0076 09D0     		beq	.L5
+  54:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 152              		.loc 1 54 3 is_stmt 1 view .LVU54
+ 153              	.LVL20:
+ 154              		.loc 1 54 10 is_stmt 0 view .LVU55
+ 155 0078 8E46     		mov	lr, r1
+ 156 007a 1EF8024B 		ldrb	r4, [lr], #2	@ zero_extendqisi2
+ 157              		.loc 1 54 8 view .LVU56
+ 158 007e 9C46     		mov	ip, r3
+ 159              	.LVL21:
+ 160              		.loc 1 54 8 view .LVU57
+ 161 0080 0CF8024B 		strb	r4, [ip], #2
+  55:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 162              		.loc 1 55 3 is_stmt 1 view .LVU58
+ 163              	.LVL22:
+ 164              		.loc 1 55 10 is_stmt 0 view .LVU59
+ 165 0084 4978     		ldrb	r1, [r1, #1]	@ zero_extendqisi2
+ 166              		.loc 1 55 8 view .LVU60
+ 167 0086 5970     		strb	r1, [r3, #1]
+ 168              		.loc 1 55 12 view .LVU61
+ 169 0088 7146     		mov	r1, lr
+ 170              		.loc 1 55 5 view .LVU62
+ 171 008a 6346     		mov	r3, ip
+ARM GAS  /tmp/ccHhQHMu.s 			page 5
+
+
+ 172              	.LVL23:
+ 173              	.L5:
+  56:./arch/arm_m/boot/compressed/string.c **** 	}
+  57:./arch/arm_m/boot/compressed/string.c **** 
+  58:./arch/arm_m/boot/compressed/string.c **** 	if (__n & 1)
+ 174              		.loc 1 58 2 is_stmt 1 view .LVU63
+ 175              		.loc 1 58 5 is_stmt 0 view .LVU64
+ 176 008c 12F0010F 		tst	r2, #1
+ 177 0090 01D0     		beq	.L6
+  59:./arch/arm_m/boot/compressed/string.c **** 		*d++ = *s++;
+ 178              		.loc 1 59 3 is_stmt 1 view .LVU65
+ 179              	.LVL24:
+ 180              		.loc 1 59 10 is_stmt 0 view .LVU66
+ 181 0092 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 182              	.LVL25:
+ 183              		.loc 1 59 8 view .LVU67
+ 184 0094 1A70     		strb	r2, [r3]
+ 185              	.LVL26:
+ 186              	.L6:
+  60:./arch/arm_m/boot/compressed/string.c **** 
+  61:./arch/arm_m/boot/compressed/string.c **** 	return __dest;
+ 187              		.loc 1 61 2 is_stmt 1 view .LVU68
+  62:./arch/arm_m/boot/compressed/string.c **** }
+ 188              		.loc 1 62 1 is_stmt 0 view .LVU69
+ 189 0096 10BD     		pop	{r4, pc}
+ 190              		.cfi_endproc
+ 191              	.LFE25:
+ 193              		.section	.text.memmove,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	memmove
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	memmove:
+ 201              	.LVL27:
+ 202              	.LFB26:
+  63:./arch/arm_m/boot/compressed/string.c **** 
+  64:./arch/arm_m/boot/compressed/string.c **** void *memmove(void *__dest, __const void *__src, size_t count)
+  65:./arch/arm_m/boot/compressed/string.c **** {
+ 203              		.loc 1 65 1 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+  66:./arch/arm_m/boot/compressed/string.c **** 	unsigned char *d = __dest;
+ 207              		.loc 1 66 2 view .LVU71
+  67:./arch/arm_m/boot/compressed/string.c **** 	const unsigned char *s = __src;
+ 208              		.loc 1 67 2 view .LVU72
+  68:./arch/arm_m/boot/compressed/string.c **** 
+  69:./arch/arm_m/boot/compressed/string.c **** 	if (__dest == __src)
+ 209              		.loc 1 69 2 view .LVU73
+ 210              		.loc 1 69 5 is_stmt 0 view .LVU74
+ 211 0000 8842     		cmp	r0, r1
+ 212 0002 0BD0     		beq	.L13
+  65:./arch/arm_m/boot/compressed/string.c **** 	unsigned char *d = __dest;
+ 213              		.loc 1 65 1 view .LVU75
+ 214 0004 08B5     		push	{r3, lr}
+ 215              	.LCFI1:
+ARM GAS  /tmp/ccHhQHMu.s 			page 6
+
+
+ 216              		.cfi_def_cfa_offset 8
+ 217              		.cfi_offset 3, -8
+ 218              		.cfi_offset 14, -4
+  70:./arch/arm_m/boot/compressed/string.c **** 		return __dest;
+  71:./arch/arm_m/boot/compressed/string.c **** 
+  72:./arch/arm_m/boot/compressed/string.c **** 	if (__dest < __src)
+ 219              		.loc 1 72 2 is_stmt 1 view .LVU76
+ 220              		.loc 1 72 5 is_stmt 0 view .LVU77
+ 221 0006 05D2     		bcs	.L10
+  73:./arch/arm_m/boot/compressed/string.c **** 		return memcpy(__dest, __src, count);
+ 222              		.loc 1 73 3 is_stmt 1 view .LVU78
+ 223              		.loc 1 73 10 is_stmt 0 view .LVU79
+ 224 0008 FFF7FEFF 		bl	memcpy
+ 225              	.LVL28:
+ 226              		.loc 1 73 10 view .LVU80
+ 227 000c 05E0     		b	.L9
+ 228              	.LVL29:
+ 229              	.L11:
+  74:./arch/arm_m/boot/compressed/string.c **** 
+  75:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+  76:./arch/arm_m/boot/compressed/string.c **** 		d[count] = s[count];
+ 230              		.loc 1 76 3 is_stmt 1 view .LVU81
+ 231              		.loc 1 76 15 is_stmt 0 view .LVU82
+ 232 000e CA5C     		ldrb	r2, [r1, r3]	@ zero_extendqisi2
+ 233              		.loc 1 76 12 view .LVU83
+ 234 0010 C254     		strb	r2, [r0, r3]
+  75:./arch/arm_m/boot/compressed/string.c **** 		d[count] = s[count];
+ 235              		.loc 1 75 14 view .LVU84
+ 236 0012 1A46     		mov	r2, r3
+ 237              	.LVL30:
+ 238              	.L10:
+  75:./arch/arm_m/boot/compressed/string.c **** 		d[count] = s[count];
+ 239              		.loc 1 75 9 is_stmt 1 view .LVU85
+  75:./arch/arm_m/boot/compressed/string.c **** 		d[count] = s[count];
+ 240              		.loc 1 75 14 is_stmt 0 view .LVU86
+ 241 0014 531E     		subs	r3, r2, #1
+ 242              	.LVL31:
+  75:./arch/arm_m/boot/compressed/string.c **** 		d[count] = s[count];
+ 243              		.loc 1 75 9 view .LVU87
+ 244 0016 002A     		cmp	r2, #0
+ 245 0018 F9D1     		bne	.L11
+ 246              	.LVL32:
+ 247              	.L9:
+  77:./arch/arm_m/boot/compressed/string.c **** 	return __dest;
+  78:./arch/arm_m/boot/compressed/string.c **** }
+ 248              		.loc 1 78 1 view .LVU88
+ 249 001a 08BD     		pop	{r3, pc}
+ 250              	.LVL33:
+ 251              	.L13:
+ 252              	.LCFI2:
+ 253              		.cfi_def_cfa_offset 0
+ 254              		.cfi_restore 3
+ 255              		.cfi_restore 14
+ 256              		.loc 1 78 1 view .LVU89
+ 257 001c 7047     		bx	lr
+ 258              		.cfi_endproc
+ 259              	.LFE26:
+ARM GAS  /tmp/ccHhQHMu.s 			page 7
+
+
+ 261              		.section	.text.strlen,"ax",%progbits
+ 262              		.align	1
+ 263              		.global	strlen
+ 264              		.syntax unified
+ 265              		.thumb
+ 266              		.thumb_func
+ 268              	strlen:
+ 269              	.LVL34:
+ 270              	.LFB27:
+  79:./arch/arm_m/boot/compressed/string.c **** 
+  80:./arch/arm_m/boot/compressed/string.c **** size_t strlen(const char *s)
+  81:./arch/arm_m/boot/compressed/string.c **** {
+ 271              		.loc 1 81 1 is_stmt 1 view -0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275              		@ link register save eliminated.
+  82:./arch/arm_m/boot/compressed/string.c **** 	const char *sc = s;
+ 276              		.loc 1 82 2 view .LVU91
+  83:./arch/arm_m/boot/compressed/string.c **** 
+  84:./arch/arm_m/boot/compressed/string.c **** 	while (*sc != '\0')
+ 277              		.loc 1 84 2 view .LVU92
+  82:./arch/arm_m/boot/compressed/string.c **** 	const char *sc = s;
+ 278              		.loc 1 82 14 is_stmt 0 view .LVU93
+ 279 0000 0346     		mov	r3, r0
+ 280              		.loc 1 84 8 view .LVU94
+ 281 0002 00E0     		b	.L17
+ 282              	.LVL35:
+ 283              	.L18:
+  85:./arch/arm_m/boot/compressed/string.c **** 		sc++;
+ 284              		.loc 1 85 3 is_stmt 1 view .LVU95
+ 285              		.loc 1 85 5 is_stmt 0 view .LVU96
+ 286 0004 0133     		adds	r3, r3, #1
+ 287              	.LVL36:
+ 288              	.L17:
+  84:./arch/arm_m/boot/compressed/string.c **** 		sc++;
+ 289              		.loc 1 84 13 is_stmt 1 view .LVU97
+  84:./arch/arm_m/boot/compressed/string.c **** 		sc++;
+ 290              		.loc 1 84 9 is_stmt 0 view .LVU98
+ 291 0006 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  84:./arch/arm_m/boot/compressed/string.c **** 		sc++;
+ 292              		.loc 1 84 13 view .LVU99
+ 293 0008 002A     		cmp	r2, #0
+ 294 000a FBD1     		bne	.L18
+  86:./arch/arm_m/boot/compressed/string.c **** 	return sc - s;
+ 295              		.loc 1 86 2 is_stmt 1 view .LVU100
+  87:./arch/arm_m/boot/compressed/string.c **** }
+ 296              		.loc 1 87 1 is_stmt 0 view .LVU101
+ 297 000c 181A     		subs	r0, r3, r0
+ 298              	.LVL37:
+ 299              		.loc 1 87 1 view .LVU102
+ 300 000e 7047     		bx	lr
+ 301              		.cfi_endproc
+ 302              	.LFE27:
+ 304              		.section	.text.strnlen,"ax",%progbits
+ 305              		.align	1
+ 306              		.global	strnlen
+ARM GAS  /tmp/ccHhQHMu.s 			page 8
+
+
+ 307              		.syntax unified
+ 308              		.thumb
+ 309              		.thumb_func
+ 311              	strnlen:
+ 312              	.LVL38:
+ 313              	.LFB28:
+  88:./arch/arm_m/boot/compressed/string.c **** 
+  89:./arch/arm_m/boot/compressed/string.c **** size_t strnlen(const char *s, size_t count)
+  90:./arch/arm_m/boot/compressed/string.c **** {
+ 314              		.loc 1 90 1 is_stmt 1 view -0
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318              		@ link register save eliminated.
+  91:./arch/arm_m/boot/compressed/string.c **** 	const char *sc;
+ 319              		.loc 1 91 2 view .LVU104
+  92:./arch/arm_m/boot/compressed/string.c **** 
+  93:./arch/arm_m/boot/compressed/string.c **** 	for (sc = s; count-- && *sc != '\0'; ++sc)
+ 320              		.loc 1 93 2 view .LVU105
+ 321              		.loc 1 93 10 is_stmt 0 view .LVU106
+ 322 0000 0346     		mov	r3, r0
+ 323              		.loc 1 93 2 view .LVU107
+ 324 0002 01E0     		b	.L20
+ 325              	.LVL39:
+ 326              	.L22:
+ 327              		.loc 1 93 39 is_stmt 1 discriminator 4 view .LVU108
+ 328 0004 0133     		adds	r3, r3, #1
+ 329              	.LVL40:
+ 330              		.loc 1 93 20 is_stmt 0 discriminator 1 view .LVU109
+ 331 0006 1146     		mov	r1, r2
+ 332              	.LVL41:
+ 333              	.L20:
+ 334              		.loc 1 93 23 is_stmt 1 discriminator 1 view .LVU110
+ 335              		.loc 1 93 20 is_stmt 0 discriminator 1 view .LVU111
+ 336 0008 4A1E     		subs	r2, r1, #1
+ 337              	.LVL42:
+ 338              		.loc 1 93 23 discriminator 1 view .LVU112
+ 339 000a 11B1     		cbz	r1, .L21
+ 340              		.loc 1 93 26 discriminator 3 view .LVU113
+ 341 000c 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 342              		.loc 1 93 23 discriminator 3 view .LVU114
+ 343 000e 0029     		cmp	r1, #0
+ 344 0010 F8D1     		bne	.L22
+ 345              	.L21:
+  94:./arch/arm_m/boot/compressed/string.c **** 		/* nothing */;
+  95:./arch/arm_m/boot/compressed/string.c **** 	return sc - s;
+ 346              		.loc 1 95 2 is_stmt 1 view .LVU115
+  96:./arch/arm_m/boot/compressed/string.c **** }
+ 347              		.loc 1 96 1 is_stmt 0 view .LVU116
+ 348 0012 181A     		subs	r0, r3, r0
+ 349              	.LVL43:
+ 350              		.loc 1 96 1 view .LVU117
+ 351 0014 7047     		bx	lr
+ 352              		.cfi_endproc
+ 353              	.LFE28:
+ 355              		.section	.text.memcmp,"ax",%progbits
+ 356              		.align	1
+ARM GAS  /tmp/ccHhQHMu.s 			page 9
+
+
+ 357              		.global	memcmp
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 362              	memcmp:
+ 363              	.LVL44:
+ 364              	.LFB29:
+  97:./arch/arm_m/boot/compressed/string.c **** 
+  98:./arch/arm_m/boot/compressed/string.c **** int memcmp(const void *cs, const void *ct, size_t count)
+  99:./arch/arm_m/boot/compressed/string.c **** {
+ 365              		.loc 1 99 1 is_stmt 1 view -0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 370              		.loc 1 99 1 is_stmt 0 view .LVU119
+ 371 0000 0346     		mov	r3, r0
+ 100:./arch/arm_m/boot/compressed/string.c **** 	const unsigned char *su1 = cs, *su2 = ct, *end = su1 + count;
+ 372              		.loc 1 100 2 is_stmt 1 view .LVU120
+ 373              	.LVL45:
+ 374              		.loc 1 100 45 is_stmt 0 view .LVU121
+ 375 0002 0244     		add	r2, r2, r0
+ 376              	.LVL46:
+ 101:./arch/arm_m/boot/compressed/string.c **** 	int res = 0;
+ 377              		.loc 1 101 2 is_stmt 1 view .LVU122
+ 102:./arch/arm_m/boot/compressed/string.c **** 
+ 103:./arch/arm_m/boot/compressed/string.c **** 	while (su1 < end) {
+ 378              		.loc 1 103 2 view .LVU123
+ 101:./arch/arm_m/boot/compressed/string.c **** 	int res = 0;
+ 379              		.loc 1 101 6 is_stmt 0 view .LVU124
+ 380 0004 0020     		movs	r0, #0
+ 381              	.LVL47:
+ 382              	.L24:
+ 383              		.loc 1 103 13 is_stmt 1 view .LVU125
+ 384 0006 9342     		cmp	r3, r2
+ 385 0008 06D2     		bcs	.L23
+ 104:./arch/arm_m/boot/compressed/string.c **** 		res = *su1++ - *su2++;
+ 386              		.loc 1 104 3 view .LVU126
+ 387              	.LVL48:
+ 388              		.loc 1 104 9 is_stmt 0 view .LVU127
+ 389 000a 13F8010B 		ldrb	r0, [r3], #1	@ zero_extendqisi2
+ 390              	.LVL49:
+ 391              		.loc 1 104 18 view .LVU128
+ 392 000e 11F801CB 		ldrb	ip, [r1], #1	@ zero_extendqisi2
+ 393              	.LVL50:
+ 105:./arch/arm_m/boot/compressed/string.c **** 		if (res)
+ 394              		.loc 1 105 3 is_stmt 1 view .LVU129
+ 395              		.loc 1 105 6 is_stmt 0 view .LVU130
+ 396 0012 B0EB0C00 		subs	r0, r0, ip
+ 397              	.LVL51:
+ 398              		.loc 1 105 6 view .LVU131
+ 399 0016 F6D0     		beq	.L24
+ 400              	.LVL52:
+ 401              	.L23:
+ 106:./arch/arm_m/boot/compressed/string.c **** 			break;
+ 107:./arch/arm_m/boot/compressed/string.c **** 	}
+ 108:./arch/arm_m/boot/compressed/string.c **** 	return res;
+ARM GAS  /tmp/ccHhQHMu.s 			page 10
+
+
+ 109:./arch/arm_m/boot/compressed/string.c **** }
+ 402              		.loc 1 109 1 view .LVU132
+ 403 0018 7047     		bx	lr
+ 404              		.cfi_endproc
+ 405              	.LFE29:
+ 407              		.section	.text.strcmp,"ax",%progbits
+ 408              		.align	1
+ 409              		.global	strcmp
+ 410              		.syntax unified
+ 411              		.thumb
+ 412              		.thumb_func
+ 414              	strcmp:
+ 415              	.LVL53:
+ 416              	.LFB30:
+ 110:./arch/arm_m/boot/compressed/string.c **** 
+ 111:./arch/arm_m/boot/compressed/string.c **** int strcmp(const char *cs, const char *ct)
+ 112:./arch/arm_m/boot/compressed/string.c **** {
+ 417              		.loc 1 112 1 is_stmt 1 view -0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 0
+ 420              		@ frame_needed = 0, uses_anonymous_args = 0
+ 421              		@ link register save eliminated.
+ 422              		.loc 1 112 1 is_stmt 0 view .LVU134
+ 423 0000 8446     		mov	ip, r0
+ 113:./arch/arm_m/boot/compressed/string.c **** 	unsigned char c1, c2;
+ 424              		.loc 1 113 2 is_stmt 1 view .LVU135
+ 114:./arch/arm_m/boot/compressed/string.c **** 	int res = 0;
+ 425              		.loc 1 114 2 view .LVU136
+ 426              	.LVL54:
+ 427              	.L29:
+ 115:./arch/arm_m/boot/compressed/string.c **** 
+ 116:./arch/arm_m/boot/compressed/string.c **** 	do {
+ 428              		.loc 1 116 2 view .LVU137
+ 117:./arch/arm_m/boot/compressed/string.c **** 		c1 = *cs++;
+ 429              		.loc 1 117 3 view .LVU138
+ 430              		.loc 1 117 6 is_stmt 0 view .LVU139
+ 431 0002 9CF80020 		ldrb	r2, [ip]	@ zero_extendqisi2
+ 432 0006 0CF1010C 		add	ip, ip, #1
+ 433              	.LVL55:
+ 118:./arch/arm_m/boot/compressed/string.c **** 		c2 = *ct++;
+ 434              		.loc 1 118 3 is_stmt 1 view .LVU140
+ 435              		.loc 1 118 6 is_stmt 0 view .LVU141
+ 436 000a 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 437 000c 0131     		adds	r1, r1, #1
+ 438              	.LVL56:
+ 119:./arch/arm_m/boot/compressed/string.c **** 		res = c1 - c2;
+ 439              		.loc 1 119 3 is_stmt 1 view .LVU142
+ 120:./arch/arm_m/boot/compressed/string.c **** 		if (res)
+ 440              		.loc 1 120 3 view .LVU143
+ 441              		.loc 1 120 6 is_stmt 0 view .LVU144
+ 442 000e D01A     		subs	r0, r2, r3
+ 443              	.LVL57:
+ 444              		.loc 1 120 6 view .LVU145
+ 445 0010 01D1     		bne	.L27
+ 121:./arch/arm_m/boot/compressed/string.c **** 			break;
+ 122:./arch/arm_m/boot/compressed/string.c **** 	} while (c1);
+ 446              		.loc 1 122 11 is_stmt 1 view .LVU146
+ARM GAS  /tmp/ccHhQHMu.s 			page 11
+
+
+ 447 0012 002A     		cmp	r2, #0
+ 448 0014 F5D1     		bne	.L29
+ 449              	.L27:
+ 123:./arch/arm_m/boot/compressed/string.c **** 	return res;
+ 124:./arch/arm_m/boot/compressed/string.c **** }
+ 450              		.loc 1 124 1 is_stmt 0 view .LVU147
+ 451 0016 7047     		bx	lr
+ 452              		.cfi_endproc
+ 453              	.LFE30:
+ 455              		.section	.text.memchr,"ax",%progbits
+ 456              		.align	1
+ 457              		.global	memchr
+ 458              		.syntax unified
+ 459              		.thumb
+ 460              		.thumb_func
+ 462              	memchr:
+ 463              	.LVL58:
+ 464              	.LFB31:
+ 125:./arch/arm_m/boot/compressed/string.c **** 
+ 126:./arch/arm_m/boot/compressed/string.c **** void *memchr(const void *s, int c, size_t count)
+ 127:./arch/arm_m/boot/compressed/string.c **** {
+ 465              		.loc 1 127 1 is_stmt 1 view -0
+ 466              		.cfi_startproc
+ 467              		@ args = 0, pretend = 0, frame = 0
+ 468              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128:./arch/arm_m/boot/compressed/string.c **** 	const unsigned char *p = s;
+ 469              		.loc 1 128 2 view .LVU149
+ 129:./arch/arm_m/boot/compressed/string.c **** 
+ 130:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 470              		.loc 1 130 2 view .LVU150
+ 471              		.loc 1 130 9 view .LVU151
+ 472 0000 1346     		mov	r3, r2
+ 473              		.loc 1 130 14 is_stmt 0 view .LVU152
+ 474 0002 013A     		subs	r2, r2, #1
+ 475              	.LVL59:
+ 476              		.loc 1 130 9 view .LVU153
+ 477 0004 73B1     		cbz	r3, .L40
+ 127:./arch/arm_m/boot/compressed/string.c **** 	const unsigned char *p = s;
+ 478              		.loc 1 127 1 view .LVU154
+ 479 0006 00B5     		push	{lr}
+ 480              	.LCFI3:
+ 481              		.cfi_def_cfa_offset 4
+ 482              		.cfi_offset 14, -4
+ 483              	.LVL60:
+ 484              	.L33:
+ 131:./arch/arm_m/boot/compressed/string.c **** 		if ((unsigned char)c == *p++)
+ 485              		.loc 1 131 3 is_stmt 1 view .LVU155
+ 486              		.loc 1 131 7 is_stmt 0 view .LVU156
+ 487 0008 CBB2     		uxtb	r3, r1
+ 488              		.loc 1 131 29 view .LVU157
+ 489 000a 8446     		mov	ip, r0
+ 490              	.LVL61:
+ 491              		.loc 1 131 27 view .LVU158
+ 492 000c 1CF801EB 		ldrb	lr, [ip], #1	@ zero_extendqisi2
+ 493              	.LVL62:
+ 494              		.loc 1 131 6 view .LVU159
+ 495 0010 7345     		cmp	r3, lr
+ARM GAS  /tmp/ccHhQHMu.s 			page 12
+
+
+ 496 0012 05D0     		beq	.L30
+ 497              		.loc 1 131 29 view .LVU160
+ 498 0014 6046     		mov	r0, ip
+ 130:./arch/arm_m/boot/compressed/string.c **** 		if ((unsigned char)c == *p++)
+ 499              		.loc 1 130 9 is_stmt 1 view .LVU161
+ 500 0016 1346     		mov	r3, r2
+ 130:./arch/arm_m/boot/compressed/string.c **** 		if ((unsigned char)c == *p++)
+ 501              		.loc 1 130 14 is_stmt 0 view .LVU162
+ 502 0018 013A     		subs	r2, r2, #1
+ 503              	.LVL63:
+ 130:./arch/arm_m/boot/compressed/string.c **** 		if ((unsigned char)c == *p++)
+ 504              		.loc 1 130 9 view .LVU163
+ 505 001a 002B     		cmp	r3, #0
+ 506 001c F4D1     		bne	.L33
+ 132:./arch/arm_m/boot/compressed/string.c **** 			return (void *)(p - 1);
+ 133:./arch/arm_m/boot/compressed/string.c **** 	return NULL;
+ 507              		.loc 1 133 9 view .LVU164
+ 508 001e 0020     		movs	r0, #0
+ 509              	.L30:
+ 134:./arch/arm_m/boot/compressed/string.c **** }
+ 510              		.loc 1 134 1 view .LVU165
+ 511 0020 5DF804FB 		ldr	pc, [sp], #4
+ 512              	.LVL64:
+ 513              	.L40:
+ 514              	.LCFI4:
+ 515              		.cfi_def_cfa_offset 0
+ 516              		.cfi_restore 14
+ 133:./arch/arm_m/boot/compressed/string.c **** }
+ 517              		.loc 1 133 9 view .LVU166
+ 518 0024 0020     		movs	r0, #0
+ 519              	.LVL65:
+ 520              		.loc 1 134 1 view .LVU167
+ 521 0026 7047     		bx	lr
+ 522              		.cfi_endproc
+ 523              	.LFE31:
+ 525              		.section	.text.strchr,"ax",%progbits
+ 526              		.align	1
+ 527              		.global	strchr
+ 528              		.syntax unified
+ 529              		.thumb
+ 530              		.thumb_func
+ 532              	strchr:
+ 533              	.LVL66:
+ 534              	.LFB32:
+ 135:./arch/arm_m/boot/compressed/string.c **** 
+ 136:./arch/arm_m/boot/compressed/string.c **** char *strchr(const char *s, int c)
+ 137:./arch/arm_m/boot/compressed/string.c **** {
+ 535              		.loc 1 137 1 is_stmt 1 view -0
+ 536              		.cfi_startproc
+ 537              		@ args = 0, pretend = 0, frame = 0
+ 538              		@ frame_needed = 0, uses_anonymous_args = 0
+ 539              		@ link register save eliminated.
+ 138:./arch/arm_m/boot/compressed/string.c **** 	while (*s != (char)c)
+ 540              		.loc 1 138 2 view .LVU169
+ 541              	.L42:
+ 542              		.loc 1 138 12 view .LVU170
+ 543              		.loc 1 138 9 is_stmt 0 view .LVU171
+ARM GAS  /tmp/ccHhQHMu.s 			page 13
+
+
+ 544 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 545              		.loc 1 138 12 view .LVU172
+ 546 0002 CAB2     		uxtb	r2, r1
+ 547 0004 9342     		cmp	r3, r2
+ 548 0006 04D0     		beq	.L46
+ 139:./arch/arm_m/boot/compressed/string.c **** 		if (*s++ == '\0')
+ 549              		.loc 1 139 3 is_stmt 1 view .LVU173
+ 550              		.loc 1 139 9 is_stmt 0 view .LVU174
+ 551 0008 0130     		adds	r0, r0, #1
+ 552              	.LVL67:
+ 553              		.loc 1 139 6 view .LVU175
+ 554 000a 002B     		cmp	r3, #0
+ 555 000c F8D1     		bne	.L42
+ 140:./arch/arm_m/boot/compressed/string.c **** 			return NULL;
+ 556              		.loc 1 140 11 view .LVU176
+ 557 000e 0020     		movs	r0, #0
+ 558              	.LVL68:
+ 141:./arch/arm_m/boot/compressed/string.c **** 	return (char *)s;
+ 142:./arch/arm_m/boot/compressed/string.c **** }
+ 559              		.loc 1 142 1 view .LVU177
+ 560 0010 7047     		bx	lr
+ 561              	.LVL69:
+ 562              	.L46:
+ 563              		.loc 1 142 1 view .LVU178
+ 564 0012 7047     		bx	lr
+ 565              		.cfi_endproc
+ 566              	.LFE32:
+ 568              		.section	.text.strrchr,"ax",%progbits
+ 569              		.align	1
+ 570              		.global	strrchr
+ 571              		.syntax unified
+ 572              		.thumb
+ 573              		.thumb_func
+ 575              	strrchr:
+ 576              	.LVL70:
+ 577              	.LFB33:
+ 143:./arch/arm_m/boot/compressed/string.c **** 
+ 144:./arch/arm_m/boot/compressed/string.c **** char *strrchr(const char *s, int c)
+ 145:./arch/arm_m/boot/compressed/string.c **** {
+ 578              		.loc 1 145 1 is_stmt 1 view -0
+ 579              		.cfi_startproc
+ 580              		@ args = 0, pretend = 0, frame = 0
+ 581              		@ frame_needed = 0, uses_anonymous_args = 0
+ 582              		@ link register save eliminated.
+ 583              		.loc 1 145 1 is_stmt 0 view .LVU180
+ 584 0000 0346     		mov	r3, r0
+ 146:./arch/arm_m/boot/compressed/string.c **** 	const char *last = NULL;
+ 585              		.loc 1 146 2 is_stmt 1 view .LVU181
+ 586              	.LVL71:
+ 587              		.loc 1 146 14 is_stmt 0 view .LVU182
+ 588 0002 0020     		movs	r0, #0
+ 589              	.LVL72:
+ 590              		.loc 1 146 14 view .LVU183
+ 591 0004 01E0     		b	.L49
+ 592              	.LVL73:
+ 593              	.L48:
+ 147:./arch/arm_m/boot/compressed/string.c **** 	do {
+ARM GAS  /tmp/ccHhQHMu.s 			page 14
+
+
+ 148:./arch/arm_m/boot/compressed/string.c **** 		if (*s == (char)c)
+ 149:./arch/arm_m/boot/compressed/string.c **** 			last = s;
+ 150:./arch/arm_m/boot/compressed/string.c **** 	} while (*s++);
+ 594              		.loc 1 150 11 is_stmt 1 view .LVU184
+ 595              		.loc 1 150 13 is_stmt 0 view .LVU185
+ 596 0006 0133     		adds	r3, r3, #1
+ 597              	.LVL74:
+ 598              		.loc 1 150 11 view .LVU186
+ 599 0008 32B1     		cbz	r2, .L51
+ 600              	.LVL75:
+ 601              	.L49:
+ 147:./arch/arm_m/boot/compressed/string.c **** 	do {
+ 602              		.loc 1 147 2 is_stmt 1 view .LVU187
+ 148:./arch/arm_m/boot/compressed/string.c **** 			last = s;
+ 603              		.loc 1 148 3 view .LVU188
+ 148:./arch/arm_m/boot/compressed/string.c **** 			last = s;
+ 604              		.loc 1 148 7 is_stmt 0 view .LVU189
+ 605 000a 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 148:./arch/arm_m/boot/compressed/string.c **** 			last = s;
+ 606              		.loc 1 148 10 view .LVU190
+ 607 000c 5FFA81FC 		uxtb	ip, r1
+ 148:./arch/arm_m/boot/compressed/string.c **** 			last = s;
+ 608              		.loc 1 148 6 view .LVU191
+ 609 0010 6245     		cmp	r2, ip
+ 610 0012 F8D1     		bne	.L48
+ 149:./arch/arm_m/boot/compressed/string.c **** 	} while (*s++);
+ 611              		.loc 1 149 9 view .LVU192
+ 612 0014 1846     		mov	r0, r3
+ 613              	.LVL76:
+ 149:./arch/arm_m/boot/compressed/string.c **** 	} while (*s++);
+ 614              		.loc 1 149 9 view .LVU193
+ 615 0016 F6E7     		b	.L48
+ 616              	.LVL77:
+ 617              	.L51:
+ 151:./arch/arm_m/boot/compressed/string.c **** 	return (char *)last;
+ 618              		.loc 1 151 2 is_stmt 1 view .LVU194
+ 152:./arch/arm_m/boot/compressed/string.c **** }
+ 619              		.loc 1 152 1 is_stmt 0 view .LVU195
+ 620 0018 7047     		bx	lr
+ 621              		.cfi_endproc
+ 622              	.LFE33:
+ 624              		.section	.text.memset,"ax",%progbits
+ 625              		.align	1
+ 626              		.global	memset
+ 627              		.syntax unified
+ 628              		.thumb
+ 629              		.thumb_func
+ 631              	memset:
+ 632              	.LVL78:
+ 633              	.LFB34:
+ 153:./arch/arm_m/boot/compressed/string.c **** 
+ 154:./arch/arm_m/boot/compressed/string.c **** #undef memset
+ 155:./arch/arm_m/boot/compressed/string.c **** 
+ 156:./arch/arm_m/boot/compressed/string.c **** void *memset(void *s, int c, size_t count)
+ 157:./arch/arm_m/boot/compressed/string.c **** {
+ 634              		.loc 1 157 1 is_stmt 1 view -0
+ 635              		.cfi_startproc
+ARM GAS  /tmp/ccHhQHMu.s 			page 15
+
+
+ 636              		@ args = 0, pretend = 0, frame = 0
+ 637              		@ frame_needed = 0, uses_anonymous_args = 0
+ 638              		@ link register save eliminated.
+ 158:./arch/arm_m/boot/compressed/string.c **** 	char *xs = s;
+ 639              		.loc 1 158 2 view .LVU197
+ 159:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 640              		.loc 1 159 2 view .LVU198
+ 158:./arch/arm_m/boot/compressed/string.c **** 	char *xs = s;
+ 641              		.loc 1 158 8 is_stmt 0 view .LVU199
+ 642 0000 0346     		mov	r3, r0
+ 643              		.loc 1 159 8 view .LVU200
+ 644 0002 02E0     		b	.L53
+ 645              	.LVL79:
+ 646              	.L54:
+ 160:./arch/arm_m/boot/compressed/string.c **** 		*xs++ = c;
+ 647              		.loc 1 160 3 is_stmt 1 view .LVU201
+ 648              		.loc 1 160 9 is_stmt 0 view .LVU202
+ 649 0004 03F8011B 		strb	r1, [r3], #1
+ 650              	.LVL80:
+ 159:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 651              		.loc 1 159 14 view .LVU203
+ 652 0008 6246     		mov	r2, ip
+ 653              	.LVL81:
+ 654              	.L53:
+ 159:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 655              		.loc 1 159 9 is_stmt 1 view .LVU204
+ 159:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 656              		.loc 1 159 14 is_stmt 0 view .LVU205
+ 657 000a 02F1FF3C 		add	ip, r2, #-1
+ 658              	.LVL82:
+ 159:./arch/arm_m/boot/compressed/string.c **** 	while (count--)
+ 659              		.loc 1 159 9 view .LVU206
+ 660 000e 002A     		cmp	r2, #0
+ 661 0010 F8D1     		bne	.L54
+ 161:./arch/arm_m/boot/compressed/string.c **** 	return s;
+ 662              		.loc 1 161 2 is_stmt 1 view .LVU207
+ 162:./arch/arm_m/boot/compressed/string.c **** }
+ 663              		.loc 1 162 1 is_stmt 0 view .LVU208
+ 664 0012 7047     		bx	lr
+ 665              		.cfi_endproc
+ 666              	.LFE34:
+ 668              		.text
+ 669              	.Letext0:
+ 670              		.file 2 "./include/asm-generic/posix_types.h"
+ 671              		.file 3 "./include/linux/types.h"
+ 672              		.file 4 "<built-in>"
+ARM GAS  /tmp/ccHhQHMu.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 string.c
+     /tmp/ccHhQHMu.s:21     .text.memcpy:00000000 $t
+     /tmp/ccHhQHMu.s:27     .text.memcpy:00000000 memcpy
+     /tmp/ccHhQHMu.s:194    .text.memmove:00000000 $t
+     /tmp/ccHhQHMu.s:200    .text.memmove:00000000 memmove
+     /tmp/ccHhQHMu.s:262    .text.strlen:00000000 $t
+     /tmp/ccHhQHMu.s:268    .text.strlen:00000000 strlen
+     /tmp/ccHhQHMu.s:305    .text.strnlen:00000000 $t
+     /tmp/ccHhQHMu.s:311    .text.strnlen:00000000 strnlen
+     /tmp/ccHhQHMu.s:356    .text.memcmp:00000000 $t
+     /tmp/ccHhQHMu.s:362    .text.memcmp:00000000 memcmp
+     /tmp/ccHhQHMu.s:408    .text.strcmp:00000000 $t
+     /tmp/ccHhQHMu.s:414    .text.strcmp:00000000 strcmp
+     /tmp/ccHhQHMu.s:456    .text.memchr:00000000 $t
+     /tmp/ccHhQHMu.s:462    .text.memchr:00000000 memchr
+     /tmp/ccHhQHMu.s:526    .text.strchr:00000000 $t
+     /tmp/ccHhQHMu.s:532    .text.strchr:00000000 strchr
+     /tmp/ccHhQHMu.s:569    .text.strrchr:00000000 $t
+     /tmp/ccHhQHMu.s:575    .text.strrchr:00000000 strrchr
+     /tmp/ccHhQHMu.s:625    .text.memset:00000000 $t
+     /tmp/ccHhQHMu.s:631    .text.memset:00000000 memset
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,150 @@
+ARM GAS  /tmp/ccjFECW9.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"decompress.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./arch/arm_m/boot/compressed/decompress.c"
+  20              		.section	.text.do_decompress,"ax",%progbits
+  21              		.align	1
+  22              		.global	do_decompress
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	do_decompress:
+  28              	.LVL0:
+  29              	.LFB3:
+   1:./arch/arm_m/boot/compressed/decompress.c **** // SPDX-License-Identifier: GPL-2.0
+   2:./arch/arm_m/boot/compressed/decompress.c **** #define _LINUX_STRING_H_
+   3:./arch/arm_m/boot/compressed/decompress.c **** 
+   4:./arch/arm_m/boot/compressed/decompress.c **** #include <linux/compiler.h>	/* for inline */
+   5:./arch/arm_m/boot/compressed/decompress.c **** #include <linux/types.h>	/* for size_t */
+   6:./arch/arm_m/boot/compressed/decompress.c **** #include <linux/stddef.h>	/* for NULL */
+   7:./arch/arm_m/boot/compressed/decompress.c **** #include <linux/linkage.h>
+   8:./arch/arm_m/boot/compressed/decompress.c **** #include <asm/string.h>
+   9:./arch/arm_m/boot/compressed/decompress.c **** #include "misc.h"
+  10:./arch/arm_m/boot/compressed/decompress.c **** 
+  11:./arch/arm_m/boot/compressed/decompress.c **** #define STATIC static
+  12:./arch/arm_m/boot/compressed/decompress.c **** #define STATIC_RW_DATA	/* non-static please */
+  13:./arch/arm_m/boot/compressed/decompress.c **** 
+  14:./arch/arm_m/boot/compressed/decompress.c **** /* Diagnostic functions */
+  15:./arch/arm_m/boot/compressed/decompress.c **** #ifdef DEBUG
+  16:./arch/arm_m/boot/compressed/decompress.c **** #  define Assert(cond,msg) {if(!(cond)) error(msg);}
+  17:./arch/arm_m/boot/compressed/decompress.c **** #  define Trace(x) fprintf x
+  18:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracev(x) {if (verbose) fprintf x ;}
+  19:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracevv(x) {if (verbose>1) fprintf x ;}
+  20:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracec(c,x) {if (verbose && (c)) fprintf x ;}
+  21:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracecv(c,x) {if (verbose>1 && (c)) fprintf x ;}
+  22:./arch/arm_m/boot/compressed/decompress.c **** #else
+  23:./arch/arm_m/boot/compressed/decompress.c **** #  define Assert(cond,msg)
+  24:./arch/arm_m/boot/compressed/decompress.c **** #  define Trace(x)
+  25:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracev(x)
+  26:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracevv(x)
+  27:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracec(c,x)
+  28:./arch/arm_m/boot/compressed/decompress.c **** #  define Tracecv(c,x)
+  29:./arch/arm_m/boot/compressed/decompress.c **** #endif
+ARM GAS  /tmp/ccjFECW9.s 			page 2
+
+
+  30:./arch/arm_m/boot/compressed/decompress.c **** 
+  31:./arch/arm_m/boot/compressed/decompress.c **** /* Not needed, but used in some headers pulled in by decompressors */
+  32:./arch/arm_m/boot/compressed/decompress.c **** extern char * strstr(const char * s1, const char *s2);
+  33:./arch/arm_m/boot/compressed/decompress.c **** extern size_t strlen(const char *s);
+  34:./arch/arm_m/boot/compressed/decompress.c **** extern int strcmp(const char *cs, const char *ct);
+  35:./arch/arm_m/boot/compressed/decompress.c **** extern int memcmp(const void *cs, const void *ct, size_t count);
+  36:./arch/arm_m/boot/compressed/decompress.c **** extern char * strchrnul(const char *, int);
+  37:./arch/arm_m/boot/compressed/decompress.c **** 
+  38:./arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_GZIP
+  39:./arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_inflate.c"
+  40:./arch/arm_m/boot/compressed/decompress.c **** #endif
+  41:./arch/arm_m/boot/compressed/decompress.c **** 
+  42:./arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZO
+  43:./arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlzo.c"
+  44:./arch/arm_m/boot/compressed/decompress.c **** #endif
+  45:./arch/arm_m/boot/compressed/decompress.c **** 
+  46:./arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZMA
+  47:./arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlzma.c"
+  48:./arch/arm_m/boot/compressed/decompress.c **** #endif
+  49:./arch/arm_m/boot/compressed/decompress.c **** 
+  50:./arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_XZ
+  51:./arch/arm_m/boot/compressed/decompress.c **** /* Prevent KASAN override of string helpers in decompressor */
+  52:./arch/arm_m/boot/compressed/decompress.c **** #undef memmove
+  53:./arch/arm_m/boot/compressed/decompress.c **** #define memmove memmove
+  54:./arch/arm_m/boot/compressed/decompress.c **** #undef memcpy
+  55:./arch/arm_m/boot/compressed/decompress.c **** #define memcpy memcpy
+  56:./arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unxz.c"
+  57:./arch/arm_m/boot/compressed/decompress.c **** #endif
+  58:./arch/arm_m/boot/compressed/decompress.c **** 
+  59:./arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZ4
+  60:./arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlz4.c"
+  61:./arch/arm_m/boot/compressed/decompress.c **** #endif
+  62:./arch/arm_m/boot/compressed/decompress.c **** 
+  63:./arch/arm_m/boot/compressed/decompress.c **** int do_decompress(u8 *input, int len, u8 *output, void (*error)(char *x))
+  64:./arch/arm_m/boot/compressed/decompress.c **** {
+  30              		.loc 1 64 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 64 1 is_stmt 0 view .LVU1
+  35 0000 00B5     		push	{lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 14, -4
+  39 0002 85B0     		sub	sp, sp, #20
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 24
+  65:./arch/arm_m/boot/compressed/decompress.c **** 	return __decompress(input, len, NULL, NULL, output, 0, NULL, error);
+  42              		.loc 1 65 2 is_stmt 1 view .LVU2
+  43              		.loc 1 65 9 is_stmt 0 view .LVU3
+  44 0004 0393     		str	r3, [sp, #12]
+  45 0006 0023     		movs	r3, #0
+  46              	.LVL1:
+  47              		.loc 1 65 9 view .LVU4
+  48 0008 0293     		str	r3, [sp, #8]
+  49 000a 0193     		str	r3, [sp, #4]
+  50 000c 0092     		str	r2, [sp]
+ARM GAS  /tmp/ccjFECW9.s 			page 3
+
+
+  51 000e 1A46     		mov	r2, r3
+  52              	.LVL2:
+  53              		.loc 1 65 9 view .LVU5
+  54 0010 FFF7FEFF 		bl	__decompress
+  55              	.LVL3:
+  66:./arch/arm_m/boot/compressed/decompress.c **** }
+  56              		.loc 1 66 1 view .LVU6
+  57 0014 05B0     		add	sp, sp, #20
+  58              	.LCFI2:
+  59              		.cfi_def_cfa_offset 4
+  60              		@ sp needed
+  61 0016 5DF804FB 		ldr	pc, [sp], #4
+  62              		.cfi_endproc
+  63              	.LFE3:
+  65              		.text
+  66              	.Letext0:
+  67              		.file 2 "./include/asm-generic/int-l64.h"
+ARM GAS  /tmp/ccjFECW9.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 decompress.c
+     /tmp/ccjFECW9.s:21     .text.do_decompress:00000000 $t
+     /tmp/ccjFECW9.s:27     .text.do_decompress:00000000 do_decompress
+
+UNDEFINED SYMBOLS
+__decompress

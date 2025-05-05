@@ -1,0 +1,4 @@
+source "./fs/kconfig"
+source "./kernel/kconfig"
+source "./lib/kconfig"
+source "./drivers/kconfig"

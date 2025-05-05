@@ -1,0 +1,11 @@
+#include <generated/autoconf.h>
+#include "../start.ld.in"
+
+MEMORY
+{
+    RAM (xrw)       : ORIGIN = CONFIG_LD_RAM_START_ADDRESS    , LENGTH = CONFIG_LD_KERNEL_USE_RAM_SIZE * 1k
+    FLASH (rx)      : ORIGIN = CONFIG_LD_FLASH_START_ADDRESS  , LENGTH = CONFIG_LD_KERNEL_USE_FLASH_SIZE * 1k
+}
+
+
+#include "../kernel.ld.in"

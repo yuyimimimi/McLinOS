@@ -1,0 +1,3277 @@
+ARM GAS  /tmp/cc7e5ZMk.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"vsprintf.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./lib/vsprintf.c"
+  20              		.section	.text.skip_atoi,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	skip_atoi:
+  27              	.LVL0:
+  28              	.LFB178:
+   1:./lib/vsprintf.c **** // SPDX-License-Identifier: GPL-2.0-only
+   2:./lib/vsprintf.c **** /* -*- linux-c -*- ------------------------------------------------------- *
+   3:./lib/vsprintf.c ****  *
+   4:./lib/vsprintf.c ****  *   Copyright (C) 1991, 1992 Linus Torvalds
+   5:./lib/vsprintf.c ****  *   Copyright 2007 rPath, Inc. - All Rights Reserved
+   6:./lib/vsprintf.c ****  *
+   7:./lib/vsprintf.c ****  * ----------------------------------------------------------------------- */
+   8:./lib/vsprintf.c **** 
+   9:./lib/vsprintf.c **** /*
+  10:./lib/vsprintf.c ****  * Oh, it's a waste of space, but oh-so-yummy for debugging.
+  11:./lib/vsprintf.c ****  */
+  12:./lib/vsprintf.c **** 
+  13:./lib/vsprintf.c **** #include <linux/stdarg.h>
+  14:./lib/vsprintf.c **** 
+  15:./lib/vsprintf.c **** #include <linux/compiler.h>
+  16:./lib/vsprintf.c **** #include <linux/ctype.h>
+  17:./lib/vsprintf.c **** #include <linux/kernel.h> 
+  18:./lib/vsprintf.c **** #include <linux/limits.h>
+  19:./lib/vsprintf.c **** #include <linux/string.h>
+  20:./lib/vsprintf.c **** #include <linux/types.h>
+  21:./lib/vsprintf.c **** 
+  22:./lib/vsprintf.c **** 
+  23:./lib/vsprintf.c **** static
+  24:./lib/vsprintf.c **** int skip_atoi(const char **s)
+  25:./lib/vsprintf.c **** {
+  29              		.loc 1 25 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ARM GAS  /tmp/cc7e5ZMk.s 			page 2
+
+
+  34              		.loc 1 25 1 is_stmt 0 view .LVU1
+  35 0000 0146     		mov	r1, r0
+  26:./lib/vsprintf.c **** 	int i = 0;
+  36              		.loc 1 26 2 is_stmt 1 view .LVU2
+  37              	.LVL1:
+  27:./lib/vsprintf.c **** 
+  28:./lib/vsprintf.c **** 	while (isdigit(**s))
+  38              		.loc 1 28 2 view .LVU3
+  26:./lib/vsprintf.c **** 	int i = 0;
+  39              		.loc 1 26 6 is_stmt 0 view .LVU4
+  40 0002 0020     		movs	r0, #0
+  41              	.LVL2:
+  42              		.loc 1 28 8 view .LVU5
+  43 0004 08E0     		b	.L2
+  44              	.LVL3:
+  45              	.L3:
+  29:./lib/vsprintf.c **** 		i = i * 10 + *((*s)++) - '0';
+  46              		.loc 1 29 3 is_stmt 1 view .LVU6
+  47              		.loc 1 29 9 is_stmt 0 view .LVU7
+  48 0006 00EB8000 		add	r0, r0, r0, lsl #2
+  49              	.LVL4:
+  50              		.loc 1 29 22 view .LVU8
+  51 000a 531C     		adds	r3, r2, #1
+  52 000c 0B60     		str	r3, [r1]
+  53              		.loc 1 29 16 view .LVU9
+  54 000e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  55              		.loc 1 29 14 view .LVU10
+  56 0010 03EB4003 		add	r3, r3, r0, lsl #1
+  57              		.loc 1 29 5 view .LVU11
+  58 0014 A3F13000 		sub	r0, r3, #48
+  59              	.LVL5:
+  60              	.L2:
+  28:./lib/vsprintf.c **** 		i = i * 10 + *((*s)++) - '0';
+  61              		.loc 1 28 9 is_stmt 1 view .LVU12
+  62 0018 0A68     		ldr	r2, [r1]
+  63 001a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  64 001c 303B     		subs	r3, r3, #48
+  65 001e 092B     		cmp	r3, #9
+  66 0020 F1D9     		bls	.L3
+  30:./lib/vsprintf.c **** 	return i;
+  67              		.loc 1 30 2 view .LVU13
+  31:./lib/vsprintf.c **** }
+  68              		.loc 1 31 1 is_stmt 0 view .LVU14
+  69 0022 7047     		bx	lr
+  70              		.cfi_endproc
+  71              	.LFE178:
+  73              		.section	.text.put_dec_full4,"ax",%progbits
+  74              		.align	1
+  75              		.syntax unified
+  76              		.thumb
+  77              		.thumb_func
+  79              	put_dec_full4:
+  80              	.LVL6:
+  81              	.LFB179:
+  32:./lib/vsprintf.c **** 
+  33:./lib/vsprintf.c **** /*
+  34:./lib/vsprintf.c ****  * put_dec_full4 handles numbers in the range 0 <= r < 10000.
+ARM GAS  /tmp/cc7e5ZMk.s 			page 3
+
+
+  35:./lib/vsprintf.c ****  * The multiplier 0xccd is round(2^15/10), and the approximation
+  36:./lib/vsprintf.c ****  * r/10 == (r * 0xccd) >> 15 is exact for all r < 16389.
+  37:./lib/vsprintf.c ****  */
+  38:./lib/vsprintf.c **** static
+  39:./lib/vsprintf.c **** void put_dec_full4(char *end, unsigned int r)
+  40:./lib/vsprintf.c **** {
+  82              		.loc 1 40 1 is_stmt 1 view -0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		@ link register save eliminated.
+  41:./lib/vsprintf.c **** 	int i;
+  87              		.loc 1 41 2 view .LVU16
+  42:./lib/vsprintf.c **** 
+  43:./lib/vsprintf.c **** 	for (i = 0; i < 3; i++) {
+  88              		.loc 1 43 2 view .LVU17
+  89              		.loc 1 43 9 is_stmt 0 view .LVU18
+  90 0000 0022     		movs	r2, #0
+  91              		.loc 1 43 2 view .LVU19
+  92 0002 0EE0     		b	.L5
+  93              	.LVL7:
+  94              	.L6:
+  95              	.LBB2:
+  44:./lib/vsprintf.c **** 		unsigned int q = (r * 0xccd) >> 15;
+  96              		.loc 1 44 3 is_stmt 1 view .LVU20
+  97              		.loc 1 44 23 is_stmt 0 view .LVU21
+  98 0004 40F6CD43 		movw	r3, #3277
+  99 0008 01FB03F3 		mul	r3, r1, r3
+ 100              		.loc 1 44 16 view .LVU22
+ 101 000c DB0B     		lsrs	r3, r3, #15
+ 102              	.LVL8:
+  45:./lib/vsprintf.c **** 		*--end = '0' + (r - q * 10);
+ 103              		.loc 1 45 3 is_stmt 1 view .LVU23
+ 104              		.loc 1 45 21 is_stmt 0 view .LVU24
+ 105 000e 03EB830C 		add	ip, r3, r3, lsl #2
+ 106 0012 A1EB4C01 		sub	r1, r1, ip, lsl #1
+ 107              	.LVL9:
+ 108              		.loc 1 45 21 view .LVU25
+ 109 0016 C9B2     		uxtb	r1, r1
+ 110              	.LVL10:
+ 111              		.loc 1 45 16 view .LVU26
+ 112 0018 3031     		adds	r1, r1, #48
+ 113              		.loc 1 45 10 view .LVU27
+ 114 001a 00F8011D 		strb	r1, [r0, #-1]!
+ 115              	.LVL11:
+  46:./lib/vsprintf.c **** 		r = q;
+ 116              		.loc 1 46 3 is_stmt 1 view .LVU28
+ 117              		.loc 1 46 3 is_stmt 0 view .LVU29
+ 118              	.LBE2:
+  43:./lib/vsprintf.c **** 		unsigned int q = (r * 0xccd) >> 15;
+ 119              		.loc 1 43 22 is_stmt 1 discriminator 3 view .LVU30
+ 120 001e 0132     		adds	r2, r2, #1
+ 121              	.LVL12:
+ 122              	.LBB3:
+ 123              		.loc 1 46 5 is_stmt 0 view .LVU31
+ 124 0020 1946     		mov	r1, r3
+ 125              	.LVL13:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 4
+
+
+ 126              	.L5:
+ 127              		.loc 1 46 5 view .LVU32
+ 128              	.LBE3:
+  43:./lib/vsprintf.c **** 		unsigned int q = (r * 0xccd) >> 15;
+ 129              		.loc 1 43 16 is_stmt 1 discriminator 1 view .LVU33
+ 130 0022 022A     		cmp	r2, #2
+ 131 0024 EEDD     		ble	.L6
+  47:./lib/vsprintf.c **** 	}
+  48:./lib/vsprintf.c **** 	*--end = '0' + r;
+ 132              		.loc 1 48 2 view .LVU34
+ 133              	.LVL14:
+ 134              		.loc 1 48 15 is_stmt 0 view .LVU35
+ 135 0026 3031     		adds	r1, r1, #48
+ 136              	.LVL15:
+ 137              		.loc 1 48 9 view .LVU36
+ 138 0028 00F8011C 		strb	r1, [r0, #-1]
+  49:./lib/vsprintf.c **** }
+ 139              		.loc 1 49 1 view .LVU37
+ 140 002c 7047     		bx	lr
+ 141              		.cfi_endproc
+ 142              	.LFE179:
+ 144              		.section	.text.put_dec_helper4,"ax",%progbits
+ 145              		.align	1
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	put_dec_helper4:
+ 151              	.LVL16:
+ 152              	.LFB180:
+  50:./lib/vsprintf.c **** 
+  51:./lib/vsprintf.c **** /* put_dec is copied from lib/vsprintf.c with small modifications */
+  52:./lib/vsprintf.c **** 
+  53:./lib/vsprintf.c **** /*
+  54:./lib/vsprintf.c ****  * Call put_dec_full4 on x % 10000, return x / 10000.
+  55:./lib/vsprintf.c ****  * The approximation x/10000 == (x * 0x346DC5D7) >> 43
+  56:./lib/vsprintf.c ****  * holds for all x < 1,128,869,999.  The largest value this
+  57:./lib/vsprintf.c ****  * helper will ever be asked to convert is 1,125,520,955.
+  58:./lib/vsprintf.c ****  * (second call in the put_dec code, assuming n is all-ones).
+  59:./lib/vsprintf.c ****  */
+  60:./lib/vsprintf.c **** static
+  61:./lib/vsprintf.c **** unsigned int put_dec_helper4(char *end, unsigned int x)
+  62:./lib/vsprintf.c **** {
+ 153              		.loc 1 62 1 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		.loc 1 62 1 is_stmt 0 view .LVU39
+ 158 0000 10B5     		push	{r4, lr}
+ 159              	.LCFI0:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 4, -8
+ 162              		.cfi_offset 14, -4
+  63:./lib/vsprintf.c **** 	unsigned int q = (x * 0x346DC5D7ULL) >> 43;
+ 163              		.loc 1 63 2 is_stmt 1 view .LVU40
+ 164              		.loc 1 63 22 is_stmt 0 view .LVU41
+ 165 0002 064B     		ldr	r3, .L9
+ 166 0004 A1FB0334 		umull	r3, r4, r1, r3
+ARM GAS  /tmp/cc7e5ZMk.s 			page 5
+
+
+ 167              		.loc 1 63 39 view .LVU42
+ 168 0008 E40A     		lsrs	r4, r4, #11
+ 169              	.LVL17:
+  64:./lib/vsprintf.c **** 
+  65:./lib/vsprintf.c **** 	put_dec_full4(end, x - q * 10000);
+ 170              		.loc 1 65 2 is_stmt 1 view .LVU43
+ 171 000a 42F21073 		movw	r3, #10000
+ 172 000e 03FB1411 		mls	r1, r3, r4, r1
+ 173              	.LVL18:
+ 174              		.loc 1 65 2 is_stmt 0 view .LVU44
+ 175 0012 FFF7FEFF 		bl	put_dec_full4
+ 176              	.LVL19:
+  66:./lib/vsprintf.c **** 	return q;
+ 177              		.loc 1 66 2 is_stmt 1 view .LVU45
+  67:./lib/vsprintf.c **** }
+ 178              		.loc 1 67 1 is_stmt 0 view .LVU46
+ 179 0016 2046     		mov	r0, r4
+ 180 0018 10BD     		pop	{r4, pc}
+ 181              	.LVL20:
+ 182              	.L10:
+ 183              		.loc 1 67 1 view .LVU47
+ 184 001a 00BF     		.align	2
+ 185              	.L9:
+ 186 001c D7C56D34 		.word	879609303
+ 187              		.cfi_endproc
+ 188              	.LFE180:
+ 190              		.section	.text.put_dec,"ax",%progbits
+ 191              		.align	1
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	put_dec:
+ 197              	.LVL21:
+ 198              	.LFB181:
+  68:./lib/vsprintf.c **** 
+  69:./lib/vsprintf.c **** /* Based on code by Douglas W. Jones found at
+  70:./lib/vsprintf.c ****  * <http://www.cs.uiowa.edu/~jones/bcd/decimal.html#sixtyfour>
+  71:./lib/vsprintf.c ****  * (with permission from the author).
+  72:./lib/vsprintf.c ****  * Performs no 64-bit division and hence should be fast on 32-bit machines.
+  73:./lib/vsprintf.c ****  */
+  74:./lib/vsprintf.c **** static
+  75:./lib/vsprintf.c **** char *put_dec(char *end, unsigned long long n)
+  76:./lib/vsprintf.c **** {
+ 199              		.loc 1 76 1 is_stmt 1 view -0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              		.loc 1 76 1 is_stmt 0 view .LVU49
+ 204 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 205              	.LCFI1:
+ 206              		.cfi_def_cfa_offset 24
+ 207              		.cfi_offset 3, -24
+ 208              		.cfi_offset 4, -20
+ 209              		.cfi_offset 5, -16
+ 210              		.cfi_offset 6, -12
+ 211              		.cfi_offset 7, -8
+ 212              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc7e5ZMk.s 			page 6
+
+
+ 213 0002 0446     		mov	r4, r0
+  77:./lib/vsprintf.c **** 	unsigned int d3, d2, d1, q, h;
+ 214              		.loc 1 77 2 is_stmt 1 view .LVU50
+  78:./lib/vsprintf.c **** 	char *p = end;
+ 215              		.loc 1 78 2 view .LVU51
+ 216              	.LVL22:
+  79:./lib/vsprintf.c **** 
+  80:./lib/vsprintf.c **** 	d1  = ((unsigned int)n >> 16); /* implicit "& 0xffff" */
+ 217              		.loc 1 80 2 view .LVU52
+ 218              		.loc 1 80 6 is_stmt 0 view .LVU53
+ 219 0004 170C     		lsrs	r7, r2, #16
+ 220              	.LVL23:
+  81:./lib/vsprintf.c **** 	h   = (n >> 32);
+ 221              		.loc 1 81 2 is_stmt 1 view .LVU54
+  82:./lib/vsprintf.c **** 	d2  = (h      ) & 0xffff;
+ 222              		.loc 1 82 2 view .LVU55
+ 223              		.loc 1 82 6 is_stmt 0 view .LVU56
+ 224 0006 9EB2     		uxth	r6, r3
+ 225              	.LVL24:
+  83:./lib/vsprintf.c **** 	d3  = (h >> 16); /* implicit "& 0xffff" */
+ 226              		.loc 1 83 2 is_stmt 1 view .LVU57
+ 227              		.loc 1 83 6 is_stmt 0 view .LVU58
+ 228 0008 1D0C     		lsrs	r5, r3, #16
+ 229              	.LVL25:
+  84:./lib/vsprintf.c **** 
+  85:./lib/vsprintf.c **** 	/* n = 2^48 d3 + 2^32 d2 + 2^16 d1 + d0
+  86:./lib/vsprintf.c **** 	     = 281_4749_7671_0656 d3 + 42_9496_7296 d2 + 6_5536 d1 + d0 */
+  87:./lib/vsprintf.c **** 	q = 656 * d3 + 7296 * d2 + 5536 * d1 + ((unsigned int)n & 0xffff);
+ 230              		.loc 1 87 2 is_stmt 1 view .LVU59
+ 231              		.loc 1 87 22 is_stmt 0 view .LVU60
+ 232 000a 4FF4E453 		mov	r3, #7296
+ 233              	.LVL26:
+ 234              		.loc 1 87 22 view .LVU61
+ 235 000e 06FB03F3 		mul	r3, r6, r3
+ 236              		.loc 1 87 15 view .LVU62
+ 237 0012 4FF42471 		mov	r1, #656
+ 238 0016 01FB0533 		mla	r3, r1, r5, r3
+ 239              		.loc 1 87 27 view .LVU63
+ 240 001a 4FF4AD51 		mov	r1, #5536
+ 241 001e 01FB0731 		mla	r1, r1, r7, r3
+ 242              	.LVL27:
+  88:./lib/vsprintf.c **** 	q = put_dec_helper4(p, q);
+ 243              		.loc 1 88 2 is_stmt 1 view .LVU64
+ 244              		.loc 1 88 6 is_stmt 0 view .LVU65
+ 245 0022 11FA82F1 		uxtah	r1, r1, r2
+ 246              	.LVL28:
+ 247              		.loc 1 88 6 view .LVU66
+ 248 0026 FFF7FEFF 		bl	put_dec_helper4
+ 249              	.LVL29:
+  89:./lib/vsprintf.c **** 	p -= 4;
+ 250              		.loc 1 89 2 is_stmt 1 view .LVU67
+  90:./lib/vsprintf.c **** 
+  91:./lib/vsprintf.c **** 	q += 7671 * d3 + 9496 * d2 + 6 * d1;
+ 251              		.loc 1 91 2 view .LVU68
+ 252              		.loc 1 91 24 is_stmt 0 view .LVU69
+ 253 002a 42F21853 		movw	r3, #9496
+ 254 002e 06FB03F3 		mul	r3, r6, r3
+ARM GAS  /tmp/cc7e5ZMk.s 			page 7
+
+
+ 255              		.loc 1 91 17 view .LVU70
+ 256 0032 41F6F752 		movw	r2, #7671
+ 257 0036 02FB0533 		mla	r3, r2, r5, r3
+ 258              		.loc 1 91 33 view .LVU71
+ 259 003a 07EB4707 		add	r7, r7, r7, lsl #1
+ 260              	.LVL30:
+ 261              		.loc 1 91 29 view .LVU72
+ 262 003e 03EB4703 		add	r3, r3, r7, lsl #1
+ 263              	.LVL31:
+  92:./lib/vsprintf.c **** 	q = put_dec_helper4(p, q);
+ 264              		.loc 1 92 2 is_stmt 1 view .LVU73
+ 265              		.loc 1 92 6 is_stmt 0 view .LVU74
+ 266 0042 1918     		adds	r1, r3, r0
+ 267              	.LVL32:
+ 268              		.loc 1 92 6 view .LVU75
+ 269 0044 201F     		subs	r0, r4, #4
+ 270              	.LVL33:
+ 271              		.loc 1 92 6 view .LVU76
+ 272 0046 FFF7FEFF 		bl	put_dec_helper4
+ 273              	.LVL34:
+  93:./lib/vsprintf.c **** 	p -= 4;
+ 274              		.loc 1 93 2 is_stmt 1 view .LVU77
+  94:./lib/vsprintf.c **** 
+  95:./lib/vsprintf.c **** 	q += 4749 * d3 + 42 * d2;
+ 275              		.loc 1 95 2 view .LVU78
+ 276              		.loc 1 95 22 is_stmt 0 view .LVU79
+ 277 004a 2A23     		movs	r3, #42
+ 278 004c 03FB06F6 		mul	r6, r3, r6
+ 279              	.LVL35:
+ 280              		.loc 1 95 17 view .LVU80
+ 281 0050 41F28D23 		movw	r3, #4749
+ 282 0054 03FB0566 		mla	r6, r3, r5, r6
+ 283              	.LVL36:
+  96:./lib/vsprintf.c **** 	q = put_dec_helper4(p, q);
+ 284              		.loc 1 96 2 is_stmt 1 view .LVU81
+ 285              		.loc 1 96 6 is_stmt 0 view .LVU82
+ 286 0058 3118     		adds	r1, r6, r0
+ 287              	.LVL37:
+ 288              		.loc 1 96 6 view .LVU83
+ 289 005a A4F10800 		sub	r0, r4, #8
+ 290              	.LVL38:
+ 291              		.loc 1 96 6 view .LVU84
+ 292 005e FFF7FEFF 		bl	put_dec_helper4
+ 293              	.LVL39:
+  97:./lib/vsprintf.c **** 	p -= 4;
+ 294              		.loc 1 97 2 is_stmt 1 view .LVU85
+  98:./lib/vsprintf.c **** 
+  99:./lib/vsprintf.c **** 	q += 281 * d3;
+ 295              		.loc 1 99 2 view .LVU86
+ 100:./lib/vsprintf.c **** 	q = put_dec_helper4(p, q);
+ 296              		.loc 1 100 2 view .LVU87
+ 297              		.loc 1 100 6 is_stmt 0 view .LVU88
+ 298 0062 40F21911 		movw	r1, #281
+ 299 0066 01FB0501 		mla	r1, r1, r5, r0
+ 300              	.LVL40:
+ 301              		.loc 1 100 6 view .LVU89
+ 302 006a A4F10C00 		sub	r0, r4, #12
+ARM GAS  /tmp/cc7e5ZMk.s 			page 8
+
+
+ 303              	.LVL41:
+ 304              		.loc 1 100 6 view .LVU90
+ 305 006e FFF7FEFF 		bl	put_dec_helper4
+ 306              	.LVL42:
+ 307              		.loc 1 100 6 view .LVU91
+ 308 0072 0146     		mov	r1, r0
+ 309              	.LVL43:
+ 101:./lib/vsprintf.c **** 	p -= 4;
+ 310              		.loc 1 101 2 is_stmt 1 view .LVU92
+ 102:./lib/vsprintf.c **** 
+ 103:./lib/vsprintf.c **** 	put_dec_full4(p, q);
+ 311              		.loc 1 103 2 view .LVU93
+ 312 0074 A4F11000 		sub	r0, r4, #16
+ 313              	.LVL44:
+ 314              		.loc 1 103 2 is_stmt 0 view .LVU94
+ 315 0078 FFF7FEFF 		bl	put_dec_full4
+ 316              	.LVL45:
+ 104:./lib/vsprintf.c **** 	p -= 4;
+ 317              		.loc 1 104 2 is_stmt 1 view .LVU95
+ 318              		.loc 1 104 4 is_stmt 0 view .LVU96
+ 319 007c A4F11400 		sub	r0, r4, #20
+ 320              	.LVL46:
+ 105:./lib/vsprintf.c **** 
+ 106:./lib/vsprintf.c **** 	/* strip off the extra 0's we printed */
+ 107:./lib/vsprintf.c **** 	while (p < end && *p == '0')
+ 321              		.loc 1 107 2 is_stmt 1 view .LVU97
+ 322              		.loc 1 107 8 is_stmt 0 view .LVU98
+ 323 0080 00E0     		b	.L12
+ 324              	.L14:
+ 108:./lib/vsprintf.c **** 		++p;
+ 325              		.loc 1 108 3 is_stmt 1 view .LVU99
+ 326 0082 0130     		adds	r0, r0, #1
+ 327              	.LVL47:
+ 328              	.L12:
+ 107:./lib/vsprintf.c **** 		++p;
+ 329              		.loc 1 107 17 view .LVU100
+ 330 0084 A042     		cmp	r0, r4
+ 331 0086 02D2     		bcs	.L11
+ 107:./lib/vsprintf.c **** 		++p;
+ 332              		.loc 1 107 20 is_stmt 0 discriminator 1 view .LVU101
+ 333 0088 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 107:./lib/vsprintf.c **** 		++p;
+ 334              		.loc 1 107 17 discriminator 1 view .LVU102
+ 335 008a 302B     		cmp	r3, #48
+ 336 008c F9D0     		beq	.L14
+ 337              	.L11:
+ 109:./lib/vsprintf.c **** 
+ 110:./lib/vsprintf.c **** 	return p;
+ 111:./lib/vsprintf.c **** }
+ 338              		.loc 1 111 1 view .LVU103
+ 339 008e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 340              		.loc 1 111 1 view .LVU104
+ 341              		.cfi_endproc
+ 342              	.LFE181:
+ 344              		.section	.text.get_flags,"ax",%progbits
+ 345              		.align	1
+ 346              		.syntax unified
+ARM GAS  /tmp/cc7e5ZMk.s 			page 9
+
+
+ 347              		.thumb
+ 348              		.thumb_func
+ 350              	get_flags:
+ 351              	.LVL48:
+ 352              	.LFB183:
+ 112:./lib/vsprintf.c **** 
+ 113:./lib/vsprintf.c **** static
+ 114:./lib/vsprintf.c **** char *number(char *end, unsigned long long num, int base, char locase)
+ 115:./lib/vsprintf.c **** {
+ 116:./lib/vsprintf.c **** 	/*
+ 117:./lib/vsprintf.c **** 	 * locase = 0 or 0x20. ORing digits or letters with 'locase'
+ 118:./lib/vsprintf.c **** 	 * produces same digits or (maybe lowercased) letters
+ 119:./lib/vsprintf.c **** 	 */
+ 120:./lib/vsprintf.c **** 
+ 121:./lib/vsprintf.c **** 	/* we are called with base 8, 10 or 16, only, thus don't need "G..."  */
+ 122:./lib/vsprintf.c **** 	static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
+ 123:./lib/vsprintf.c **** 
+ 124:./lib/vsprintf.c **** 	switch (base) {
+ 125:./lib/vsprintf.c **** 	case 10:
+ 126:./lib/vsprintf.c **** 		if (num != 0)
+ 127:./lib/vsprintf.c **** 			end = put_dec(end, num);
+ 128:./lib/vsprintf.c **** 		break;
+ 129:./lib/vsprintf.c **** 	case 8:
+ 130:./lib/vsprintf.c **** 		for (; num != 0; num >>= 3)
+ 131:./lib/vsprintf.c **** 			*--end = '0' + (num & 07);
+ 132:./lib/vsprintf.c **** 		break;
+ 133:./lib/vsprintf.c **** 	case 16:
+ 134:./lib/vsprintf.c **** 		for (; num != 0; num >>= 4)
+ 135:./lib/vsprintf.c **** 			*--end = digits[num & 0xf] | locase;
+ 136:./lib/vsprintf.c **** 		break;
+ 137:./lib/vsprintf.c **** 	default:
+ 138:./lib/vsprintf.c **** 		unreachable();
+ 139:./lib/vsprintf.c **** 	}
+ 140:./lib/vsprintf.c **** 
+ 141:./lib/vsprintf.c **** 	return end;
+ 142:./lib/vsprintf.c **** }
+ 143:./lib/vsprintf.c **** 
+ 144:./lib/vsprintf.c **** #define ZEROPAD	1		/* pad with zero */
+ 145:./lib/vsprintf.c **** #define SIGN	2		/* unsigned/signed long */
+ 146:./lib/vsprintf.c **** #define PLUS	4		/* show plus */
+ 147:./lib/vsprintf.c **** #define SPACE	8		/* space if plus */
+ 148:./lib/vsprintf.c **** #define LEFT	16		/* left justified */
+ 149:./lib/vsprintf.c **** #define SMALL	32		/* Must be 32 == 0x20 */
+ 150:./lib/vsprintf.c **** #define SPECIAL	64		/* 0x */
+ 151:./lib/vsprintf.c **** #define WIDE	128		/* UTF-16 string */
+ 152:./lib/vsprintf.c **** 
+ 153:./lib/vsprintf.c **** static
+ 154:./lib/vsprintf.c **** int get_flags(const char **fmt)
+ 155:./lib/vsprintf.c **** {
+ 353              		.loc 1 155 1 is_stmt 1 view -0
+ 354              		.cfi_startproc
+ 355              		@ args = 0, pretend = 0, frame = 0
+ 356              		@ frame_needed = 0, uses_anonymous_args = 0
+ 357              		@ link register save eliminated.
+ 358              		.loc 1 155 1 is_stmt 0 view .LVU106
+ 359 0000 0146     		mov	r1, r0
+ 156:./lib/vsprintf.c **** 	int flags = 0;
+ARM GAS  /tmp/cc7e5ZMk.s 			page 10
+
+
+ 360              		.loc 1 156 2 is_stmt 1 view .LVU107
+ 361              	.LVL49:
+ 362              		.loc 1 156 6 is_stmt 0 view .LVU108
+ 363 0002 0020     		movs	r0, #0
+ 364              	.LVL50:
+ 365              		.loc 1 156 6 view .LVU109
+ 366 0004 03E0     		b	.L25
+ 367              	.LVL51:
+ 368              	.L20:
+ 157:./lib/vsprintf.c **** 
+ 158:./lib/vsprintf.c **** 	do {
+ 159:./lib/vsprintf.c **** 		switch (**fmt) {
+ 160:./lib/vsprintf.c **** 		case '-':
+ 161:./lib/vsprintf.c **** 			flags |= LEFT;
+ 369              		.loc 1 161 4 is_stmt 1 view .LVU110
+ 370              		.loc 1 161 10 is_stmt 0 view .LVU111
+ 371 0006 40F01000 		orr	r0, r0, #16
+ 372              	.LVL52:
+ 162:./lib/vsprintf.c **** 			break;
+ 373              		.loc 1 162 4 is_stmt 1 view .LVU112
+ 374              	.L24:
+ 163:./lib/vsprintf.c **** 		case '+':
+ 164:./lib/vsprintf.c **** 			flags |= PLUS;
+ 165:./lib/vsprintf.c **** 			break;
+ 166:./lib/vsprintf.c **** 		case ' ':
+ 167:./lib/vsprintf.c **** 			flags |= SPACE;
+ 168:./lib/vsprintf.c **** 			break;
+ 169:./lib/vsprintf.c **** 		case '#':
+ 170:./lib/vsprintf.c **** 			flags |= SPECIAL;
+ 171:./lib/vsprintf.c **** 			break;
+ 172:./lib/vsprintf.c **** 		case '0':
+ 173:./lib/vsprintf.c **** 			flags |= ZEROPAD;
+ 174:./lib/vsprintf.c **** 			break;
+ 175:./lib/vsprintf.c **** 		default:
+ 176:./lib/vsprintf.c **** 			return flags;
+ 177:./lib/vsprintf.c **** 		}
+ 178:./lib/vsprintf.c **** 		++(*fmt);
+ 375              		.loc 1 178 3 view .LVU113
+ 376 000a 0132     		adds	r2, r2, #1
+ 377 000c 0A60     		str	r2, [r1]
+ 158:./lib/vsprintf.c **** 		switch (**fmt) {
+ 378              		.loc 1 158 5 view .LVU114
+ 379              	.LVL53:
+ 380              	.L25:
+ 158:./lib/vsprintf.c **** 		switch (**fmt) {
+ 381              		.loc 1 158 2 view .LVU115
+ 159:./lib/vsprintf.c **** 		case '-':
+ 382              		.loc 1 159 3 view .LVU116
+ 159:./lib/vsprintf.c **** 		case '-':
+ 383              		.loc 1 159 12 is_stmt 0 view .LVU117
+ 384 000e 0A68     		ldr	r2, [r1]
+ 159:./lib/vsprintf.c **** 		case '-':
+ 385              		.loc 1 159 11 view .LVU118
+ 386 0010 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 159:./lib/vsprintf.c **** 		case '-':
+ 387              		.loc 1 159 3 view .LVU119
+ 388 0012 203B     		subs	r3, r3, #32
+ARM GAS  /tmp/cc7e5ZMk.s 			page 11
+
+
+ 389 0014 102B     		cmp	r3, #16
+ 390 0016 31D8     		bhi	.L16
+ 391 0018 0FF2040C 		adr	ip, .L19
+ 392 001c 5CF823F0 		ldr	pc, [ip, r3, lsl #2]
+ 393              		.p2align 2
+ 394              	.L19:
+ 395 0020 6B000000 		.word	.L23+1
+ 396 0024 7D000000 		.word	.L16+1
+ 397 0028 7D000000 		.word	.L16+1
+ 398 002c 71000000 		.word	.L22+1
+ 399 0030 7D000000 		.word	.L16+1
+ 400 0034 7D000000 		.word	.L16+1
+ 401 0038 7D000000 		.word	.L16+1
+ 402 003c 7D000000 		.word	.L16+1
+ 403 0040 7D000000 		.word	.L16+1
+ 404 0044 7D000000 		.word	.L16+1
+ 405 0048 7D000000 		.word	.L16+1
+ 406 004c 65000000 		.word	.L21+1
+ 407 0050 7D000000 		.word	.L16+1
+ 408 0054 07000000 		.word	.L20+1
+ 409 0058 7D000000 		.word	.L16+1
+ 410 005c 7D000000 		.word	.L16+1
+ 411 0060 77000000 		.word	.L18+1
+ 412              		.p2align 1
+ 413              	.L21:
+ 164:./lib/vsprintf.c **** 			break;
+ 414              		.loc 1 164 4 is_stmt 1 view .LVU120
+ 164:./lib/vsprintf.c **** 			break;
+ 415              		.loc 1 164 10 is_stmt 0 view .LVU121
+ 416 0064 40F00400 		orr	r0, r0, #4
+ 417              	.LVL54:
+ 165:./lib/vsprintf.c **** 		case ' ':
+ 418              		.loc 1 165 4 is_stmt 1 view .LVU122
+ 419 0068 CFE7     		b	.L24
+ 420              	.L23:
+ 167:./lib/vsprintf.c **** 			break;
+ 421              		.loc 1 167 4 view .LVU123
+ 167:./lib/vsprintf.c **** 			break;
+ 422              		.loc 1 167 10 is_stmt 0 view .LVU124
+ 423 006a 40F00800 		orr	r0, r0, #8
+ 424              	.LVL55:
+ 168:./lib/vsprintf.c **** 		case '#':
+ 425              		.loc 1 168 4 is_stmt 1 view .LVU125
+ 426 006e CCE7     		b	.L24
+ 427              	.L22:
+ 170:./lib/vsprintf.c **** 			break;
+ 428              		.loc 1 170 4 view .LVU126
+ 170:./lib/vsprintf.c **** 			break;
+ 429              		.loc 1 170 10 is_stmt 0 view .LVU127
+ 430 0070 40F04000 		orr	r0, r0, #64
+ 431              	.LVL56:
+ 171:./lib/vsprintf.c **** 		case '0':
+ 432              		.loc 1 171 4 is_stmt 1 view .LVU128
+ 433 0074 C9E7     		b	.L24
+ 434              	.L18:
+ 173:./lib/vsprintf.c **** 			break;
+ 435              		.loc 1 173 4 view .LVU129
+ARM GAS  /tmp/cc7e5ZMk.s 			page 12
+
+
+ 173:./lib/vsprintf.c **** 			break;
+ 436              		.loc 1 173 10 is_stmt 0 view .LVU130
+ 437 0076 40F00100 		orr	r0, r0, #1
+ 438              	.LVL57:
+ 174:./lib/vsprintf.c **** 		default:
+ 439              		.loc 1 174 4 is_stmt 1 view .LVU131
+ 440 007a C6E7     		b	.L24
+ 441              	.L16:
+ 179:./lib/vsprintf.c **** 	} while (1);
+ 180:./lib/vsprintf.c **** }
+ 442              		.loc 1 180 1 is_stmt 0 view .LVU132
+ 443 007c 7047     		bx	lr
+ 444              		.cfi_endproc
+ 445              	.LFE183:
+ 447 007e 00BF     		.section	.text.get_int,"ax",%progbits
+ 448              		.align	1
+ 449              		.syntax unified
+ 450              		.thumb
+ 451              		.thumb_func
+ 453              	get_int:
+ 454              	.LVL58:
+ 455              	.LFB184:
+ 181:./lib/vsprintf.c **** 
+ 182:./lib/vsprintf.c **** static
+ 183:./lib/vsprintf.c **** int get_int(const char **fmt, va_list *ap)
+ 184:./lib/vsprintf.c **** {
+ 456              		.loc 1 184 1 is_stmt 1 view -0
+ 457              		.cfi_startproc
+ 458              		@ args = 0, pretend = 0, frame = 0
+ 459              		@ frame_needed = 0, uses_anonymous_args = 0
+ 460              		.loc 1 184 1 is_stmt 0 view .LVU134
+ 461 0000 08B5     		push	{r3, lr}
+ 462              	.LCFI2:
+ 463              		.cfi_def_cfa_offset 8
+ 464              		.cfi_offset 3, -8
+ 465              		.cfi_offset 14, -4
+ 185:./lib/vsprintf.c **** 	if (isdigit(**fmt))
+ 466              		.loc 1 185 2 is_stmt 1 view .LVU135
+ 467              		.loc 1 185 6 is_stmt 0 view .LVU136
+ 468 0002 0268     		ldr	r2, [r0]
+ 469 0004 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 470 0006 A3F1300C 		sub	ip, r3, #48
+ 471              		.loc 1 185 5 view .LVU137
+ 472 000a BCF1090F 		cmp	ip, #9
+ 473 000e 03D9     		bls	.L31
+ 186:./lib/vsprintf.c **** 		return skip_atoi(fmt);
+ 187:./lib/vsprintf.c **** 	if (**fmt == '*') {
+ 474              		.loc 1 187 2 is_stmt 1 view .LVU138
+ 475              		.loc 1 187 5 is_stmt 0 view .LVU139
+ 476 0010 2A2B     		cmp	r3, #42
+ 477 0012 04D0     		beq	.L32
+ 188:./lib/vsprintf.c **** 		++(*fmt);
+ 189:./lib/vsprintf.c **** 		/* it's the next argument */
+ 190:./lib/vsprintf.c **** 		return va_arg(*ap, int);
+ 191:./lib/vsprintf.c **** 	}
+ 192:./lib/vsprintf.c **** 	return 0;
+ 478              		.loc 1 192 9 view .LVU140
+ARM GAS  /tmp/cc7e5ZMk.s 			page 13
+
+
+ 479 0014 0020     		movs	r0, #0
+ 480              	.LVL59:
+ 481              	.L26:
+ 193:./lib/vsprintf.c **** }
+ 482              		.loc 1 193 1 view .LVU141
+ 483 0016 08BD     		pop	{r3, pc}
+ 484              	.LVL60:
+ 485              	.L31:
+ 186:./lib/vsprintf.c **** 		return skip_atoi(fmt);
+ 486              		.loc 1 186 3 is_stmt 1 view .LVU142
+ 186:./lib/vsprintf.c **** 		return skip_atoi(fmt);
+ 487              		.loc 1 186 10 is_stmt 0 view .LVU143
+ 488 0018 FFF7FEFF 		bl	skip_atoi
+ 489              	.LVL61:
+ 186:./lib/vsprintf.c **** 		return skip_atoi(fmt);
+ 490              		.loc 1 186 10 view .LVU144
+ 491 001c FBE7     		b	.L26
+ 492              	.LVL62:
+ 493              	.L32:
+ 188:./lib/vsprintf.c **** 		++(*fmt);
+ 494              		.loc 1 188 3 is_stmt 1 view .LVU145
+ 495 001e 0132     		adds	r2, r2, #1
+ 496 0020 0260     		str	r2, [r0]
+ 190:./lib/vsprintf.c **** 	}
+ 497              		.loc 1 190 3 view .LVU146
+ 190:./lib/vsprintf.c **** 	}
+ 498              		.loc 1 190 10 is_stmt 0 view .LVU147
+ 499 0022 0B68     		ldr	r3, [r1]
+ 500 0024 1A1D     		adds	r2, r3, #4
+ 501 0026 0A60     		str	r2, [r1]
+ 502 0028 1868     		ldr	r0, [r3]
+ 503              	.LVL63:
+ 190:./lib/vsprintf.c **** 	}
+ 504              		.loc 1 190 10 view .LVU148
+ 505 002a F4E7     		b	.L26
+ 506              		.cfi_endproc
+ 507              	.LFE184:
+ 509              		.section	.text.get_number,"ax",%progbits
+ 510              		.align	1
+ 511              		.syntax unified
+ 512              		.thumb
+ 513              		.thumb_func
+ 515              	get_number:
+ 516              	.LVL64:
+ 517              	.LFB185:
+ 194:./lib/vsprintf.c **** 
+ 195:./lib/vsprintf.c **** static
+ 196:./lib/vsprintf.c **** unsigned long long get_number(int sign, int qualifier, va_list *ap)
+ 197:./lib/vsprintf.c **** {
+ 518              		.loc 1 197 1 is_stmt 1 view -0
+ 519              		.cfi_startproc
+ 520              		@ args = 0, pretend = 0, frame = 0
+ 521              		@ frame_needed = 0, uses_anonymous_args = 0
+ 522              		@ link register save eliminated.
+ 198:./lib/vsprintf.c **** 	if (sign) {
+ 523              		.loc 1 198 2 view .LVU150
+ 524              		.loc 1 198 5 is_stmt 0 view .LVU151
+ARM GAS  /tmp/cc7e5ZMk.s 			page 14
+
+
+ 525 0000 0028     		cmp	r0, #0
+ 526 0002 30D0     		beq	.L34
+ 199:./lib/vsprintf.c **** 		switch (qualifier) {
+ 527              		.loc 1 199 3 is_stmt 1 view .LVU152
+ 528 0004 6829     		cmp	r1, #104
+ 529 0006 17D0     		beq	.L35
+ 530 0008 0DDC     		bgt	.L36
+ 531 000a 4829     		cmp	r1, #72
+ 532 000c 1CD0     		beq	.L37
+ 533 000e 4C29     		cmp	r1, #76
+ 534 0010 22D1     		bne	.L39
+ 200:./lib/vsprintf.c **** 		case 'L':
+ 201:./lib/vsprintf.c **** 			return va_arg(*ap, long long);
+ 535              		.loc 1 201 4 view .LVU153
+ 536              		.loc 1 201 11 is_stmt 0 view .LVU154
+ 537 0012 1368     		ldr	r3, [r2]
+ 538 0014 0733     		adds	r3, r3, #7
+ 539 0016 23F00703 		bic	r3, r3, #7
+ 540 001a 03F10801 		add	r1, r3, #8
+ 541              	.LVL65:
+ 542              		.loc 1 201 11 view .LVU155
+ 543 001e 1160     		str	r1, [r2]
+ 544              		.loc 1 201 11 discriminator 1 view .LVU156
+ 545 0020 1868     		ldr	r0, [r3]
+ 546              	.LVL66:
+ 547              		.loc 1 201 11 discriminator 1 view .LVU157
+ 548 0022 5968     		ldr	r1, [r3, #4]
+ 549              		.loc 1 201 11 view .LVU158
+ 550 0024 7047     		bx	lr
+ 551              	.LVL67:
+ 552              	.L36:
+ 199:./lib/vsprintf.c **** 		switch (qualifier) {
+ 553              		.loc 1 199 3 view .LVU159
+ 554 0026 6C29     		cmp	r1, #108
+ 555 0028 16D1     		bne	.L39
+ 202:./lib/vsprintf.c **** 		case 'l':
+ 203:./lib/vsprintf.c **** 			return va_arg(*ap, long);
+ 556              		.loc 1 203 4 is_stmt 1 view .LVU160
+ 557              		.loc 1 203 11 is_stmt 0 view .LVU161
+ 558 002a 1368     		ldr	r3, [r2]
+ 559 002c 191D     		adds	r1, r3, #4
+ 560              	.LVL68:
+ 561              		.loc 1 203 11 view .LVU162
+ 562 002e 1160     		str	r1, [r2]
+ 563              		.loc 1 203 11 discriminator 1 view .LVU163
+ 564 0030 1968     		ldr	r1, [r3]
+ 565 0032 0846     		mov	r0, r1
+ 566              	.LVL69:
+ 567              		.loc 1 203 11 discriminator 1 view .LVU164
+ 568 0034 C917     		asrs	r1, r1, #31
+ 569              		.loc 1 203 11 view .LVU165
+ 570 0036 7047     		bx	lr
+ 571              	.LVL70:
+ 572              	.L35:
+ 204:./lib/vsprintf.c **** 		case 'h':
+ 205:./lib/vsprintf.c **** 			return (short)va_arg(*ap, int);
+ 573              		.loc 1 205 4 is_stmt 1 view .LVU166
+ARM GAS  /tmp/cc7e5ZMk.s 			page 15
+
+
+ 574              		.loc 1 205 18 is_stmt 0 view .LVU167
+ 575 0038 1368     		ldr	r3, [r2]
+ 576 003a 191D     		adds	r1, r3, #4
+ 577              	.LVL71:
+ 578              		.loc 1 205 18 view .LVU168
+ 579 003c 1160     		str	r1, [r2]
+ 580              		.loc 1 205 11 discriminator 1 view .LVU169
+ 581 003e B3F90010 		ldrsh	r1, [r3]
+ 582 0042 0846     		mov	r0, r1
+ 583              	.LVL72:
+ 584              		.loc 1 205 11 discriminator 1 view .LVU170
+ 585 0044 C917     		asrs	r1, r1, #31
+ 586              		.loc 1 205 11 view .LVU171
+ 587 0046 7047     		bx	lr
+ 588              	.LVL73:
+ 589              	.L37:
+ 206:./lib/vsprintf.c **** 		case 'H':
+ 207:./lib/vsprintf.c **** 			return (signed char)va_arg(*ap, int);
+ 590              		.loc 1 207 4 is_stmt 1 view .LVU172
+ 591              		.loc 1 207 24 is_stmt 0 view .LVU173
+ 592 0048 1368     		ldr	r3, [r2]
+ 593 004a 191D     		adds	r1, r3, #4
+ 594              	.LVL74:
+ 595              		.loc 1 207 24 view .LVU174
+ 596 004c 1160     		str	r1, [r2]
+ 597              		.loc 1 207 11 discriminator 1 view .LVU175
+ 598 004e 93F90010 		ldrsb	r1, [r3]
+ 599 0052 0846     		mov	r0, r1
+ 600              	.LVL75:
+ 601              		.loc 1 207 11 discriminator 1 view .LVU176
+ 602 0054 C917     		asrs	r1, r1, #31
+ 603              		.loc 1 207 11 view .LVU177
+ 604 0056 7047     		bx	lr
+ 605              	.LVL76:
+ 606              	.L39:
+ 208:./lib/vsprintf.c **** 		default:
+ 209:./lib/vsprintf.c **** 			return va_arg(*ap, int);
+ 607              		.loc 1 209 4 is_stmt 1 view .LVU178
+ 608              		.loc 1 209 11 is_stmt 0 view .LVU179
+ 609 0058 1368     		ldr	r3, [r2]
+ 610 005a 191D     		adds	r1, r3, #4
+ 611              	.LVL77:
+ 612              		.loc 1 209 11 view .LVU180
+ 613 005c 1160     		str	r1, [r2]
+ 614              		.loc 1 209 11 discriminator 1 view .LVU181
+ 615 005e 1968     		ldr	r1, [r3]
+ 616 0060 0846     		mov	r0, r1
+ 617              	.LVL78:
+ 618              		.loc 1 209 11 discriminator 1 view .LVU182
+ 619 0062 C917     		asrs	r1, r1, #31
+ 620              		.loc 1 209 11 view .LVU183
+ 621 0064 7047     		bx	lr
+ 622              	.LVL79:
+ 623              	.L34:
+ 210:./lib/vsprintf.c **** 		};
+ 624              		.loc 1 210 4 is_stmt 1 view .LVU184
+ 211:./lib/vsprintf.c **** 	} else {
+ARM GAS  /tmp/cc7e5ZMk.s 			page 16
+
+
+ 212:./lib/vsprintf.c **** 		switch (qualifier) {
+ 625              		.loc 1 212 3 view .LVU185
+ 626 0066 6829     		cmp	r1, #104
+ 627 0068 16D0     		beq	.L42
+ 628 006a 0DDC     		bgt	.L43
+ 629 006c 4829     		cmp	r1, #72
+ 630 006e 19D0     		beq	.L44
+ 631 0070 4C29     		cmp	r1, #76
+ 632 0072 1DD1     		bne	.L46
+ 213:./lib/vsprintf.c **** 		case 'L':
+ 214:./lib/vsprintf.c **** 			return va_arg(*ap, unsigned long long);
+ 633              		.loc 1 214 4 view .LVU186
+ 634              		.loc 1 214 11 is_stmt 0 view .LVU187
+ 635 0074 1368     		ldr	r3, [r2]
+ 636 0076 0733     		adds	r3, r3, #7
+ 637 0078 23F00703 		bic	r3, r3, #7
+ 638 007c 03F10801 		add	r1, r3, #8
+ 639              	.LVL80:
+ 640              		.loc 1 214 11 view .LVU188
+ 641 0080 1160     		str	r1, [r2]
+ 642 0082 1868     		ldr	r0, [r3]
+ 643              	.LVL81:
+ 644              		.loc 1 214 11 view .LVU189
+ 645 0084 5968     		ldr	r1, [r3, #4]
+ 646 0086 7047     		bx	lr
+ 647              	.LVL82:
+ 648              	.L43:
+ 212:./lib/vsprintf.c **** 		case 'L':
+ 649              		.loc 1 212 3 view .LVU190
+ 650 0088 6C29     		cmp	r1, #108
+ 651 008a 11D1     		bne	.L46
+ 215:./lib/vsprintf.c **** 		case 'l':
+ 216:./lib/vsprintf.c **** 			return va_arg(*ap, unsigned long);
+ 652              		.loc 1 216 4 is_stmt 1 view .LVU191
+ 653              		.loc 1 216 11 is_stmt 0 view .LVU192
+ 654 008c 1368     		ldr	r3, [r2]
+ 655 008e 191D     		adds	r1, r3, #4
+ 656              	.LVL83:
+ 657              		.loc 1 216 11 view .LVU193
+ 658 0090 1160     		str	r1, [r2]
+ 659              		.loc 1 216 11 discriminator 1 view .LVU194
+ 660 0092 1868     		ldr	r0, [r3]
+ 661              	.LVL84:
+ 662              		.loc 1 216 11 discriminator 1 view .LVU195
+ 663 0094 0021     		movs	r1, #0
+ 664              		.loc 1 216 11 view .LVU196
+ 665 0096 7047     		bx	lr
+ 666              	.LVL85:
+ 667              	.L42:
+ 217:./lib/vsprintf.c **** 		case 'h':
+ 218:./lib/vsprintf.c **** 			return (unsigned short)va_arg(*ap, int);
+ 668              		.loc 1 218 4 is_stmt 1 view .LVU197
+ 669              		.loc 1 218 27 is_stmt 0 view .LVU198
+ 670 0098 1368     		ldr	r3, [r2]
+ 671 009a 191D     		adds	r1, r3, #4
+ 672              	.LVL86:
+ 673              		.loc 1 218 27 view .LVU199
+ARM GAS  /tmp/cc7e5ZMk.s 			page 17
+
+
+ 674 009c 1160     		str	r1, [r2]
+ 675              		.loc 1 218 11 discriminator 1 view .LVU200
+ 676 009e 1888     		ldrh	r0, [r3]
+ 677              	.LVL87:
+ 678              		.loc 1 218 11 discriminator 1 view .LVU201
+ 679 00a0 0021     		movs	r1, #0
+ 680              		.loc 1 218 11 view .LVU202
+ 681 00a2 7047     		bx	lr
+ 682              	.LVL88:
+ 683              	.L44:
+ 219:./lib/vsprintf.c **** 		case 'H':
+ 220:./lib/vsprintf.c **** 			return (unsigned char)va_arg(*ap, int);
+ 684              		.loc 1 220 4 is_stmt 1 view .LVU203
+ 685              		.loc 1 220 26 is_stmt 0 view .LVU204
+ 686 00a4 1368     		ldr	r3, [r2]
+ 687 00a6 191D     		adds	r1, r3, #4
+ 688              	.LVL89:
+ 689              		.loc 1 220 26 view .LVU205
+ 690 00a8 1160     		str	r1, [r2]
+ 691              		.loc 1 220 11 discriminator 1 view .LVU206
+ 692 00aa 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 693              	.LVL90:
+ 694              		.loc 1 220 11 discriminator 1 view .LVU207
+ 695 00ac 0021     		movs	r1, #0
+ 696              		.loc 1 220 11 view .LVU208
+ 697 00ae 7047     		bx	lr
+ 698              	.LVL91:
+ 699              	.L46:
+ 221:./lib/vsprintf.c **** 		default:
+ 222:./lib/vsprintf.c **** 			return va_arg(*ap, unsigned int);
+ 700              		.loc 1 222 4 is_stmt 1 view .LVU209
+ 701              		.loc 1 222 11 is_stmt 0 view .LVU210
+ 702 00b0 1368     		ldr	r3, [r2]
+ 703 00b2 191D     		adds	r1, r3, #4
+ 704              	.LVL92:
+ 705              		.loc 1 222 11 view .LVU211
+ 706 00b4 1160     		str	r1, [r2]
+ 707              		.loc 1 222 11 discriminator 1 view .LVU212
+ 708 00b6 1868     		ldr	r0, [r3]
+ 709              	.LVL93:
+ 710              		.loc 1 222 11 discriminator 1 view .LVU213
+ 711 00b8 0021     		movs	r1, #0
+ 223:./lib/vsprintf.c **** 		}
+ 224:./lib/vsprintf.c **** 	}
+ 225:./lib/vsprintf.c **** }
+ 712              		.loc 1 225 1 view .LVU214
+ 713 00ba 7047     		bx	lr
+ 714              		.cfi_endproc
+ 715              	.LFE185:
+ 717              		.section	.text.get_sign,"ax",%progbits
+ 718              		.align	1
+ 719              		.syntax unified
+ 720              		.thumb
+ 721              		.thumb_func
+ 723              	get_sign:
+ 724              	.LVL94:
+ 725              	.LFB186:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 18
+
+
+ 226:./lib/vsprintf.c **** 
+ 227:./lib/vsprintf.c **** static
+ 228:./lib/vsprintf.c **** char get_sign(long long *num, int flags)
+ 229:./lib/vsprintf.c **** {
+ 726              		.loc 1 229 1 is_stmt 1 view -0
+ 727              		.cfi_startproc
+ 728              		@ args = 0, pretend = 0, frame = 0
+ 729              		@ frame_needed = 0, uses_anonymous_args = 0
+ 730              		@ link register save eliminated.
+ 230:./lib/vsprintf.c **** 	if (!(flags & SIGN))
+ 731              		.loc 1 230 2 view .LVU216
+ 732              		.loc 1 230 5 is_stmt 0 view .LVU217
+ 733 0000 11F0020F 		tst	r1, #2
+ 734 0004 12D0     		beq	.L51
+ 231:./lib/vsprintf.c **** 		return 0;
+ 232:./lib/vsprintf.c **** 	if (*num < 0) {
+ 735              		.loc 1 232 2 is_stmt 1 view .LVU218
+ 736              		.loc 1 232 6 is_stmt 0 view .LVU219
+ 737 0006 0268     		ldr	r2, [r0]
+ 738 0008 4368     		ldr	r3, [r0, #4]
+ 739              		.loc 1 232 5 view .LVU220
+ 740 000a 002B     		cmp	r3, #0
+ 741 000c 07DB     		blt	.L54
+ 233:./lib/vsprintf.c **** 		*num = -(*num);
+ 234:./lib/vsprintf.c **** 		return '-';
+ 235:./lib/vsprintf.c **** 	}
+ 236:./lib/vsprintf.c **** 	if (flags & PLUS)
+ 742              		.loc 1 236 2 is_stmt 1 view .LVU221
+ 743              		.loc 1 236 5 is_stmt 0 view .LVU222
+ 744 000e 11F0040F 		tst	r1, #4
+ 745 0012 0DD1     		bne	.L52
+ 237:./lib/vsprintf.c **** 		return '+';
+ 238:./lib/vsprintf.c **** 	if (flags & SPACE)
+ 746              		.loc 1 238 2 is_stmt 1 view .LVU223
+ 747              		.loc 1 238 5 is_stmt 0 view .LVU224
+ 748 0014 11F0080F 		tst	r1, #8
+ 749 0018 0CD1     		bne	.L53
+ 239:./lib/vsprintf.c **** 		return ' ';
+ 240:./lib/vsprintf.c **** 	return 0;
+ 750              		.loc 1 240 9 view .LVU225
+ 751 001a 0020     		movs	r0, #0
+ 752              	.LVL95:
+ 753              		.loc 1 240 9 view .LVU226
+ 754 001c 7047     		bx	lr
+ 755              	.LVL96:
+ 756              	.L54:
+ 233:./lib/vsprintf.c **** 		return '-';
+ 757              		.loc 1 233 3 is_stmt 1 view .LVU227
+ 233:./lib/vsprintf.c **** 		return '-';
+ 758              		.loc 1 233 10 is_stmt 0 view .LVU228
+ 759 001e 5242     		negs	r2, r2
+ 760 0020 63EB4303 		sbc	r3, r3, r3, lsl #1
+ 233:./lib/vsprintf.c **** 		return '-';
+ 761              		.loc 1 233 8 view .LVU229
+ 762 0024 0260     		str	r2, [r0]
+ 763 0026 4360     		str	r3, [r0, #4]
+ 234:./lib/vsprintf.c **** 	}
+ARM GAS  /tmp/cc7e5ZMk.s 			page 19
+
+
+ 764              		.loc 1 234 3 is_stmt 1 view .LVU230
+ 234:./lib/vsprintf.c **** 	}
+ 765              		.loc 1 234 10 is_stmt 0 view .LVU231
+ 766 0028 2D20     		movs	r0, #45
+ 767              	.LVL97:
+ 234:./lib/vsprintf.c **** 	}
+ 768              		.loc 1 234 10 view .LVU232
+ 769 002a 7047     		bx	lr
+ 770              	.LVL98:
+ 771              	.L51:
+ 231:./lib/vsprintf.c **** 	if (*num < 0) {
+ 772              		.loc 1 231 10 view .LVU233
+ 773 002c 0020     		movs	r0, #0
+ 774              	.LVL99:
+ 231:./lib/vsprintf.c **** 	if (*num < 0) {
+ 775              		.loc 1 231 10 view .LVU234
+ 776 002e 7047     		bx	lr
+ 777              	.LVL100:
+ 778              	.L52:
+ 237:./lib/vsprintf.c **** 	if (flags & SPACE)
+ 779              		.loc 1 237 10 view .LVU235
+ 780 0030 2B20     		movs	r0, #43
+ 781              	.LVL101:
+ 237:./lib/vsprintf.c **** 	if (flags & SPACE)
+ 782              		.loc 1 237 10 view .LVU236
+ 783 0032 7047     		bx	lr
+ 784              	.LVL102:
+ 785              	.L53:
+ 239:./lib/vsprintf.c **** 	return 0;
+ 786              		.loc 1 239 10 view .LVU237
+ 787 0034 2020     		movs	r0, #32
+ 788              	.LVL103:
+ 241:./lib/vsprintf.c **** }
+ 789              		.loc 1 241 1 view .LVU238
+ 790 0036 7047     		bx	lr
+ 791              		.cfi_endproc
+ 792              	.LFE186:
+ 794              		.section	.text.utf16s_utf8nlen,"ax",%progbits
+ 795              		.align	1
+ 796              		.syntax unified
+ 797              		.thumb
+ 798              		.thumb_func
+ 800              	utf16s_utf8nlen:
+ 801              	.LVL104:
+ 802              	.LFB187:
+ 242:./lib/vsprintf.c **** 
+ 243:./lib/vsprintf.c **** static
+ 244:./lib/vsprintf.c **** size_t utf16s_utf8nlen(const u16 *s16, size_t maxlen)
+ 245:./lib/vsprintf.c **** {
+ 803              		.loc 1 245 1 is_stmt 1 view -0
+ 804              		.cfi_startproc
+ 805              		@ args = 0, pretend = 0, frame = 0
+ 806              		@ frame_needed = 0, uses_anonymous_args = 0
+ 807              		.loc 1 245 1 is_stmt 0 view .LVU240
+ 808 0000 8446     		mov	ip, r0
+ 246:./lib/vsprintf.c **** 	size_t len, clen;
+ 809              		.loc 1 246 2 is_stmt 1 view .LVU241
+ARM GAS  /tmp/cc7e5ZMk.s 			page 20
+
+
+ 247:./lib/vsprintf.c **** 
+ 248:./lib/vsprintf.c **** 	for (len = 0; len < maxlen && *s16; len += clen) {
+ 810              		.loc 1 248 2 view .LVU242
+ 811              	.LVL105:
+ 812              		.loc 1 248 11 is_stmt 0 view .LVU243
+ 813 0002 0020     		movs	r0, #0
+ 814              	.LVL106:
+ 815              		.loc 1 248 29 is_stmt 1 discriminator 1 view .LVU244
+ 816 0004 8842     		cmp	r0, r1
+ 817 0006 2DD2     		bcs	.L65
+ 818              		.loc 1 248 32 is_stmt 0 discriminator 3 view .LVU245
+ 819 0008 BCF80030 		ldrh	r3, [ip]
+ 820              		.loc 1 248 29 discriminator 3 view .LVU246
+ 821 000c 4BB3     		cbz	r3, .L67
+ 245:./lib/vsprintf.c **** 	size_t len, clen;
+ 822              		.loc 1 245 1 view .LVU247
+ 823 000e 10B5     		push	{r4, lr}
+ 824              	.LCFI3:
+ 825              		.cfi_def_cfa_offset 8
+ 826              		.cfi_offset 4, -8
+ 827              		.cfi_offset 14, -4
+ 828 0010 13E0     		b	.L60
+ 829              	.LVL107:
+ 830              	.L61:
+ 831              	.LBB4:
+ 249:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 250:./lib/vsprintf.c **** 
+ 251:./lib/vsprintf.c **** 		/* First, get the length for a BMP character */
+ 252:./lib/vsprintf.c **** 		clen = 1 + (c0 >= 0x80) + (c0 >= 0x800);
+ 832              		.loc 1 252 12 discriminator 2 view .LVU248
+ 833 0012 0122     		movs	r2, #1
+ 834              	.L57:
+ 835              		.loc 1 252 27 discriminator 4 view .LVU249
+ 836 0014 B3F5006F 		cmp	r3, #2048
+ 837 0018 28BF     		it	cs
+ 838 001a 0132     		addcs	r2, r2, #1
+ 839              	.LVL108:
+ 253:./lib/vsprintf.c **** 		if (len + clen > maxlen)
+ 840              		.loc 1 253 3 is_stmt 1 view .LVU250
+ 841              		.loc 1 253 11 is_stmt 0 view .LVU251
+ 842 001c 00EB020E 		add	lr, r0, r2
+ 843              		.loc 1 253 6 view .LVU252
+ 844 0020 8E45     		cmp	lr, r1
+ 845 0022 1DD8     		bhi	.L55
+ 254:./lib/vsprintf.c **** 			break;
+ 255:./lib/vsprintf.c **** 		/*
+ 256:./lib/vsprintf.c **** 		 * If this is a high surrogate, and we're already at maxlen, we
+ 257:./lib/vsprintf.c **** 		 * can't include the character if it's a valid surrogate pair.
+ 258:./lib/vsprintf.c **** 		 * Avoid accessing one extra word just to check if it's valid
+ 259:./lib/vsprintf.c **** 		 * or not.
+ 260:./lib/vsprintf.c **** 		 */
+ 261:./lib/vsprintf.c **** 		if ((c0 & 0xfc00) == 0xd800) {
+ 846              		.loc 1 261 3 is_stmt 1 view .LVU253
+ 847              		.loc 1 261 6 is_stmt 0 view .LVU254
+ 848 0024 03F47C43 		and	r3, r3, #64512
+ 849              	.LVL109:
+ 850              		.loc 1 261 6 view .LVU255
+ARM GAS  /tmp/cc7e5ZMk.s 			page 21
+
+
+ 851 0028 B3F5584F 		cmp	r3, #55296
+ 852 002c 0BD0     		beq	.L68
+ 853              	.L59:
+ 854              		.loc 1 261 6 view .LVU256
+ 855              	.LBE4:
+ 248:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 856              		.loc 1 248 42 is_stmt 1 discriminator 2 view .LVU257
+ 857 002e 1044     		add	r0, r0, r2
+ 858              	.LVL110:
+ 248:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 859              		.loc 1 248 42 is_stmt 0 discriminator 2 view .LVU258
+ 860 0030 A446     		mov	ip, r4
+ 248:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 861              		.loc 1 248 29 is_stmt 1 discriminator 1 view .LVU259
+ 862 0032 8842     		cmp	r0, r1
+ 863 0034 14D2     		bcs	.L55
+ 248:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 864              		.loc 1 248 32 is_stmt 0 discriminator 3 view .LVU260
+ 865 0036 2388     		ldrh	r3, [r4]
+ 248:./lib/vsprintf.c **** 		u16 c0 = *s16++;
+ 866              		.loc 1 248 29 discriminator 3 view .LVU261
+ 867 0038 93B1     		cbz	r3, .L55
+ 868              	.LVL111:
+ 869              	.L60:
+ 870              	.LBB5:
+ 249:./lib/vsprintf.c **** 
+ 871              		.loc 1 249 3 is_stmt 1 view .LVU262
+ 249:./lib/vsprintf.c **** 
+ 872              		.loc 1 249 16 is_stmt 0 view .LVU263
+ 873 003a 0CF10204 		add	r4, ip, #2
+ 874              	.LVL112:
+ 252:./lib/vsprintf.c **** 		if (len + clen > maxlen)
+ 875              		.loc 1 252 3 is_stmt 1 view .LVU264
+ 252:./lib/vsprintf.c **** 		if (len + clen > maxlen)
+ 876              		.loc 1 252 12 is_stmt 0 view .LVU265
+ 877 003e 7F2B     		cmp	r3, #127
+ 878 0040 E7D9     		bls	.L61
+ 252:./lib/vsprintf.c **** 		if (len + clen > maxlen)
+ 879              		.loc 1 252 12 discriminator 1 view .LVU266
+ 880 0042 0222     		movs	r2, #2
+ 881 0044 E6E7     		b	.L57
+ 882              	.LVL113:
+ 883              	.L68:
+ 262:./lib/vsprintf.c **** 			if (len + clen == maxlen)
+ 884              		.loc 1 262 4 is_stmt 1 view .LVU267
+ 885              		.loc 1 262 7 is_stmt 0 view .LVU268
+ 886 0046 8E45     		cmp	lr, r1
+ 887 0048 0AD0     		beq	.L55
+ 263:./lib/vsprintf.c **** 				break;
+ 264:./lib/vsprintf.c **** 			if ((*s16 & 0xfc00) == 0xdc00) {
+ 888              		.loc 1 264 4 is_stmt 1 view .LVU269
+ 889              		.loc 1 264 9 is_stmt 0 view .LVU270
+ 890 004a BCF80230 		ldrh	r3, [ip, #2]
+ 891              		.loc 1 264 7 view .LVU271
+ 892 004e 03F47C43 		and	r3, r3, #64512
+ 893 0052 B3F55C4F 		cmp	r3, #56320
+ 894 0056 EAD1     		bne	.L59
+ARM GAS  /tmp/cc7e5ZMk.s 			page 22
+
+
+ 265:./lib/vsprintf.c **** 				++s16;
+ 895              		.loc 1 265 5 is_stmt 1 view .LVU272
+ 896 0058 0CF10404 		add	r4, ip, #4
+ 897              	.LVL114:
+ 266:./lib/vsprintf.c **** 				++clen;
+ 898              		.loc 1 266 5 view .LVU273
+ 899 005c 0132     		adds	r2, r2, #1
+ 900              	.LVL115:
+ 901              		.loc 1 266 5 is_stmt 0 view .LVU274
+ 902 005e E6E7     		b	.L59
+ 903              	.L55:
+ 904              		.loc 1 266 5 view .LVU275
+ 905              	.LBE5:
+ 267:./lib/vsprintf.c **** 			}
+ 268:./lib/vsprintf.c **** 		}
+ 269:./lib/vsprintf.c **** 	}
+ 270:./lib/vsprintf.c **** 
+ 271:./lib/vsprintf.c **** 	return len;
+ 272:./lib/vsprintf.c **** }
+ 906              		.loc 1 272 1 view .LVU276
+ 907 0060 10BD     		pop	{r4, pc}
+ 908              	.LVL116:
+ 909              	.L67:
+ 910              	.LCFI4:
+ 911              		.cfi_def_cfa_offset 0
+ 912              		.cfi_restore 4
+ 913              		.cfi_restore 14
+ 914              		.loc 1 272 1 view .LVU277
+ 915 0062 7047     		bx	lr
+ 916              	.L65:
+ 917 0064 7047     		bx	lr
+ 918              		.cfi_endproc
+ 919              	.LFE187:
+ 921              		.section	.text.utf16_to_utf32,"ax",%progbits
+ 922              		.align	1
+ 923              		.syntax unified
+ 924              		.thumb
+ 925              		.thumb_func
+ 927              	utf16_to_utf32:
+ 928              	.LVL117:
+ 929              	.LFB188:
+ 273:./lib/vsprintf.c **** 
+ 274:./lib/vsprintf.c **** static
+ 275:./lib/vsprintf.c **** u32 utf16_to_utf32(const u16 **s16)
+ 276:./lib/vsprintf.c **** {
+ 930              		.loc 1 276 1 is_stmt 1 view -0
+ 931              		.cfi_startproc
+ 932              		@ args = 0, pretend = 0, frame = 0
+ 933              		@ frame_needed = 0, uses_anonymous_args = 0
+ 934              		@ link register save eliminated.
+ 277:./lib/vsprintf.c **** 	u16 c0, c1;
+ 935              		.loc 1 277 2 view .LVU279
+ 278:./lib/vsprintf.c **** 
+ 279:./lib/vsprintf.c **** 	c0 = *(*s16)++;
+ 936              		.loc 1 279 2 view .LVU280
+ 937              		.loc 1 279 9 is_stmt 0 view .LVU281
+ 938 0000 0268     		ldr	r2, [r0]
+ARM GAS  /tmp/cc7e5ZMk.s 			page 23
+
+
+ 939              		.loc 1 279 14 view .LVU282
+ 940 0002 931C     		adds	r3, r2, #2
+ 941 0004 0360     		str	r3, [r0]
+ 942              		.loc 1 279 5 view .LVU283
+ 943 0006 1388     		ldrh	r3, [r2]
+ 944              	.LVL118:
+ 280:./lib/vsprintf.c **** 	/* not a surrogate */
+ 281:./lib/vsprintf.c **** 	if ((c0 & 0xf800) != 0xd800)
+ 945              		.loc 1 281 2 is_stmt 1 view .LVU284
+ 946              		.loc 1 281 5 is_stmt 0 view .LVU285
+ 947 0008 03F47841 		and	r1, r3, #63488
+ 948 000c B1F5584F 		cmp	r1, #55296
+ 949 0010 01D0     		beq	.L70
+ 282:./lib/vsprintf.c **** 		return c0;
+ 950              		.loc 1 282 3 is_stmt 1 view .LVU286
+ 951              		.loc 1 282 10 is_stmt 0 view .LVU287
+ 952 0012 1846     		mov	r0, r3
+ 953              	.LVL119:
+ 954              		.loc 1 282 10 view .LVU288
+ 955 0014 7047     		bx	lr
+ 956              	.LVL120:
+ 957              	.L70:
+ 283:./lib/vsprintf.c **** 	/* invalid: low surrogate instead of high */
+ 284:./lib/vsprintf.c **** 	if (c0 & 0x0400)
+ 958              		.loc 1 284 2 is_stmt 1 view .LVU289
+ 959              		.loc 1 284 5 is_stmt 0 view .LVU290
+ 960 0016 13F4806F 		tst	r3, #1024
+ 961 001a 0ED1     		bne	.L72
+ 285:./lib/vsprintf.c **** 		return 0xfffd;
+ 286:./lib/vsprintf.c **** 	c1 = **s16;
+ 962              		.loc 1 286 2 is_stmt 1 view .LVU291
+ 963              		.loc 1 286 5 is_stmt 0 view .LVU292
+ 964 001c 5188     		ldrh	r1, [r2, #2]
+ 965              	.LVL121:
+ 287:./lib/vsprintf.c **** 	/* invalid: missing low surrogate */
+ 288:./lib/vsprintf.c **** 	if ((c1 & 0xfc00) != 0xdc00)
+ 966              		.loc 1 288 2 is_stmt 1 view .LVU293
+ 967              		.loc 1 288 5 is_stmt 0 view .LVU294
+ 968 001e 01F47C4C 		and	ip, r1, #64512
+ 969 0022 BCF55C4F 		cmp	ip, #56320
+ 970 0026 0BD1     		bne	.L73
+ 289:./lib/vsprintf.c **** 		return 0xfffd;
+ 290:./lib/vsprintf.c **** 	/* valid surrogate pair */
+ 291:./lib/vsprintf.c **** 	++(*s16);
+ 971              		.loc 1 291 2 is_stmt 1 view .LVU295
+ 972 0028 0432     		adds	r2, r2, #4
+ 973 002a 0260     		str	r2, [r0]
+ 292:./lib/vsprintf.c **** 	return (0x10000 - (0xd800 << 10) - 0xdc00) + (c0 << 10) + c1;
+ 974              		.loc 1 292 2 view .LVU296
+ 975              		.loc 1 292 51 is_stmt 0 view .LVU297
+ 976 002c 9B02     		lsls	r3, r3, #10
+ 977              	.LVL122:
+ 978              		.loc 1 292 45 view .LVU298
+ 979 002e A3F15773 		sub	r3, r3, #56360960
+ 980 0032 A3F57733 		sub	r3, r3, #252928
+ 981              		.loc 1 292 58 view .LVU299
+ 982 0036 C818     		adds	r0, r1, r3
+ARM GAS  /tmp/cc7e5ZMk.s 			page 24
+
+
+ 983              	.LVL123:
+ 984              		.loc 1 292 58 view .LVU300
+ 985 0038 7047     		bx	lr
+ 986              	.LVL124:
+ 987              	.L72:
+ 285:./lib/vsprintf.c **** 	c1 = **s16;
+ 988              		.loc 1 285 10 view .LVU301
+ 989 003a 4FF6FD70 		movw	r0, #65533
+ 990              	.LVL125:
+ 285:./lib/vsprintf.c **** 	c1 = **s16;
+ 991              		.loc 1 285 10 view .LVU302
+ 992 003e 7047     		bx	lr
+ 993              	.LVL126:
+ 994              	.L73:
+ 289:./lib/vsprintf.c **** 		return 0xfffd;
+ 995              		.loc 1 289 10 view .LVU303
+ 996 0040 4FF6FD70 		movw	r0, #65533
+ 997              	.LVL127:
+ 293:./lib/vsprintf.c **** }
+ 998              		.loc 1 293 1 view .LVU304
+ 999 0044 7047     		bx	lr
+ 1000              		.cfi_endproc
+ 1001              	.LFE188:
+ 1003              		.section	.text.number,"ax",%progbits
+ 1004              		.align	1
+ 1005              		.syntax unified
+ 1006              		.thumb
+ 1007              		.thumb_func
+ 1009              	number:
+ 1010              	.LVL128:
+ 1011              	.LFB182:
+ 115:./lib/vsprintf.c **** 	/*
+ 1012              		.loc 1 115 1 is_stmt 1 view -0
+ 1013              		.cfi_startproc
+ 1014              		@ args = 8, pretend = 0, frame = 0
+ 1015              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115:./lib/vsprintf.c **** 	/*
+ 1016              		.loc 1 115 1 is_stmt 0 view .LVU306
+ 1017 0000 10B5     		push	{r4, lr}
+ 1018              	.LCFI5:
+ 1019              		.cfi_def_cfa_offset 8
+ 1020              		.cfi_offset 4, -8
+ 1021              		.cfi_offset 14, -4
+ 1022 0002 0446     		mov	r4, r0
+ 1023 0004 0299     		ldr	r1, [sp, #8]
+ 1024 0006 9DF80CC0 		ldrb	ip, [sp, #12]	@ zero_extendqisi2
+ 122:./lib/vsprintf.c **** 
+ 1025              		.loc 1 122 2 is_stmt 1 view .LVU307
+ 124:./lib/vsprintf.c **** 	case 10:
+ 1026              		.loc 1 124 2 view .LVU308
+ 1027 000a 0A29     		cmp	r1, #10
+ 1028 000c 07D0     		beq	.L75
+ 1029 000e 1029     		cmp	r1, #16
+ 1030 0010 25D0     		beq	.L76
+ 1031 0012 0829     		cmp	r1, #8
+ 1032 0014 12D0     		beq	.L77
+ 138:./lib/vsprintf.c **** 	}
+ARM GAS  /tmp/cc7e5ZMk.s 			page 25
+
+
+ 1033              		.loc 1 138 3 view .LVU309
+ 1034 0016 FFF7FEFF 		bl	annotate_unreachable
+ 1035              	.LVL129:
+ 138:./lib/vsprintf.c **** 	}
+ 1036              		.loc 1 138 3 is_stmt 0 view .LVU310
+ 1037 001a 2046     		mov	r0, r4
+ 1038 001c 12E0     		b	.L74
+ 1039              	.LVL130:
+ 1040              	.L75:
+ 126:./lib/vsprintf.c **** 			end = put_dec(end, num);
+ 1041              		.loc 1 126 3 is_stmt 1 view .LVU311
+ 126:./lib/vsprintf.c **** 			end = put_dec(end, num);
+ 1042              		.loc 1 126 6 is_stmt 0 view .LVU312
+ 1043 001e 52EA0301 		orrs	r1, r2, r3
+ 1044 0022 0FD0     		beq	.L74
+ 127:./lib/vsprintf.c **** 		break;
+ 1045              		.loc 1 127 4 is_stmt 1 view .LVU313
+ 127:./lib/vsprintf.c **** 		break;
+ 1046              		.loc 1 127 10 is_stmt 0 view .LVU314
+ 1047 0024 FFF7FEFF 		bl	put_dec
+ 1048              	.LVL131:
+ 127:./lib/vsprintf.c **** 		break;
+ 1049              		.loc 1 127 10 view .LVU315
+ 1050 0028 0CE0     		b	.L74
+ 1051              	.LVL132:
+ 1052              	.L80:
+ 131:./lib/vsprintf.c **** 		break;
+ 1053              		.loc 1 131 4 is_stmt 1 view .LVU316
+ 131:./lib/vsprintf.c **** 		break;
+ 1054              		.loc 1 131 24 is_stmt 0 view .LVU317
+ 1055 002a 02F00701 		and	r1, r2, #7
+ 1056              	.LVL133:
+ 131:./lib/vsprintf.c **** 		break;
+ 1057              		.loc 1 131 17 view .LVU318
+ 1058 002e 3031     		adds	r1, r1, #48
+ 131:./lib/vsprintf.c **** 		break;
+ 1059              		.loc 1 131 11 view .LVU319
+ 1060 0030 04F8011D 		strb	r1, [r4, #-1]!
+ 1061              	.LVL134:
+ 130:./lib/vsprintf.c **** 			*--end = '0' + (num & 07);
+ 1062              		.loc 1 130 24 is_stmt 1 discriminator 2 view .LVU320
+ 1063 0034 D208     		lsrs	r2, r2, #3
+ 1064              	.LVL135:
+ 130:./lib/vsprintf.c **** 			*--end = '0' + (num & 07);
+ 1065              		.loc 1 130 24 is_stmt 0 discriminator 2 view .LVU321
+ 1066 0036 42EA4372 		orr	r2, r2, r3, lsl #29
+ 1067 003a DB08     		lsrs	r3, r3, #3
+ 1068              	.LVL136:
+ 1069              	.L77:
+ 130:./lib/vsprintf.c **** 			*--end = '0' + (num & 07);
+ 1070              		.loc 1 130 14 is_stmt 1 discriminator 1 view .LVU322
+ 1071 003c 52EA0301 		orrs	r1, r2, r3
+ 1072 0040 F3D1     		bne	.L80
+ 130:./lib/vsprintf.c **** 			*--end = '0' + (num & 07);
+ 1073              		.loc 1 130 14 is_stmt 0 discriminator 1 view .LVU323
+ 1074 0042 2046     		mov	r0, r4
+ 1075              	.LVL137:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 26
+
+
+ 1076              	.L74:
+ 142:./lib/vsprintf.c **** 
+ 1077              		.loc 1 142 1 view .LVU324
+ 1078 0044 10BD     		pop	{r4, pc}
+ 1079              	.LVL138:
+ 1080              	.L81:
+ 135:./lib/vsprintf.c **** 		break;
+ 1081              		.loc 1 135 4 is_stmt 1 view .LVU325
+ 135:./lib/vsprintf.c **** 		break;
+ 1082              		.loc 1 135 24 is_stmt 0 view .LVU326
+ 1083 0046 02F00F01 		and	r1, r2, #15
+ 135:./lib/vsprintf.c **** 		break;
+ 1084              		.loc 1 135 19 view .LVU327
+ 1085 004a 0748     		ldr	r0, .L85
+ 1086 004c 415C     		ldrb	r1, [r0, r1]	@ zero_extendqisi2
+ 1087              	.LVL139:
+ 135:./lib/vsprintf.c **** 		break;
+ 1088              		.loc 1 135 11 view .LVU328
+ 1089 004e 41EA0C01 		orr	r1, r1, ip
+ 1090 0052 04F8011D 		strb	r1, [r4, #-1]!
+ 1091              	.LVL140:
+ 134:./lib/vsprintf.c **** 			*--end = digits[num & 0xf] | locase;
+ 1092              		.loc 1 134 24 is_stmt 1 discriminator 2 view .LVU329
+ 1093 0056 1209     		lsrs	r2, r2, #4
+ 1094              	.LVL141:
+ 134:./lib/vsprintf.c **** 			*--end = digits[num & 0xf] | locase;
+ 1095              		.loc 1 134 24 is_stmt 0 discriminator 2 view .LVU330
+ 1096 0058 42EA0372 		orr	r2, r2, r3, lsl #28
+ 1097 005c 1B09     		lsrs	r3, r3, #4
+ 1098              	.LVL142:
+ 1099              	.L76:
+ 134:./lib/vsprintf.c **** 			*--end = digits[num & 0xf] | locase;
+ 1100              		.loc 1 134 14 is_stmt 1 discriminator 1 view .LVU331
+ 1101 005e 52EA0301 		orrs	r1, r2, r3
+ 1102 0062 F0D1     		bne	.L81
+ 134:./lib/vsprintf.c **** 			*--end = digits[num & 0xf] | locase;
+ 1103              		.loc 1 134 14 is_stmt 0 discriminator 1 view .LVU332
+ 1104 0064 2046     		mov	r0, r4
+ 1105 0066 EDE7     		b	.L74
+ 1106              	.L86:
+ 1107              		.align	2
+ 1108              	.L85:
+ 1109 0068 00000000 		.word	digits.0
+ 1110              		.cfi_endproc
+ 1111              	.LFE182:
+ 1113              		.section	.rodata.vsnprintf.str1.4,"aMS",%progbits,1
+ 1114              		.align	2
+ 1115              	.LC0:
+ 1116 0000 286E756C 		.ascii	"(null)\000"
+ 1116      6C2900
+ 1117 0007 00       		.align	2
+ 1118              	.LC1:
+ 1119 0008 00       		.ascii	"\000"
+ 1120              		.section	.text.vsnprintf,"ax",%progbits
+ 1121              		.align	1
+ 1122              		.global	vsnprintf
+ 1123              		.syntax unified
+ARM GAS  /tmp/cc7e5ZMk.s 			page 27
+
+
+ 1124              		.thumb
+ 1125              		.thumb_func
+ 1127              	vsnprintf:
+ 1128              	.LVL143:
+ 1129              	.LFB189:
+ 294:./lib/vsprintf.c **** 
+ 295:./lib/vsprintf.c **** #define PUTC(c) \
+ 296:./lib/vsprintf.c **** do {				\
+ 297:./lib/vsprintf.c **** 	if (pos < size)		\
+ 298:./lib/vsprintf.c **** 		buf[pos] = (c);	\
+ 299:./lib/vsprintf.c **** 	++pos;			\
+ 300:./lib/vsprintf.c **** } while (0);
+ 301:./lib/vsprintf.c **** 
+ 302:./lib/vsprintf.c **** int vsnprintf(char *buf, size_t size, const char *fmt, va_list ap)
+ 303:./lib/vsprintf.c **** {
+ 1130              		.loc 1 303 1 is_stmt 1 view -0
+ 1131              		.cfi_startproc
+ 1132              		@ args = 0, pretend = 0, frame = 56
+ 1133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1134              		.loc 1 303 1 is_stmt 0 view .LVU334
+ 1135 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1136              	.LCFI6:
+ 1137              		.cfi_def_cfa_offset 36
+ 1138              		.cfi_offset 4, -36
+ 1139              		.cfi_offset 5, -32
+ 1140              		.cfi_offset 6, -28
+ 1141              		.cfi_offset 7, -24
+ 1142              		.cfi_offset 8, -20
+ 1143              		.cfi_offset 9, -16
+ 1144              		.cfi_offset 10, -12
+ 1145              		.cfi_offset 11, -8
+ 1146              		.cfi_offset 14, -4
+ 1147 0004 91B0     		sub	sp, sp, #68
+ 1148              	.LCFI7:
+ 1149              		.cfi_def_cfa_offset 104
+ 1150 0006 8046     		mov	r8, r0
+ 1151 0008 0E46     		mov	r6, r1
+ 1152 000a 0592     		str	r2, [sp, #20]
+ 304:./lib/vsprintf.c **** 	/* The maximum space required is to print a 64-bit number in octal */
+ 305:./lib/vsprintf.c **** 	char tmp[(sizeof(unsigned long long) * 8 + 2) / 3];
+ 1153              		.loc 1 305 2 is_stmt 1 view .LVU335
+ 306:./lib/vsprintf.c **** 	char *tmp_end = &tmp[ARRAY_SIZE(tmp)];
+ 1154              		.loc 1 306 2 view .LVU336
+ 1155              	.LVL144:
+ 307:./lib/vsprintf.c **** 	long long num;
+ 1156              		.loc 1 307 2 view .LVU337
+ 308:./lib/vsprintf.c **** 	int base;
+ 1157              		.loc 1 308 2 view .LVU338
+ 309:./lib/vsprintf.c **** 	const char *s;
+ 1158              		.loc 1 309 2 view .LVU339
+ 310:./lib/vsprintf.c **** 	size_t len, pos;
+ 1159              		.loc 1 310 2 view .LVU340
+ 311:./lib/vsprintf.c **** 	char sign;
+ 1160              		.loc 1 311 2 view .LVU341
+ 312:./lib/vsprintf.c **** 
+ 313:./lib/vsprintf.c **** 	int flags;		/* flags to number() */
+ 1161              		.loc 1 313 2 view .LVU342
+ARM GAS  /tmp/cc7e5ZMk.s 			page 28
+
+
+ 314:./lib/vsprintf.c **** 
+ 315:./lib/vsprintf.c **** 	int field_width;	/* width of output field */
+ 1162              		.loc 1 315 2 view .LVU343
+ 316:./lib/vsprintf.c **** 	int precision;		/* min. # of digits for integers; max
+ 1163              		.loc 1 316 2 view .LVU344
+ 317:./lib/vsprintf.c **** 				   number of chars for from string */
+ 318:./lib/vsprintf.c **** 	int qualifier;		/* 'h', 'hh', 'l' or 'll' for integer fields */
+ 1164              		.loc 1 318 2 view .LVU345
+ 319:./lib/vsprintf.c **** 
+ 320:./lib/vsprintf.c **** 	va_list args;
+ 1165              		.loc 1 320 2 view .LVU346
+ 321:./lib/vsprintf.c **** 
+ 322:./lib/vsprintf.c **** 	/*
+ 323:./lib/vsprintf.c **** 	 * We want to pass our input va_list to helper functions by reference,
+ 324:./lib/vsprintf.c **** 	 * but there's an annoying edge case. If va_list was originally passed
+ 325:./lib/vsprintf.c **** 	 * to us by value, we could just pass &ap down to the helpers. This is
+ 326:./lib/vsprintf.c **** 	 * the case on, for example, X86_32.
+ 327:./lib/vsprintf.c **** 	 * However, on X86_64 (and possibly others), va_list is actually a
+ 328:./lib/vsprintf.c **** 	 * size-1 array containing a structure. Our function parameter ap has
+ 329:./lib/vsprintf.c **** 	 * decayed from T[1] to T*, and &ap has type T** rather than T(*)[1],
+ 330:./lib/vsprintf.c **** 	 * which is what will be expected by a function taking a va_list *
+ 331:./lib/vsprintf.c **** 	 * parameter.
+ 332:./lib/vsprintf.c **** 	 * One standard way to solve this mess is by creating a copy in a local
+ 333:./lib/vsprintf.c **** 	 * variable of type va_list and then passing a pointer to that local
+ 334:./lib/vsprintf.c **** 	 * copy instead, which is what we do here.
+ 335:./lib/vsprintf.c **** 	 */
+ 336:./lib/vsprintf.c **** 	va_copy(args, ap);
+ 1166              		.loc 1 336 2 view .LVU347
+ 1167 000c 0793     		str	r3, [sp, #28]
+ 337:./lib/vsprintf.c **** 
+ 338:./lib/vsprintf.c **** 	for (pos = 0; *fmt; ++fmt) {
+ 1168              		.loc 1 338 2 view .LVU348
+ 1169              	.LVL145:
+ 1170              		.loc 1 338 11 is_stmt 0 view .LVU349
+ 1171 000e 0024     		movs	r4, #0
+ 1172              		.loc 1 338 2 view .LVU350
+ 1173 0010 09E0     		b	.L88
+ 1174              	.LVL146:
+ 1175              	.L89:
+ 339:./lib/vsprintf.c **** 		if (*fmt != '%' || *++fmt == '%') {
+ 340:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1176              		.loc 1 340 4 is_stmt 1 view .LVU351
+ 1177              		.loc 1 340 4 view .LVU352
+ 1178 0012 B442     		cmp	r4, r6
+ 1179 0014 03D2     		bcs	.L91
+ 1180              		.loc 1 340 4 discriminator 1 view .LVU353
+ 1181 0016 059B     		ldr	r3, [sp, #20]
+ 1182 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1183 001a 08F80430 		strb	r3, [r8, r4]
+ 1184              	.L91:
+ 1185              		.loc 1 340 4 discriminator 3 view .LVU354
+ 1186 001e 0134     		adds	r4, r4, #1
+ 1187              	.LVL147:
+ 1188              		.loc 1 340 4 discriminator 3 view .LVU355
+ 1189              		.loc 1 340 14 discriminator 3 view .LVU356
+ 341:./lib/vsprintf.c **** 			continue;
+ 1190              		.loc 1 341 4 view .LVU357
+ARM GAS  /tmp/cc7e5ZMk.s 			page 29
+
+
+ 1191              	.L92:
+ 342:./lib/vsprintf.c **** 		}
+ 343:./lib/vsprintf.c **** 
+ 344:./lib/vsprintf.c **** 		/* process flags */
+ 345:./lib/vsprintf.c **** 		flags = get_flags(&fmt);
+ 346:./lib/vsprintf.c **** 
+ 347:./lib/vsprintf.c **** 		/* get field width */
+ 348:./lib/vsprintf.c **** 		field_width = get_int(&fmt, &args);
+ 349:./lib/vsprintf.c **** 		if (field_width < 0) {
+ 350:./lib/vsprintf.c **** 			field_width = -field_width;
+ 351:./lib/vsprintf.c **** 			flags |= LEFT;
+ 352:./lib/vsprintf.c **** 		}
+ 353:./lib/vsprintf.c **** 
+ 354:./lib/vsprintf.c **** 		if (flags & LEFT)
+ 355:./lib/vsprintf.c **** 			flags &= ~ZEROPAD;
+ 356:./lib/vsprintf.c **** 
+ 357:./lib/vsprintf.c **** 		/* get the precision */
+ 358:./lib/vsprintf.c **** 		precision = -1;
+ 359:./lib/vsprintf.c **** 		if (*fmt == '.') {
+ 360:./lib/vsprintf.c **** 			++fmt;
+ 361:./lib/vsprintf.c **** 			precision = get_int(&fmt, &args);
+ 362:./lib/vsprintf.c **** 			if (precision >= 0)
+ 363:./lib/vsprintf.c **** 				flags &= ~ZEROPAD;
+ 364:./lib/vsprintf.c **** 		}
+ 365:./lib/vsprintf.c **** 
+ 366:./lib/vsprintf.c **** 		/* get the conversion qualifier */
+ 367:./lib/vsprintf.c **** 		qualifier = -1;
+ 368:./lib/vsprintf.c **** 		if (*fmt == 'h' || *fmt == 'l') {
+ 369:./lib/vsprintf.c **** 			qualifier = *fmt;
+ 370:./lib/vsprintf.c **** 			++fmt;
+ 371:./lib/vsprintf.c **** 			if (qualifier == *fmt) {
+ 372:./lib/vsprintf.c **** 				qualifier -= 'a'-'A';
+ 373:./lib/vsprintf.c **** 				++fmt;
+ 374:./lib/vsprintf.c **** 			}
+ 375:./lib/vsprintf.c **** 		}
+ 376:./lib/vsprintf.c **** 
+ 377:./lib/vsprintf.c **** 		sign = 0;
+ 378:./lib/vsprintf.c **** 
+ 379:./lib/vsprintf.c **** 		switch (*fmt) {
+ 380:./lib/vsprintf.c **** 		case 'c':
+ 381:./lib/vsprintf.c **** 			flags &= LEFT;
+ 382:./lib/vsprintf.c **** 			s = tmp;
+ 383:./lib/vsprintf.c **** 			if (qualifier == 'l') {
+ 384:./lib/vsprintf.c **** 				((u16 *)tmp)[0] = (u16)va_arg(args, unsigned int);
+ 385:./lib/vsprintf.c **** 				((u16 *)tmp)[1] = L'\0';
+ 386:./lib/vsprintf.c **** 				precision = INT_MAX;
+ 387:./lib/vsprintf.c **** 				goto wstring;
+ 388:./lib/vsprintf.c **** 			} else {
+ 389:./lib/vsprintf.c **** 				tmp[0] = (unsigned char)va_arg(args, int);
+ 390:./lib/vsprintf.c **** 				precision = len = 1;
+ 391:./lib/vsprintf.c **** 			}
+ 392:./lib/vsprintf.c **** 			goto output;
+ 393:./lib/vsprintf.c **** 
+ 394:./lib/vsprintf.c **** 		case 's':
+ 395:./lib/vsprintf.c **** 			flags &= LEFT;
+ 396:./lib/vsprintf.c **** 			if (precision < 0)
+ 397:./lib/vsprintf.c **** 				precision = INT_MAX;
+ARM GAS  /tmp/cc7e5ZMk.s 			page 30
+
+
+ 398:./lib/vsprintf.c **** 			s = va_arg(args, void *);
+ 399:./lib/vsprintf.c **** 			if (!s)
+ 400:./lib/vsprintf.c **** 				s = precision < 6 ? "" : "(null)";
+ 401:./lib/vsprintf.c **** 			else if (qualifier == 'l') {
+ 402:./lib/vsprintf.c **** 		wstring:
+ 403:./lib/vsprintf.c **** 				flags |= WIDE;
+ 404:./lib/vsprintf.c **** 				precision = len = utf16s_utf8nlen((const u16 *)s, precision);
+ 405:./lib/vsprintf.c **** 				goto output;
+ 406:./lib/vsprintf.c **** 			}
+ 407:./lib/vsprintf.c **** 			precision = len = strnlen(s, precision);
+ 408:./lib/vsprintf.c **** 			goto output;
+ 409:./lib/vsprintf.c **** 
+ 410:./lib/vsprintf.c **** 			/* integer number formats - set up the flags and "break" */
+ 411:./lib/vsprintf.c **** 		case 'o':
+ 412:./lib/vsprintf.c **** 			base = 8;
+ 413:./lib/vsprintf.c **** 			break;
+ 414:./lib/vsprintf.c **** 
+ 415:./lib/vsprintf.c **** 		case 'p':
+ 416:./lib/vsprintf.c **** 			if (precision < 0)
+ 417:./lib/vsprintf.c **** 				precision = 2 * sizeof(void *);
+ 418:./lib/vsprintf.c **** 			fallthrough;
+ 419:./lib/vsprintf.c **** 		case 'x':
+ 420:./lib/vsprintf.c **** 			flags |= SMALL;
+ 421:./lib/vsprintf.c **** 			fallthrough;
+ 422:./lib/vsprintf.c **** 		case 'X':
+ 423:./lib/vsprintf.c **** 			base = 16;
+ 424:./lib/vsprintf.c **** 			break;
+ 425:./lib/vsprintf.c **** 
+ 426:./lib/vsprintf.c **** 		case 'd':
+ 427:./lib/vsprintf.c **** 		case 'i':
+ 428:./lib/vsprintf.c **** 			flags |= SIGN;
+ 429:./lib/vsprintf.c **** 			fallthrough;
+ 430:./lib/vsprintf.c **** 		case 'u':
+ 431:./lib/vsprintf.c **** 			flags &= ~SPECIAL;
+ 432:./lib/vsprintf.c **** 			base = 10;
+ 433:./lib/vsprintf.c **** 			break;
+ 434:./lib/vsprintf.c **** 
+ 435:./lib/vsprintf.c **** 		default:
+ 436:./lib/vsprintf.c **** 			/*
+ 437:./lib/vsprintf.c **** 			 * Bail out if the conversion specifier is invalid.
+ 438:./lib/vsprintf.c **** 			 * There's probably a typo in the format string and the
+ 439:./lib/vsprintf.c **** 			 * remaining specifiers are unlikely to match up with
+ 440:./lib/vsprintf.c **** 			 * the arguments.
+ 441:./lib/vsprintf.c **** 			 */
+ 442:./lib/vsprintf.c **** 			goto fail;
+ 443:./lib/vsprintf.c **** 		}
+ 444:./lib/vsprintf.c **** 		if (*fmt == 'p') {
+ 445:./lib/vsprintf.c **** 			num = (unsigned long)va_arg(args, void *);
+ 446:./lib/vsprintf.c **** 		} else {
+ 447:./lib/vsprintf.c **** 			num = get_number(flags & SIGN, qualifier, &args);
+ 448:./lib/vsprintf.c **** 		}
+ 449:./lib/vsprintf.c **** 
+ 450:./lib/vsprintf.c **** 		sign = get_sign(&num, flags);
+ 451:./lib/vsprintf.c **** 		if (sign)
+ 452:./lib/vsprintf.c **** 			--field_width;
+ 453:./lib/vsprintf.c **** 
+ 454:./lib/vsprintf.c **** 		s = number(tmp_end, num, base, flags & SMALL);
+ARM GAS  /tmp/cc7e5ZMk.s 			page 31
+
+
+ 455:./lib/vsprintf.c **** 		len = tmp_end - s;
+ 456:./lib/vsprintf.c **** 		/* default precision is 1 */
+ 457:./lib/vsprintf.c **** 		if (precision < 0)
+ 458:./lib/vsprintf.c **** 			precision = 1;
+ 459:./lib/vsprintf.c **** 		/* precision is minimum number of digits to print */
+ 460:./lib/vsprintf.c **** 		if (precision < len)
+ 461:./lib/vsprintf.c **** 			precision = len;
+ 462:./lib/vsprintf.c **** 		if (flags & SPECIAL) {
+ 463:./lib/vsprintf.c **** 			/*
+ 464:./lib/vsprintf.c **** 			 * For octal, a leading 0 is printed only if necessary,
+ 465:./lib/vsprintf.c **** 			 * i.e. if it's not already there because of the
+ 466:./lib/vsprintf.c **** 			 * precision.
+ 467:./lib/vsprintf.c **** 			 */
+ 468:./lib/vsprintf.c **** 			if (base == 8 && precision == len)
+ 469:./lib/vsprintf.c **** 				++precision;
+ 470:./lib/vsprintf.c **** 			/*
+ 471:./lib/vsprintf.c **** 			 * For hexadecimal, the leading 0x is skipped if the
+ 472:./lib/vsprintf.c **** 			 * output is empty, i.e. both the number and the
+ 473:./lib/vsprintf.c **** 			 * precision are 0.
+ 474:./lib/vsprintf.c **** 			 */
+ 475:./lib/vsprintf.c **** 			if (base == 16 && precision > 0)
+ 476:./lib/vsprintf.c **** 				field_width -= 2;
+ 477:./lib/vsprintf.c **** 			else
+ 478:./lib/vsprintf.c **** 				flags &= ~SPECIAL;
+ 479:./lib/vsprintf.c **** 		}
+ 480:./lib/vsprintf.c **** 		/*
+ 481:./lib/vsprintf.c **** 		 * For zero padding, increase the precision to fill the field
+ 482:./lib/vsprintf.c **** 		 * width.
+ 483:./lib/vsprintf.c **** 		 */
+ 484:./lib/vsprintf.c **** 		if ((flags & ZEROPAD) && field_width > precision)
+ 485:./lib/vsprintf.c **** 			precision = field_width;
+ 486:./lib/vsprintf.c **** 
+ 487:./lib/vsprintf.c **** output:
+ 488:./lib/vsprintf.c **** 		/* Calculate the padding necessary */
+ 489:./lib/vsprintf.c **** 		field_width -= precision;
+ 490:./lib/vsprintf.c **** 		/* Leading padding with ' ' */
+ 491:./lib/vsprintf.c **** 		if (!(flags & LEFT))
+ 492:./lib/vsprintf.c **** 			while (field_width-- > 0)
+ 493:./lib/vsprintf.c **** 				PUTC(' ');
+ 494:./lib/vsprintf.c **** 		/* sign */
+ 495:./lib/vsprintf.c **** 		if (sign)
+ 496:./lib/vsprintf.c **** 			PUTC(sign);
+ 497:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 498:./lib/vsprintf.c **** 		if (flags & SPECIAL) {
+ 499:./lib/vsprintf.c **** 			PUTC('0');
+ 500:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 501:./lib/vsprintf.c **** 		}
+ 502:./lib/vsprintf.c **** 		/* Zero padding and excess precision */
+ 503:./lib/vsprintf.c **** 		while (precision-- > len)
+ 504:./lib/vsprintf.c **** 			PUTC('0');
+ 505:./lib/vsprintf.c **** 		/* Actual output */
+ 506:./lib/vsprintf.c **** 		if (flags & WIDE) {
+ 507:./lib/vsprintf.c **** 			const u16 *ws = (const u16 *)s;
+ 508:./lib/vsprintf.c **** 
+ 509:./lib/vsprintf.c **** 			while (len-- > 0) {
+ 510:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 511:./lib/vsprintf.c **** 				u8 *s8;
+ARM GAS  /tmp/cc7e5ZMk.s 			page 32
+
+
+ 512:./lib/vsprintf.c **** 				size_t clen;
+ 513:./lib/vsprintf.c **** 
+ 514:./lib/vsprintf.c **** 				if (c32 < 0x80) {
+ 515:./lib/vsprintf.c **** 					PUTC(c32);
+ 516:./lib/vsprintf.c **** 					continue;
+ 517:./lib/vsprintf.c **** 				}
+ 518:./lib/vsprintf.c **** 
+ 519:./lib/vsprintf.c **** 				/* Number of trailing octets */
+ 520:./lib/vsprintf.c **** 				clen = 1 + (c32 >= 0x800) + (c32 >= 0x10000);
+ 521:./lib/vsprintf.c **** 
+ 522:./lib/vsprintf.c **** 				len -= clen;
+ 523:./lib/vsprintf.c **** 				s8 = (u8 *)&buf[pos];
+ 524:./lib/vsprintf.c **** 
+ 525:./lib/vsprintf.c **** 				/* Avoid writing partial character */
+ 526:./lib/vsprintf.c **** 				PUTC('\0');
+ 527:./lib/vsprintf.c **** 				pos += clen;
+ 528:./lib/vsprintf.c **** 				if (pos >= size)
+ 529:./lib/vsprintf.c **** 					continue;
+ 530:./lib/vsprintf.c **** 
+ 531:./lib/vsprintf.c **** 				/* Set high bits of leading octet */
+ 532:./lib/vsprintf.c **** 				*s8 = (0xf00 >> 1) >> clen;
+ 533:./lib/vsprintf.c **** 				/* Write trailing octets in reverse order */
+ 534:./lib/vsprintf.c **** 				for (s8 += clen; clen; --clen, c32 >>= 6)
+ 535:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 536:./lib/vsprintf.c **** 				/* Set low bits of leading octet */
+ 537:./lib/vsprintf.c **** 				*s8 |= c32;
+ 538:./lib/vsprintf.c **** 			}
+ 539:./lib/vsprintf.c **** 		} else {
+ 540:./lib/vsprintf.c **** 			while (len-- > 0)
+ 541:./lib/vsprintf.c **** 				PUTC(*s++);
+ 542:./lib/vsprintf.c **** 		}
+ 543:./lib/vsprintf.c **** 		/* Trailing padding with ' ' */
+ 544:./lib/vsprintf.c **** 		while (field_width-- > 0)
+ 545:./lib/vsprintf.c **** 			PUTC(' ');
+ 1192              		.loc 1 545 13 view .LVU358
+ 338:./lib/vsprintf.c **** 		if (*fmt != '%' || *++fmt == '%') {
+ 1193              		.loc 1 338 22 discriminator 2 view .LVU359
+ 1194 0020 059B     		ldr	r3, [sp, #20]
+ 1195 0022 0133     		adds	r3, r3, #1
+ 1196 0024 0593     		str	r3, [sp, #20]
+ 1197              	.LVL148:
+ 1198              	.L88:
+ 338:./lib/vsprintf.c **** 		if (*fmt != '%' || *++fmt == '%') {
+ 1199              		.loc 1 338 16 discriminator 1 view .LVU360
+ 1200 0026 059B     		ldr	r3, [sp, #20]
+ 1201              	.LVL149:
+ 338:./lib/vsprintf.c **** 		if (*fmt != '%' || *++fmt == '%') {
+ 1202              		.loc 1 338 16 is_stmt 0 discriminator 1 view .LVU361
+ 1203 0028 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1204 002a 002A     		cmp	r2, #0
+ 1205 002c 00F09C81 		beq	.L98
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1206              		.loc 1 339 3 is_stmt 1 view .LVU362
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1207              		.loc 1 339 6 is_stmt 0 view .LVU363
+ 1208 0030 252A     		cmp	r2, #37
+ 1209 0032 EED1     		bne	.L89
+ARM GAS  /tmp/cc7e5ZMk.s 			page 33
+
+
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1210              		.loc 1 339 23 discriminator 1 view .LVU364
+ 1211 0034 5A1C     		adds	r2, r3, #1
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1212              		.loc 1 339 19 discriminator 1 view .LVU365
+ 1213 0036 0592     		str	r2, [sp, #20]
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1214              		.loc 1 339 22 discriminator 1 view .LVU366
+ 1215 0038 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 339:./lib/vsprintf.c **** 			PUTC(*fmt);
+ 1216              		.loc 1 339 19 discriminator 1 view .LVU367
+ 1217 003a 252B     		cmp	r3, #37
+ 1218 003c E9D0     		beq	.L89
+ 345:./lib/vsprintf.c **** 
+ 1219              		.loc 1 345 3 is_stmt 1 view .LVU368
+ 345:./lib/vsprintf.c **** 
+ 1220              		.loc 1 345 11 is_stmt 0 view .LVU369
+ 1221 003e 05A8     		add	r0, sp, #20
+ 1222 0040 FFF7FEFF 		bl	get_flags
+ 1223              	.LVL150:
+ 1224 0044 8246     		mov	r10, r0
+ 1225              	.LVL151:
+ 348:./lib/vsprintf.c **** 		if (field_width < 0) {
+ 1226              		.loc 1 348 3 is_stmt 1 view .LVU370
+ 348:./lib/vsprintf.c **** 		if (field_width < 0) {
+ 1227              		.loc 1 348 17 is_stmt 0 view .LVU371
+ 1228 0046 07A9     		add	r1, sp, #28
+ 1229 0048 05A8     		add	r0, sp, #20
+ 1230              	.LVL152:
+ 348:./lib/vsprintf.c **** 		if (field_width < 0) {
+ 1231              		.loc 1 348 17 view .LVU372
+ 1232 004a FFF7FEFF 		bl	get_int
+ 1233              	.LVL153:
+ 349:./lib/vsprintf.c **** 			field_width = -field_width;
+ 1234              		.loc 1 349 3 is_stmt 1 view .LVU373
+ 349:./lib/vsprintf.c **** 			field_width = -field_width;
+ 1235              		.loc 1 349 6 is_stmt 0 view .LVU374
+ 1236 004e 051E     		subs	r5, r0, #0
+ 1237 0050 3CDB     		blt	.L166
+ 1238              	.LVL154:
+ 1239              	.L93:
+ 354:./lib/vsprintf.c **** 			flags &= ~ZEROPAD;
+ 1240              		.loc 1 354 3 is_stmt 1 view .LVU375
+ 354:./lib/vsprintf.c **** 			flags &= ~ZEROPAD;
+ 1241              		.loc 1 354 6 is_stmt 0 view .LVU376
+ 1242 0052 1AF0100F 		tst	r10, #16
+ 1243 0056 01D0     		beq	.L94
+ 355:./lib/vsprintf.c **** 
+ 1244              		.loc 1 355 4 is_stmt 1 view .LVU377
+ 355:./lib/vsprintf.c **** 
+ 1245              		.loc 1 355 10 is_stmt 0 view .LVU378
+ 1246 0058 2AF0010A 		bic	r10, r10, #1
+ 1247              	.LVL155:
+ 1248              	.L94:
+ 358:./lib/vsprintf.c **** 		if (*fmt == '.') {
+ 1249              		.loc 1 358 3 is_stmt 1 view .LVU379
+ 359:./lib/vsprintf.c **** 			++fmt;
+ARM GAS  /tmp/cc7e5ZMk.s 			page 34
+
+
+ 1250              		.loc 1 359 3 view .LVU380
+ 359:./lib/vsprintf.c **** 			++fmt;
+ 1251              		.loc 1 359 7 is_stmt 0 view .LVU381
+ 1252 005c 059B     		ldr	r3, [sp, #20]
+ 1253 005e 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 359:./lib/vsprintf.c **** 			++fmt;
+ 1254              		.loc 1 359 6 view .LVU382
+ 1255 0060 2E2A     		cmp	r2, #46
+ 1256 0062 37D0     		beq	.L167
+ 358:./lib/vsprintf.c **** 		if (*fmt == '.') {
+ 1257              		.loc 1 358 13 view .LVU383
+ 1258 0064 4FF0FF37 		mov	r7, #-1
+ 1259              	.LVL156:
+ 1260              	.L95:
+ 367:./lib/vsprintf.c **** 		if (*fmt == 'h' || *fmt == 'l') {
+ 1261              		.loc 1 367 3 is_stmt 1 view .LVU384
+ 368:./lib/vsprintf.c **** 			qualifier = *fmt;
+ 1262              		.loc 1 368 3 view .LVU385
+ 368:./lib/vsprintf.c **** 			qualifier = *fmt;
+ 1263              		.loc 1 368 7 is_stmt 0 view .LVU386
+ 1264 0068 059A     		ldr	r2, [sp, #20]
+ 1265 006a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 368:./lib/vsprintf.c **** 			qualifier = *fmt;
+ 1266              		.loc 1 368 6 view .LVU387
+ 1267 006c 682B     		cmp	r3, #104
+ 1268 006e 3CD0     		beq	.L96
+ 368:./lib/vsprintf.c **** 			qualifier = *fmt;
+ 1269              		.loc 1 368 19 discriminator 1 view .LVU388
+ 1270 0070 6C2B     		cmp	r3, #108
+ 1271 0072 3AD0     		beq	.L96
+ 367:./lib/vsprintf.c **** 		if (*fmt == 'h' || *fmt == 'l') {
+ 1272              		.loc 1 367 13 view .LVU389
+ 1273 0074 4FF0FF31 		mov	r1, #-1
+ 1274              	.LVL157:
+ 1275              	.L97:
+ 377:./lib/vsprintf.c **** 
+ 1276              		.loc 1 377 3 is_stmt 1 view .LVU390
+ 379:./lib/vsprintf.c **** 		case 'c':
+ 1277              		.loc 1 379 3 view .LVU391
+ 379:./lib/vsprintf.c **** 		case 'c':
+ 1278              		.loc 1 379 11 is_stmt 0 view .LVU392
+ 1279 0078 059B     		ldr	r3, [sp, #20]
+ 1280 007a 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 379:./lib/vsprintf.c **** 		case 'c':
+ 1281              		.loc 1 379 3 view .LVU393
+ 1282 007c A2F15803 		sub	r3, r2, #88
+ 1283 0080 202B     		cmp	r3, #32
+ 1284 0082 00F27181 		bhi	.L98
+ 1285 0086 DFE813F0 		tbh	[pc, r3, lsl #1]
+ 1286              	.L100:
+ 1287 008a EC00     		.2byte	(.L155-.L100)/2
+ 1288 008c 6F01     		.2byte	(.L98-.L100)/2
+ 1289 008e 6F01     		.2byte	(.L98-.L100)/2
+ 1290 0090 6F01     		.2byte	(.L98-.L100)/2
+ 1291 0092 6F01     		.2byte	(.L98-.L100)/2
+ 1292 0094 6F01     		.2byte	(.L98-.L100)/2
+ 1293 0096 6F01     		.2byte	(.L98-.L100)/2
+ARM GAS  /tmp/cc7e5ZMk.s 			page 35
+
+
+ 1294 0098 6F01     		.2byte	(.L98-.L100)/2
+ 1295 009a 6F01     		.2byte	(.L98-.L100)/2
+ 1296 009c 6F01     		.2byte	(.L98-.L100)/2
+ 1297 009e 6F01     		.2byte	(.L98-.L100)/2
+ 1298 00a0 3E00     		.2byte	(.L106-.L100)/2
+ 1299 00a2 E500     		.2byte	(.L105-.L100)/2
+ 1300 00a4 6F01     		.2byte	(.L98-.L100)/2
+ 1301 00a6 6F01     		.2byte	(.L98-.L100)/2
+ 1302 00a8 6F01     		.2byte	(.L98-.L100)/2
+ 1303 00aa 6F01     		.2byte	(.L98-.L100)/2
+ 1304 00ac E500     		.2byte	(.L105-.L100)/2
+ 1305 00ae 6F01     		.2byte	(.L98-.L100)/2
+ 1306 00b0 6F01     		.2byte	(.L98-.L100)/2
+ 1307 00b2 6F01     		.2byte	(.L98-.L100)/2
+ 1308 00b4 6F01     		.2byte	(.L98-.L100)/2
+ 1309 00b6 6F01     		.2byte	(.L98-.L100)/2
+ 1310 00b8 3B00     		.2byte	(.L104-.L100)/2
+ 1311 00ba 8900     		.2byte	(.L103-.L100)/2
+ 1312 00bc 6F01     		.2byte	(.L98-.L100)/2
+ 1313 00be 6F01     		.2byte	(.L98-.L100)/2
+ 1314 00c0 6700     		.2byte	(.L102-.L100)/2
+ 1315 00c2 6F01     		.2byte	(.L98-.L100)/2
+ 1316 00c4 E700     		.2byte	(.L101-.L100)/2
+ 1317 00c6 6F01     		.2byte	(.L98-.L100)/2
+ 1318 00c8 6F01     		.2byte	(.L98-.L100)/2
+ 1319 00ca 8B00     		.2byte	(.L99-.L100)/2
+ 1320              	.LVL158:
+ 1321              		.p2align 1
+ 1322              	.L166:
+ 350:./lib/vsprintf.c **** 			flags |= LEFT;
+ 1323              		.loc 1 350 4 is_stmt 1 view .LVU394
+ 350:./lib/vsprintf.c **** 			flags |= LEFT;
+ 1324              		.loc 1 350 16 is_stmt 0 view .LVU395
+ 1325 00cc 6D42     		rsbs	r5, r5, #0
+ 1326              	.LVL159:
+ 351:./lib/vsprintf.c **** 		}
+ 1327              		.loc 1 351 4 is_stmt 1 view .LVU396
+ 351:./lib/vsprintf.c **** 		}
+ 1328              		.loc 1 351 10 is_stmt 0 view .LVU397
+ 1329 00ce 4AF0100A 		orr	r10, r10, #16
+ 1330              	.LVL160:
+ 351:./lib/vsprintf.c **** 		}
+ 1331              		.loc 1 351 10 view .LVU398
+ 1332 00d2 BEE7     		b	.L93
+ 1333              	.LVL161:
+ 1334              	.L167:
+ 360:./lib/vsprintf.c **** 			precision = get_int(&fmt, &args);
+ 1335              		.loc 1 360 4 is_stmt 1 view .LVU399
+ 1336 00d4 0133     		adds	r3, r3, #1
+ 1337 00d6 0593     		str	r3, [sp, #20]
+ 361:./lib/vsprintf.c **** 			if (precision >= 0)
+ 1338              		.loc 1 361 4 view .LVU400
+ 361:./lib/vsprintf.c **** 			if (precision >= 0)
+ 1339              		.loc 1 361 16 is_stmt 0 view .LVU401
+ 1340 00d8 07A9     		add	r1, sp, #28
+ 1341 00da 05A8     		add	r0, sp, #20
+ 1342 00dc FFF7FEFF 		bl	get_int
+ARM GAS  /tmp/cc7e5ZMk.s 			page 36
+
+
+ 1343              	.LVL162:
+ 362:./lib/vsprintf.c **** 				flags &= ~ZEROPAD;
+ 1344              		.loc 1 362 4 is_stmt 1 view .LVU402
+ 362:./lib/vsprintf.c **** 				flags &= ~ZEROPAD;
+ 1345              		.loc 1 362 7 is_stmt 0 view .LVU403
+ 1346 00e0 071E     		subs	r7, r0, #0
+ 1347 00e2 C1DB     		blt	.L95
+ 363:./lib/vsprintf.c **** 		}
+ 1348              		.loc 1 363 5 is_stmt 1 view .LVU404
+ 363:./lib/vsprintf.c **** 		}
+ 1349              		.loc 1 363 11 is_stmt 0 view .LVU405
+ 1350 00e4 2AF0010A 		bic	r10, r10, #1
+ 1351              	.LVL163:
+ 363:./lib/vsprintf.c **** 		}
+ 1352              		.loc 1 363 11 view .LVU406
+ 1353 00e8 BEE7     		b	.L95
+ 1354              	.LVL164:
+ 1355              	.L96:
+ 369:./lib/vsprintf.c **** 			++fmt;
+ 1356              		.loc 1 369 4 is_stmt 1 view .LVU407
+ 369:./lib/vsprintf.c **** 			++fmt;
+ 1357              		.loc 1 369 14 is_stmt 0 view .LVU408
+ 1358 00ea 1946     		mov	r1, r3
+ 1359              	.LVL165:
+ 370:./lib/vsprintf.c **** 			if (qualifier == *fmt) {
+ 1360              		.loc 1 370 4 is_stmt 1 view .LVU409
+ 1361 00ec 501C     		adds	r0, r2, #1
+ 1362 00ee 0590     		str	r0, [sp, #20]
+ 371:./lib/vsprintf.c **** 				qualifier -= 'a'-'A';
+ 1363              		.loc 1 371 4 view .LVU410
+ 371:./lib/vsprintf.c **** 				qualifier -= 'a'-'A';
+ 1364              		.loc 1 371 21 is_stmt 0 view .LVU411
+ 1365 00f0 5078     		ldrb	r0, [r2, #1]	@ zero_extendqisi2
+ 371:./lib/vsprintf.c **** 				qualifier -= 'a'-'A';
+ 1366              		.loc 1 371 7 view .LVU412
+ 1367 00f2 8342     		cmp	r3, r0
+ 1368 00f4 C0D1     		bne	.L97
+ 372:./lib/vsprintf.c **** 				++fmt;
+ 1369              		.loc 1 372 5 is_stmt 1 view .LVU413
+ 372:./lib/vsprintf.c **** 				++fmt;
+ 1370              		.loc 1 372 15 is_stmt 0 view .LVU414
+ 1371 00f6 A3F12001 		sub	r1, r3, #32
+ 1372              	.LVL166:
+ 373:./lib/vsprintf.c **** 			}
+ 1373              		.loc 1 373 5 is_stmt 1 view .LVU415
+ 1374 00fa 0232     		adds	r2, r2, #2
+ 1375 00fc 0592     		str	r2, [sp, #20]
+ 1376 00fe BBE7     		b	.L97
+ 1377              	.LVL167:
+ 1378              	.L104:
+ 379:./lib/vsprintf.c **** 		case 'c':
+ 1379              		.loc 1 379 3 is_stmt 0 view .LVU416
+ 1380 0100 0823     		movs	r3, #8
+ 1381 0102 0393     		str	r3, [sp, #12]
+ 1382 0104 50E0     		b	.L107
+ 1383              	.L106:
+ 381:./lib/vsprintf.c **** 			s = tmp;
+ARM GAS  /tmp/cc7e5ZMk.s 			page 37
+
+
+ 1384              		.loc 1 381 4 is_stmt 1 view .LVU417
+ 381:./lib/vsprintf.c **** 			s = tmp;
+ 1385              		.loc 1 381 10 is_stmt 0 view .LVU418
+ 1386 0106 0AF0100A 		and	r10, r10, #16
+ 1387              	.LVL168:
+ 382:./lib/vsprintf.c **** 			if (qualifier == 'l') {
+ 1388              		.loc 1 382 4 is_stmt 1 view .LVU419
+ 383:./lib/vsprintf.c **** 				((u16 *)tmp)[0] = (u16)va_arg(args, unsigned int);
+ 1389              		.loc 1 383 4 view .LVU420
+ 383:./lib/vsprintf.c **** 				((u16 *)tmp)[0] = (u16)va_arg(args, unsigned int);
+ 1390              		.loc 1 383 7 is_stmt 0 view .LVU421
+ 1391 010a 6C29     		cmp	r1, #108
+ 1392 010c 0CD0     		beq	.L168
+ 389:./lib/vsprintf.c **** 				precision = len = 1;
+ 1393              		.loc 1 389 5 is_stmt 1 view .LVU422
+ 389:./lib/vsprintf.c **** 				precision = len = 1;
+ 1394              		.loc 1 389 29 is_stmt 0 view .LVU423
+ 1395 010e 079B     		ldr	r3, [sp, #28]
+ 1396 0110 1A1D     		adds	r2, r3, #4
+ 1397 0112 0792     		str	r2, [sp, #28]
+ 389:./lib/vsprintf.c **** 				precision = len = 1;
+ 1398              		.loc 1 389 14 discriminator 1 view .LVU424
+ 1399 0114 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 389:./lib/vsprintf.c **** 				precision = len = 1;
+ 1400              		.loc 1 389 12 discriminator 1 view .LVU425
+ 1401 0116 8DF82830 		strb	r3, [sp, #40]
+ 390:./lib/vsprintf.c **** 			}
+ 1402              		.loc 1 390 5 is_stmt 1 view .LVU426
+ 1403              	.LVL169:
+ 392:./lib/vsprintf.c **** 
+ 1404              		.loc 1 392 4 view .LVU427
+ 390:./lib/vsprintf.c **** 			}
+ 1405              		.loc 1 390 15 is_stmt 0 view .LVU428
+ 1406 011a 0127     		movs	r7, #1
+ 377:./lib/vsprintf.c **** 
+ 1407              		.loc 1 377 8 view .LVU429
+ 1408 011c 0023     		movs	r3, #0
+ 1409 011e 0493     		str	r3, [sp, #16]
+ 390:./lib/vsprintf.c **** 			}
+ 1410              		.loc 1 390 21 view .LVU430
+ 1411 0120 3946     		mov	r1, r7
+ 1412              	.LVL170:
+ 382:./lib/vsprintf.c **** 			if (qualifier == 'l') {
+ 1413              		.loc 1 382 6 view .LVU431
+ 1414 0122 0DF12809 		add	r9, sp, #40
+ 1415              	.LVL171:
+ 392:./lib/vsprintf.c **** 
+ 1416              		.loc 1 392 4 view .LVU432
+ 1417 0126 75E0     		b	.L110
+ 1418              	.LVL172:
+ 1419              	.L168:
+ 384:./lib/vsprintf.c **** 				((u16 *)tmp)[1] = L'\0';
+ 1420              		.loc 1 384 5 is_stmt 1 view .LVU433
+ 384:./lib/vsprintf.c **** 				((u16 *)tmp)[1] = L'\0';
+ 1421              		.loc 1 384 28 is_stmt 0 view .LVU434
+ 1422 0128 079B     		ldr	r3, [sp, #28]
+ 1423 012a 1A1D     		adds	r2, r3, #4
+ARM GAS  /tmp/cc7e5ZMk.s 			page 38
+
+
+ 1424 012c 0792     		str	r2, [sp, #28]
+ 384:./lib/vsprintf.c **** 				((u16 *)tmp)[1] = L'\0';
+ 1425              		.loc 1 384 23 discriminator 1 view .LVU435
+ 1426 012e 1B88     		ldrh	r3, [r3]
+ 384:./lib/vsprintf.c **** 				((u16 *)tmp)[1] = L'\0';
+ 1427              		.loc 1 384 21 discriminator 1 view .LVU436
+ 1428 0130 ADF82830 		strh	r3, [sp, #40]	@ movhi
+ 385:./lib/vsprintf.c **** 				precision = INT_MAX;
+ 1429              		.loc 1 385 5 is_stmt 1 view .LVU437
+ 385:./lib/vsprintf.c **** 				precision = INT_MAX;
+ 1430              		.loc 1 385 21 is_stmt 0 view .LVU438
+ 1431 0134 0023     		movs	r3, #0
+ 1432 0136 ADF82A30 		strh	r3, [sp, #42]	@ movhi
+ 386:./lib/vsprintf.c **** 				goto wstring;
+ 1433              		.loc 1 386 5 is_stmt 1 view .LVU439
+ 1434              	.LVL173:
+ 387:./lib/vsprintf.c **** 			} else {
+ 1435              		.loc 1 387 5 view .LVU440
+ 386:./lib/vsprintf.c **** 				goto wstring;
+ 1436              		.loc 1 386 15 is_stmt 0 view .LVU441
+ 1437 013a 6FF00047 		mvn	r7, #-2147483648
+ 382:./lib/vsprintf.c **** 			if (qualifier == 'l') {
+ 1438              		.loc 1 382 6 view .LVU442
+ 1439 013e 0DF12809 		add	r9, sp, #40
+ 1440              	.LVL174:
+ 1441              	.L109:
+ 403:./lib/vsprintf.c **** 				precision = len = utf16s_utf8nlen((const u16 *)s, precision);
+ 1442              		.loc 1 403 5 is_stmt 1 view .LVU443
+ 403:./lib/vsprintf.c **** 				precision = len = utf16s_utf8nlen((const u16 *)s, precision);
+ 1443              		.loc 1 403 11 is_stmt 0 view .LVU444
+ 1444 0142 4AF0800A 		orr	r10, r10, #128
+ 1445              	.LVL175:
+ 404:./lib/vsprintf.c **** 				goto output;
+ 1446              		.loc 1 404 5 is_stmt 1 view .LVU445
+ 404:./lib/vsprintf.c **** 				goto output;
+ 1447              		.loc 1 404 23 is_stmt 0 view .LVU446
+ 1448 0146 3946     		mov	r1, r7
+ 1449              	.LVL176:
+ 404:./lib/vsprintf.c **** 				goto output;
+ 1450              		.loc 1 404 23 view .LVU447
+ 1451 0148 4846     		mov	r0, r9
+ 1452 014a FFF7FEFF 		bl	utf16s_utf8nlen
+ 1453              	.LVL177:
+ 1454 014e 0746     		mov	r7, r0
+ 1455              	.LVL178:
+ 404:./lib/vsprintf.c **** 				goto output;
+ 1456              		.loc 1 404 15 discriminator 1 view .LVU448
+ 1457 0150 0146     		mov	r1, r0
+ 1458              	.LVL179:
+ 405:./lib/vsprintf.c **** 			}
+ 1459              		.loc 1 405 5 is_stmt 1 view .LVU449
+ 377:./lib/vsprintf.c **** 
+ 1460              		.loc 1 377 8 is_stmt 0 view .LVU450
+ 1461 0152 0023     		movs	r3, #0
+ 1462 0154 0493     		str	r3, [sp, #16]
+ 405:./lib/vsprintf.c **** 			}
+ 1463              		.loc 1 405 5 view .LVU451
+ARM GAS  /tmp/cc7e5ZMk.s 			page 39
+
+
+ 1464 0156 5DE0     		b	.L110
+ 1465              	.LVL180:
+ 1466              	.L102:
+ 395:./lib/vsprintf.c **** 			if (precision < 0)
+ 1467              		.loc 1 395 4 is_stmt 1 view .LVU452
+ 395:./lib/vsprintf.c **** 			if (precision < 0)
+ 1468              		.loc 1 395 10 is_stmt 0 view .LVU453
+ 1469 0158 0AF0100A 		and	r10, r10, #16
+ 1470              	.LVL181:
+ 396:./lib/vsprintf.c **** 				precision = INT_MAX;
+ 1471              		.loc 1 396 4 is_stmt 1 view .LVU454
+ 396:./lib/vsprintf.c **** 				precision = INT_MAX;
+ 1472              		.loc 1 396 7 is_stmt 0 view .LVU455
+ 1473 015c 002F     		cmp	r7, #0
+ 1474 015e 12DB     		blt	.L169
+ 1475              	.LVL182:
+ 1476              	.L111:
+ 398:./lib/vsprintf.c **** 			if (!s)
+ 1477              		.loc 1 398 4 is_stmt 1 view .LVU456
+ 398:./lib/vsprintf.c **** 			if (!s)
+ 1478              		.loc 1 398 6 is_stmt 0 view .LVU457
+ 1479 0160 079B     		ldr	r3, [sp, #28]
+ 1480 0162 1A1D     		adds	r2, r3, #4
+ 1481 0164 0792     		str	r2, [sp, #28]
+ 1482 0166 D3F80090 		ldr	r9, [r3]
+ 399:./lib/vsprintf.c **** 				s = precision < 6 ? "" : "(null)";
+ 1483              		.loc 1 399 4 is_stmt 1 view .LVU458
+ 399:./lib/vsprintf.c **** 				s = precision < 6 ? "" : "(null)";
+ 1484              		.loc 1 399 7 is_stmt 0 view .LVU459
+ 1485 016a B9F1000F 		cmp	r9, #0
+ 1486 016e 0DD0     		beq	.L170
+ 401:./lib/vsprintf.c **** 		wstring:
+ 1487              		.loc 1 401 9 is_stmt 1 view .LVU460
+ 401:./lib/vsprintf.c **** 		wstring:
+ 1488              		.loc 1 401 12 is_stmt 0 view .LVU461
+ 1489 0170 6C29     		cmp	r1, #108
+ 1490 0172 E6D0     		beq	.L109
+ 1491              	.L114:
+ 1492              	.LVL183:
+ 407:./lib/vsprintf.c **** 			goto output;
+ 1493              		.loc 1 407 4 is_stmt 1 view .LVU462
+ 407:./lib/vsprintf.c **** 			goto output;
+ 1494              		.loc 1 407 22 is_stmt 0 view .LVU463
+ 1495 0174 3946     		mov	r1, r7
+ 1496              	.LVL184:
+ 407:./lib/vsprintf.c **** 			goto output;
+ 1497              		.loc 1 407 22 view .LVU464
+ 1498 0176 4846     		mov	r0, r9
+ 1499 0178 FFF7FEFF 		bl	strnlen
+ 1500              	.LVL185:
+ 1501 017c 0146     		mov	r1, r0
+ 1502              	.LVL186:
+ 407:./lib/vsprintf.c **** 			goto output;
+ 1503              		.loc 1 407 14 discriminator 1 view .LVU465
+ 1504 017e 0746     		mov	r7, r0
+ 1505              	.LVL187:
+ 408:./lib/vsprintf.c **** 
+ARM GAS  /tmp/cc7e5ZMk.s 			page 40
+
+
+ 1506              		.loc 1 408 4 is_stmt 1 view .LVU466
+ 377:./lib/vsprintf.c **** 
+ 1507              		.loc 1 377 8 is_stmt 0 view .LVU467
+ 1508 0180 0023     		movs	r3, #0
+ 1509 0182 0493     		str	r3, [sp, #16]
+ 408:./lib/vsprintf.c **** 
+ 1510              		.loc 1 408 4 view .LVU468
+ 1511 0184 46E0     		b	.L110
+ 1512              	.LVL188:
+ 1513              	.L169:
+ 397:./lib/vsprintf.c **** 			s = va_arg(args, void *);
+ 1514              		.loc 1 397 15 view .LVU469
+ 1515 0186 6FF00047 		mvn	r7, #-2147483648
+ 1516              	.LVL189:
+ 397:./lib/vsprintf.c **** 			s = va_arg(args, void *);
+ 1517              		.loc 1 397 15 view .LVU470
+ 1518 018a E9E7     		b	.L111
+ 1519              	.LVL190:
+ 1520              	.L170:
+ 400:./lib/vsprintf.c **** 			else if (qualifier == 'l') {
+ 1521              		.loc 1 400 5 is_stmt 1 view .LVU471
+ 400:./lib/vsprintf.c **** 			else if (qualifier == 'l') {
+ 1522              		.loc 1 400 28 is_stmt 0 view .LVU472
+ 1523 018c 052F     		cmp	r7, #5
+ 1524 018e 02DD     		ble	.L113
+ 400:./lib/vsprintf.c **** 			else if (qualifier == 'l') {
+ 1525              		.loc 1 400 28 discriminator 2 view .LVU473
+ 1526 0190 DFF8EC91 		ldr	r9, .L179
+ 1527 0194 EEE7     		b	.L114
+ 1528              	.L113:
+ 400:./lib/vsprintf.c **** 			else if (qualifier == 'l') {
+ 1529              		.loc 1 400 28 discriminator 1 view .LVU474
+ 1530 0196 DFF8EC91 		ldr	r9, .L179+4
+ 1531 019a EBE7     		b	.L114
+ 1532              	.L103:
+ 416:./lib/vsprintf.c **** 				precision = 2 * sizeof(void *);
+ 1533              		.loc 1 416 4 is_stmt 1 view .LVU475
+ 416:./lib/vsprintf.c **** 				precision = 2 * sizeof(void *);
+ 1534              		.loc 1 416 7 is_stmt 0 view .LVU476
+ 1535 019c 002F     		cmp	r7, #0
+ 1536 019e 57DB     		blt	.L171
+ 1537              	.LVL191:
+ 1538              	.L99:
+ 418:./lib/vsprintf.c **** 		case 'x':
+ 1539              		.loc 1 418 4 is_stmt 1 view .LVU477
+ 420:./lib/vsprintf.c **** 			fallthrough;
+ 1540              		.loc 1 420 4 view .LVU478
+ 420:./lib/vsprintf.c **** 			fallthrough;
+ 1541              		.loc 1 420 10 is_stmt 0 view .LVU479
+ 1542 01a0 4AF0200A 		orr	r10, r10, #32
+ 1543              	.LVL192:
+ 423:./lib/vsprintf.c **** 			break;
+ 1544              		.loc 1 423 9 view .LVU480
+ 1545 01a4 1023     		movs	r3, #16
+ 1546 01a6 0393     		str	r3, [sp, #12]
+ 1547              	.L107:
+ 1548              	.LVL193:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 41
+
+
+ 444:./lib/vsprintf.c **** 			num = (unsigned long)va_arg(args, void *);
+ 1549              		.loc 1 444 3 is_stmt 1 view .LVU481
+ 444:./lib/vsprintf.c **** 			num = (unsigned long)va_arg(args, void *);
+ 1550              		.loc 1 444 6 is_stmt 0 view .LVU482
+ 1551 01a8 702A     		cmp	r2, #112
+ 1552 01aa 5DD1     		bne	.L115
+ 445:./lib/vsprintf.c **** 		} else {
+ 1553              		.loc 1 445 4 is_stmt 1 view .LVU483
+ 445:./lib/vsprintf.c **** 		} else {
+ 1554              		.loc 1 445 25 is_stmt 0 view .LVU484
+ 1555 01ac 079B     		ldr	r3, [sp, #28]
+ 1556 01ae 1A1D     		adds	r2, r3, #4
+ 1557 01b0 0792     		str	r2, [sp, #28]
+ 1558 01b2 1B68     		ldr	r3, [r3]
+ 445:./lib/vsprintf.c **** 		} else {
+ 1559              		.loc 1 445 8 discriminator 1 view .LVU485
+ 1560 01b4 0893     		str	r3, [sp, #32]
+ 1561 01b6 0023     		movs	r3, #0
+ 1562 01b8 0993     		str	r3, [sp, #36]
+ 1563              	.LVL194:
+ 1564              	.L116:
+ 450:./lib/vsprintf.c **** 		if (sign)
+ 1565              		.loc 1 450 3 is_stmt 1 view .LVU486
+ 450:./lib/vsprintf.c **** 		if (sign)
+ 1566              		.loc 1 450 10 is_stmt 0 view .LVU487
+ 1567 01ba 5146     		mov	r1, r10
+ 1568 01bc 08A8     		add	r0, sp, #32
+ 1569 01be FFF7FEFF 		bl	get_sign
+ 1570              	.LVL195:
+ 451:./lib/vsprintf.c **** 			--field_width;
+ 1571              		.loc 1 451 3 is_stmt 1 view .LVU488
+ 451:./lib/vsprintf.c **** 			--field_width;
+ 1572              		.loc 1 451 6 is_stmt 0 view .LVU489
+ 1573 01c2 0490     		str	r0, [sp, #16]
+ 1574 01c4 00B1     		cbz	r0, .L117
+ 452:./lib/vsprintf.c **** 
+ 1575              		.loc 1 452 4 is_stmt 1 view .LVU490
+ 1576 01c6 013D     		subs	r5, r5, #1
+ 1577              	.LVL196:
+ 1578              	.L117:
+ 454:./lib/vsprintf.c **** 		len = tmp_end - s;
+ 1579              		.loc 1 454 3 view .LVU491
+ 454:./lib/vsprintf.c **** 		len = tmp_end - s;
+ 1580              		.loc 1 454 7 is_stmt 0 view .LVU492
+ 1581 01c8 0DF13E0B 		add	fp, sp, #62
+ 1582              	.LVL197:
+ 454:./lib/vsprintf.c **** 		len = tmp_end - s;
+ 1583              		.loc 1 454 7 view .LVU493
+ 1584 01cc 0AF02003 		and	r3, r10, #32
+ 1585 01d0 0193     		str	r3, [sp, #4]
+ 1586 01d2 039B     		ldr	r3, [sp, #12]
+ 1587 01d4 0093     		str	r3, [sp]
+ 1588 01d6 DDE90823 		ldrd	r2, [sp, #32]
+ 1589 01da 5846     		mov	r0, fp
+ 1590              	.LVL198:
+ 454:./lib/vsprintf.c **** 		len = tmp_end - s;
+ 1591              		.loc 1 454 7 view .LVU494
+ARM GAS  /tmp/cc7e5ZMk.s 			page 42
+
+
+ 1592 01dc FFF7FEFF 		bl	number
+ 1593              	.LVL199:
+ 1594 01e0 8146     		mov	r9, r0
+ 1595              	.LVL200:
+ 455:./lib/vsprintf.c **** 		/* default precision is 1 */
+ 1596              		.loc 1 455 3 is_stmt 1 view .LVU495
+ 455:./lib/vsprintf.c **** 		/* default precision is 1 */
+ 1597              		.loc 1 455 17 is_stmt 0 view .LVU496
+ 1598 01e2 ABEB000B 		sub	fp, fp, r0
+ 1599              	.LVL201:
+ 455:./lib/vsprintf.c **** 		/* default precision is 1 */
+ 1600              		.loc 1 455 7 view .LVU497
+ 1601 01e6 5946     		mov	r1, fp
+ 1602              	.LVL202:
+ 457:./lib/vsprintf.c **** 			precision = 1;
+ 1603              		.loc 1 457 3 is_stmt 1 view .LVU498
+ 457:./lib/vsprintf.c **** 			precision = 1;
+ 1604              		.loc 1 457 6 is_stmt 0 view .LVU499
+ 1605 01e8 002F     		cmp	r7, #0
+ 1606 01ea 45DB     		blt	.L172
+ 1607              	.LVL203:
+ 1608              	.L118:
+ 460:./lib/vsprintf.c **** 			precision = len;
+ 1609              		.loc 1 460 3 is_stmt 1 view .LVU500
+ 460:./lib/vsprintf.c **** 			precision = len;
+ 1610              		.loc 1 460 6 is_stmt 0 view .LVU501
+ 1611 01ec 5F45     		cmp	r7, fp
+ 1612 01ee 00D2     		bcs	.L119
+ 461:./lib/vsprintf.c **** 		if (flags & SPECIAL) {
+ 1613              		.loc 1 461 14 view .LVU502
+ 1614 01f0 5F46     		mov	r7, fp
+ 1615              	.LVL204:
+ 1616              	.L119:
+ 462:./lib/vsprintf.c **** 			/*
+ 1617              		.loc 1 462 3 is_stmt 1 view .LVU503
+ 462:./lib/vsprintf.c **** 			/*
+ 1618              		.loc 1 462 6 is_stmt 0 view .LVU504
+ 1619 01f2 1AF0400F 		tst	r10, #64
+ 1620 01f6 07D0     		beq	.L120
+ 468:./lib/vsprintf.c **** 				++precision;
+ 1621              		.loc 1 468 4 is_stmt 1 view .LVU505
+ 468:./lib/vsprintf.c **** 				++precision;
+ 1622              		.loc 1 468 7 is_stmt 0 view .LVU506
+ 1623 01f8 039B     		ldr	r3, [sp, #12]
+ 1624 01fa 082B     		cmp	r3, #8
+ 1625 01fc 3ED0     		beq	.L173
+ 1626              	.L121:
+ 475:./lib/vsprintf.c **** 				field_width -= 2;
+ 1627              		.loc 1 475 4 is_stmt 1 view .LVU507
+ 475:./lib/vsprintf.c **** 				field_width -= 2;
+ 1628              		.loc 1 475 7 is_stmt 0 view .LVU508
+ 1629 01fe 039B     		ldr	r3, [sp, #12]
+ 1630 0200 102B     		cmp	r3, #16
+ 1631 0202 3FD0     		beq	.L174
+ 1632              	.L122:
+ 478:./lib/vsprintf.c **** 		}
+ 1633              		.loc 1 478 5 is_stmt 1 view .LVU509
+ARM GAS  /tmp/cc7e5ZMk.s 			page 43
+
+
+ 478:./lib/vsprintf.c **** 		}
+ 1634              		.loc 1 478 11 is_stmt 0 view .LVU510
+ 1635 0204 2AF0400A 		bic	r10, r10, #64
+ 1636              	.LVL205:
+ 1637              	.L120:
+ 484:./lib/vsprintf.c **** 			precision = field_width;
+ 1638              		.loc 1 484 3 is_stmt 1 view .LVU511
+ 484:./lib/vsprintf.c **** 			precision = field_width;
+ 1639              		.loc 1 484 6 is_stmt 0 view .LVU512
+ 1640 0208 1AF0010F 		tst	r10, #1
+ 1641 020c 02D0     		beq	.L110
+ 484:./lib/vsprintf.c **** 			precision = field_width;
+ 1642              		.loc 1 484 25 discriminator 1 view .LVU513
+ 1643 020e BD42     		cmp	r5, r7
+ 1644 0210 00DD     		ble	.L110
+ 485:./lib/vsprintf.c **** 
+ 1645              		.loc 1 485 14 view .LVU514
+ 1646 0212 2F46     		mov	r7, r5
+ 1647              	.LVL206:
+ 1648              	.L110:
+ 489:./lib/vsprintf.c **** 		/* Leading padding with ' ' */
+ 1649              		.loc 1 489 3 is_stmt 1 view .LVU515
+ 489:./lib/vsprintf.c **** 		/* Leading padding with ' ' */
+ 1650              		.loc 1 489 15 is_stmt 0 view .LVU516
+ 1651 0214 ED1B     		subs	r5, r5, r7
+ 1652              	.LVL207:
+ 491:./lib/vsprintf.c **** 			while (field_width-- > 0)
+ 1653              		.loc 1 491 3 is_stmt 1 view .LVU517
+ 491:./lib/vsprintf.c **** 			while (field_width-- > 0)
+ 1654              		.loc 1 491 6 is_stmt 0 view .LVU518
+ 1655 0216 1AF0100F 		tst	r10, #16
+ 1656 021a 39D0     		beq	.L123
+ 1657              	.L124:
+ 493:./lib/vsprintf.c **** 		/* sign */
+ 1658              		.loc 1 493 14 is_stmt 1 view .LVU519
+ 495:./lib/vsprintf.c **** 			PUTC(sign);
+ 1659              		.loc 1 495 3 view .LVU520
+ 495:./lib/vsprintf.c **** 			PUTC(sign);
+ 1660              		.loc 1 495 6 is_stmt 0 view .LVU521
+ 1661 021c 049B     		ldr	r3, [sp, #16]
+ 1662 021e 23B1     		cbz	r3, .L127
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 1663              		.loc 1 496 4 is_stmt 1 view .LVU522
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 1664              		.loc 1 496 4 view .LVU523
+ 1665 0220 B442     		cmp	r4, r6
+ 1666 0222 01D2     		bcs	.L128
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 1667              		.loc 1 496 4 discriminator 1 view .LVU524
+ 1668 0224 08F80430 		strb	r3, [r8, r4]
+ 1669              	.L128:
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 1670              		.loc 1 496 4 discriminator 3 view .LVU525
+ 1671 0228 0134     		adds	r4, r4, #1
+ 1672              	.LVL208:
+ 1673              	.L127:
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ARM GAS  /tmp/cc7e5ZMk.s 			page 44
+
+
+ 1674              		.loc 1 496 4 discriminator 4 view .LVU526
+ 496:./lib/vsprintf.c **** 		/* 0x/0X for hexadecimal */
+ 1675              		.loc 1 496 14 discriminator 4 view .LVU527
+ 498:./lib/vsprintf.c **** 			PUTC('0');
+ 1676              		.loc 1 498 3 view .LVU528
+ 498:./lib/vsprintf.c **** 			PUTC('0');
+ 1677              		.loc 1 498 6 is_stmt 0 view .LVU529
+ 1678 022a 1AF0400F 		tst	r10, #64
+ 1679 022e 3CD0     		beq	.L133
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1680              		.loc 1 499 4 is_stmt 1 view .LVU530
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1681              		.loc 1 499 4 view .LVU531
+ 1682 0230 B442     		cmp	r4, r6
+ 1683 0232 02D2     		bcs	.L130
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1684              		.loc 1 499 4 discriminator 1 view .LVU532
+ 1685 0234 3023     		movs	r3, #48
+ 1686 0236 08F80430 		strb	r3, [r8, r4]
+ 1687              	.L130:
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1688              		.loc 1 499 4 discriminator 3 view .LVU533
+ 1689 023a 631C     		adds	r3, r4, #1
+ 1690              	.LVL209:
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1691              		.loc 1 499 4 discriminator 3 view .LVU534
+ 499:./lib/vsprintf.c **** 			PUTC( 'X' | (flags & SMALL));
+ 1692              		.loc 1 499 13 discriminator 3 view .LVU535
+ 500:./lib/vsprintf.c **** 		}
+ 1693              		.loc 1 500 4 view .LVU536
+ 500:./lib/vsprintf.c **** 		}
+ 1694              		.loc 1 500 4 view .LVU537
+ 1695 023c 9E42     		cmp	r6, r3
+ 1696 023e 05D9     		bls	.L131
+ 500:./lib/vsprintf.c **** 		}
+ 1697              		.loc 1 500 4 discriminator 1 view .LVU538
+ 1698 0240 0AF02002 		and	r2, r10, #32
+ 1699 0244 42F05802 		orr	r2, r2, #88
+ 1700 0248 08F80320 		strb	r2, [r8, r3]
+ 1701              	.L131:
+ 500:./lib/vsprintf.c **** 		}
+ 1702              		.loc 1 500 4 discriminator 3 view .LVU539
+ 1703 024c 0234     		adds	r4, r4, #2
+ 1704              	.LVL210:
+ 500:./lib/vsprintf.c **** 		}
+ 1705              		.loc 1 500 4 is_stmt 0 discriminator 3 view .LVU540
+ 1706 024e 2CE0     		b	.L133
+ 1707              	.LVL211:
+ 1708              	.L171:
+ 417:./lib/vsprintf.c **** 			fallthrough;
+ 1709              		.loc 1 417 15 view .LVU541
+ 1710 0250 0827     		movs	r7, #8
+ 1711              	.LVL212:
+ 417:./lib/vsprintf.c **** 			fallthrough;
+ 1712              		.loc 1 417 15 view .LVU542
+ 1713 0252 A5E7     		b	.L99
+ 1714              	.LVL213:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 45
+
+
+ 1715              	.L105:
+ 428:./lib/vsprintf.c **** 			fallthrough;
+ 1716              		.loc 1 428 4 is_stmt 1 view .LVU543
+ 428:./lib/vsprintf.c **** 			fallthrough;
+ 1717              		.loc 1 428 10 is_stmt 0 view .LVU544
+ 1718 0254 4AF0020A 		orr	r10, r10, #2
+ 1719              	.LVL214:
+ 1720              	.L101:
+ 429:./lib/vsprintf.c **** 		case 'u':
+ 1721              		.loc 1 429 4 is_stmt 1 view .LVU545
+ 431:./lib/vsprintf.c **** 			base = 10;
+ 1722              		.loc 1 431 4 view .LVU546
+ 431:./lib/vsprintf.c **** 			base = 10;
+ 1723              		.loc 1 431 10 is_stmt 0 view .LVU547
+ 1724 0258 2AF0400A 		bic	r10, r10, #64
+ 1725              	.LVL215:
+ 432:./lib/vsprintf.c **** 			break;
+ 1726              		.loc 1 432 4 is_stmt 1 view .LVU548
+ 433:./lib/vsprintf.c **** 
+ 1727              		.loc 1 433 4 view .LVU549
+ 432:./lib/vsprintf.c **** 			break;
+ 1728              		.loc 1 432 9 is_stmt 0 view .LVU550
+ 1729 025c 0A23     		movs	r3, #10
+ 1730 025e 0393     		str	r3, [sp, #12]
+ 433:./lib/vsprintf.c **** 
+ 1731              		.loc 1 433 4 view .LVU551
+ 1732 0260 A2E7     		b	.L107
+ 1733              	.LVL216:
+ 1734              	.L155:
+ 423:./lib/vsprintf.c **** 			break;
+ 1735              		.loc 1 423 9 view .LVU552
+ 1736 0262 1023     		movs	r3, #16
+ 1737 0264 0393     		str	r3, [sp, #12]
+ 1738 0266 9FE7     		b	.L107
+ 1739              	.LVL217:
+ 1740              	.L115:
+ 447:./lib/vsprintf.c **** 		}
+ 1741              		.loc 1 447 4 is_stmt 1 view .LVU553
+ 447:./lib/vsprintf.c **** 		}
+ 1742              		.loc 1 447 10 is_stmt 0 view .LVU554
+ 1743 0268 07AA     		add	r2, sp, #28
+ 1744 026a 0AF00200 		and	r0, r10, #2
+ 1745 026e FFF7FEFF 		bl	get_number
+ 1746              	.LVL218:
+ 447:./lib/vsprintf.c **** 		}
+ 1747              		.loc 1 447 8 discriminator 1 view .LVU555
+ 1748 0272 CDE90801 		strd	r0, [sp, #32]
+ 1749 0276 A0E7     		b	.L116
+ 1750              	.LVL219:
+ 1751              	.L172:
+ 458:./lib/vsprintf.c **** 		/* precision is minimum number of digits to print */
+ 1752              		.loc 1 458 14 view .LVU556
+ 1753 0278 0127     		movs	r7, #1
+ 1754              	.LVL220:
+ 458:./lib/vsprintf.c **** 		/* precision is minimum number of digits to print */
+ 1755              		.loc 1 458 14 view .LVU557
+ 1756 027a B7E7     		b	.L118
+ARM GAS  /tmp/cc7e5ZMk.s 			page 46
+
+
+ 1757              	.LVL221:
+ 1758              	.L173:
+ 468:./lib/vsprintf.c **** 				++precision;
+ 1759              		.loc 1 468 18 discriminator 1 view .LVU558
+ 1760 027c BB45     		cmp	fp, r7
+ 1761 027e BED1     		bne	.L121
+ 469:./lib/vsprintf.c **** 			/*
+ 1762              		.loc 1 469 5 is_stmt 1 view .LVU559
+ 1763 0280 0137     		adds	r7, r7, #1
+ 1764              	.LVL222:
+ 469:./lib/vsprintf.c **** 			/*
+ 1765              		.loc 1 469 5 is_stmt 0 view .LVU560
+ 1766 0282 BCE7     		b	.L121
+ 1767              	.L174:
+ 475:./lib/vsprintf.c **** 				field_width -= 2;
+ 1768              		.loc 1 475 19 discriminator 1 view .LVU561
+ 1769 0284 002F     		cmp	r7, #0
+ 1770 0286 BDDD     		ble	.L122
+ 476:./lib/vsprintf.c **** 			else
+ 1771              		.loc 1 476 5 is_stmt 1 view .LVU562
+ 476:./lib/vsprintf.c **** 			else
+ 1772              		.loc 1 476 17 is_stmt 0 view .LVU563
+ 1773 0288 023D     		subs	r5, r5, #2
+ 1774              	.LVL223:
+ 476:./lib/vsprintf.c **** 			else
+ 1775              		.loc 1 476 17 view .LVU564
+ 1776 028a BDE7     		b	.L120
+ 1777              	.LVL224:
+ 1778              	.L125:
+ 493:./lib/vsprintf.c **** 		/* sign */
+ 1779              		.loc 1 493 5 is_stmt 1 discriminator 3 view .LVU565
+ 1780 028c 0134     		adds	r4, r4, #1
+ 1781              	.LVL225:
+ 492:./lib/vsprintf.c **** 				PUTC(' ');
+ 1782              		.loc 1 492 22 is_stmt 0 view .LVU566
+ 1783 028e 1D46     		mov	r5, r3
+ 1784              	.LVL226:
+ 1785              	.L123:
+ 493:./lib/vsprintf.c **** 		/* sign */
+ 1786              		.loc 1 493 5 is_stmt 1 discriminator 4 view .LVU567
+ 492:./lib/vsprintf.c **** 				PUTC(' ');
+ 1787              		.loc 1 492 25 view .LVU568
+ 492:./lib/vsprintf.c **** 				PUTC(' ');
+ 1788              		.loc 1 492 22 is_stmt 0 view .LVU569
+ 1789 0290 6B1E     		subs	r3, r5, #1
+ 1790              	.LVL227:
+ 492:./lib/vsprintf.c **** 				PUTC(' ');
+ 1791              		.loc 1 492 25 view .LVU570
+ 1792 0292 002D     		cmp	r5, #0
+ 1793 0294 05DD     		ble	.L175
+ 493:./lib/vsprintf.c **** 		/* sign */
+ 1794              		.loc 1 493 5 is_stmt 1 view .LVU571
+ 493:./lib/vsprintf.c **** 		/* sign */
+ 1795              		.loc 1 493 5 view .LVU572
+ 1796 0296 B442     		cmp	r4, r6
+ 1797 0298 F8D2     		bcs	.L125
+ 493:./lib/vsprintf.c **** 		/* sign */
+ARM GAS  /tmp/cc7e5ZMk.s 			page 47
+
+
+ 1798              		.loc 1 493 5 discriminator 1 view .LVU573
+ 1799 029a 2022     		movs	r2, #32
+ 1800 029c 08F80420 		strb	r2, [r8, r4]
+ 1801 02a0 F4E7     		b	.L125
+ 1802              	.L175:
+ 492:./lib/vsprintf.c **** 				PUTC(' ');
+ 1803              		.loc 1 492 22 is_stmt 0 view .LVU574
+ 1804 02a2 1D46     		mov	r5, r3
+ 1805 02a4 BAE7     		b	.L124
+ 1806              	.LVL228:
+ 1807              	.L132:
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1808              		.loc 1 504 4 is_stmt 1 discriminator 3 view .LVU575
+ 1809 02a6 0134     		adds	r4, r4, #1
+ 1810              	.LVL229:
+ 503:./lib/vsprintf.c **** 			PUTC('0');
+ 1811              		.loc 1 503 19 is_stmt 0 view .LVU576
+ 1812 02a8 1F46     		mov	r7, r3
+ 1813              	.LVL230:
+ 1814              	.L133:
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1815              		.loc 1 504 4 is_stmt 1 discriminator 4 view .LVU577
+ 503:./lib/vsprintf.c **** 			PUTC('0');
+ 1816              		.loc 1 503 22 view .LVU578
+ 503:./lib/vsprintf.c **** 			PUTC('0');
+ 1817              		.loc 1 503 19 is_stmt 0 view .LVU579
+ 1818 02aa 7B1E     		subs	r3, r7, #1
+ 1819              	.LVL231:
+ 503:./lib/vsprintf.c **** 			PUTC('0');
+ 1820              		.loc 1 503 22 view .LVU580
+ 1821 02ac 8F42     		cmp	r7, r1
+ 1822 02ae 05D9     		bls	.L176
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1823              		.loc 1 504 4 is_stmt 1 view .LVU581
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1824              		.loc 1 504 4 view .LVU582
+ 1825 02b0 B442     		cmp	r4, r6
+ 1826 02b2 F8D2     		bcs	.L132
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1827              		.loc 1 504 4 discriminator 1 view .LVU583
+ 1828 02b4 3022     		movs	r2, #48
+ 1829 02b6 08F80420 		strb	r2, [r8, r4]
+ 1830 02ba F4E7     		b	.L132
+ 1831              	.L176:
+ 504:./lib/vsprintf.c **** 		/* Actual output */
+ 1832              		.loc 1 504 13 view .LVU584
+ 506:./lib/vsprintf.c **** 			const u16 *ws = (const u16 *)s;
+ 1833              		.loc 1 506 3 view .LVU585
+ 506:./lib/vsprintf.c **** 			const u16 *ws = (const u16 *)s;
+ 1834              		.loc 1 506 6 is_stmt 0 view .LVU586
+ 1835 02bc 1AF0800F 		tst	r10, #128
+ 1836 02c0 3DD0     		beq	.L135
+ 1837              	.LBB6:
+ 507:./lib/vsprintf.c **** 
+ 1838              		.loc 1 507 4 is_stmt 1 view .LVU587
+ 507:./lib/vsprintf.c **** 
+ 1839              		.loc 1 507 15 is_stmt 0 view .LVU588
+ARM GAS  /tmp/cc7e5ZMk.s 			page 48
+
+
+ 1840 02c2 CDF81890 		str	r9, [sp, #24]
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1841              		.loc 1 509 4 is_stmt 1 view .LVU589
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1842              		.loc 1 509 10 is_stmt 0 view .LVU590
+ 1843 02c6 0CE0     		b	.L136
+ 1844              	.LVL232:
+ 1845              	.L178:
+ 1846              	.LBB7:
+ 515:./lib/vsprintf.c **** 					continue;
+ 1847              		.loc 1 515 6 is_stmt 1 view .LVU591
+ 515:./lib/vsprintf.c **** 					continue;
+ 1848              		.loc 1 515 6 view .LVU592
+ 1849 02c8 B442     		cmp	r4, r6
+ 1850 02ca 01D2     		bcs	.L138
+ 515:./lib/vsprintf.c **** 					continue;
+ 1851              		.loc 1 515 6 discriminator 1 view .LVU593
+ 1852 02cc 08F80400 		strb	r0, [r8, r4]
+ 1853              	.L138:
+ 515:./lib/vsprintf.c **** 					continue;
+ 1854              		.loc 1 515 6 discriminator 3 view .LVU594
+ 1855 02d0 0134     		adds	r4, r4, #1
+ 1856              	.LVL233:
+ 515:./lib/vsprintf.c **** 					continue;
+ 1857              		.loc 1 515 6 discriminator 3 view .LVU595
+ 515:./lib/vsprintf.c **** 					continue;
+ 1858              		.loc 1 515 15 discriminator 3 view .LVU596
+ 516:./lib/vsprintf.c **** 				}
+ 1859              		.loc 1 516 6 view .LVU597
+ 1860              	.LBE7:
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1861              		.loc 1 509 14 is_stmt 0 view .LVU598
+ 1862 02d2 3946     		mov	r1, r7
+ 1863              	.LBB8:
+ 516:./lib/vsprintf.c **** 				}
+ 1864              		.loc 1 516 6 view .LVU599
+ 1865 02d4 05E0     		b	.L136
+ 1866              	.L161:
+ 520:./lib/vsprintf.c **** 
+ 1867              		.loc 1 520 14 discriminator 2 view .LVU600
+ 1868 02d6 0122     		movs	r2, #1
+ 1869 02d8 0EE0     		b	.L140
+ 1870              	.LVL234:
+ 1871              	.L141:
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1872              		.loc 1 526 5 is_stmt 1 discriminator 3 view .LVU601
+ 1873 02da 0134     		adds	r4, r4, #1
+ 1874              	.LVL235:
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1875              		.loc 1 526 5 discriminator 3 view .LVU602
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1876              		.loc 1 526 15 discriminator 3 view .LVU603
+ 527:./lib/vsprintf.c **** 				if (pos >= size)
+ 1877              		.loc 1 527 5 view .LVU604
+ 527:./lib/vsprintf.c **** 				if (pos >= size)
+ 1878              		.loc 1 527 9 is_stmt 0 view .LVU605
+ 1879 02dc 1444     		add	r4, r4, r2
+ARM GAS  /tmp/cc7e5ZMk.s 			page 49
+
+
+ 1880              	.LVL236:
+ 528:./lib/vsprintf.c **** 					continue;
+ 1881              		.loc 1 528 5 is_stmt 1 view .LVU606
+ 528:./lib/vsprintf.c **** 					continue;
+ 1882              		.loc 1 528 8 is_stmt 0 view .LVU607
+ 1883 02de A642     		cmp	r6, r4
+ 1884 02e0 17D8     		bhi	.L177
+ 1885              	.LVL237:
+ 1886              	.L136:
+ 528:./lib/vsprintf.c **** 					continue;
+ 1887              		.loc 1 528 8 view .LVU608
+ 1888              	.LBE8:
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1889              		.loc 1 509 17 is_stmt 1 view .LVU609
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1890              		.loc 1 509 14 is_stmt 0 view .LVU610
+ 1891 02e2 4F1E     		subs	r7, r1, #1
+ 1892              	.LVL238:
+ 509:./lib/vsprintf.c **** 				u32 c32 = utf16_to_utf32(&ws);
+ 1893              		.loc 1 509 17 view .LVU611
+ 1894 02e4 B1B3     		cbz	r1, .L149
+ 1895              	.LBB9:
+ 510:./lib/vsprintf.c **** 				u8 *s8;
+ 1896              		.loc 1 510 5 is_stmt 1 view .LVU612
+ 510:./lib/vsprintf.c **** 				u8 *s8;
+ 1897              		.loc 1 510 15 is_stmt 0 view .LVU613
+ 1898 02e6 06A8     		add	r0, sp, #24
+ 1899 02e8 FFF7FEFF 		bl	utf16_to_utf32
+ 1900              	.LVL239:
+ 511:./lib/vsprintf.c **** 				size_t clen;
+ 1901              		.loc 1 511 5 is_stmt 1 view .LVU614
+ 512:./lib/vsprintf.c **** 
+ 1902              		.loc 1 512 5 view .LVU615
+ 514:./lib/vsprintf.c **** 					PUTC(c32);
+ 1903              		.loc 1 514 5 view .LVU616
+ 514:./lib/vsprintf.c **** 					PUTC(c32);
+ 1904              		.loc 1 514 8 is_stmt 0 view .LVU617
+ 1905 02ec 7F28     		cmp	r0, #127
+ 1906 02ee EBD9     		bls	.L178
+ 520:./lib/vsprintf.c **** 
+ 1907              		.loc 1 520 5 is_stmt 1 view .LVU618
+ 520:./lib/vsprintf.c **** 
+ 1908              		.loc 1 520 14 is_stmt 0 view .LVU619
+ 1909 02f0 B0F5006F 		cmp	r0, #2048
+ 1910 02f4 EFD3     		bcc	.L161
+ 520:./lib/vsprintf.c **** 
+ 1911              		.loc 1 520 14 discriminator 1 view .LVU620
+ 1912 02f6 0222     		movs	r2, #2
+ 1913              	.L140:
+ 520:./lib/vsprintf.c **** 
+ 1914              		.loc 1 520 31 discriminator 4 view .LVU621
+ 1915 02f8 B0F5803F 		cmp	r0, #65536
+ 1916 02fc 28BF     		it	cs
+ 1917 02fe 0132     		addcs	r2, r2, #1
+ 1918              	.LVL240:
+ 522:./lib/vsprintf.c **** 				s8 = (u8 *)&buf[pos];
+ 1919              		.loc 1 522 5 is_stmt 1 view .LVU622
+ARM GAS  /tmp/cc7e5ZMk.s 			page 50
+
+
+ 522:./lib/vsprintf.c **** 				s8 = (u8 *)&buf[pos];
+ 1920              		.loc 1 522 9 is_stmt 0 view .LVU623
+ 1921 0300 B91A     		subs	r1, r7, r2
+ 1922              	.LVL241:
+ 523:./lib/vsprintf.c **** 
+ 1923              		.loc 1 523 5 is_stmt 1 view .LVU624
+ 523:./lib/vsprintf.c **** 
+ 1924              		.loc 1 523 8 is_stmt 0 view .LVU625
+ 1925 0302 08EB0403 		add	r3, r8, r4
+ 1926              	.LVL242:
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1927              		.loc 1 526 5 is_stmt 1 view .LVU626
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1928              		.loc 1 526 5 view .LVU627
+ 1929 0306 B442     		cmp	r4, r6
+ 1930 0308 E7D2     		bcs	.L141
+ 526:./lib/vsprintf.c **** 				pos += clen;
+ 1931              		.loc 1 526 5 discriminator 1 view .LVU628
+ 1932 030a 0027     		movs	r7, #0
+ 1933 030c 08F80470 		strb	r7, [r8, r4]
+ 1934 0310 E3E7     		b	.L141
+ 1935              	.L177:
+ 532:./lib/vsprintf.c **** 				/* Write trailing octets in reverse order */
+ 1936              		.loc 1 532 5 view .LVU629
+ 532:./lib/vsprintf.c **** 				/* Write trailing octets in reverse order */
+ 1937              		.loc 1 532 24 is_stmt 0 view .LVU630
+ 1938 0312 4FF4F067 		mov	r7, #1920
+ 1939 0316 1741     		asrs	r7, r7, r2
+ 532:./lib/vsprintf.c **** 				/* Write trailing octets in reverse order */
+ 1940              		.loc 1 532 9 view .LVU631
+ 1941 0318 1F70     		strb	r7, [r3]
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1942              		.loc 1 534 5 is_stmt 1 view .LVU632
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1943              		.loc 1 534 13 is_stmt 0 view .LVU633
+ 1944 031a 1344     		add	r3, r3, r2
+ 1945              	.LVL243:
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1946              		.loc 1 534 5 view .LVU634
+ 1947 031c 07E0     		b	.L142
+ 1948              	.L143:
+ 535:./lib/vsprintf.c **** 				/* Set low bits of leading octet */
+ 1949              		.loc 1 535 6 is_stmt 1 view .LVU635
+ 535:./lib/vsprintf.c **** 				/* Set low bits of leading octet */
+ 1950              		.loc 1 535 26 is_stmt 0 view .LVU636
+ 1951 031e 00F03F07 		and	r7, r0, #63
+ 1952              	.LVL244:
+ 535:./lib/vsprintf.c **** 				/* Set low bits of leading octet */
+ 1953              		.loc 1 535 19 view .LVU637
+ 1954 0322 47F08007 		orr	r7, r7, #128
+ 535:./lib/vsprintf.c **** 				/* Set low bits of leading octet */
+ 1955              		.loc 1 535 12 view .LVU638
+ 1956 0326 03F80179 		strb	r7, [r3], #-1
+ 1957              	.LVL245:
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1958              		.loc 1 534 34 is_stmt 1 discriminator 3 view .LVU639
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ARM GAS  /tmp/cc7e5ZMk.s 			page 51
+
+
+ 1959              		.loc 1 534 28 is_stmt 0 discriminator 3 view .LVU640
+ 1960 032a 013A     		subs	r2, r2, #1
+ 1961              	.LVL246:
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1962              		.loc 1 534 40 discriminator 3 view .LVU641
+ 1963 032c 8009     		lsrs	r0, r0, #6
+ 1964              	.LVL247:
+ 1965              	.L142:
+ 534:./lib/vsprintf.c **** 					*s8-- = 0x80 | (c32 & 0x3f);
+ 1966              		.loc 1 534 22 is_stmt 1 discriminator 1 view .LVU642
+ 1967 032e 002A     		cmp	r2, #0
+ 1968 0330 F5D1     		bne	.L143
+ 537:./lib/vsprintf.c **** 			}
+ 1969              		.loc 1 537 5 view .LVU643
+ 1970 0332 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1971              	.LVL248:
+ 537:./lib/vsprintf.c **** 			}
+ 1972              		.loc 1 537 9 is_stmt 0 view .LVU644
+ 1973 0334 0243     		orrs	r2, r2, r0
+ 1974 0336 1A70     		strb	r2, [r3]
+ 1975 0338 D3E7     		b	.L136
+ 1976              	.LVL249:
+ 1977              	.L146:
+ 537:./lib/vsprintf.c **** 			}
+ 1978              		.loc 1 537 9 view .LVU645
+ 1979              	.LBE9:
+ 1980              	.LBE6:
+ 541:./lib/vsprintf.c **** 		}
+ 1981              		.loc 1 541 5 is_stmt 1 discriminator 3 view .LVU646
+ 1982 033a 0134     		adds	r4, r4, #1
+ 1983              	.LVL250:
+ 540:./lib/vsprintf.c **** 				PUTC(*s++);
+ 1984              		.loc 1 540 14 is_stmt 0 view .LVU647
+ 1985 033c 1946     		mov	r1, r3
+ 1986              	.LVL251:
+ 1987              	.L135:
+ 541:./lib/vsprintf.c **** 		}
+ 1988              		.loc 1 541 5 is_stmt 1 discriminator 4 view .LVU648
+ 540:./lib/vsprintf.c **** 				PUTC(*s++);
+ 1989              		.loc 1 540 17 view .LVU649
+ 540:./lib/vsprintf.c **** 				PUTC(*s++);
+ 1990              		.loc 1 540 14 is_stmt 0 view .LVU650
+ 1991 033e 4B1E     		subs	r3, r1, #1
+ 1992              	.LVL252:
+ 540:./lib/vsprintf.c **** 				PUTC(*s++);
+ 1993              		.loc 1 540 17 view .LVU651
+ 1994 0340 41B1     		cbz	r1, .L149
+ 541:./lib/vsprintf.c **** 		}
+ 1995              		.loc 1 541 5 is_stmt 1 view .LVU652
+ 541:./lib/vsprintf.c **** 		}
+ 1996              		.loc 1 541 5 view .LVU653
+ 1997 0342 B442     		cmp	r4, r6
+ 1998 0344 F9D2     		bcs	.L146
+ 541:./lib/vsprintf.c **** 		}
+ 1999              		.loc 1 541 5 discriminator 1 view .LVU654
+ 2000              	.LVL253:
+ 541:./lib/vsprintf.c **** 		}
+ARM GAS  /tmp/cc7e5ZMk.s 			page 52
+
+
+ 2001              		.loc 1 541 5 is_stmt 0 discriminator 1 view .LVU655
+ 2002 0346 19F8012B 		ldrb	r2, [r9], #1	@ zero_extendqisi2
+ 2003              	.LVL254:
+ 541:./lib/vsprintf.c **** 		}
+ 2004              		.loc 1 541 5 discriminator 1 view .LVU656
+ 2005 034a 08F80420 		strb	r2, [r8, r4]
+ 2006 034e F4E7     		b	.L146
+ 2007              	.LVL255:
+ 2008              	.L148:
+ 2009              		.loc 1 545 4 is_stmt 1 discriminator 3 view .LVU657
+ 2010 0350 0134     		adds	r4, r4, #1
+ 2011              	.LVL256:
+ 544:./lib/vsprintf.c **** 			PUTC(' ');
+ 2012              		.loc 1 544 21 is_stmt 0 view .LVU658
+ 2013 0352 1D46     		mov	r5, r3
+ 2014              	.LVL257:
+ 2015              	.L149:
+ 2016              		.loc 1 545 4 is_stmt 1 discriminator 4 view .LVU659
+ 544:./lib/vsprintf.c **** 			PUTC(' ');
+ 2017              		.loc 1 544 24 view .LVU660
+ 544:./lib/vsprintf.c **** 			PUTC(' ');
+ 2018              		.loc 1 544 21 is_stmt 0 view .LVU661
+ 2019 0354 6B1E     		subs	r3, r5, #1
+ 2020              	.LVL258:
+ 544:./lib/vsprintf.c **** 			PUTC(' ');
+ 2021              		.loc 1 544 24 view .LVU662
+ 2022 0356 002D     		cmp	r5, #0
+ 2023 0358 7FF762AE 		ble	.L92
+ 2024              		.loc 1 545 4 is_stmt 1 view .LVU663
+ 2025              		.loc 1 545 4 view .LVU664
+ 2026 035c B442     		cmp	r4, r6
+ 2027 035e F7D2     		bcs	.L148
+ 2028              		.loc 1 545 4 discriminator 1 view .LVU665
+ 2029 0360 2022     		movs	r2, #32
+ 2030 0362 08F80420 		strb	r2, [r8, r4]
+ 2031 0366 F3E7     		b	.L148
+ 2032              	.LVL259:
+ 2033              	.L98:
+ 546:./lib/vsprintf.c **** 	}
+ 547:./lib/vsprintf.c **** fail:
+ 548:./lib/vsprintf.c **** 	va_end(args);
+ 2034              		.loc 1 548 2 view .LVU666
+ 549:./lib/vsprintf.c **** 
+ 550:./lib/vsprintf.c **** 	if (size)
+ 2035              		.loc 1 550 2 view .LVU667
+ 2036              		.loc 1 550 5 is_stmt 0 view .LVU668
+ 2037 0368 36B1     		cbz	r6, .L152
+ 551:./lib/vsprintf.c **** 		buf[min(pos, size-1)] = '\0';
+ 2038              		.loc 1 551 3 is_stmt 1 view .LVU669
+ 2039              		.loc 1 551 7 is_stmt 0 view .LVU670
+ 2040 036a 013E     		subs	r6, r6, #1
+ 2041              	.LVL260:
+ 2042              		.loc 1 551 7 view .LVU671
+ 2043 036c A642     		cmp	r6, r4
+ 2044 036e 28BF     		it	cs
+ 2045 0370 2646     		movcs	r6, r4
+ 2046              	.LVL261:
+ARM GAS  /tmp/cc7e5ZMk.s 			page 53
+
+
+ 2047              		.loc 1 551 25 view .LVU672
+ 2048 0372 0023     		movs	r3, #0
+ 2049 0374 08F80630 		strb	r3, [r8, r6]
+ 2050              	.L152:
+ 552:./lib/vsprintf.c **** 
+ 553:./lib/vsprintf.c **** 	return pos;
+ 2051              		.loc 1 553 2 is_stmt 1 view .LVU673
+ 554:./lib/vsprintf.c **** } 
+ 2052              		.loc 1 554 1 is_stmt 0 view .LVU674
+ 2053 0378 2046     		mov	r0, r4
+ 2054 037a 11B0     		add	sp, sp, #68
+ 2055              	.LCFI8:
+ 2056              		.cfi_def_cfa_offset 36
+ 2057              		@ sp needed
+ 2058 037c BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 2059              	.LVL262:
+ 2060              	.L180:
+ 2061              		.loc 1 554 1 view .LVU675
+ 2062              		.align	2
+ 2063              	.L179:
+ 2064 0380 00000000 		.word	.LC0
+ 2065 0384 08000000 		.word	.LC1
+ 2066              		.cfi_endproc
+ 2067              	.LFE189:
+ 2069              		.section	.text.snprintf,"ax",%progbits
+ 2070              		.align	1
+ 2071              		.global	snprintf
+ 2072              		.syntax unified
+ 2073              		.thumb
+ 2074              		.thumb_func
+ 2076              	snprintf:
+ 2077              	.LVL263:
+ 2078              	.LFB190:
+ 555:./lib/vsprintf.c **** 
+ 556:./lib/vsprintf.c **** int snprintf(char *buf, size_t size, const char *fmt, ...)
+ 557:./lib/vsprintf.c **** {
+ 2079              		.loc 1 557 1 is_stmt 1 view -0
+ 2080              		.cfi_startproc
+ 2081              		@ args = 4, pretend = 8, frame = 8
+ 2082              		@ frame_needed = 0, uses_anonymous_args = 1
+ 2083              		.loc 1 557 1 is_stmt 0 view .LVU677
+ 2084 0000 0CB4     		push	{r2, r3}
+ 2085              	.LCFI9:
+ 2086              		.cfi_def_cfa_offset 8
+ 2087              		.cfi_offset 2, -8
+ 2088              		.cfi_offset 3, -4
+ 2089 0002 00B5     		push	{lr}
+ 2090              	.LCFI10:
+ 2091              		.cfi_def_cfa_offset 12
+ 2092              		.cfi_offset 14, -12
+ 2093 0004 83B0     		sub	sp, sp, #12
+ 2094              	.LCFI11:
+ 2095              		.cfi_def_cfa_offset 24
+ 2096 0006 04AB     		add	r3, sp, #16
+ 2097 0008 53F8042B 		ldr	r2, [r3], #4
+ 558:./lib/vsprintf.c **** 	va_list args;
+ 2098              		.loc 1 558 2 is_stmt 1 view .LVU678
+ARM GAS  /tmp/cc7e5ZMk.s 			page 54
+
+
+ 559:./lib/vsprintf.c **** 	int i;
+ 2099              		.loc 1 559 2 view .LVU679
+ 560:./lib/vsprintf.c **** 
+ 561:./lib/vsprintf.c **** 	va_start(args, fmt);
+ 2100              		.loc 1 561 2 view .LVU680
+ 2101 000c 0193     		str	r3, [sp, #4]
+ 562:./lib/vsprintf.c **** 	i = vsnprintf(buf, size, fmt, args);
+ 2102              		.loc 1 562 2 view .LVU681
+ 2103              		.loc 1 562 6 is_stmt 0 view .LVU682
+ 2104 000e FFF7FEFF 		bl	vsnprintf
+ 2105              	.LVL264:
+ 563:./lib/vsprintf.c **** 	va_end(args);
+ 2106              		.loc 1 563 2 is_stmt 1 view .LVU683
+ 564:./lib/vsprintf.c **** 	return i;
+ 2107              		.loc 1 564 2 view .LVU684
+ 565:./lib/vsprintf.c **** }
+ 2108              		.loc 1 565 1 is_stmt 0 view .LVU685
+ 2109 0012 03B0     		add	sp, sp, #12
+ 2110              	.LCFI12:
+ 2111              		.cfi_def_cfa_offset 12
+ 2112              		@ sp needed
+ 2113 0014 5DF804EB 		ldr	lr, [sp], #4
+ 2114              	.LCFI13:
+ 2115              		.cfi_restore 14
+ 2116              		.cfi_def_cfa_offset 8
+ 2117 0018 02B0     		add	sp, sp, #8
+ 2118              	.LCFI14:
+ 2119              		.cfi_restore 3
+ 2120              		.cfi_restore 2
+ 2121              		.cfi_def_cfa_offset 0
+ 2122 001a 7047     		bx	lr
+ 2123              		.cfi_endproc
+ 2124              	.LFE190:
+ 2126              		.section	.rodata.digits.0,"a"
+ 2127              		.align	2
+ 2130              	digits.0:
+ 2131 0000 30313233 		.ascii	"0123456789ABCDEF"
+ 2131      34353637 
+ 2131      38394142 
+ 2131      43444546 
+ 2132              		.text
+ 2133              	.Letext0:
+ 2134              		.file 2 "./include/asm-generic/int-l64.h"
+ 2135              		.file 3 "./include/linux/stdarg.h"
+ 2136              		.file 4 "./include/asm-generic/posix_types.h"
+ 2137              		.file 5 "./include/linux/types.h"
+ 2138              		.file 6 "<built-in>"
+ 2139              		.file 7 "./include/linux/compiler.h"
+ 2140              		.file 8 "./arch/arm_m/include/asm/string.h"
+ARM GAS  /tmp/cc7e5ZMk.s 			page 55
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 vsprintf.c
+     /tmp/cc7e5ZMk.s:21     .text.skip_atoi:00000000 $t
+     /tmp/cc7e5ZMk.s:26     .text.skip_atoi:00000000 skip_atoi
+     /tmp/cc7e5ZMk.s:74     .text.put_dec_full4:00000000 $t
+     /tmp/cc7e5ZMk.s:79     .text.put_dec_full4:00000000 put_dec_full4
+     /tmp/cc7e5ZMk.s:145    .text.put_dec_helper4:00000000 $t
+     /tmp/cc7e5ZMk.s:150    .text.put_dec_helper4:00000000 put_dec_helper4
+     /tmp/cc7e5ZMk.s:186    .text.put_dec_helper4:0000001c $d
+     /tmp/cc7e5ZMk.s:191    .text.put_dec:00000000 $t
+     /tmp/cc7e5ZMk.s:196    .text.put_dec:00000000 put_dec
+     /tmp/cc7e5ZMk.s:345    .text.get_flags:00000000 $t
+     /tmp/cc7e5ZMk.s:350    .text.get_flags:00000000 get_flags
+     /tmp/cc7e5ZMk.s:395    .text.get_flags:00000020 $d
+     /tmp/cc7e5ZMk.s:412    .text.get_flags:00000064 $t
+     /tmp/cc7e5ZMk.s:448    .text.get_int:00000000 $t
+     /tmp/cc7e5ZMk.s:453    .text.get_int:00000000 get_int
+     /tmp/cc7e5ZMk.s:510    .text.get_number:00000000 $t
+     /tmp/cc7e5ZMk.s:515    .text.get_number:00000000 get_number
+     /tmp/cc7e5ZMk.s:718    .text.get_sign:00000000 $t
+     /tmp/cc7e5ZMk.s:723    .text.get_sign:00000000 get_sign
+     /tmp/cc7e5ZMk.s:795    .text.utf16s_utf8nlen:00000000 $t
+     /tmp/cc7e5ZMk.s:800    .text.utf16s_utf8nlen:00000000 utf16s_utf8nlen
+     /tmp/cc7e5ZMk.s:922    .text.utf16_to_utf32:00000000 $t
+     /tmp/cc7e5ZMk.s:927    .text.utf16_to_utf32:00000000 utf16_to_utf32
+     /tmp/cc7e5ZMk.s:1004   .text.number:00000000 $t
+     /tmp/cc7e5ZMk.s:1009   .text.number:00000000 number
+     /tmp/cc7e5ZMk.s:1109   .text.number:00000068 $d
+     /tmp/cc7e5ZMk.s:2130   .rodata.digits.0:00000000 digits.0
+     /tmp/cc7e5ZMk.s:1114   .rodata.vsnprintf.str1.4:00000000 $d
+     /tmp/cc7e5ZMk.s:1121   .text.vsnprintf:00000000 $t
+     /tmp/cc7e5ZMk.s:1127   .text.vsnprintf:00000000 vsnprintf
+     /tmp/cc7e5ZMk.s:1287   .text.vsnprintf:0000008a $d
+     /tmp/cc7e5ZMk.s:1321   .text.vsnprintf:000000cc $t
+     /tmp/cc7e5ZMk.s:2064   .text.vsnprintf:00000380 $d
+     /tmp/cc7e5ZMk.s:2070   .text.snprintf:00000000 $t
+     /tmp/cc7e5ZMk.s:2076   .text.snprintf:00000000 snprintf
+     /tmp/cc7e5ZMk.s:2127   .rodata.digits.0:00000000 $d
+
+UNDEFINED SYMBOLS
+annotate_unreachable
+strnlen

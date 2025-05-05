@@ -1,0 +1,1362 @@
+ARM GAS  /tmp/ccDay93Q.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Preemptive.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./lib/Preemptive.c"
+  20              		.section	.text.remove_task_from_pool,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	remove_task_from_pool:
+  27              	.LVL0:
+  28              	.LFB256:
+   1:./lib/Preemptive.c **** #include <linux/kernel.h> 
+   2:./lib/Preemptive.c **** #include <linux/sched.h>
+   3:./lib/Preemptive.c **** #include <linux/slab.h>
+   4:./lib/Preemptive.c **** #include <generated/autoconf.h>
+   5:./lib/Preemptive.c **** 
+   6:./lib/Preemptive.c **** struct task_node{
+   7:./lib/Preemptive.c ****     struct task_node *next;
+   8:./lib/Preemptive.c ****     struct task_node *priv;
+   9:./lib/Preemptive.c ****     struct task_struct *task;
+  10:./lib/Preemptive.c ****     int priority;
+  11:./lib/Preemptive.c **** };
+  12:./lib/Preemptive.c **** 
+  13:./lib/Preemptive.c **** struct task_pool_1{
+  14:./lib/Preemptive.c ****     struct task_node *head_node;
+  15:./lib/Preemptive.c ****     uint32_t tasknode_numbers;
+  16:./lib/Preemptive.c **** };
+  17:./lib/Preemptive.c **** 
+  18:./lib/Preemptive.c **** 
+  19:./lib/Preemptive.c **** 
+  20:./lib/Preemptive.c **** 
+  21:./lib/Preemptive.c **** 
+  22:./lib/Preemptive.c **** static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched);
+  23:./lib/Preemptive.c **** 
+  24:./lib/Preemptive.c **** 
+  25:./lib/Preemptive.c **** 
+  26:./lib/Preemptive.c **** static time64_t time = 0;
+  27:./lib/Preemptive.c **** struct task_struct* get_next_task(struct task_struct* task){
+  28:./lib/Preemptive.c ****     return ((struct task_node*)task->t_node)->next->task;
+  29:./lib/Preemptive.c **** }
+  30:./lib/Preemptive.c **** 
+ARM GAS  /tmp/ccDay93Q.s 			page 2
+
+
+  31:./lib/Preemptive.c **** struct task_struct* get_useful_task(struct task_pool_1 *task_pool,struct scheduler *sched)
+  32:./lib/Preemptive.c **** {
+  33:./lib/Preemptive.c ****     struct task_struct* head_task = task_pool->head_node->task;
+  34:./lib/Preemptive.c ****     struct task_struct* search_task = head_task;
+  35:./lib/Preemptive.c ****     while (1)
+  36:./lib/Preemptive.c ****     {
+  37:./lib/Preemptive.c ****         if (search_task->state == TASK_DEAD) 
+  38:./lib/Preemptive.c ****         {
+  39:./lib/Preemptive.c ****             struct task_struct *dead_task = search_task;
+  40:./lib/Preemptive.c ****             struct task_struct *search_task = get_next_task(search_task);
+  41:./lib/Preemptive.c ****             remove_task_from_pool(dead_task, sched);
+  42:./lib/Preemptive.c ****             __destory_task(dead_task);
+  43:./lib/Preemptive.c ****         }
+  44:./lib/Preemptive.c ****         if(search_task->state == TASK_READY)
+  45:./lib/Preemptive.c ****             break;
+  46:./lib/Preemptive.c ****         else if(search_task->state == TASK_WAITING){
+  47:./lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time
+  48:./lib/Preemptive.c ****                < time){
+  49:./lib/Preemptive.c ****                 search_task->state = TASK_READY;
+  50:./lib/Preemptive.c ****                 break;
+  51:./lib/Preemptive.c ****             }
+  52:./lib/Preemptive.c ****         }
+  53:./lib/Preemptive.c ****         if(get_next_task(search_task) == head_task)
+  54:./lib/Preemptive.c ****             break;
+  55:./lib/Preemptive.c ****         search_task = get_next_task(search_task);
+  56:./lib/Preemptive.c ****     }
+  57:./lib/Preemptive.c ****     return search_task;
+  58:./lib/Preemptive.c **** }
+  59:./lib/Preemptive.c **** 
+  60:./lib/Preemptive.c **** static struct task_struct* Preemptive_scheduling(struct scheduler *sched)
+  61:./lib/Preemptive.c **** {   
+  62:./lib/Preemptive.c ****     time++;    
+  63:./lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(sched->s_task_pool,sched);
+  64:./lib/Preemptive.c ****     if(next_task != sched->current_task)
+  65:./lib/Preemptive.c ****     {
+  66:./lib/Preemptive.c ****         if( sched->current_task != NULL){
+  67:./lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+  68:./lib/Preemptive.c ****         }
+  69:./lib/Preemptive.c ****         next_task->last_scheduler_time = time;
+  70:./lib/Preemptive.c ****     }
+  71:./lib/Preemptive.c ****     return next_task;
+  72:./lib/Preemptive.c **** } 
+  73:./lib/Preemptive.c **** 
+  74:./lib/Preemptive.c **** static int add_task_to_task_pool(struct task_struct* task ,struct scheduler *sched)
+  75:./lib/Preemptive.c **** {
+  76:./lib/Preemptive.c ****     struct task_pool_1 *pool = sched->s_task_pool;
+  77:./lib/Preemptive.c ****     struct task_node* new_node = kmalloc(sizeof(struct task_node),GFP_KERNEL);
+  78:./lib/Preemptive.c ****     if (new_node == NULL){
+  79:./lib/Preemptive.c ****         return -1;
+  80:./lib/Preemptive.c ****     }
+  81:./lib/Preemptive.c ****     new_node->task     = task;
+  82:./lib/Preemptive.c ****     new_node->priority = task->priority;
+  83:./lib/Preemptive.c ****     task->t_node       = new_node;
+  84:./lib/Preemptive.c **** 
+  85:./lib/Preemptive.c ****     block_scheduler(sched);
+  86:./lib/Preemptive.c ****     if(pool->head_node == NULL){
+  87:./lib/Preemptive.c ****         pool->head_node = new_node;
+ARM GAS  /tmp/ccDay93Q.s 			page 3
+
+
+  88:./lib/Preemptive.c ****         new_node->next  = new_node;
+  89:./lib/Preemptive.c ****         new_node->priv  = new_node;
+  90:./lib/Preemptive.c ****     }
+  91:./lib/Preemptive.c ****     else
+  92:./lib/Preemptive.c ****     {
+  93:./lib/Preemptive.c ****         struct task_node * n = pool->head_node;
+  94:./lib/Preemptive.c ****         while (n->priority > new_node->priority)
+  95:./lib/Preemptive.c ****         {
+  96:./lib/Preemptive.c ****             n = n->next;
+  97:./lib/Preemptive.c ****             if(n == pool->head_node){
+  98:./lib/Preemptive.c ****             break;
+  99:./lib/Preemptive.c ****             }
+ 100:./lib/Preemptive.c ****         }
+ 101:./lib/Preemptive.c ****         new_node->next = n;
+ 102:./lib/Preemptive.c ****         new_node->priv = n->priv;
+ 103:./lib/Preemptive.c ****         n->priv->next  = new_node;
+ 104:./lib/Preemptive.c ****         n->priv        = new_node;
+ 105:./lib/Preemptive.c ****     }
+ 106:./lib/Preemptive.c ****     if (new_node->priority > pool->head_node->priority) {
+ 107:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 108:./lib/Preemptive.c ****     }
+ 109:./lib/Preemptive.c ****     run_scheduler(sched);
+ 110:./lib/Preemptive.c ****     return 0;
+ 111:./lib/Preemptive.c **** }
+ 112:./lib/Preemptive.c **** 
+ 113:./lib/Preemptive.c **** static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched)
+ 114:./lib/Preemptive.c **** {
+  29              		.loc 1 114 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 114 1 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 14, -4
+  39 0002 0346     		mov	r3, r0
+ 115:./lib/Preemptive.c ****     struct task_node* node = (struct task_node*)task->t_node;
+  40              		.loc 1 115 5 is_stmt 1 view .LVU2
+  41              		.loc 1 115 23 is_stmt 0 view .LVU3
+  42 0004 806E     		ldr	r0, [r0, #104]
+  43              	.LVL1:
+ 116:./lib/Preemptive.c ****     struct task_pool_1 *pool = sched->s_task_pool;
+  44              		.loc 1 116 5 is_stmt 1 view .LVU4
+  45              		.loc 1 116 25 is_stmt 0 view .LVU5
+  46 0006 0A68     		ldr	r2, [r1]
+  47              	.LVL2:
+ 117:./lib/Preemptive.c ****     if (pool->head_node == node) {
+  48              		.loc 1 117 5 is_stmt 1 view .LVU6
+  49              		.loc 1 117 8 is_stmt 0 view .LVU7
+  50 0008 1468     		ldr	r4, [r2]
+  51 000a 8442     		cmp	r4, r0
+  52 000c 0AD0     		beq	.L5
+  53              	.L2:
+ 118:./lib/Preemptive.c ****             pool->head_node = node->next;
+ 119:./lib/Preemptive.c ****     }
+ARM GAS  /tmp/ccDay93Q.s 			page 4
+
+
+ 120:./lib/Preemptive.c ****     if(sched->current_task == task){
+  54              		.loc 1 120 5 is_stmt 1 view .LVU8
+  55              		.loc 1 120 13 is_stmt 0 view .LVU9
+  56 000e 0A69     		ldr	r2, [r1, #16]
+  57              	.LVL3:
+  58              		.loc 1 120 7 view .LVU10
+  59 0010 9A42     		cmp	r2, r3
+  60 0012 0AD0     		beq	.L6
+  61              	.LVL4:
+  62              	.L3:
+ 121:./lib/Preemptive.c ****         sched->current_task = NULL;
+ 122:./lib/Preemptive.c ****     }
+ 123:./lib/Preemptive.c ****     node->priv->next = node->next;
+  63              		.loc 1 123 5 is_stmt 1 view .LVU11
+  64              		.loc 1 123 9 is_stmt 0 view .LVU12
+  65 0014 4268     		ldr	r2, [r0, #4]
+  66              		.loc 1 123 28 view .LVU13
+  67 0016 0368     		ldr	r3, [r0]
+  68              		.loc 1 123 22 view .LVU14
+  69 0018 1360     		str	r3, [r2]
+ 124:./lib/Preemptive.c ****     node->next->priv = node->priv;
+  70              		.loc 1 124 5 is_stmt 1 view .LVU15
+  71              		.loc 1 124 28 is_stmt 0 view .LVU16
+  72 001a 4268     		ldr	r2, [r0, #4]
+  73              		.loc 1 124 22 view .LVU17
+  74 001c 5A60     		str	r2, [r3, #4]
+ 125:./lib/Preemptive.c ****     kfree(node);
+  75              		.loc 1 125 5 is_stmt 1 view .LVU18
+  76              	.LVL5:
+  77              	.LBB9:
+  78              	.LBI9:
+  79              		.file 2 "./include/linux/slab.h"
+   1:./include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/slab.h **** /*
+   3:./include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:./include/linux/slab.h ****  *
+   5:./include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:./include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:./include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:./include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:./include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:./include/linux/slab.h ****  */
+  11:./include/linux/slab.h **** 
+  12:./include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:./include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:./include/linux/slab.h **** 
+  15:./include/linux/slab.h **** #include <linux/cache.h>
+  16:./include/linux/slab.h **** #include <linux/overflow.h>
+  17:./include/linux/slab.h **** #include <linux/types.h>
+  18:./include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:./include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:./include/linux/slab.h **** #include <linux/numa.h>
+  21:./include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:./include/linux/slab.h **** #include <linux/spinlock.h>
+  23:./include/linux/slab.h **** 
+  24:./include/linux/slab.h **** enum _slab_flag_bits {
+  25:./include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+ARM GAS  /tmp/ccDay93Q.s 			page 5
+
+
+  26:./include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:./include/linux/slab.h **** 	_SLAB_POISON,
+  28:./include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:./include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:./include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:./include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:./include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:./include/linux/slab.h **** 	_SLAB_PANIC,
+  34:./include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:./include/linux/slab.h **** 	_SLAB_TRACE,
+  36:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:./include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:./include/linux/slab.h **** #endif
+  39:./include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:./include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:./include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:./include/linux/slab.h **** #endif
+  44:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:./include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:./include/linux/slab.h **** #endif
+  47:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:./include/linux/slab.h **** 	_SLAB_KASAN,
+  49:./include/linux/slab.h **** #endif
+  50:./include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:./include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:./include/linux/slab.h **** #endif
+  54:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:./include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:./include/linux/slab.h **** #endif
+  57:./include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:./include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:./include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:./include/linux/slab.h **** #endif
+  62:./include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:./include/linux/slab.h **** };
+  64:./include/linux/slab.h **** 
+  65:./include/linux/slab.h **** 
+  66:./include/linux/slab.h **** 
+  67:./include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:./include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:./include/linux/slab.h **** 
+  70:./include/linux/slab.h **** /*
+  71:./include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:./include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:./include/linux/slab.h ****  */
+  74:./include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:./include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:./include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:./include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:./include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:./include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:./include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:./include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:./include/linux/slab.h **** /**
+ARM GAS  /tmp/ccDay93Q.s 			page 6
+
+
+  83:./include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:./include/linux/slab.h ****  *
+  85:./include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:./include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:./include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:./include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:./include/linux/slab.h ****  *
+  90:./include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:./include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:./include/linux/slab.h ****  */
+  93:./include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:./include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:./include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:./include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:./include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:./include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:./include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:./include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:./include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:./include/linux/slab.h **** /**
+ 103:./include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:./include/linux/slab.h ****  *
+ 105:./include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:./include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:./include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:./include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:./include/linux/slab.h ****  *
+ 110:./include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:./include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:./include/linux/slab.h ****  * object validation pass. Something like:
+ 113:./include/linux/slab.h ****  *
+ 114:./include/linux/slab.h ****  * ::
+ 115:./include/linux/slab.h ****  *
+ 116:./include/linux/slab.h ****  *  begin:
+ 117:./include/linux/slab.h ****  *   rcu_read_lock();
+ 118:./include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:./include/linux/slab.h ****  *   if (obj) {
+ 120:./include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:./include/linux/slab.h ****  *       goto begin;
+ 123:./include/linux/slab.h ****  *
+ 124:./include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:./include/linux/slab.h ****  *       put_ref(obj);
+ 126:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:./include/linux/slab.h ****  *       goto begin;
+ 128:./include/linux/slab.h ****  *     }
+ 129:./include/linux/slab.h ****  *   }
+ 130:./include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:./include/linux/slab.h ****  *
+ 132:./include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:./include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:./include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:./include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:./include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:./include/linux/slab.h ****  *
+ 138:./include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:./include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ARM GAS  /tmp/ccDay93Q.s 			page 7
+
+
+ 140:./include/linux/slab.h ****  *
+ 141:./include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:./include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:./include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:./include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:./include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:./include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:./include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:./include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:./include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:./include/linux/slab.h ****  * protection.
+ 151:./include/linux/slab.h ****  *
+ 152:./include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:./include/linux/slab.h ****  */
+ 154:./include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:./include/linux/slab.h **** /* Trace allocations and frees */
+ 156:./include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:./include/linux/slab.h **** 
+ 158:./include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:./include/linux/slab.h **** #else
+ 162:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:./include/linux/slab.h **** #endif
+ 164:./include/linux/slab.h **** 
+ 165:./include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:./include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:./include/linux/slab.h **** 
+ 168:./include/linux/slab.h **** /*
+ 169:./include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:./include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:./include/linux/slab.h ****  *
+ 172:./include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:./include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:./include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:./include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:./include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:./include/linux/slab.h ****  */
+ 178:./include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:./include/linux/slab.h **** 
+ 180:./include/linux/slab.h **** /* Fault injection mark */
+ 181:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:./include/linux/slab.h **** #else
+ 184:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:./include/linux/slab.h **** #endif
+ 186:./include/linux/slab.h **** /**
+ 187:./include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:./include/linux/slab.h ****  *
+ 189:./include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:./include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:./include/linux/slab.h ****  */
+ 192:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:./include/linux/slab.h **** #else
+ 195:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:./include/linux/slab.h **** #endif
+ARM GAS  /tmp/ccDay93Q.s 			page 8
+
+
+ 197:./include/linux/slab.h **** 
+ 198:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:./include/linux/slab.h **** #else
+ 201:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:./include/linux/slab.h **** #endif
+ 203:./include/linux/slab.h **** 
+ 204:./include/linux/slab.h **** /*
+ 205:./include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:./include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:./include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:./include/linux/slab.h ****  */
+ 209:./include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:./include/linux/slab.h **** 
+ 211:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:./include/linux/slab.h **** #else
+ 214:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:./include/linux/slab.h **** #endif
+ 216:./include/linux/slab.h **** 
+ 217:./include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:./include/linux/slab.h **** /**
+ 219:./include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:./include/linux/slab.h ****  *
+ 221:./include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:./include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:./include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:./include/linux/slab.h ****  */
+ 225:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:./include/linux/slab.h **** #else
+ 228:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:./include/linux/slab.h **** #endif
+ 230:./include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:./include/linux/slab.h **** 
+ 232:./include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:./include/linux/slab.h **** #else
+ 236:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:./include/linux/slab.h **** #endif
+ 238:./include/linux/slab.h **** 
+ 239:./include/linux/slab.h **** /*
+ 240:./include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:./include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:./include/linux/slab.h ****  */
+ 243:./include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:./include/linux/slab.h **** 
+ 245:./include/linux/slab.h **** /*
+ 246:./include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:./include/linux/slab.h ****  *
+ 248:./include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:./include/linux/slab.h ****  *
+ 250:./include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:./include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:./include/linux/slab.h ****  */
+ 253:./include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ARM GAS  /tmp/ccDay93Q.s 			page 9
+
+
+ 254:./include/linux/slab.h **** 
+ 255:./include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:./include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:./include/linux/slab.h **** 
+ 258:./include/linux/slab.h **** 
+ 259:./include/linux/slab.h **** 
+ 260:./include/linux/slab.h **** 
+ 261:./include/linux/slab.h **** 
+ 262:./include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:./include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:./include/linux/slab.h **** 
+ 265:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:./include/linux/slab.h **** ({						\
+ 267:./include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:./include/linux/slab.h **** })
+ 269:./include/linux/slab.h **** 
+ 270:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:./include/linux/slab.h **** #else
+ 272:./include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:./include/linux/slab.h **** 
+ 274:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:./include/linux/slab.h **** 
+ 276:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:./include/linux/slab.h **** 
+ 278:./include/linux/slab.h **** 
+ 279:./include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:./include/linux/slab.h **** 
+ 281:./include/linux/slab.h **** /*
+ 282:./include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:./include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:./include/linux/slab.h **** 	* given order would contain.
+ 285:./include/linux/slab.h **** 	*/				
+ 286:./include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:./include/linux/slab.h **** 	unsigned int x;
+ 288:./include/linux/slab.h **** };
+ 289:./include/linux/slab.h **** 
+ 290:./include/linux/slab.h **** struct kmem_cache_node {
+ 291:./include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:./include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:./include/linux/slab.h **** 	struct list_head partial;
+ 294:./include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:./include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:./include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:./include/linux/slab.h **** 	struct list_head full;
+ 298:./include/linux/slab.h **** #endif
+ 299:./include/linux/slab.h **** };
+ 300:./include/linux/slab.h **** 
+ 301:./include/linux/slab.h **** struct kmem_cache {
+ 302:./include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:./include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:./include/linux/slab.h **** 	#endif
+ 305:./include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:./include/linux/slab.h **** 		slab_flags_t flags;
+ 307:./include/linux/slab.h **** 		unsigned long min_partial;
+ 308:./include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:./include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:./include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ARM GAS  /tmp/ccDay93Q.s 			page 10
+
+
+ 311:./include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:./include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:./include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:./include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:./include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:./include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:./include/linux/slab.h **** 	#endif
+ 318:./include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:./include/linux/slab.h **** 	
+ 320:./include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:./include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:./include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:./include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:./include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:./include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:./include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:./include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:./include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:./include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:./include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:./include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:./include/linux/slab.h **** 	#endif
+ 333:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:./include/linux/slab.h **** 		unsigned long random;
+ 335:./include/linux/slab.h **** 	#endif
+ 336:./include/linux/slab.h **** 	
+ 337:./include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:./include/linux/slab.h **** 		/*
+ 339:./include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:./include/linux/slab.h **** 			*/
+ 341:./include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:./include/linux/slab.h **** 	#endif
+ 343:./include/linux/slab.h **** 	
+ 344:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:./include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:./include/linux/slab.h **** 	#endif
+ 347:./include/linux/slab.h **** 	
+ 348:./include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:./include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:./include/linux/slab.h **** 	#endif
+ 351:./include/linux/slab.h **** 	
+ 352:./include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:./include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:./include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:./include/linux/slab.h **** 	#endif
+ 356:./include/linux/slab.h **** 	
+ 357:./include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:./include/linux/slab.h **** 	};
+ 359:./include/linux/slab.h **** 					
+ 360:./include/linux/slab.h **** 
+ 361:./include/linux/slab.h **** 
+ 362:./include/linux/slab.h **** 
+ 363:./include/linux/slab.h **** 
+ 364:./include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:./include/linux/slab.h **** 
+ 366:./include/linux/slab.h **** 
+ 367:./include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ARM GAS  /tmp/ccDay93Q.s 			page 11
+
+
+ 368:./include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:./include/linux/slab.h **** 
+ 370:./include/linux/slab.h **** 
+ 371:./include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:./include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:./include/linux/slab.h **** }
+ 374:./include/linux/slab.h **** 
+ 375:./include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:./include/linux/slab.h **** 	__sfree__(addr);
+ 377:./include/linux/slab.h **** }
+ 378:./include/linux/slab.h **** 
+ 379:./include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 380:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 381:./include/linux/slab.h **** }
+ 382:./include/linux/slab.h **** 
+ 383:./include/linux/slab.h **** static void inline kfree(const void *ptr){
+  80              		.loc 2 383 20 view .LVU19
+  81              	.LBB10:
+ 384:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+  82              		.loc 2 384 2 view .LVU20
+  83 001e FFF7FEFF 		bl	__sfree__
+  84              	.LVL6:
+  85              		.loc 2 384 2 is_stmt 0 view .LVU21
+  86              	.LBE10:
+  87              	.LBE9:
+ 126:./lib/Preemptive.c **** }
+  88              		.loc 1 126 1 view .LVU22
+  89 0022 10BD     		pop	{r4, pc}
+  90              	.LVL7:
+  91              	.L5:
+ 118:./lib/Preemptive.c ****     }
+  92              		.loc 1 118 13 is_stmt 1 view .LVU23
+ 118:./lib/Preemptive.c ****     }
+  93              		.loc 1 118 29 is_stmt 0 view .LVU24
+  94 0024 0468     		ldr	r4, [r0]
+  95 0026 1460     		str	r4, [r2]
+  96 0028 F1E7     		b	.L2
+  97              	.LVL8:
+  98              	.L6:
+ 121:./lib/Preemptive.c ****     }
+  99              		.loc 1 121 9 is_stmt 1 view .LVU25
+ 121:./lib/Preemptive.c ****     }
+ 100              		.loc 1 121 29 is_stmt 0 view .LVU26
+ 101 002a 0023     		movs	r3, #0
+ 102              	.LVL9:
+ 121:./lib/Preemptive.c ****     }
+ 103              		.loc 1 121 29 view .LVU27
+ 104 002c 0B61     		str	r3, [r1, #16]
+ 105 002e F1E7     		b	.L3
+ 106              		.cfi_endproc
+ 107              	.LFE256:
+ 109              		.section	.init.text,"ax",%progbits
+ 110              		.align	1
+ 111              		.syntax unified
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	init_Preemptive_fn:
+ARM GAS  /tmp/ccDay93Q.s 			page 12
+
+
+ 116              	.LFB258:
+ 127:./lib/Preemptive.c **** 
+ 128:./lib/Preemptive.c **** 
+ 129:./lib/Preemptive.c **** static struct task_pool_1* alloc_new_pool(struct scheduler *sched){
+ 130:./lib/Preemptive.c ****     struct task_pool_1* new_task_pool = kmalloc(sizeof(struct task_pool_1),GFP_KERNEL);
+ 131:./lib/Preemptive.c ****     new_task_pool->head_node = NULL;
+ 132:./lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 133:./lib/Preemptive.c ****     return new_task_pool;
+ 134:./lib/Preemptive.c **** }
+ 135:./lib/Preemptive.c **** 
+ 136:./lib/Preemptive.c **** static struct task_pool_operations task_op = {
+ 137:./lib/Preemptive.c ****     .get_next_task = Preemptive_scheduling,
+ 138:./lib/Preemptive.c ****     .add_task      = add_task_to_task_pool,
+ 139:./lib/Preemptive.c ****     .remove_task   = remove_task_from_pool,
+ 140:./lib/Preemptive.c **** };
+ 141:./lib/Preemptive.c **** 
+ 142:./lib/Preemptive.c **** static struct task_pool_types task_type = {
+ 143:./lib/Preemptive.c ****     .name = "Preemptive",
+ 144:./lib/Preemptive.c ****     .alloc_task_pool = alloc_new_pool,
+ 145:./lib/Preemptive.c ****     .t_op = &task_op,
+ 146:./lib/Preemptive.c **** };
+ 147:./lib/Preemptive.c **** 
+ 148:./lib/Preemptive.c **** static int __init init_Preemptive_fn(void){
+ 117              		.loc 1 148 43 is_stmt 1 view -0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121 0000 08B5     		push	{r3, lr}
+ 122              	.LCFI1:
+ 123              		.cfi_def_cfa_offset 8
+ 124              		.cfi_offset 3, -8
+ 125              		.cfi_offset 14, -4
+ 149:./lib/Preemptive.c ****     register_task_pool(&task_type);
+ 126              		.loc 1 149 5 view .LVU29
+ 127 0002 0248     		ldr	r0, .L9
+ 128 0004 FFF7FEFF 		bl	register_task_pool
+ 129              	.LVL10:
+ 150:./lib/Preemptive.c **** }
+ 130              		.loc 1 150 1 is_stmt 0 view .LVU30
+ 131 0008 08BD     		pop	{r3, pc}
+ 132              	.L10:
+ 133 000a 00BF     		.align	2
+ 134              	.L9:
+ 135 000c 00000000 		.word	task_type
+ 136              		.cfi_endproc
+ 137              	.LFE258:
+ 139              		.section	.text.alloc_new_pool,"ax",%progbits
+ 140              		.align	1
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	alloc_new_pool:
+ 146              	.LVL11:
+ 147              	.LFB257:
+ 129:./lib/Preemptive.c ****     struct task_pool_1* new_task_pool = kmalloc(sizeof(struct task_pool_1),GFP_KERNEL);
+ 148              		.loc 1 129 67 is_stmt 1 view -0
+ 149              		.cfi_startproc
+ARM GAS  /tmp/ccDay93Q.s 			page 13
+
+
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129:./lib/Preemptive.c ****     struct task_pool_1* new_task_pool = kmalloc(sizeof(struct task_pool_1),GFP_KERNEL);
+ 152              		.loc 1 129 67 is_stmt 0 view .LVU32
+ 153 0000 08B5     		push	{r3, lr}
+ 154              	.LCFI2:
+ 155              		.cfi_def_cfa_offset 8
+ 156              		.cfi_offset 3, -8
+ 157              		.cfi_offset 14, -4
+ 130:./lib/Preemptive.c ****     new_task_pool->head_node = NULL;
+ 158              		.loc 1 130 5 is_stmt 1 view .LVU33
+ 159              	.LVL12:
+ 160              	.LBB11:
+ 161              	.LBI11:
+ 379:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 162              		.loc 2 379 21 view .LVU34
+ 163              	.LBB12:
+ 380:./include/linux/slab.h **** }
+ 164              		.loc 2 380 2 view .LVU35
+ 380:./include/linux/slab.h **** }
+ 165              		.loc 2 380 9 is_stmt 0 view .LVU36
+ 166 0002 4FF44C61 		mov	r1, #3264
+ 167 0006 0820     		movs	r0, #8
+ 168              	.LVL13:
+ 380:./include/linux/slab.h **** }
+ 169              		.loc 2 380 9 view .LVU37
+ 170 0008 FFF7FEFF 		bl	__smalloc__
+ 171              	.LVL14:
+ 380:./include/linux/slab.h **** }
+ 172              		.loc 2 380 9 view .LVU38
+ 173              	.LBE12:
+ 174              	.LBE11:
+ 131:./lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 175              		.loc 1 131 5 is_stmt 1 view .LVU39
+ 131:./lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 176              		.loc 1 131 30 is_stmt 0 view .LVU40
+ 177 000c 0022     		movs	r2, #0
+ 178 000e 0260     		str	r2, [r0]
+ 132:./lib/Preemptive.c ****     return new_task_pool;
+ 179              		.loc 1 132 5 is_stmt 1 view .LVU41
+ 132:./lib/Preemptive.c ****     return new_task_pool;
+ 180              		.loc 1 132 37 is_stmt 0 view .LVU42
+ 181 0010 4260     		str	r2, [r0, #4]
+ 133:./lib/Preemptive.c **** }
+ 182              		.loc 1 133 5 is_stmt 1 view .LVU43
+ 134:./lib/Preemptive.c **** 
+ 183              		.loc 1 134 1 is_stmt 0 view .LVU44
+ 184 0012 08BD     		pop	{r3, pc}
+ 185              		.cfi_endproc
+ 186              	.LFE257:
+ 188              		.section	.text.add_task_to_task_pool,"ax",%progbits
+ 189              		.align	1
+ 190              		.syntax unified
+ 191              		.thumb
+ 192              		.thumb_func
+ 194              	add_task_to_task_pool:
+ 195              	.LVL15:
+ARM GAS  /tmp/ccDay93Q.s 			page 14
+
+
+ 196              	.LFB255:
+  75:./lib/Preemptive.c ****     struct task_pool_1 *pool = sched->s_task_pool;
+ 197              		.loc 1 75 1 is_stmt 1 view -0
+ 198              		.cfi_startproc
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+  75:./lib/Preemptive.c ****     struct task_pool_1 *pool = sched->s_task_pool;
+ 201              		.loc 1 75 1 is_stmt 0 view .LVU46
+ 202 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 203              	.LCFI3:
+ 204              		.cfi_def_cfa_offset 24
+ 205              		.cfi_offset 3, -24
+ 206              		.cfi_offset 4, -20
+ 207              		.cfi_offset 5, -16
+ 208              		.cfi_offset 6, -12
+ 209              		.cfi_offset 7, -8
+ 210              		.cfi_offset 14, -4
+ 211 0002 0646     		mov	r6, r0
+ 212 0004 0D46     		mov	r5, r1
+  76:./lib/Preemptive.c ****     struct task_node* new_node = kmalloc(sizeof(struct task_node),GFP_KERNEL);
+ 213              		.loc 1 76 5 is_stmt 1 view .LVU47
+  76:./lib/Preemptive.c ****     struct task_node* new_node = kmalloc(sizeof(struct task_node),GFP_KERNEL);
+ 214              		.loc 1 76 25 is_stmt 0 view .LVU48
+ 215 0006 0F68     		ldr	r7, [r1]
+ 216              	.LVL16:
+  77:./lib/Preemptive.c ****     if (new_node == NULL){
+ 217              		.loc 1 77 5 is_stmt 1 view .LVU49
+ 218              	.LBB13:
+ 219              	.LBI13:
+ 379:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 220              		.loc 2 379 21 view .LVU50
+ 221              	.LBB14:
+ 380:./include/linux/slab.h **** }
+ 222              		.loc 2 380 2 view .LVU51
+ 380:./include/linux/slab.h **** }
+ 223              		.loc 2 380 9 is_stmt 0 view .LVU52
+ 224 0008 4FF44C61 		mov	r1, #3264
+ 225              	.LVL17:
+ 380:./include/linux/slab.h **** }
+ 226              		.loc 2 380 9 view .LVU53
+ 227 000c 1020     		movs	r0, #16
+ 228              	.LVL18:
+ 380:./include/linux/slab.h **** }
+ 229              		.loc 2 380 9 view .LVU54
+ 230 000e FFF7FEFF 		bl	__smalloc__
+ 231              	.LVL19:
+ 380:./include/linux/slab.h **** }
+ 232              		.loc 2 380 9 view .LVU55
+ 233              	.LBE14:
+ 234              	.LBE13:
+  78:./lib/Preemptive.c ****         return -1;
+ 235              		.loc 1 78 5 is_stmt 1 view .LVU56
+  78:./lib/Preemptive.c ****         return -1;
+ 236              		.loc 1 78 8 is_stmt 0 view .LVU57
+ 237 0012 28B3     		cbz	r0, .L20
+ 238 0014 0446     		mov	r4, r0
+  81:./lib/Preemptive.c ****     new_node->priority = task->priority;
+ARM GAS  /tmp/ccDay93Q.s 			page 15
+
+
+ 239              		.loc 1 81 5 is_stmt 1 view .LVU58
+  81:./lib/Preemptive.c ****     new_node->priority = task->priority;
+ 240              		.loc 1 81 24 is_stmt 0 view .LVU59
+ 241 0016 8660     		str	r6, [r0, #8]
+  82:./lib/Preemptive.c ****     task->t_node       = new_node;
+ 242              		.loc 1 82 5 is_stmt 1 view .LVU60
+  82:./lib/Preemptive.c ****     task->t_node       = new_node;
+ 243              		.loc 1 82 30 is_stmt 0 view .LVU61
+ 244 0018 736E     		ldr	r3, [r6, #100]
+  82:./lib/Preemptive.c ****     task->t_node       = new_node;
+ 245              		.loc 1 82 24 view .LVU62
+ 246 001a C360     		str	r3, [r0, #12]
+  83:./lib/Preemptive.c **** 
+ 247              		.loc 1 83 5 is_stmt 1 view .LVU63
+  83:./lib/Preemptive.c **** 
+ 248              		.loc 1 83 24 is_stmt 0 view .LVU64
+ 249 001c B066     		str	r0, [r6, #104]
+  85:./lib/Preemptive.c ****     if(pool->head_node == NULL){
+ 250              		.loc 1 85 5 is_stmt 1 view .LVU65
+ 251 001e 2846     		mov	r0, r5
+ 252              	.LVL20:
+  85:./lib/Preemptive.c ****     if(pool->head_node == NULL){
+ 253              		.loc 1 85 5 is_stmt 0 view .LVU66
+ 254 0020 FFF7FEFF 		bl	block_scheduler
+ 255              	.LVL21:
+  86:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 256              		.loc 1 86 5 is_stmt 1 view .LVU67
+  86:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 257              		.loc 1 86 12 is_stmt 0 view .LVU68
+ 258 0024 3868     		ldr	r0, [r7]
+  86:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 259              		.loc 1 86 7 view .LVU69
+ 260 0026 B8B1     		cbz	r0, .L23
+ 261              	.LBB15:
+  93:./lib/Preemptive.c ****         while (n->priority > new_node->priority)
+ 262              		.loc 1 93 28 view .LVU70
+ 263 0028 0346     		mov	r3, r0
+ 264              	.L15:
+ 265              	.LVL22:
+  94:./lib/Preemptive.c ****         {
+ 266              		.loc 1 94 28 is_stmt 1 view .LVU71
+  94:./lib/Preemptive.c ****         {
+ 267              		.loc 1 94 38 is_stmt 0 view .LVU72
+ 268 002a E268     		ldr	r2, [r4, #12]
+  94:./lib/Preemptive.c ****         {
+ 269              		.loc 1 94 28 view .LVU73
+ 270 002c D968     		ldr	r1, [r3, #12]
+ 271 002e 9142     		cmp	r1, r2
+ 272 0030 02DD     		ble	.L17
+  96:./lib/Preemptive.c ****             if(n == pool->head_node){
+ 273              		.loc 1 96 13 is_stmt 1 view .LVU74
+  96:./lib/Preemptive.c ****             if(n == pool->head_node){
+ 274              		.loc 1 96 15 is_stmt 0 view .LVU75
+ 275 0032 1B68     		ldr	r3, [r3]
+ 276              	.LVL23:
+  97:./lib/Preemptive.c ****             break;
+ 277              		.loc 1 97 13 is_stmt 1 view .LVU76
+ARM GAS  /tmp/ccDay93Q.s 			page 16
+
+
+  97:./lib/Preemptive.c ****             break;
+ 278              		.loc 1 97 15 is_stmt 0 view .LVU77
+ 279 0034 9842     		cmp	r0, r3
+ 280 0036 F8D1     		bne	.L15
+ 281              	.L17:
+ 101:./lib/Preemptive.c ****         new_node->priv = n->priv;
+ 282              		.loc 1 101 9 is_stmt 1 view .LVU78
+ 101:./lib/Preemptive.c ****         new_node->priv = n->priv;
+ 283              		.loc 1 101 24 is_stmt 0 view .LVU79
+ 284 0038 2360     		str	r3, [r4]
+ 102:./lib/Preemptive.c ****         n->priv->next  = new_node;
+ 285              		.loc 1 102 9 is_stmt 1 view .LVU80
+ 102:./lib/Preemptive.c ****         n->priv->next  = new_node;
+ 286              		.loc 1 102 27 is_stmt 0 view .LVU81
+ 287 003a 5A68     		ldr	r2, [r3, #4]
+ 102:./lib/Preemptive.c ****         n->priv->next  = new_node;
+ 288              		.loc 1 102 24 view .LVU82
+ 289 003c 6260     		str	r2, [r4, #4]
+ 103:./lib/Preemptive.c ****         n->priv        = new_node;
+ 290              		.loc 1 103 9 is_stmt 1 view .LVU83
+ 103:./lib/Preemptive.c ****         n->priv        = new_node;
+ 291              		.loc 1 103 24 is_stmt 0 view .LVU84
+ 292 003e 1460     		str	r4, [r2]
+ 104:./lib/Preemptive.c ****     }
+ 293              		.loc 1 104 9 is_stmt 1 view .LVU85
+ 104:./lib/Preemptive.c ****     }
+ 294              		.loc 1 104 24 is_stmt 0 view .LVU86
+ 295 0040 5C60     		str	r4, [r3, #4]
+ 296              	.LVL24:
+ 297              	.L16:
+ 104:./lib/Preemptive.c ****     }
+ 298              		.loc 1 104 24 view .LVU87
+ 299              	.LBE15:
+ 106:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 300              		.loc 1 106 5 is_stmt 1 view .LVU88
+ 106:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 301              		.loc 1 106 17 is_stmt 0 view .LVU89
+ 302 0042 E268     		ldr	r2, [r4, #12]
+ 106:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 303              		.loc 1 106 34 view .LVU90
+ 304 0044 3B68     		ldr	r3, [r7]
+ 106:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 305              		.loc 1 106 45 view .LVU91
+ 306 0046 DB68     		ldr	r3, [r3, #12]
+ 106:./lib/Preemptive.c ****         pool->head_node = new_node;
+ 307              		.loc 1 106 8 view .LVU92
+ 308 0048 9A42     		cmp	r2, r3
+ 309 004a 00DD     		ble	.L19
+ 107:./lib/Preemptive.c ****     }
+ 310              		.loc 1 107 9 is_stmt 1 view .LVU93
+ 107:./lib/Preemptive.c ****     }
+ 311              		.loc 1 107 25 is_stmt 0 view .LVU94
+ 312 004c 3C60     		str	r4, [r7]
+ 313              	.L19:
+ 109:./lib/Preemptive.c ****     return 0;
+ 314              		.loc 1 109 5 is_stmt 1 view .LVU95
+ 315 004e 2846     		mov	r0, r5
+ARM GAS  /tmp/ccDay93Q.s 			page 17
+
+
+ 316 0050 FFF7FEFF 		bl	run_scheduler
+ 317              	.LVL25:
+ 110:./lib/Preemptive.c **** }
+ 318              		.loc 1 110 5 view .LVU96
+ 110:./lib/Preemptive.c **** }
+ 319              		.loc 1 110 12 is_stmt 0 view .LVU97
+ 320 0054 0020     		movs	r0, #0
+ 321              	.LVL26:
+ 322              	.L13:
+ 111:./lib/Preemptive.c **** 
+ 323              		.loc 1 111 1 view .LVU98
+ 324 0056 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 325              	.LVL27:
+ 326              	.L23:
+  87:./lib/Preemptive.c ****         new_node->next  = new_node;
+ 327              		.loc 1 87 9 is_stmt 1 view .LVU99
+  87:./lib/Preemptive.c ****         new_node->next  = new_node;
+ 328              		.loc 1 87 25 is_stmt 0 view .LVU100
+ 329 0058 3C60     		str	r4, [r7]
+  88:./lib/Preemptive.c ****         new_node->priv  = new_node;
+ 330              		.loc 1 88 9 is_stmt 1 view .LVU101
+  88:./lib/Preemptive.c ****         new_node->priv  = new_node;
+ 331              		.loc 1 88 25 is_stmt 0 view .LVU102
+ 332 005a 2460     		str	r4, [r4]
+  89:./lib/Preemptive.c ****     }
+ 333              		.loc 1 89 9 is_stmt 1 view .LVU103
+  89:./lib/Preemptive.c ****     }
+ 334              		.loc 1 89 25 is_stmt 0 view .LVU104
+ 335 005c 6460     		str	r4, [r4, #4]
+ 336 005e F0E7     		b	.L16
+ 337              	.LVL28:
+ 338              	.L20:
+  79:./lib/Preemptive.c ****     }
+ 339              		.loc 1 79 16 view .LVU105
+ 340 0060 4FF0FF30 		mov	r0, #-1
+ 341              	.LVL29:
+  79:./lib/Preemptive.c ****     }
+ 342              		.loc 1 79 16 view .LVU106
+ 343 0064 F7E7     		b	.L13
+ 344              		.cfi_endproc
+ 345              	.LFE255:
+ 347              		.section	.text.get_next_task,"ax",%progbits
+ 348              		.align	1
+ 349              		.global	get_next_task
+ 350              		.syntax unified
+ 351              		.thumb
+ 352              		.thumb_func
+ 354              	get_next_task:
+ 355              	.LVL30:
+ 356              	.LFB252:
+  27:./lib/Preemptive.c ****     return ((struct task_node*)task->t_node)->next->task;
+ 357              		.loc 1 27 60 is_stmt 1 view -0
+ 358              		.cfi_startproc
+ 359              		@ args = 0, pretend = 0, frame = 0
+ 360              		@ frame_needed = 0, uses_anonymous_args = 0
+ 361              		@ link register save eliminated.
+  28:./lib/Preemptive.c **** }
+ARM GAS  /tmp/ccDay93Q.s 			page 18
+
+
+ 362              		.loc 1 28 5 view .LVU108
+  28:./lib/Preemptive.c **** }
+ 363              		.loc 1 28 36 is_stmt 0 view .LVU109
+ 364 0000 836E     		ldr	r3, [r0, #104]
+  28:./lib/Preemptive.c **** }
+ 365              		.loc 1 28 45 view .LVU110
+ 366 0002 1B68     		ldr	r3, [r3]
+  29:./lib/Preemptive.c **** 
+ 367              		.loc 1 29 1 view .LVU111
+ 368 0004 9868     		ldr	r0, [r3, #8]
+ 369              	.LVL31:
+  29:./lib/Preemptive.c **** 
+ 370              		.loc 1 29 1 view .LVU112
+ 371 0006 7047     		bx	lr
+ 372              		.cfi_endproc
+ 373              	.LFE252:
+ 375              		.section	.text.get_useful_task,"ax",%progbits
+ 376              		.align	1
+ 377              		.global	get_useful_task
+ 378              		.syntax unified
+ 379              		.thumb
+ 380              		.thumb_func
+ 382              	get_useful_task:
+ 383              	.LVL32:
+ 384              	.LFB253:
+  32:./lib/Preemptive.c ****     struct task_struct* head_task = task_pool->head_node->task;
+ 385              		.loc 1 32 1 is_stmt 1 view -0
+ 386              		.cfi_startproc
+ 387              		@ args = 0, pretend = 0, frame = 0
+ 388              		@ frame_needed = 0, uses_anonymous_args = 0
+  32:./lib/Preemptive.c ****     struct task_struct* head_task = task_pool->head_node->task;
+ 389              		.loc 1 32 1 is_stmt 0 view .LVU114
+ 390 0000 70B5     		push	{r4, r5, r6, lr}
+ 391              	.LCFI4:
+ 392              		.cfi_def_cfa_offset 16
+ 393              		.cfi_offset 4, -16
+ 394              		.cfi_offset 5, -12
+ 395              		.cfi_offset 6, -8
+ 396              		.cfi_offset 14, -4
+ 397 0002 0E46     		mov	r6, r1
+  33:./lib/Preemptive.c ****     struct task_struct* search_task = head_task;
+ 398              		.loc 1 33 5 is_stmt 1 view .LVU115
+  33:./lib/Preemptive.c ****     struct task_struct* search_task = head_task;
+ 399              		.loc 1 33 46 is_stmt 0 view .LVU116
+ 400 0004 0368     		ldr	r3, [r0]
+  33:./lib/Preemptive.c ****     struct task_struct* search_task = head_task;
+ 401              		.loc 1 33 25 view .LVU117
+ 402 0006 9D68     		ldr	r5, [r3, #8]
+ 403              	.LVL33:
+  34:./lib/Preemptive.c ****     while (1)
+ 404              		.loc 1 34 5 is_stmt 1 view .LVU118
+  34:./lib/Preemptive.c ****     while (1)
+ 405              		.loc 1 34 25 is_stmt 0 view .LVU119
+ 406 0008 2C46     		mov	r4, r5
+ 407 000a 0DE0     		b	.L29
+ 408              	.LVL34:
+ 409              	.L32:
+ARM GAS  /tmp/ccDay93Q.s 			page 19
+
+
+ 410              	.LBB16:
+  39:./lib/Preemptive.c ****             struct task_struct *search_task = get_next_task(search_task);
+ 411              		.loc 1 39 13 is_stmt 1 view .LVU120
+  40:./lib/Preemptive.c ****             remove_task_from_pool(dead_task, sched);
+ 412              		.loc 1 40 13 view .LVU121
+  41:./lib/Preemptive.c ****             __destory_task(dead_task);
+ 413              		.loc 1 41 13 view .LVU122
+ 414 000c 3146     		mov	r1, r6
+ 415 000e 2046     		mov	r0, r4
+ 416 0010 FFF7FEFF 		bl	remove_task_from_pool
+ 417              	.LVL35:
+  42:./lib/Preemptive.c ****         }
+ 418              		.loc 1 42 13 view .LVU123
+ 419 0014 2046     		mov	r0, r4
+ 420 0016 FFF7FEFF 		bl	__destory_task
+ 421              	.LVL36:
+ 422 001a 09E0     		b	.L26
+ 423              	.LVL37:
+ 424              	.L28:
+  42:./lib/Preemptive.c ****         }
+ 425              		.loc 1 42 13 is_stmt 0 view .LVU124
+ 426              	.LBE16:
+  53:./lib/Preemptive.c ****             break;
+ 427              		.loc 1 53 9 is_stmt 1 view .LVU125
+  53:./lib/Preemptive.c ****             break;
+ 428              		.loc 1 53 12 is_stmt 0 view .LVU126
+ 429 001c 2046     		mov	r0, r4
+ 430 001e FFF7FEFF 		bl	get_next_task
+ 431              	.LVL38:
+  53:./lib/Preemptive.c ****             break;
+ 432              		.loc 1 53 11 discriminator 1 view .LVU127
+ 433 0022 A842     		cmp	r0, r5
+ 434 0024 14D0     		beq	.L25
+  55:./lib/Preemptive.c ****     }
+ 435              		.loc 1 55 23 view .LVU128
+ 436 0026 0446     		mov	r4, r0
+ 437              	.LVL39:
+ 438              	.L29:
+  35:./lib/Preemptive.c ****     {
+ 439              		.loc 1 35 5 is_stmt 1 view .LVU129
+  37:./lib/Preemptive.c ****         {
+ 440              		.loc 1 37 9 view .LVU130
+  37:./lib/Preemptive.c ****         {
+ 441              		.loc 1 37 24 is_stmt 0 view .LVU131
+ 442 0028 94F85C30 		ldrb	r3, [r4, #92]	@ zero_extendqisi2
+  37:./lib/Preemptive.c ****         {
+ 443              		.loc 1 37 12 view .LVU132
+ 444 002c 062B     		cmp	r3, #6
+ 445 002e EDD0     		beq	.L32
+ 446              	.L26:
+  44:./lib/Preemptive.c ****             break;
+ 447              		.loc 1 44 9 is_stmt 1 view .LVU133
+  44:./lib/Preemptive.c ****             break;
+ 448              		.loc 1 44 23 is_stmt 0 view .LVU134
+ 449 0030 94F85C30 		ldrb	r3, [r4, #92]	@ zero_extendqisi2
+  44:./lib/Preemptive.c ****             break;
+ 450              		.loc 1 44 11 view .LVU135
+ARM GAS  /tmp/ccDay93Q.s 			page 20
+
+
+ 451 0034 022B     		cmp	r3, #2
+ 452 0036 0BD0     		beq	.L25
+  46:./lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time
+ 453              		.loc 1 46 14 is_stmt 1 view .LVU136
+  46:./lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time
+ 454              		.loc 1 46 16 is_stmt 0 view .LVU137
+ 455 0038 032B     		cmp	r3, #3
+ 456 003a EFD1     		bne	.L28
+  47:./lib/Preemptive.c ****                < time){
+ 457              		.loc 1 47 13 is_stmt 1 view .LVU138
+  47:./lib/Preemptive.c ****                < time){
+ 458              		.loc 1 47 27 is_stmt 0 view .LVU139
+ 459 003c E36E     		ldr	r3, [r4, #108]
+  47:./lib/Preemptive.c ****                < time){
+ 460              		.loc 1 47 62 view .LVU140
+ 461 003e 226F     		ldr	r2, [r4, #112]
+  47:./lib/Preemptive.c ****                < time){
+ 462              		.loc 1 47 49 view .LVU141
+ 463 0040 1344     		add	r3, r3, r2
+  48:./lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 464              		.loc 1 48 16 view .LVU142
+ 465 0042 044A     		ldr	r2, .L33
+ 466 0044 1268     		ldr	r2, [r2]
+  47:./lib/Preemptive.c ****                < time){
+ 467              		.loc 1 47 15 view .LVU143
+ 468 0046 9342     		cmp	r3, r2
+ 469 0048 E8DA     		bge	.L28
+  49:./lib/Preemptive.c ****                 break;
+ 470              		.loc 1 49 17 is_stmt 1 view .LVU144
+  49:./lib/Preemptive.c ****                 break;
+ 471              		.loc 1 49 36 is_stmt 0 view .LVU145
+ 472 004a 0223     		movs	r3, #2
+ 473 004c 84F85C30 		strb	r3, [r4, #92]
+  50:./lib/Preemptive.c ****             }
+ 474              		.loc 1 50 17 is_stmt 1 view .LVU146
+ 475              	.L25:
+  58:./lib/Preemptive.c **** 
+ 476              		.loc 1 58 1 is_stmt 0 view .LVU147
+ 477 0050 2046     		mov	r0, r4
+ 478 0052 70BD     		pop	{r4, r5, r6, pc}
+ 479              	.LVL40:
+ 480              	.L34:
+  58:./lib/Preemptive.c **** 
+ 481              		.loc 1 58 1 view .LVU148
+ 482              		.align	2
+ 483              	.L33:
+ 484 0054 00000000 		.word	time
+ 485              		.cfi_endproc
+ 486              	.LFE253:
+ 488              		.section	.text.Preemptive_scheduling,"ax",%progbits
+ 489              		.align	1
+ 490              		.syntax unified
+ 491              		.thumb
+ 492              		.thumb_func
+ 494              	Preemptive_scheduling:
+ 495              	.LVL41:
+ 496              	.LFB254:
+ARM GAS  /tmp/ccDay93Q.s 			page 21
+
+
+  61:./lib/Preemptive.c ****     time++;    
+ 497              		.loc 1 61 1 is_stmt 1 view -0
+ 498              		.cfi_startproc
+ 499              		@ args = 0, pretend = 0, frame = 0
+ 500              		@ frame_needed = 0, uses_anonymous_args = 0
+  61:./lib/Preemptive.c ****     time++;    
+ 501              		.loc 1 61 1 is_stmt 0 view .LVU150
+ 502 0000 10B5     		push	{r4, lr}
+ 503              	.LCFI5:
+ 504              		.cfi_def_cfa_offset 8
+ 505              		.cfi_offset 4, -8
+ 506              		.cfi_offset 14, -4
+ 507 0002 0446     		mov	r4, r0
+  62:./lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(sched->s_task_pool,sched);
+ 508              		.loc 1 62 5 is_stmt 1 view .LVU151
+  62:./lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(sched->s_task_pool,sched);
+ 509              		.loc 1 62 9 is_stmt 0 view .LVU152
+ 510 0004 094A     		ldr	r2, .L39
+ 511 0006 1368     		ldr	r3, [r2]
+ 512 0008 0133     		adds	r3, r3, #1
+ 513 000a 1360     		str	r3, [r2]
+  63:./lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 514              		.loc 1 63 5 is_stmt 1 view .LVU153
+  63:./lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 515              		.loc 1 63 37 is_stmt 0 view .LVU154
+ 516 000c 0146     		mov	r1, r0
+ 517 000e 0068     		ldr	r0, [r0]
+ 518              	.LVL42:
+  63:./lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 519              		.loc 1 63 37 view .LVU155
+ 520 0010 FFF7FEFF 		bl	get_useful_task
+ 521              	.LVL43:
+  64:./lib/Preemptive.c ****     {
+ 522              		.loc 1 64 5 is_stmt 1 view .LVU156
+  64:./lib/Preemptive.c ****     {
+ 523              		.loc 1 64 26 is_stmt 0 view .LVU157
+ 524 0014 2369     		ldr	r3, [r4, #16]
+  64:./lib/Preemptive.c ****     {
+ 525              		.loc 1 64 7 view .LVU158
+ 526 0016 8342     		cmp	r3, r0
+ 527 0018 06D0     		beq	.L35
+  66:./lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+ 528              		.loc 1 66 9 is_stmt 1 view .LVU159
+  66:./lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+ 529              		.loc 1 66 11 is_stmt 0 view .LVU160
+ 530 001a 13B1     		cbz	r3, .L37
+  67:./lib/Preemptive.c ****         }
+ 531              		.loc 1 67 13 is_stmt 1 view .LVU161
+  67:./lib/Preemptive.c ****         }
+ 532              		.loc 1 67 54 is_stmt 0 view .LVU162
+ 533 001c 034A     		ldr	r2, .L39
+ 534 001e 1268     		ldr	r2, [r2]
+ 535 0020 DA66     		str	r2, [r3, #108]
+ 536              	.L37:
+  69:./lib/Preemptive.c ****     }
+ 537              		.loc 1 69 9 is_stmt 1 view .LVU163
+  69:./lib/Preemptive.c ****     }
+ARM GAS  /tmp/ccDay93Q.s 			page 22
+
+
+ 538              		.loc 1 69 40 is_stmt 0 view .LVU164
+ 539 0022 024B     		ldr	r3, .L39
+ 540 0024 1B68     		ldr	r3, [r3]
+ 541 0026 C366     		str	r3, [r0, #108]
+  71:./lib/Preemptive.c **** } 
+ 542              		.loc 1 71 5 is_stmt 1 view .LVU165
+ 543              	.L35:
+  72:./lib/Preemptive.c **** 
+ 544              		.loc 1 72 1 is_stmt 0 view .LVU166
+ 545 0028 10BD     		pop	{r4, pc}
+ 546              	.LVL44:
+ 547              	.L40:
+  72:./lib/Preemptive.c **** 
+ 548              		.loc 1 72 1 view .LVU167
+ 549 002a 00BF     		.align	2
+ 550              	.L39:
+ 551 002c 00000000 		.word	time
+ 552              		.cfi_endproc
+ 553              	.LFE254:
+ 555              		.section	.coreinitcall,"aw"
+ 556              		.align	2
+ 559              	_initcall_init_Preemptive_fn:
+ 560 0000 00000000 		.word	init_Preemptive_fn
+ 561              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 562              		.align	2
+ 563              	.LC0:
+ 564 0000 50726565 		.ascii	"Preemptive\000"
+ 564      6D707469 
+ 564      766500
+ 565              		.section	.data.task_type,"aw"
+ 566              		.align	2
+ 569              	task_type:
+ 570 0000 00000000 		.space	8
+ 570      00000000 
+ 571 0008 00000000 		.word	.LC0
+ 572 000c 00000000 		.word	task_op
+ 573 0010 00000000 		.word	alloc_new_pool
+ 574              		.section	.data.task_op,"aw"
+ 575              		.align	2
+ 578              	task_op:
+ 579 0000 00000000 		.word	Preemptive_scheduling
+ 580 0004 00000000 		.word	add_task_to_task_pool
+ 581 0008 00000000 		.word	remove_task_from_pool
+ 582              		.section	.bss.time,"aw",%nobits
+ 583              		.align	2
+ 586              	time:
+ 587 0000 00000000 		.space	4
+ 588              		.text
+ 589              	.Letext0:
+ 590              		.file 3 "./include/asm-generic/int-l64.h"
+ 591              		.file 4 "./include/asm-generic/posix_types.h"
+ 592              		.file 5 "./include/linux/types.h"
+ 593              		.file 6 "./include/linux/init.h"
+ 594              		.file 7 "./include/linux/time64.h"
+ 595              		.file 8 "./arch/arm_m/include/asm/sched.h"
+ 596              		.file 9 "./include/linux/sched.h"
+ 597              		.file 10 "./include/linux/gfp_types.h"
+ARM GAS  /tmp/ccDay93Q.s 			page 23
+
+
+ARM GAS  /tmp/ccDay93Q.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Preemptive.c
+     /tmp/ccDay93Q.s:21     .text.remove_task_from_pool:00000000 $t
+     /tmp/ccDay93Q.s:26     .text.remove_task_from_pool:00000000 remove_task_from_pool
+     /tmp/ccDay93Q.s:110    .init.text:00000000 $t
+     /tmp/ccDay93Q.s:115    .init.text:00000000 init_Preemptive_fn
+     /tmp/ccDay93Q.s:135    .init.text:0000000c $d
+     /tmp/ccDay93Q.s:569    .data.task_type:00000000 task_type
+     /tmp/ccDay93Q.s:140    .text.alloc_new_pool:00000000 $t
+     /tmp/ccDay93Q.s:145    .text.alloc_new_pool:00000000 alloc_new_pool
+     /tmp/ccDay93Q.s:189    .text.add_task_to_task_pool:00000000 $t
+     /tmp/ccDay93Q.s:194    .text.add_task_to_task_pool:00000000 add_task_to_task_pool
+     /tmp/ccDay93Q.s:348    .text.get_next_task:00000000 $t
+     /tmp/ccDay93Q.s:354    .text.get_next_task:00000000 get_next_task
+     /tmp/ccDay93Q.s:376    .text.get_useful_task:00000000 $t
+     /tmp/ccDay93Q.s:382    .text.get_useful_task:00000000 get_useful_task
+     /tmp/ccDay93Q.s:484    .text.get_useful_task:00000054 $d
+     /tmp/ccDay93Q.s:586    .bss.time:00000000 time
+     /tmp/ccDay93Q.s:489    .text.Preemptive_scheduling:00000000 $t
+     /tmp/ccDay93Q.s:494    .text.Preemptive_scheduling:00000000 Preemptive_scheduling
+     /tmp/ccDay93Q.s:551    .text.Preemptive_scheduling:0000002c $d
+     /tmp/ccDay93Q.s:556    .coreinitcall:00000000 $d
+     /tmp/ccDay93Q.s:559    .coreinitcall:00000000 _initcall_init_Preemptive_fn
+     /tmp/ccDay93Q.s:562    .rodata.str1.4:00000000 $d
+     /tmp/ccDay93Q.s:566    .data.task_type:00000000 $d
+     /tmp/ccDay93Q.s:578    .data.task_op:00000000 task_op
+     /tmp/ccDay93Q.s:575    .data.task_op:00000000 $d
+     /tmp/ccDay93Q.s:583    .bss.time:00000000 $d
+
+UNDEFINED SYMBOLS
+__sfree__
+register_task_pool
+__smalloc__
+block_scheduler
+run_scheduler
+__destory_task

@@ -1,0 +1,1314 @@
+ARM GAS  /tmp/ccuDDosC.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"mount.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./fs/mount.c"
+  20              		.section	.text.__spin_unlock,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__spin_unlock:
+  27              	.LVL0:
+  28              	.LFB230:
+  29              		.file 2 "./arch/arm_m/include/asm/spinlock.h"
+   1:./arch/arm_m/include/asm/spinlock.h **** #ifndef __SPIN_LOCK_H_
+   2:./arch/arm_m/include/asm/spinlock.h **** #define __SPIN_LOCK_H_
+   3:./arch/arm_m/include/asm/spinlock.h **** 
+   4:./arch/arm_m/include/asm/spinlock.h **** #include <linux/sched.h>
+   5:./arch/arm_m/include/asm/spinlock.h **** 
+   6:./arch/arm_m/include/asm/spinlock.h **** typedef struct { 
+   7:./arch/arm_m/include/asm/spinlock.h ****      int flag; 
+   8:./arch/arm_m/include/asm/spinlock.h **** } arch_spinlock_t;
+   9:./arch/arm_m/include/asm/spinlock.h **** 
+  10:./arch/arm_m/include/asm/spinlock.h **** static int __spin_init(arch_spinlock_t *lock) 
+  11:./arch/arm_m/include/asm/spinlock.h **** {
+  12:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  13:./arch/arm_m/include/asm/spinlock.h **** }
+  14:./arch/arm_m/include/asm/spinlock.h **** 
+  15:./arch/arm_m/include/asm/spinlock.h **** static int __spin_lock(arch_spinlock_t *lock) {
+  16:./arch/arm_m/include/asm/spinlock.h **** 
+  17:./arch/arm_m/include/asm/spinlock.h ****     stop_all_scheduler();
+  18:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  19:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  20:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+  21:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+  22:./arch/arm_m/include/asm/spinlock.h ****     }
+  23:./arch/arm_m/include/asm/spinlock.h ****     else
+  24:./arch/arm_m/include/asm/spinlock.h ****     {
+  25:./arch/arm_m/include/asm/spinlock.h ****         start_all_scheduler();
+  26:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+  27:./arch/arm_m/include/asm/spinlock.h ****     }
+  28:./arch/arm_m/include/asm/spinlock.h **** }
+  29:./arch/arm_m/include/asm/spinlock.h **** 
+ARM GAS  /tmp/ccuDDosC.s 			page 2
+
+
+  30:./arch/arm_m/include/asm/spinlock.h **** static void  __spin_unlock( arch_spinlock_t *lock ){
+  30              		.loc 2 30 52 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  31:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  35              		.loc 2 31 5 view .LVU1
+  36              		.loc 2 31 16 is_stmt 0 view .LVU2
+  37 0000 0023     		movs	r3, #0
+  38 0002 0360     		str	r3, [r0]
+  32:./arch/arm_m/include/asm/spinlock.h **** }
+  39              		.loc 2 32 1 view .LVU3
+  40 0004 7047     		bx	lr
+  41              		.cfi_endproc
+  42              	.LFE230:
+  44              		.section	.text.spin_unlock,"ax",%progbits
+  45              		.align	1
+  46              		.syntax unified
+  47              		.thumb
+  48              		.thumb_func
+  50              	spin_unlock:
+  51              	.LVL1:
+  52              	.LFB233:
+  53              		.file 3 "./include/linux/spinlock.h"
+   1:./include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:./include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:./include/linux/spinlock.h **** 
+   4:./include/linux/spinlock.h **** #include <linux/types.h>
+   5:./include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:./include/linux/spinlock.h **** #include <linux/sched.h>
+   7:./include/linux/spinlock.h **** 
+   8:./include/linux/spinlock.h **** 
+   9:./include/linux/spinlock.h **** 
+  10:./include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+  11:./include/linux/spinlock.h ****     __spin_init(&lock->rlock.raw_lock);
+  12:./include/linux/spinlock.h **** }
+  13:./include/linux/spinlock.h **** 
+  14:./include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  15:./include/linux/spinlock.h **** {  
+  16:./include/linux/spinlock.h ****     while (1)
+  17:./include/linux/spinlock.h ****     {
+  18:./include/linux/spinlock.h ****         if(__spin_lock(&lock->rlock.raw_lock) == 1){
+  19:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+  20:./include/linux/spinlock.h ****             break;
+  21:./include/linux/spinlock.h ****         }
+  22:./include/linux/spinlock.h ****         else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  23:./include/linux/spinlock.h ****             return;   
+  24:./include/linux/spinlock.h ****         }
+  25:./include/linux/spinlock.h ****         else{
+  26:./include/linux/spinlock.h ****             __delay(5); //主动让出时间片
+  27:./include/linux/spinlock.h ****         }
+  28:./include/linux/spinlock.h ****     }
+  29:./include/linux/spinlock.h **** }
+  30:./include/linux/spinlock.h **** 
+  31:./include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  32:./include/linux/spinlock.h **** {
+ARM GAS  /tmp/ccuDDosC.s 			page 3
+
+
+  54              		.loc 3 32 1 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		.loc 3 32 1 is_stmt 0 view .LVU5
+  59 0000 08B5     		push	{r3, lr}
+  60              	.LCFI0:
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 3, -8
+  63              		.cfi_offset 14, -4
+  33:./include/linux/spinlock.h ****     __spin_unlock(&lock->rlock.raw_lock);
+  64              		.loc 3 33 5 is_stmt 1 view .LVU6
+  65 0002 FFF7FEFF 		bl	__spin_unlock
+  66              	.LVL2:
+  34:./include/linux/spinlock.h **** }
+  67              		.loc 3 34 1 is_stmt 0 view .LVU7
+  68 0006 08BD     		pop	{r3, pc}
+  69              		.cfi_endproc
+  70              	.LFE233:
+  72              		.section	.text.__spin_lock,"ax",%progbits
+  73              		.align	1
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	__spin_lock:
+  79              	.LVL3:
+  80              	.LFB229:
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+  81              		.loc 2 15 47 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+  85              		.loc 2 15 47 is_stmt 0 view .LVU9
+  86 0000 38B5     		push	{r3, r4, r5, lr}
+  87              	.LCFI1:
+  88              		.cfi_def_cfa_offset 16
+  89              		.cfi_offset 3, -16
+  90              		.cfi_offset 4, -12
+  91              		.cfi_offset 5, -8
+  92              		.cfi_offset 14, -4
+  93 0002 0446     		mov	r4, r0
+  17:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  94              		.loc 2 17 5 is_stmt 1 view .LVU10
+  95 0004 FFF7FEFF 		bl	stop_all_scheduler
+  96              	.LVL4:
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  97              		.loc 2 18 5 view .LVU11
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  98              		.loc 2 18 12 is_stmt 0 view .LVU12
+  99 0008 2368     		ldr	r3, [r4]
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 100              		.loc 2 18 7 view .LVU13
+ 101 000a 2BB9     		cbnz	r3, .L5
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 102              		.loc 2 19 11 is_stmt 1 view .LVU14
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ARM GAS  /tmp/ccuDDosC.s 			page 4
+
+
+ 103              		.loc 2 19 22 is_stmt 0 view .LVU15
+ 104 000c 0125     		movs	r5, #1
+ 105 000e 2560     		str	r5, [r4]
+  20:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+ 106              		.loc 2 20 11 is_stmt 1 view .LVU16
+ 107 0010 FFF7FEFF 		bl	start_all_scheduler
+ 108              	.LVL5:
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 109              		.loc 2 21 9 view .LVU17
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 110              		.loc 2 21 16 is_stmt 0 view .LVU18
+ 111 0014 2846     		mov	r0, r5
+ 112              	.L4:
+  28:./arch/arm_m/include/asm/spinlock.h **** 
+ 113              		.loc 2 28 1 view .LVU19
+ 114 0016 38BD     		pop	{r3, r4, r5, pc}
+ 115              	.LVL6:
+ 116              	.L5:
+  25:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+ 117              		.loc 2 25 9 is_stmt 1 view .LVU20
+ 118 0018 FFF7FEFF 		bl	start_all_scheduler
+ 119              	.LVL7:
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 120              		.loc 2 26 9 view .LVU21
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 121              		.loc 2 26 16 is_stmt 0 view .LVU22
+ 122 001c 0020     		movs	r0, #0
+ 123 001e FAE7     		b	.L4
+ 124              		.cfi_endproc
+ 125              	.LFE229:
+ 127              		.section	.text.spin_lock,"ax",%progbits
+ 128              		.align	1
+ 129              		.syntax unified
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	spin_lock:
+ 134              	.LVL8:
+ 135              	.LFB232:
+  15:./include/linux/spinlock.h ****     while (1)
+ 136              		.loc 3 15 1 is_stmt 1 view -0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./include/linux/spinlock.h ****     while (1)
+ 140              		.loc 3 15 1 is_stmt 0 view .LVU24
+ 141 0000 38B5     		push	{r3, r4, r5, lr}
+ 142              	.LCFI2:
+ 143              		.cfi_def_cfa_offset 16
+ 144              		.cfi_offset 3, -16
+ 145              		.cfi_offset 4, -12
+ 146              		.cfi_offset 5, -8
+ 147              		.cfi_offset 14, -4
+ 148 0002 0446     		mov	r4, r0
+ 149 0004 06E0     		b	.L11
+ 150              	.LVL9:
+ 151              	.L13:
+  19:./include/linux/spinlock.h ****             break;
+ARM GAS  /tmp/ccuDDosC.s 			page 5
+
+
+ 152              		.loc 3 19 13 is_stmt 1 view .LVU25
+  19:./include/linux/spinlock.h ****             break;
+ 153              		.loc 3 19 27 is_stmt 0 view .LVU26
+ 154 0006 FFF7FEFF 		bl	get_current_task
+ 155              	.LVL10:
+  19:./include/linux/spinlock.h ****             break;
+ 156              		.loc 3 19 25 discriminator 1 view .LVU27
+ 157 000a 2060     		str	r0, [r4]
+  20:./include/linux/spinlock.h ****         }
+ 158              		.loc 3 20 13 is_stmt 1 view .LVU28
+ 159              	.L8:
+  29:./include/linux/spinlock.h **** 
+ 160              		.loc 3 29 1 is_stmt 0 view .LVU29
+ 161 000c 38BD     		pop	{r3, r4, r5, pc}
+ 162              	.LVL11:
+ 163              	.L14:
+  26:./include/linux/spinlock.h ****         }
+ 164              		.loc 3 26 13 is_stmt 1 view .LVU30
+ 165 000e 0520     		movs	r0, #5
+ 166 0010 FFF7FEFF 		bl	__delay
+ 167              	.LVL12:
+  16:./include/linux/spinlock.h ****     {
+ 168              		.loc 3 16 11 view .LVU31
+ 169              	.L11:
+  16:./include/linux/spinlock.h ****     {
+ 170              		.loc 3 16 5 view .LVU32
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 171              		.loc 3 18 9 view .LVU33
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 172              		.loc 3 18 12 is_stmt 0 view .LVU34
+ 173 0014 2046     		mov	r0, r4
+ 174 0016 FFF7FEFF 		bl	__spin_lock
+ 175              	.LVL13:
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 176              		.loc 3 18 11 discriminator 1 view .LVU35
+ 177 001a 0128     		cmp	r0, #1
+ 178 001c F3D0     		beq	.L13
+  22:./include/linux/spinlock.h ****             return;   
+ 179              		.loc 3 22 15 is_stmt 1 view .LVU36
+  22:./include/linux/spinlock.h ****             return;   
+ 180              		.loc 3 22 22 is_stmt 0 view .LVU37
+ 181 001e 2568     		ldr	r5, [r4]
+  22:./include/linux/spinlock.h ****             return;   
+ 182              		.loc 3 22 33 view .LVU38
+ 183 0020 FFF7FEFF 		bl	get_current_task
+ 184              	.LVL14:
+  22:./include/linux/spinlock.h ****             return;   
+ 185              		.loc 3 22 17 discriminator 1 view .LVU39
+ 186 0024 8542     		cmp	r5, r0
+ 187 0026 F2D1     		bne	.L14
+ 188 0028 F0E7     		b	.L8
+ 189              		.cfi_endproc
+ 190              	.LFE232:
+ 192              		.section	.text.sget,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	sget
+ 195              		.syntax unified
+ARM GAS  /tmp/ccuDDosC.s 			page 6
+
+
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	sget:
+ 200              	.LVL15:
+ 201              	.LFB1037:
+   1:./fs/mount.c  **** #include <linux/kernel.h>
+   2:./fs/mount.c  **** #include <linux/fs.h>
+   3:./fs/mount.c  **** #include <linux/slab.h>
+   4:./fs/mount.c  **** #include <linux/stat.h>
+   5:./fs/mount.c  **** #include <linux/cache.h>
+   6:./fs/mount.c  **** #include <linux/list.h> 
+   7:./fs/mount.c  **** #include "fs.h"
+   8:./fs/mount.c  **** 
+   9:./fs/mount.c  **** 
+  10:./fs/mount.c  **** extern struct dentry *root_dentry ;
+  11:./fs/mount.c  **** struct list_head superblock_list;
+  12:./fs/mount.c  **** 
+  13:./fs/mount.c  **** 
+  14:./fs/mount.c  **** struct super_block * sget(struct file_system_type *type,
+  15:./fs/mount.c  ****     int (*test)(struct super_block *,void *),
+  16:./fs/mount.c  ****     int (*set)(struct super_block *,void *),
+  17:./fs/mount.c  ****     int flags, void *data)
+  18:./fs/mount.c  **** {
+ 202              		.loc 1 18 1 is_stmt 1 view -0
+ 203              		.cfi_startproc
+ 204              		@ args = 4, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+  19:./fs/mount.c  ****     if(type == NULL ) 
+ 206              		.loc 1 19 5 view .LVU41
+ 207              		.loc 1 19 7 is_stmt 0 view .LVU42
+ 208 0000 60B1     		cbz	r0, .L17
+  18:./fs/mount.c  ****     if(type == NULL ) 
+ 209              		.loc 1 18 1 view .LVU43
+ 210 0002 10B5     		push	{r4, lr}
+ 211              	.LCFI3:
+ 212              		.cfi_def_cfa_offset 8
+ 213              		.cfi_offset 4, -8
+ 214              		.cfi_offset 14, -4
+  20:./fs/mount.c  ****         return NULL;
+  21:./fs/mount.c  ****     if( type->mount == NULL)
+ 215              		.loc 1 21 5 is_stmt 1 view .LVU44
+ 216              		.loc 1 21 13 is_stmt 0 view .LVU45
+ 217 0004 0469     		ldr	r4, [r0, #16]
+ 218              		.loc 1 21 7 view .LVU46
+ 219 0006 54B1     		cbz	r4, .L18
+  22:./fs/mount.c  ****         return NULL;
+  23:./fs/mount.c  ****     struct dentry * dentry = type->mount(type,0,NULL,data);
+ 220              		.loc 1 23 5 is_stmt 1 view .LVU47
+ 221              		.loc 1 23 30 is_stmt 0 view .LVU48
+ 222 0008 029B     		ldr	r3, [sp, #8]
+ 223              	.LVL16:
+ 224              		.loc 1 23 30 view .LVU49
+ 225 000a 0022     		movs	r2, #0
+ 226              	.LVL17:
+ 227              		.loc 1 23 30 view .LVU50
+ 228 000c 1146     		mov	r1, r2
+ 229              	.LVL18:
+ARM GAS  /tmp/ccuDDosC.s 			page 7
+
+
+ 230              		.loc 1 23 30 view .LVU51
+ 231 000e A047     		blx	r4
+ 232              	.LVL19:
+  24:./fs/mount.c  ****     if(IS_ERR(dentry))
+ 233              		.loc 1 24 5 is_stmt 1 view .LVU52
+ 234              	.LBB33:
+ 235              	.LBI33:
+ 236              		.file 4 "./include/linux/err.h"
+   1:./include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:./include/linux/err.h **** #define _LINUX_ERR_H
+   4:./include/linux/err.h **** 
+   5:./include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:./include/linux/err.h **** #include <linux/compiler.h>
+   7:./include/linux/err.h **** #include <linux/types.h>
+   8:./include/linux/err.h **** 
+   9:./include/linux/err.h **** #include <asm/errno.h>
+  10:./include/linux/err.h **** 
+  11:./include/linux/err.h **** /*
+  12:./include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:./include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:./include/linux/err.h ****  * pointer with the same return value.
+  15:./include/linux/err.h ****  *
+  16:./include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:./include/linux/err.h ****  * error and pointer decisions.
+  18:./include/linux/err.h ****  */
+  19:./include/linux/err.h **** #define MAX_ERRNO	4095
+  20:./include/linux/err.h **** 
+  21:./include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:./include/linux/err.h **** 
+  23:./include/linux/err.h **** /**
+  24:./include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:./include/linux/err.h ****  * @x: The pointer to check.
+  26:./include/linux/err.h ****  *
+  27:./include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:./include/linux/err.h ****  */
+  29:./include/linux/err.h **** 
+  30:./include/linux/err.h **** #ifndef unlikely
+  31:./include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:./include/linux/err.h **** #endif
+  33:./include/linux/err.h **** 
+  34:./include/linux/err.h **** #ifndef likely
+  35:./include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:./include/linux/err.h **** #endif
+  37:./include/linux/err.h **** 
+  38:./include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:./include/linux/err.h **** 
+  40:./include/linux/err.h **** /**
+  41:./include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:./include/linux/err.h ****  * @error: A negative error code.
+  43:./include/linux/err.h ****  *
+  44:./include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:./include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:./include/linux/err.h ****  *
+  47:./include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:./include/linux/err.h ****  */
+  49:./include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+ARM GAS  /tmp/ccuDDosC.s 			page 8
+
+
+  50:./include/linux/err.h **** {
+  51:./include/linux/err.h **** 	return (void *) error;
+  52:./include/linux/err.h **** }
+  53:./include/linux/err.h **** 
+  54:./include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:./include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:./include/linux/err.h **** 
+  57:./include/linux/err.h **** /**
+  58:./include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:./include/linux/err.h ****  * @ptr: An error pointer.
+  60:./include/linux/err.h ****  * Return: The error code within @ptr.
+  61:./include/linux/err.h ****  */
+  62:./include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:./include/linux/err.h **** {
+  64:./include/linux/err.h **** 	return (long) ptr;
+  65:./include/linux/err.h **** }
+  66:./include/linux/err.h **** 
+  67:./include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:./include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:./include/linux/err.h **** 
+  70:./include/linux/err.h **** /**
+  71:./include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:./include/linux/err.h ****  * @ptr: The pointer to check.
+  73:./include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:./include/linux/err.h ****  */
+  75:./include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 237              		.loc 4 75 33 view .LVU53
+ 238              	.LBB34:
+  76:./include/linux/err.h **** {
+  77:./include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 239              		.loc 4 77 2 view .LVU54
+ 240              		.loc 4 77 2 is_stmt 0 view .LVU55
+ 241              	.LBE34:
+ 242              	.LBE33:
+ 243              		.loc 1 24 7 discriminator 1 view .LVU56
+ 244 0010 10F5805F 		cmn	r0, #4096
+ 245 0014 05D8     		bhi	.L19
+  25:./fs/mount.c  ****         return NULL;
+  26:./fs/mount.c  ****     if(dentry == NULL)
+ 246              		.loc 1 26 5 is_stmt 1 view .LVU57
+ 247              		.loc 1 26 7 is_stmt 0 view .LVU58
+ 248 0016 00B1     		cbz	r0, .L15
+  27:./fs/mount.c  ****         return NULL;        
+  28:./fs/mount.c  ****     if(dentry->d_sb == NULL) 
+ 249              		.loc 1 28 5 is_stmt 1 view .LVU59
+ 250              		.loc 1 28 14 is_stmt 0 view .LVU60
+ 251 0018 006D     		ldr	r0, [r0, #80]
+ 252              	.LVL20:
+ 253              	.L15:
+  29:./fs/mount.c  ****         return NULL;        
+  30:./fs/mount.c  ****     return dentry->d_sb;
+  31:./fs/mount.c  **** }
+ 254              		.loc 1 31 1 view .LVU61
+ 255 001a 10BD     		pop	{r4, pc}
+ 256              	.LVL21:
+ 257              	.L17:
+ 258              	.LCFI4:
+ARM GAS  /tmp/ccuDDosC.s 			page 9
+
+
+ 259              		.cfi_def_cfa_offset 0
+ 260              		.cfi_restore 4
+ 261              		.cfi_restore 14
+ 262              		.loc 1 31 1 view .LVU62
+ 263 001c 7047     		bx	lr
+ 264              	.L18:
+ 265              	.LCFI5:
+ 266              		.cfi_def_cfa_offset 8
+ 267              		.cfi_offset 4, -8
+ 268              		.cfi_offset 14, -4
+  22:./fs/mount.c  ****     struct dentry * dentry = type->mount(type,0,NULL,data);
+ 269              		.loc 1 22 16 view .LVU63
+ 270 001e 0020     		movs	r0, #0
+ 271              	.LVL22:
+  22:./fs/mount.c  ****     struct dentry * dentry = type->mount(type,0,NULL,data);
+ 272              		.loc 1 22 16 view .LVU64
+ 273 0020 FBE7     		b	.L15
+ 274              	.LVL23:
+ 275              	.L19:
+  25:./fs/mount.c  ****     if(dentry == NULL)
+ 276              		.loc 1 25 16 view .LVU65
+ 277 0022 0020     		movs	r0, #0
+ 278              	.LVL24:
+  25:./fs/mount.c  ****     if(dentry == NULL)
+ 279              		.loc 1 25 16 view .LVU66
+ 280 0024 F9E7     		b	.L15
+ 281              		.cfi_endproc
+ 282              	.LFE1037:
+ 284              		.section	.rodata.mount_root_fs.str1.4,"aMS",%progbits,1
+ 285              		.align	2
+ 286              	.LC0:
+ 287 0000 726F6F74 		.ascii	"root\000"
+ 287      00
+ 288 0005 000000   		.align	2
+ 289              	.LC1:
+ 290 0008 6D6F756E 		.ascii	"mount root fs:%s \012\000"
+ 290      7420726F 
+ 290      6F742066 
+ 290      733A2573 
+ 290      200A00
+ 291              		.section	.text.mount_root_fs,"ax",%progbits
+ 292              		.align	1
+ 293              		.global	mount_root_fs
+ 294              		.syntax unified
+ 295              		.thumb
+ 296              		.thumb_func
+ 298              	mount_root_fs:
+ 299              	.LVL25:
+ 300              	.LFB1038:
+  32:./fs/mount.c  **** 
+  33:./fs/mount.c  **** int mount_root_fs(char *file_system_type)
+  34:./fs/mount.c  **** {
+ 301              		.loc 1 34 1 is_stmt 1 view -0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+ 305              		.loc 1 34 1 is_stmt 0 view .LVU68
+ARM GAS  /tmp/ccuDDosC.s 			page 10
+
+
+ 306 0000 70B5     		push	{r4, r5, r6, lr}
+ 307              	.LCFI6:
+ 308              		.cfi_def_cfa_offset 16
+ 309              		.cfi_offset 4, -16
+ 310              		.cfi_offset 5, -12
+ 311              		.cfi_offset 6, -8
+ 312              		.cfi_offset 14, -4
+ 313 0002 0446     		mov	r4, r0
+  35:./fs/mount.c  ****     INIT_LIST_HEAD(&superblock_list);
+ 314              		.loc 1 35 5 is_stmt 1 view .LVU69
+ 315              	.LVL26:
+ 316              	.LBB35:
+ 317              	.LBI35:
+ 318              		.file 5 "./include/linux/list.h"
+   1:./include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:./include/linux/list.h **** #define _LINUX_LIST_H
+   4:./include/linux/list.h **** 
+   5:./include/linux/list.h **** #include <linux/container_of.h>
+   6:./include/linux/list.h **** #include <linux/types.h>
+   7:./include/linux/list.h **** #include <linux/stddef.h>
+   8:./include/linux/list.h **** #include <linux/poison.h>
+   9:./include/linux/list.h **** #include <linux/const.h>
+  10:./include/linux/list.h **** 
+  11:./include/linux/list.h **** #include <asm/barrier.h>
+  12:./include/linux/list.h **** #include <linux/rwonce.h>
+  13:./include/linux/list.h **** /*
+  14:./include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:./include/linux/list.h ****  *
+  16:./include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:./include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:./include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:./include/linux/list.h ****  * generate better code by using them directly rather than
+  20:./include/linux/list.h ****  * using the generic single-entry routines.
+  21:./include/linux/list.h ****  */
+  22:./include/linux/list.h **** 
+  23:./include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:./include/linux/list.h **** 
+  25:./include/linux/list.h **** #define LIST_HEAD(name) \
+  26:./include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:./include/linux/list.h **** 
+  28:./include/linux/list.h **** /**
+  29:./include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:./include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:./include/linux/list.h ****  *
+  32:./include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:./include/linux/list.h ****  * the result is an empty list.
+  34:./include/linux/list.h ****  */
+  35:./include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+ 319              		.loc 5 35 20 view .LVU70
+ 320              	.LBB36:
+  36:./include/linux/list.h **** {
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+ 321              		.loc 5 37 2 view .LVU71
+ 322              		.loc 5 37 2 view .LVU72
+ 323              	.LBB37:
+ 324              		.loc 5 37 2 view .LVU73
+ARM GAS  /tmp/ccuDDosC.s 			page 11
+
+
+ 325              		.loc 5 37 2 view .LVU74
+ 326              	.LBE37:
+ 327              		.loc 5 37 2 discriminator 2 view .LVU75
+ 328              		.loc 5 37 2 discriminator 2 view .LVU76
+ 329              		.loc 5 37 2 discriminator 2 view .LVU77
+ 330 0004 204B     		ldr	r3, .L31
+ 331 0006 1B60     		str	r3, [r3]
+ 332              		.loc 5 37 2 discriminator 2 view .LVU78
+ 333              		.loc 5 37 2 discriminator 2 view .LVU79
+  38:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 334              		.loc 5 38 2 view .LVU80
+ 335              		.loc 5 38 2 view .LVU81
+ 336              	.LBB38:
+ 337              		.loc 5 38 2 view .LVU82
+ 338              		.loc 5 38 2 view .LVU83
+ 339              	.LBE38:
+ 340              		.loc 5 38 2 discriminator 2 view .LVU84
+ 341              		.loc 5 38 2 discriminator 2 view .LVU85
+ 342              		.loc 5 38 2 discriminator 2 view .LVU86
+ 343 0008 5B60     		str	r3, [r3, #4]
+ 344              		.loc 5 38 2 discriminator 2 view .LVU87
+ 345              		.loc 5 38 2 discriminator 2 view .LVU88
+ 346              	.LVL27:
+ 347              		.loc 5 38 2 is_stmt 0 discriminator 2 view .LVU89
+ 348              	.LBE36:
+ 349              	.LBE35:
+  36:./fs/mount.c  ****     struct file_system_type * file_system = lookup_fs_type(file_system_type);
+ 350              		.loc 1 36 5 is_stmt 1 view .LVU90
+ 351              		.loc 1 36 45 is_stmt 0 view .LVU91
+ 352 000a FFF7FEFF 		bl	lookup_fs_type
+ 353              	.LVL28:
+  37:./fs/mount.c  ****     if(file_system == NULL)     return -1;
+ 354              		.loc 1 37 5 is_stmt 1 view .LVU92
+ 355              		.loc 1 37 7 is_stmt 0 view .LVU93
+ 356 000e 0028     		cmp	r0, #0
+ 357 0010 2ED0     		beq	.L26
+ 358 0012 0546     		mov	r5, r0
+  38:./fs/mount.c  ****     struct super_block* test_sb = (file_system->mount(file_system,0,NULL,NULL))->d_sb; 
+ 359              		.loc 1 38 5 is_stmt 1 view .LVU94
+ 360              		.loc 1 38 47 is_stmt 0 view .LVU95
+ 361 0014 0669     		ldr	r6, [r0, #16]
+ 362              		.loc 1 38 36 view .LVU96
+ 363 0016 0023     		movs	r3, #0
+ 364 0018 1A46     		mov	r2, r3
+ 365 001a 1946     		mov	r1, r3
+ 366 001c B047     		blx	r6
+ 367              	.LVL29:
+ 368              		.loc 1 38 25 discriminator 1 view .LVU97
+ 369 001e 036D     		ldr	r3, [r0, #80]
+ 370              	.LVL30:
+  39:./fs/mount.c  ****     if(IS_ERR(test_sb))
+ 371              		.loc 1 39 5 is_stmt 1 view .LVU98
+ 372              	.LBB39:
+ 373              	.LBI39:
+  75:./include/linux/err.h **** {
+ 374              		.loc 4 75 33 view .LVU99
+ 375              	.LBB40:
+ARM GAS  /tmp/ccuDDosC.s 			page 12
+
+
+ 376              		.loc 4 77 2 view .LVU100
+ 377              		.loc 4 77 9 is_stmt 0 view .LVU101
+ 378 0020 13F5805F 		cmn	r3, #4096
+ 379 0024 94BF     		ite	ls
+ 380 0026 0025     		movls	r5, #0
+ 381              	.LVL31:
+ 382              		.loc 4 77 9 view .LVU102
+ 383 0028 0125     		movhi	r5, #1
+ 384              	.LVL32:
+ 385              		.loc 4 77 9 view .LVU103
+ 386              	.LBE40:
+ 387              	.LBE39:
+ 388              		.loc 1 39 7 discriminator 1 view .LVU104
+ 389 002a 25BB     		cbnz	r5, .L27
+  40:./fs/mount.c  ****         return NULL;
+  41:./fs/mount.c  **** 
+  42:./fs/mount.c  **** 
+  43:./fs/mount.c  ****     if(test_sb == NULL)    return -1;
+ 390              		.loc 1 43 5 is_stmt 1 view .LVU105
+ 391              		.loc 1 43 7 is_stmt 0 view .LVU106
+ 392 002c 2BB3     		cbz	r3, .L28
+  44:./fs/mount.c  ****     if( test_sb->s_root == NULL)    return -1;
+ 393              		.loc 1 44 5 is_stmt 1 view .LVU107
+ 394              		.loc 1 44 16 is_stmt 0 view .LVU108
+ 395 002e 5A69     		ldr	r2, [r3, #20]
+ 396              		.loc 1 44 7 view .LVU109
+ 397 0030 32B3     		cbz	r2, .L29
+  45:./fs/mount.c  ****     strcpy(test_sb->s_sysfs_name,"root");        //实际上这个名字没有任何意义。文件
+ 398              		.loc 1 45 5 is_stmt 1 view .LVU110
+ 399 0032 1649     		ldr	r1, .L31+4
+ 400 0034 0868     		ldr	r0, [r1]
+ 401 0036 1863     		str	r0, [r3, #48]	@ unaligned
+ 402 0038 0A79     		ldrb	r2, [r1, #4]	@ zero_extendqisi2
+ 403 003a 83F83420 		strb	r2, [r3, #52]
+  46:./fs/mount.c  ****     list_add(&test_sb->s_mounts,&superblock_list); 
+ 404              		.loc 1 46 5 view .LVU111
+ 405 003e 03F12400 		add	r0, r3, #36
+ 406              	.LVL33:
+ 407              	.LBB41:
+ 408              	.LBI41:
+  39:./include/linux/list.h **** }
+  40:./include/linux/list.h **** 
+  41:./include/linux/list.h **** #ifdef CONFIG_LIST_HARDENED
+  42:./include/linux/list.h **** 
+  43:./include/linux/list.h **** #ifdef CONFIG_DEBUG_LIST
+  44:./include/linux/list.h **** # define __list_valid_slowpath
+  45:./include/linux/list.h **** #else
+  46:./include/linux/list.h **** # define __list_valid_slowpath __cold __preserve_most
+  47:./include/linux/list.h **** #endif
+  48:./include/linux/list.h **** 
+  49:./include/linux/list.h **** /*
+  50:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_add().
+  51:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  52:./include/linux/list.h ****  */
+  53:./include/linux/list.h **** extern bool __list_valid_slowpath __list_add_valid_or_report(struct list_head *new,
+  54:./include/linux/list.h **** 							     struct list_head *prev,
+  55:./include/linux/list.h **** 							     struct list_head *next);
+ARM GAS  /tmp/ccuDDosC.s 			page 13
+
+
+  56:./include/linux/list.h **** 
+  57:./include/linux/list.h **** /*
+  58:./include/linux/list.h ****  * Performs list corruption checks before __list_add(). Returns false if a
+  59:./include/linux/list.h ****  * corruption is detected, true otherwise.
+  60:./include/linux/list.h ****  *
+  61:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+  62:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+  63:./include/linux/list.h ****  * detected calls the reporting function __list_add_valid_or_report().
+  64:./include/linux/list.h ****  */
+  65:./include/linux/list.h **** static __always_inline bool __list_add_valid(struct list_head *new,
+  66:./include/linux/list.h **** 					     struct list_head *prev,
+  67:./include/linux/list.h **** 					     struct list_head *next)
+  68:./include/linux/list.h **** {
+  69:./include/linux/list.h **** 	bool ret = true;
+  70:./include/linux/list.h **** 
+  71:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+  72:./include/linux/list.h **** 		/*
+  73:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+  74:./include/linux/list.h **** 		 * are NULL, since the immediate dereference of them below would
+  75:./include/linux/list.h **** 		 * result in a fault if NULL.
+  76:./include/linux/list.h **** 		 *
+  77:./include/linux/list.h **** 		 * With the reduced set of checks, we can afford to inline the
+  78:./include/linux/list.h **** 		 * checks, which also gives the compiler a chance to elide some
+  79:./include/linux/list.h **** 		 * of them completely if they can be proven at compile-time. If
+  80:./include/linux/list.h **** 		 * one of the pre-conditions does not hold, the slow-path will
+  81:./include/linux/list.h **** 		 * show a report which pre-condition failed.
+  82:./include/linux/list.h **** 		 */
+  83:./include/linux/list.h **** 		if (likely(next->prev == prev && prev->next == next && new != prev && new != next))
+  84:./include/linux/list.h **** 			return true;
+  85:./include/linux/list.h **** 		ret = false;
+  86:./include/linux/list.h **** 	}
+  87:./include/linux/list.h **** 
+  88:./include/linux/list.h **** 	ret &= __list_add_valid_or_report(new, prev, next);
+  89:./include/linux/list.h **** 	return ret;
+  90:./include/linux/list.h **** }
+  91:./include/linux/list.h **** 
+  92:./include/linux/list.h **** /*
+  93:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_del_entry().
+  94:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  95:./include/linux/list.h ****  */
+  96:./include/linux/list.h **** extern bool __list_valid_slowpath __list_del_entry_valid_or_report(struct list_head *entry);
+  97:./include/linux/list.h **** 
+  98:./include/linux/list.h **** /*
+  99:./include/linux/list.h ****  * Performs list corruption checks before __list_del_entry(). Returns false if a
+ 100:./include/linux/list.h ****  * corruption is detected, true otherwise.
+ 101:./include/linux/list.h ****  *
+ 102:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+ 103:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ 104:./include/linux/list.h ****  * detected calls the reporting function __list_del_entry_valid_or_report().
+ 105:./include/linux/list.h ****  */
+ 106:./include/linux/list.h **** static __always_inline bool __list_del_entry_valid(struct list_head *entry)
+ 107:./include/linux/list.h **** {
+ 108:./include/linux/list.h **** 	bool ret = true;
+ 109:./include/linux/list.h **** 
+ 110:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+ 111:./include/linux/list.h **** 		struct list_head *prev = entry->prev;
+ 112:./include/linux/list.h **** 		struct list_head *next = entry->next;
+ARM GAS  /tmp/ccuDDosC.s 			page 14
+
+
+ 113:./include/linux/list.h **** 
+ 114:./include/linux/list.h **** 		/*
+ 115:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+ 116:./include/linux/list.h **** 		 * are NULL, LIST_POISON1 or LIST_POISON2, since the immediate
+ 117:./include/linux/list.h **** 		 * dereference of them below would result in a fault.
+ 118:./include/linux/list.h **** 		 */
+ 119:./include/linux/list.h **** 		if (likely(prev->next == entry && next->prev == entry))
+ 120:./include/linux/list.h **** 			return true;
+ 121:./include/linux/list.h **** 		ret = false;
+ 122:./include/linux/list.h **** 	}
+ 123:./include/linux/list.h **** 
+ 124:./include/linux/list.h **** 	ret &= __list_del_entry_valid_or_report(entry);
+ 125:./include/linux/list.h **** 	return ret;
+ 126:./include/linux/list.h **** }
+ 127:./include/linux/list.h **** #else
+ 128:./include/linux/list.h **** static inline bool __list_add_valid(struct list_head *new,
+ 129:./include/linux/list.h **** 				struct list_head *prev,
+ 130:./include/linux/list.h **** 				struct list_head *next)
+ 131:./include/linux/list.h **** {
+ 132:./include/linux/list.h **** 	return true;
+ 133:./include/linux/list.h **** }
+ 134:./include/linux/list.h **** static inline bool __list_del_entry_valid(struct list_head *entry)
+ 135:./include/linux/list.h **** {
+ 136:./include/linux/list.h **** 	return true;
+ 137:./include/linux/list.h **** }
+ 138:./include/linux/list.h **** #endif
+ 139:./include/linux/list.h **** 
+ 140:./include/linux/list.h **** /*
+ 141:./include/linux/list.h ****  * Insert a new entry between two known consecutive entries.
+ 142:./include/linux/list.h ****  *
+ 143:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 144:./include/linux/list.h ****  * the prev/next entries already!
+ 145:./include/linux/list.h ****  */
+ 146:./include/linux/list.h **** static inline void __list_add(struct list_head *new,
+ 147:./include/linux/list.h **** 			      struct list_head *prev,
+ 148:./include/linux/list.h **** 			      struct list_head *next)
+ 149:./include/linux/list.h **** {
+ 150:./include/linux/list.h **** 	if (!__list_add_valid(new, prev, next))
+ 151:./include/linux/list.h **** 		return;
+ 152:./include/linux/list.h **** 
+ 153:./include/linux/list.h **** 	next->prev = new;
+ 154:./include/linux/list.h **** 	new->next = next;
+ 155:./include/linux/list.h **** 	new->prev = prev;
+ 156:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 157:./include/linux/list.h **** }
+ 158:./include/linux/list.h **** 
+ 159:./include/linux/list.h **** /**
+ 160:./include/linux/list.h ****  * list_add - add a new entry
+ 161:./include/linux/list.h ****  * @new: new entry to be added
+ 162:./include/linux/list.h ****  * @head: list head to add it after
+ 163:./include/linux/list.h ****  *
+ 164:./include/linux/list.h ****  * Insert a new entry after the specified head.
+ 165:./include/linux/list.h ****  * This is good for implementing stacks.
+ 166:./include/linux/list.h ****  */
+ 167:./include/linux/list.h **** static inline void list_add(struct list_head *new, struct list_head *head)
+ 409              		.loc 5 167 20 view .LVU112
+ 410              	.LBB42:
+ARM GAS  /tmp/ccuDDosC.s 			page 15
+
+
+ 168:./include/linux/list.h **** {
+ 169:./include/linux/list.h **** 	__list_add(new, head, head->next);
+ 411              		.loc 5 169 2 view .LVU113
+ 412 0042 114A     		ldr	r2, .L31
+ 413 0044 1668     		ldr	r6, [r2]
+ 414              	.LVL34:
+ 415              	.LBB43:
+ 416              	.LBI43:
+ 146:./include/linux/list.h **** 			      struct list_head *prev,
+ 417              		.loc 5 146 20 view .LVU114
+ 418              	.LBB44:
+ 150:./include/linux/list.h **** 		return;
+ 419              		.loc 5 150 2 view .LVU115
+ 153:./include/linux/list.h **** 	new->next = next;
+ 420              		.loc 5 153 2 view .LVU116
+ 153:./include/linux/list.h **** 	new->next = next;
+ 421              		.loc 5 153 13 is_stmt 0 view .LVU117
+ 422 0046 7060     		str	r0, [r6, #4]
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 423              		.loc 5 154 2 is_stmt 1 view .LVU118
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 424              		.loc 5 154 12 is_stmt 0 view .LVU119
+ 425 0048 5E62     		str	r6, [r3, #36]
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 426              		.loc 5 155 2 is_stmt 1 view .LVU120
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 427              		.loc 5 155 12 is_stmt 0 view .LVU121
+ 428 004a 9A62     		str	r2, [r3, #40]
+ 156:./include/linux/list.h **** }
+ 429              		.loc 5 156 2 is_stmt 1 view .LVU122
+ 156:./include/linux/list.h **** }
+ 430              		.loc 5 156 2 view .LVU123
+ 431              	.LBB45:
+ 156:./include/linux/list.h **** }
+ 432              		.loc 5 156 2 view .LVU124
+ 156:./include/linux/list.h **** }
+ 433              		.loc 5 156 2 view .LVU125
+ 434              	.LBE45:
+ 156:./include/linux/list.h **** }
+ 435              		.loc 5 156 2 discriminator 2 view .LVU126
+ 156:./include/linux/list.h **** }
+ 436              		.loc 5 156 2 discriminator 2 view .LVU127
+ 156:./include/linux/list.h **** }
+ 437              		.loc 5 156 2 discriminator 2 view .LVU128
+ 438 004c 1060     		str	r0, [r2]
+ 156:./include/linux/list.h **** }
+ 439              		.loc 5 156 2 discriminator 3 view .LVU129
+ 156:./include/linux/list.h **** }
+ 440              		.loc 5 156 2 discriminator 3 view .LVU130
+ 441              	.LVL35:
+ 156:./include/linux/list.h **** }
+ 442              		.loc 5 156 2 is_stmt 0 discriminator 3 view .LVU131
+ 443              	.LBE44:
+ 444              	.LBE43:
+ 445              	.LBE42:
+ 446              	.LBE41:
+  47:./fs/mount.c  ****     root_dentry = test_sb->s_root;
+ARM GAS  /tmp/ccuDDosC.s 			page 16
+
+
+ 447              		.loc 1 47 5 is_stmt 1 view .LVU132
+ 448              		.loc 1 47 26 is_stmt 0 view .LVU133
+ 449 004e 5A69     		ldr	r2, [r3, #20]
+ 450              		.loc 1 47 17 view .LVU134
+ 451 0050 0F48     		ldr	r0, .L31+8
+ 452 0052 0260     		str	r2, [r0]
+  48:./fs/mount.c  ****     root_dentry->d_sb = test_sb;
+ 453              		.loc 1 48 5 is_stmt 1 view .LVU135
+ 454              		.loc 1 48 23 is_stmt 0 view .LVU136
+ 455 0054 1365     		str	r3, [r2, #80]
+  49:./fs/mount.c  ****     root_dentry->d_inode->i_mode = S_IFDIR | 0755;
+ 456              		.loc 1 49 5 is_stmt 1 view .LVU137
+ 457              		.loc 1 49 16 is_stmt 0 view .LVU138
+ 458 0056 936C     		ldr	r3, [r2, #72]
+ 459              	.LVL36:
+ 460              		.loc 1 49 34 view .LVU139
+ 461 0058 44F2ED12 		movw	r2, #16877
+ 462              	.LVL37:
+ 463              		.loc 1 49 34 view .LVU140
+ 464 005c 1A80     		strh	r2, [r3]	@ movhi
+ 465              	.LVL38:
+  50:./fs/mount.c  ****     dentry_rename(root_dentry,"root");
+ 466              		.loc 1 50 5 is_stmt 1 view .LVU141
+ 467 005e 0068     		ldr	r0, [r0]
+ 468 0060 FFF7FEFF 		bl	dentry_rename
+ 469              	.LVL39:
+  51:./fs/mount.c  ****     pr_info("mount root fs:%s \n",file_system_type);
+ 470              		.loc 1 51 5 view .LVU142
+ 471 0064 2146     		mov	r1, r4
+ 472 0066 0B48     		ldr	r0, .L31+12
+ 473 0068 FFF7FEFF 		bl	printk
+ 474              	.LVL40:
+  52:./fs/mount.c  **** 
+  53:./fs/mount.c  ****     return 0;
+ 475              		.loc 1 53 5 view .LVU143
+ 476              	.L24:
+  54:./fs/mount.c  **** }
+ 477              		.loc 1 54 1 is_stmt 0 view .LVU144
+ 478 006c 2846     		mov	r0, r5
+ 479 006e 70BD     		pop	{r4, r5, r6, pc}
+ 480              	.LVL41:
+ 481              	.L26:
+  37:./fs/mount.c  ****     struct super_block* test_sb = (file_system->mount(file_system,0,NULL,NULL))->d_sb; 
+ 482              		.loc 1 37 40 discriminator 1 view .LVU145
+ 483 0070 4FF0FF35 		mov	r5, #-1
+ 484 0074 FAE7     		b	.L24
+ 485              	.LVL42:
+ 486              	.L27:
+  40:./fs/mount.c  **** 
+ 487              		.loc 1 40 16 view .LVU146
+ 488 0076 0025     		movs	r5, #0
+ 489 0078 F8E7     		b	.L24
+ 490              	.L28:
+  43:./fs/mount.c  ****     if( test_sb->s_root == NULL)    return -1;
+ 491              		.loc 1 43 35 discriminator 1 view .LVU147
+ 492 007a 4FF0FF35 		mov	r5, #-1
+ 493 007e F5E7     		b	.L24
+ARM GAS  /tmp/ccuDDosC.s 			page 17
+
+
+ 494              	.L29:
+  44:./fs/mount.c  ****     strcpy(test_sb->s_sysfs_name,"root");        //实际上这个名字没有任何意义。文件
+ 495              		.loc 1 44 44 discriminator 1 view .LVU148
+ 496 0080 4FF0FF35 		mov	r5, #-1
+ 497 0084 F2E7     		b	.L24
+ 498              	.L32:
+ 499 0086 00BF     		.align	2
+ 500              	.L31:
+ 501 0088 00000000 		.word	superblock_list
+ 502 008c 00000000 		.word	.LC0
+ 503 0090 00000000 		.word	root_dentry
+ 504 0094 08000000 		.word	.LC1
+ 505              		.cfi_endproc
+ 506              	.LFE1038:
+ 508              		.section	.rodata.sys_mount.str1.4,"aMS",%progbits,1
+ 509              		.align	2
+ 510              	.LC2:
+ 511 0000 6D6F756E 		.ascii	"mount:%s fs:%s to %s \012\000"
+ 511      743A2573 
+ 511      2066733A 
+ 511      25732074 
+ 511      6F202573 
+ 512              		.section	.text.sys_mount,"ax",%progbits
+ 513              		.align	1
+ 514              		.global	sys_mount
+ 515              		.syntax unified
+ 516              		.thumb
+ 517              		.thumb_func
+ 519              	sys_mount:
+ 520              	.LVL43:
+ 521              	.LFB1039:
+  55:./fs/mount.c  **** 
+  56:./fs/mount.c  **** struct  dentry * select_file(char * path , int offset);
+  57:./fs/mount.c  **** 
+  58:./fs/mount.c  **** 
+  59:./fs/mount.c  **** int sys_mount(const char __user *dev_name, const char __user *dir_name,
+  60:./fs/mount.c  ****     const char __user *type, unsigned long flags,
+  61:./fs/mount.c  ****     const void __user *data)
+  62:./fs/mount.c  **** {
+ 522              		.loc 1 62 1 is_stmt 1 view -0
+ 523              		.cfi_startproc
+ 524              		@ args = 4, pretend = 0, frame = 0
+ 525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 526              		.loc 1 62 1 is_stmt 0 view .LVU150
+ 527 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 528              	.LCFI7:
+ 529              		.cfi_def_cfa_offset 40
+ 530              		.cfi_offset 3, -40
+ 531              		.cfi_offset 4, -36
+ 532              		.cfi_offset 5, -32
+ 533              		.cfi_offset 6, -28
+ 534              		.cfi_offset 7, -24
+ 535              		.cfi_offset 8, -20
+ 536              		.cfi_offset 9, -16
+ 537              		.cfi_offset 10, -12
+ 538              		.cfi_offset 11, -8
+ 539              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccuDDosC.s 			page 18
+
+
+ 540 0004 0746     		mov	r7, r0
+ 541 0006 0E46     		mov	r6, r1
+ 542 0008 1546     		mov	r5, r2
+  63:./fs/mount.c  ****     struct file_system_type * file_system = lookup_fs_type(type);
+ 543              		.loc 1 63 5 is_stmt 1 view .LVU151
+ 544              		.loc 1 63 45 is_stmt 0 view .LVU152
+ 545 000a 1046     		mov	r0, r2
+ 546              	.LVL44:
+ 547              		.loc 1 63 45 view .LVU153
+ 548 000c FFF7FEFF 		bl	lookup_fs_type
+ 549              	.LVL45:
+  64:./fs/mount.c  ****     if(file_system == NULL){
+ 550              		.loc 1 64 5 is_stmt 1 view .LVU154
+ 551              		.loc 1 64 7 is_stmt 0 view .LVU155
+ 552 0010 0028     		cmp	r0, #0
+ 553 0012 3ED0     		beq	.L35
+ 554 0014 8146     		mov	r9, r0
+  65:./fs/mount.c  ****         return ERR_PTR(-ENODEV);
+  66:./fs/mount.c  ****     }
+  67:./fs/mount.c  ****     struct  dentry *mount_point = select_file(dir_name , 0);
+ 555              		.loc 1 67 5 is_stmt 1 view .LVU156
+ 556              		.loc 1 67 35 is_stmt 0 view .LVU157
+ 557 0016 0021     		movs	r1, #0
+ 558 0018 3046     		mov	r0, r6
+ 559              	.LVL46:
+ 560              		.loc 1 67 35 view .LVU158
+ 561 001a FFF7FEFF 		bl	select_file
+ 562              	.LVL47:
+ 563 001e 0446     		mov	r4, r0
+ 564              	.LVL48:
+  68:./fs/mount.c  ****     if(IS_ERR(mount_point)){
+ 565              		.loc 1 68 5 is_stmt 1 view .LVU159
+ 566              	.LBB46:
+ 567              	.LBI46:
+  75:./include/linux/err.h **** {
+ 568              		.loc 4 75 33 view .LVU160
+ 569              	.LBB47:
+ 570              		.loc 4 77 2 view .LVU161
+ 571              		.loc 4 77 9 is_stmt 0 view .LVU162
+ 572 0020 10F5805F 		cmn	r0, #4096
+ 573 0024 94BF     		ite	ls
+ 574 0026 4FF00008 		movls	r8, #0
+ 575 002a 4FF00108 		movhi	r8, #1
+ 576              	.LVL49:
+ 577              		.loc 4 77 9 view .LVU163
+ 578              	.LBE47:
+ 579              	.LBE46:
+ 580              		.loc 1 68 7 discriminator 1 view .LVU164
+ 581 002e B8F1000F 		cmp	r8, #0
+ 582 0032 31D1     		bne	.L36
+  69:./fs/mount.c  ****         return ERR_PTR(-ENOENT);
+  70:./fs/mount.c  ****     }
+  71:./fs/mount.c  ****     if((mount_point->d_inode->i_mode & S_IFMT) != S_IFDIR){
+ 583              		.loc 1 71 5 is_stmt 1 view .LVU165
+ 584              		.loc 1 71 20 is_stmt 0 view .LVU166
+ 585 0034 836C     		ldr	r3, [r0, #72]
+ 586              		.loc 1 71 29 view .LVU167
+ARM GAS  /tmp/ccuDDosC.s 			page 19
+
+
+ 587 0036 1B88     		ldrh	r3, [r3]
+ 588              		.loc 1 71 7 view .LVU168
+ 589 0038 03F47043 		and	r3, r3, #61440
+ 590 003c B3F5804F 		cmp	r3, #16384
+ 591 0040 2DD1     		bne	.L37
+  72:./fs/mount.c  ****         return ERR_PTR(-ENOTDIR);
+  73:./fs/mount.c  ****     }
+  74:./fs/mount.c  **** 
+  75:./fs/mount.c  ****     spin_lock(&mount_point->d_lock);
+ 592              		.loc 1 75 5 is_stmt 1 view .LVU169
+ 593 0042 00F16C0A 		add	r10, r0, #108
+ 594 0046 5046     		mov	r0, r10
+ 595              	.LVL50:
+ 596              		.loc 1 75 5 is_stmt 0 view .LVU170
+ 597 0048 FFF7FEFF 		bl	spin_lock
+ 598              	.LVL51:
+  76:./fs/mount.c  ****     struct super_block* mount_sb = (file_system->mount(file_system,0,dev_name,data))->d_sb; 
+ 599              		.loc 1 76 5 is_stmt 1 view .LVU171
+ 600              		.loc 1 76 48 is_stmt 0 view .LVU172
+ 601 004c D9F810B0 		ldr	fp, [r9, #16]
+ 602              		.loc 1 76 37 view .LVU173
+ 603 0050 0A9B     		ldr	r3, [sp, #40]
+ 604 0052 3A46     		mov	r2, r7
+ 605 0054 0021     		movs	r1, #0
+ 606 0056 4846     		mov	r0, r9
+ 607 0058 D847     		blx	fp
+ 608              	.LVL52:
+ 609              		.loc 1 76 25 discriminator 1 view .LVU174
+ 610 005a 036D     		ldr	r3, [r0, #80]
+ 611              	.LVL53:
+  77:./fs/mount.c  ****     if(IS_ERR(mount_sb))
+ 612              		.loc 1 77 5 is_stmt 1 view .LVU175
+ 613              	.LBB48:
+ 614              	.LBI48:
+  75:./include/linux/err.h **** {
+ 615              		.loc 4 75 33 view .LVU176
+ 616              	.LBB49:
+ 617              		.loc 4 77 2 view .LVU177
+ 618              		.loc 4 77 9 is_stmt 0 view .LVU178
+ 619 005c 13F5805F 		cmn	r3, #4096
+ 620 0060 94BF     		ite	ls
+ 621 0062 4FF00009 		movls	r9, #0
+ 622              	.LVL54:
+ 623              		.loc 4 77 9 view .LVU179
+ 624 0066 4FF00109 		movhi	r9, #1
+ 625              	.LVL55:
+ 626              		.loc 4 77 9 view .LVU180
+ 627              	.LBE49:
+ 628              	.LBE48:
+ 629              		.loc 1 77 7 discriminator 1 view .LVU181
+ 630 006a B9F1000F 		cmp	r9, #0
+ 631 006e 19D1     		bne	.L38
+  78:./fs/mount.c  ****     return NULL;
+  79:./fs/mount.c  **** 
+  80:./fs/mount.c  ****     if(mount_sb == NULL)    
+ 632              		.loc 1 80 5 is_stmt 1 view .LVU182
+ 633              		.loc 1 80 7 is_stmt 0 view .LVU183
+ARM GAS  /tmp/ccuDDosC.s 			page 20
+
+
+ 634 0070 D3B1     		cbz	r3, .L39
+  81:./fs/mount.c  ****         return ERR_PTR(-ENOMEM);
+  82:./fs/mount.c  ****     
+  83:./fs/mount.c  ****     mount_point->d_sb = mount_sb;
+ 635              		.loc 1 83 5 is_stmt 1 view .LVU184
+ 636              		.loc 1 83 23 is_stmt 0 view .LVU185
+ 637 0072 2365     		str	r3, [r4, #80]
+  84:./fs/mount.c  ****     mount_point->d_inode = mount_sb->s_root->d_inode;
+ 638              		.loc 1 84 5 is_stmt 1 view .LVU186
+ 639              		.loc 1 84 36 is_stmt 0 view .LVU187
+ 640 0074 5B69     		ldr	r3, [r3, #20]
+ 641              	.LVL56:
+ 642              		.loc 1 84 44 view .LVU188
+ 643 0076 9B6C     		ldr	r3, [r3, #72]
+ 644              		.loc 1 84 26 view .LVU189
+ 645 0078 A364     		str	r3, [r4, #72]
+  85:./fs/mount.c  **** 
+  86:./fs/mount.c  ****     spin_unlock(&mount_point->d_lock);
+ 646              		.loc 1 86 5 is_stmt 1 view .LVU190
+ 647 007a 5046     		mov	r0, r10
+ 648 007c FFF7FEFF 		bl	spin_unlock
+ 649              	.LVL57:
+  87:./fs/mount.c  ****     pr_info("mount:%s fs:%s to %s \n",dev_name,type,dir_name);
+ 650              		.loc 1 87 5 view .LVU191
+ 651 0080 3346     		mov	r3, r6
+ 652 0082 2A46     		mov	r2, r5
+ 653 0084 3946     		mov	r1, r7
+ 654 0086 0A48     		ldr	r0, .L41
+ 655 0088 FFF7FEFF 		bl	printk
+ 656              	.LVL58:
+  88:./fs/mount.c  ****     return 0;
+ 657              		.loc 1 88 5 view .LVU192
+ 658              	.L33:
+  89:./fs/mount.c  **** }
+ 659              		.loc 1 89 1 is_stmt 0 view .LVU193
+ 660 008c 4846     		mov	r0, r9
+ 661 008e BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 662              	.LVL59:
+ 663              	.L35:
+  65:./fs/mount.c  ****     }
+ 664              		.loc 1 65 16 discriminator 1 view .LVU194
+ 665 0092 6FF01209 		mvn	r9, #18
+ 666 0096 F9E7     		b	.L33
+ 667              	.LVL60:
+ 668              	.L36:
+  69:./fs/mount.c  ****     }
+ 669              		.loc 1 69 16 discriminator 1 view .LVU195
+ 670 0098 6FF00109 		mvn	r9, #1
+ 671              	.LVL61:
+  69:./fs/mount.c  ****     }
+ 672              		.loc 1 69 16 discriminator 1 view .LVU196
+ 673 009c F6E7     		b	.L33
+ 674              	.LVL62:
+ 675              	.L37:
+  72:./fs/mount.c  ****     }
+ 676              		.loc 1 72 16 discriminator 1 view .LVU197
+ 677 009e 6FF01309 		mvn	r9, #19
+ARM GAS  /tmp/ccuDDosC.s 			page 21
+
+
+ 678              	.LVL63:
+  72:./fs/mount.c  ****     }
+ 679              		.loc 1 72 16 discriminator 1 view .LVU198
+ 680 00a2 F3E7     		b	.L33
+ 681              	.LVL64:
+ 682              	.L38:
+  78:./fs/mount.c  **** 
+ 683              		.loc 1 78 12 view .LVU199
+ 684 00a4 C146     		mov	r9, r8
+ 685 00a6 F1E7     		b	.L33
+ 686              	.L39:
+  81:./fs/mount.c  ****     
+ 687              		.loc 1 81 16 discriminator 1 view .LVU200
+ 688 00a8 6FF00B09 		mvn	r9, #11
+ 689 00ac EEE7     		b	.L33
+ 690              	.L42:
+ 691 00ae 00BF     		.align	2
+ 692              	.L41:
+ 693 00b0 00000000 		.word	.LC2
+ 694              		.cfi_endproc
+ 695              	.LFE1039:
+ 697              		.global	superblock_list
+ 698              		.section	.bss.superblock_list,"aw",%nobits
+ 699              		.align	2
+ 702              	superblock_list:
+ 703 0000 00000000 		.space	8
+ 703      00000000 
+ 704              		.text
+ 705              	.Letext0:
+ 706              		.file 6 "./include/asm-generic/int-l64.h"
+ 707              		.file 7 "./include/asm-generic/posix_types.h"
+ 708              		.file 8 "./include/uapi/linux/types.h"
+ 709              		.file 9 "./include/linux/types.h"
+ 710              		.file 10 "./include/linux/errseq.h"
+ 711              		.file 11 "./include/linux/time64.h"
+ 712              		.file 12 "./arch/arm_m/include/asm/sched.h"
+ 713              		.file 13 "./include/linux/sched.h"
+ 714              		.file 14 "./include/linux/lockdep_types.h"
+ 715              		.file 15 "./include/linux/spinlock_types_raw.h"
+ 716              		.file 16 "./include/linux/spinlock_types.h"
+ 717              		.file 17 "./include/linux/rbtree_types.h"
+ 718              		.file 18 "./include/linux/uidgid_types.h"
+ 719              		.file 19 "./include/linux/projid.h"
+ 720              		.file 20 "./include/linux/fs.h"
+ 721              		.file 21 "./include/linux/mnt_idmapping.h"
+ 722              		.file 22 "./include/linux/mutex.h"
+ 723              		.file 23 "./include/linux/uio.h"
+ 724              		.file 24 "./include/linux/migrate_mode.h"
+ 725              		.file 25 "./include/linux/wait.h"
+ 726              		.file 26 "./include/linux/xarray.h"
+ 727              		.file 27 "./include/linux/rw_hint.h"
+ 728              		.file 28 "./include/linux/reciprocal_div.h"
+ 729              		.file 29 "./include/linux/slab.h"
+ 730              		.file 30 "./include/linux/mm_type.h"
+ 731              		.file 31 "./include/linux/bvec.h"
+ 732              		.file 32 "./include/linux/blk_types.h"
+ 733              		.file 33 "./include/linux/blkdev.h"
+ARM GAS  /tmp/ccuDDosC.s 			page 22
+
+
+ 734              		.file 34 "./include/linux/bio.h"
+ 735              		.file 35 "./include/linux/mempool_super_haper.h"
+ 736              		.file 36 "./include/linux/mempool.h"
+ 737              		.file 37 "./include/linux/workqueue_types.h"
+ 738              		.file 38 "./include/linux/blk-mq.h"
+ 739              		.file 39 "./include/linux/dcache.h"
+ 740              		.file 40 "./include/uapi/linux/pr.h"
+ 741              		.file 41 "./include/linux/pr.h"
+ 742              		.file 42 "./include/linux/hdreg.h"
+ 743              		.file 43 "./include/linux/lockref.h"
+ 744              		.file 44 "./include/linux/path.h"
+ 745              		.file 45 "./include/linux/statfs.h"
+ 746              		.file 46 "./include/linux/stat.h"
+ 747              		.file 47 "./include/linux/stddef.h"
+ 748              		.file 48 "./include/linux/printk.h"
+ARM GAS  /tmp/ccuDDosC.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mount.c
+     /tmp/ccuDDosC.s:21     .text.__spin_unlock:00000000 $t
+     /tmp/ccuDDosC.s:26     .text.__spin_unlock:00000000 __spin_unlock
+     /tmp/ccuDDosC.s:45     .text.spin_unlock:00000000 $t
+     /tmp/ccuDDosC.s:50     .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccuDDosC.s:73     .text.__spin_lock:00000000 $t
+     /tmp/ccuDDosC.s:78     .text.__spin_lock:00000000 __spin_lock
+     /tmp/ccuDDosC.s:128    .text.spin_lock:00000000 $t
+     /tmp/ccuDDosC.s:133    .text.spin_lock:00000000 spin_lock
+     /tmp/ccuDDosC.s:193    .text.sget:00000000 $t
+     /tmp/ccuDDosC.s:199    .text.sget:00000000 sget
+     /tmp/ccuDDosC.s:285    .rodata.mount_root_fs.str1.4:00000000 $d
+     /tmp/ccuDDosC.s:292    .text.mount_root_fs:00000000 $t
+     /tmp/ccuDDosC.s:298    .text.mount_root_fs:00000000 mount_root_fs
+     /tmp/ccuDDosC.s:501    .text.mount_root_fs:00000088 $d
+     /tmp/ccuDDosC.s:702    .bss.superblock_list:00000000 superblock_list
+     /tmp/ccuDDosC.s:509    .rodata.sys_mount.str1.4:00000000 $d
+     /tmp/ccuDDosC.s:513    .text.sys_mount:00000000 $t
+     /tmp/ccuDDosC.s:519    .text.sys_mount:00000000 sys_mount
+     /tmp/ccuDDosC.s:693    .text.sys_mount:000000b0 $d
+     /tmp/ccuDDosC.s:699    .bss.superblock_list:00000000 $d
+
+UNDEFINED SYMBOLS
+stop_all_scheduler
+start_all_scheduler
+get_current_task
+__delay
+lookup_fs_type
+dentry_rename
+printk
+root_dentry
+select_file

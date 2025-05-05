@@ -1,0 +1,3723 @@
+ARM GAS  /tmp/ccL7RTiX.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"fs_dentry.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./fs/fs_dentry.c"
+  20              		.section	.text.__spin_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__spin_init:
+  27              	.LVL0:
+  28              	.LFB228:
+  29              		.file 2 "./arch/arm_m/include/asm/spinlock.h"
+   1:./arch/arm_m/include/asm/spinlock.h **** #ifndef __SPIN_LOCK_H_
+   2:./arch/arm_m/include/asm/spinlock.h **** #define __SPIN_LOCK_H_
+   3:./arch/arm_m/include/asm/spinlock.h **** 
+   4:./arch/arm_m/include/asm/spinlock.h **** #include <linux/sched.h>
+   5:./arch/arm_m/include/asm/spinlock.h **** 
+   6:./arch/arm_m/include/asm/spinlock.h **** typedef struct { 
+   7:./arch/arm_m/include/asm/spinlock.h ****      int flag; 
+   8:./arch/arm_m/include/asm/spinlock.h **** } arch_spinlock_t;
+   9:./arch/arm_m/include/asm/spinlock.h **** 
+  10:./arch/arm_m/include/asm/spinlock.h **** static int __spin_init(arch_spinlock_t *lock) 
+  11:./arch/arm_m/include/asm/spinlock.h **** {
+  30              		.loc 2 11 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  35              		.loc 2 12 5 view .LVU1
+  36              		.loc 2 12 16 is_stmt 0 view .LVU2
+  37 0000 0023     		movs	r3, #0
+  38 0002 0360     		str	r3, [r0]
+  39              	.LVL1:
+  13:./arch/arm_m/include/asm/spinlock.h **** }
+  40              		.loc 2 13 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE228:
+  45              		.section	.text.__spin_unlock,"ax",%progbits
+  46              		.align	1
+ARM GAS  /tmp/ccL7RTiX.s 			page 2
+
+
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	__spin_unlock:
+  52              	.LVL2:
+  53              	.LFB230:
+  14:./arch/arm_m/include/asm/spinlock.h **** 
+  15:./arch/arm_m/include/asm/spinlock.h **** static int __spin_lock(arch_spinlock_t *lock) {
+  16:./arch/arm_m/include/asm/spinlock.h **** 
+  17:./arch/arm_m/include/asm/spinlock.h ****     stop_all_scheduler();
+  18:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  19:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  20:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+  21:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+  22:./arch/arm_m/include/asm/spinlock.h ****     }
+  23:./arch/arm_m/include/asm/spinlock.h ****     else
+  24:./arch/arm_m/include/asm/spinlock.h ****     {
+  25:./arch/arm_m/include/asm/spinlock.h ****         start_all_scheduler();
+  26:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+  27:./arch/arm_m/include/asm/spinlock.h ****     }
+  28:./arch/arm_m/include/asm/spinlock.h **** }
+  29:./arch/arm_m/include/asm/spinlock.h **** 
+  30:./arch/arm_m/include/asm/spinlock.h **** static void  __spin_unlock( arch_spinlock_t *lock ){
+  54              		.loc 2 30 52 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  31:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  59              		.loc 2 31 5 view .LVU5
+  60              		.loc 2 31 16 is_stmt 0 view .LVU6
+  61 0000 0023     		movs	r3, #0
+  62 0002 0360     		str	r3, [r0]
+  32:./arch/arm_m/include/asm/spinlock.h **** }
+  63              		.loc 2 32 1 view .LVU7
+  64 0004 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE230:
+  68              		.section	.text.spin_lock_init,"ax",%progbits
+  69              		.align	1
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	spin_lock_init:
+  75              	.LVL3:
+  76              	.LFB231:
+  77              		.file 3 "./include/linux/spinlock.h"
+   1:./include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:./include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:./include/linux/spinlock.h **** 
+   4:./include/linux/spinlock.h **** #include <linux/types.h>
+   5:./include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:./include/linux/spinlock.h **** #include <linux/sched.h>
+   7:./include/linux/spinlock.h **** 
+   8:./include/linux/spinlock.h **** 
+   9:./include/linux/spinlock.h **** 
+  10:./include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+ARM GAS  /tmp/ccL7RTiX.s 			page 3
+
+
+  78              		.loc 3 10 45 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		.loc 3 10 45 is_stmt 0 view .LVU9
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI0:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  11:./include/linux/spinlock.h ****     __spin_init(&lock->rlock.raw_lock);
+  88              		.loc 3 11 5 is_stmt 1 view .LVU10
+  89 0002 FFF7FEFF 		bl	__spin_init
+  90              	.LVL4:
+  12:./include/linux/spinlock.h **** }
+  91              		.loc 3 12 1 is_stmt 0 view .LVU11
+  92 0006 08BD     		pop	{r3, pc}
+  93              		.cfi_endproc
+  94              	.LFE231:
+  96              		.section	.text.spin_unlock,"ax",%progbits
+  97              		.align	1
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	spin_unlock:
+ 103              	.LVL5:
+ 104              	.LFB233:
+  13:./include/linux/spinlock.h **** 
+  14:./include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  15:./include/linux/spinlock.h **** {  
+  16:./include/linux/spinlock.h ****     while (1)
+  17:./include/linux/spinlock.h ****     {
+  18:./include/linux/spinlock.h ****         if(__spin_lock(&lock->rlock.raw_lock) == 1){
+  19:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+  20:./include/linux/spinlock.h ****             break;
+  21:./include/linux/spinlock.h ****         }
+  22:./include/linux/spinlock.h ****         else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  23:./include/linux/spinlock.h ****             return;   
+  24:./include/linux/spinlock.h ****         }
+  25:./include/linux/spinlock.h ****         else{
+  26:./include/linux/spinlock.h ****             __delay(5); //主动让出时间片
+  27:./include/linux/spinlock.h ****         }
+  28:./include/linux/spinlock.h ****     }
+  29:./include/linux/spinlock.h **** }
+  30:./include/linux/spinlock.h **** 
+  31:./include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  32:./include/linux/spinlock.h **** {
+ 105              		.loc 3 32 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 3 32 1 is_stmt 0 view .LVU13
+ 110 0000 08B5     		push	{r3, lr}
+ 111              	.LCFI1:
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 3, -8
+ 114              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccL7RTiX.s 			page 4
+
+
+  33:./include/linux/spinlock.h ****     __spin_unlock(&lock->rlock.raw_lock);
+ 115              		.loc 3 33 5 is_stmt 1 view .LVU14
+ 116 0002 FFF7FEFF 		bl	__spin_unlock
+ 117              	.LVL6:
+  34:./include/linux/spinlock.h **** }
+ 118              		.loc 3 34 1 is_stmt 0 view .LVU15
+ 119 0006 08BD     		pop	{r3, pc}
+ 120              		.cfi_endproc
+ 121              	.LFE233:
+ 123              		.section	.text.d_getname,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	d_getname
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	d_getname:
+ 131              	.LVL7:
+ 132              	.LFB1038:
+   1:./fs/fs_dentry.c **** #include <linux/kernel.h>
+   2:./fs/fs_dentry.c **** #include <linux/fs.h>
+   3:./fs/fs_dentry.c **** #include <linux/spinlock.h>
+   4:./fs/fs_dentry.c **** #include <linux/string.h>
+   5:./fs/fs_dentry.c **** #include <linux/slab.h>
+   6:./fs/fs_dentry.c **** #include <linux/dcache.h>
+   7:./fs/fs_dentry.c **** #include <linux/export.h>
+   8:./fs/fs_dentry.c **** #include <linux/list.h>
+   9:./fs/fs_dentry.c **** #include <linux/fs.h>
+  10:./fs/fs_dentry.c **** #include <linux/stat.h>
+  11:./fs/fs_dentry.c **** #include <linux/time.h>
+  12:./fs/fs_dentry.c **** #include <linux/atomic.h>
+  13:./fs/fs_dentry.c **** #include <linux/init.h>
+  14:./fs/fs_dentry.c **** 
+  15:./fs/fs_dentry.c **** 
+  16:./fs/fs_dentry.c **** int dentry_rename(struct dentry *d,char *name)
+  17:./fs/fs_dentry.c **** {
+  18:./fs/fs_dentry.c **** 	if(d == NULL || name == NULL) 
+  19:./fs/fs_dentry.c **** 		return -1;
+  20:./fs/fs_dentry.c ****     
+  21:./fs/fs_dentry.c **** 	int new_name_length = strlen(name);
+  22:./fs/fs_dentry.c **** 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失�
+  23:./fs/fs_dentry.c ****     if(new_name == NULL) return -ENOMEM;
+  24:./fs/fs_dentry.c ****     strcpy(new_name,name);
+  25:./fs/fs_dentry.c **** 
+  26:./fs/fs_dentry.c ****     if(d->d_name.name == d->d_iname || d->d_name.name == NULL) 
+  27:./fs/fs_dentry.c **** 	{
+  28:./fs/fs_dentry.c ****         if( new_name_length + 1 < DNAME_INLINE_LEN)
+  29:./fs/fs_dentry.c **** 		{
+  30:./fs/fs_dentry.c ****             kfree(new_name);
+  31:./fs/fs_dentry.c **** 			d->d_name.name = d->d_iname;
+  32:./fs/fs_dentry.c **** 			strcpy(d->d_iname,name);
+  33:./fs/fs_dentry.c ****             d->d_name.len = new_name_length;
+  34:./fs/fs_dentry.c ****             return 0;
+  35:./fs/fs_dentry.c ****         }
+  36:./fs/fs_dentry.c **** 	}
+  37:./fs/fs_dentry.c ****     if(d->d_name.name != NULL && d->d_name.name != d->d_iname)
+  38:./fs/fs_dentry.c ****         kfree(d->d_name.name);
+  39:./fs/fs_dentry.c **** 	d->d_name.len  = new_name_length;
+ARM GAS  /tmp/ccL7RTiX.s 			page 5
+
+
+  40:./fs/fs_dentry.c **** 	d->d_name.name = new_name;		
+  41:./fs/fs_dentry.c ****     return 0;
+  42:./fs/fs_dentry.c **** }
+  43:./fs/fs_dentry.c **** EXPORT_SYMBOL(dentry_rename);
+  44:./fs/fs_dentry.c **** 
+  45:./fs/fs_dentry.c **** struct dentry *__d_alloc(struct super_block *sb, const char *name) //创建一个新的空dentry
+  46:./fs/fs_dentry.c **** {
+  47:./fs/fs_dentry.c **** 	struct dentry *dentry;
+  48:./fs/fs_dentry.c ****     dentry = kmalloc(sizeof(struct dentry),GFP_KERNEL);
+  49:./fs/fs_dentry.c ****     if(dentry == NULL) return -ENOMEM;
+  50:./fs/fs_dentry.c **** 	memset(dentry,0,sizeof(struct dentry));
+  51:./fs/fs_dentry.c **** 	if( dentry_rename(dentry,name) < 0){
+  52:./fs/fs_dentry.c **** 		kfree(dentry);
+  53:./fs/fs_dentry.c **** 		return -ENOMEM;
+  54:./fs/fs_dentry.c **** 	}
+  55:./fs/fs_dentry.c **** 
+  56:./fs/fs_dentry.c **** 	INIT_HLIST_HEAD(&dentry->d_hash);
+  57:./fs/fs_dentry.c **** 	INIT_HLIST_NODE(&dentry->d_sib);
+  58:./fs/fs_dentry.c **** 	spin_lock_init(&dentry->d_lock);
+  59:./fs/fs_dentry.c **** 	dentry->d_sb = sb;
+  60:./fs/fs_dentry.c **** 	return dentry;
+  61:./fs/fs_dentry.c **** }
+  62:./fs/fs_dentry.c **** EXPORT_SYMBOL(__d_alloc);
+  63:./fs/fs_dentry.c **** 
+  64:./fs/fs_dentry.c **** struct dentry *d_alloc(struct dentry * parent, const char *name)
+  65:./fs/fs_dentry.c **** {
+  66:./fs/fs_dentry.c **** 	struct dentry *dentry = __d_alloc(parent->d_sb, name);
+  67:./fs/fs_dentry.c **** 	if (!dentry)
+  68:./fs/fs_dentry.c **** 		return NULL;
+  69:./fs/fs_dentry.c **** 	spin_lock(&parent->d_lock);
+  70:./fs/fs_dentry.c **** 	dentry->d_parent = dget_dlock(parent);
+  71:./fs/fs_dentry.c **** 	dentry->d_sb = dentry->d_parent->d_sb;
+  72:./fs/fs_dentry.c **** 	spin_unlock(&parent->d_lock);
+  73:./fs/fs_dentry.c **** 	return dentry;
+  74:./fs/fs_dentry.c **** }
+  75:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_alloc);
+  76:./fs/fs_dentry.c **** 
+  77:./fs/fs_dentry.c **** char * d_getname(struct dentry * dentry){
+ 133              		.loc 1 77 41 is_stmt 1 view -0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137              		@ link register save eliminated.
+  78:./fs/fs_dentry.c ****     if(dentry != NULL)
+ 138              		.loc 1 78 5 view .LVU17
+ 139              		.loc 1 78 7 is_stmt 0 view .LVU18
+ 140 0000 08B1     		cbz	r0, .L8
+  79:./fs/fs_dentry.c ****     return dentry->d_name.name;
+ 141              		.loc 1 79 5 is_stmt 1 view .LVU19
+ 142              		.loc 1 79 26 is_stmt 0 discriminator 1 view .LVU20
+ 143 0002 8069     		ldr	r0, [r0, #24]
+ 144              	.LVL8:
+ 145              		.loc 1 79 26 view .LVU21
+ 146 0004 7047     		bx	lr
+ 147              	.LVL9:
+ 148              	.L8:
+ 149              	.LVL10:
+ARM GAS  /tmp/ccL7RTiX.s 			page 6
+
+
+  80:./fs/fs_dentry.c **** }
+ 150              		.loc 1 80 1 view .LVU22
+ 151 0006 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE1038:
+ 155              		.section	.text.__d_add,"ax",%progbits
+ 156              		.align	1
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	__d_add:
+ 162              	.LVL11:
+ 163              	.LFB1041:
+  81:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_getname);
+  82:./fs/fs_dentry.c **** 
+  83:./fs/fs_dentry.c **** 
+  84:./fs/fs_dentry.c **** 
+  85:./fs/fs_dentry.c **** void __d_drop(struct dentry *dentry)
+  86:./fs/fs_dentry.c **** {
+  87:./fs/fs_dentry.c ****     dput_dlock(dentry->d_parent);
+  88:./fs/fs_dentry.c **** 	if(dentry->d_iname == dentry->d_name.name){
+  89:./fs/fs_dentry.c **** 		kfree(dentry);
+  90:./fs/fs_dentry.c **** 	}
+  91:./fs/fs_dentry.c **** 	else{
+  92:./fs/fs_dentry.c **** 		kfree(dentry->d_name.name);
+  93:./fs/fs_dentry.c **** 		kfree(dentry);
+  94:./fs/fs_dentry.c **** 	}
+  95:./fs/fs_dentry.c **** }
+  96:./fs/fs_dentry.c **** EXPORT_SYMBOL(__d_drop);
+  97:./fs/fs_dentry.c **** 
+  98:./fs/fs_dentry.c **** 
+  99:./fs/fs_dentry.c **** void d_delete(struct dentry * dentry){
+ 100:./fs/fs_dentry.c ****     if(dentry == NULL) return;
+ 101:./fs/fs_dentry.c **** 	inode_put(&dentry->d_inode);
+ 102:./fs/fs_dentry.c **** 	__d_drop(dentry);
+ 103:./fs/fs_dentry.c **** }
+ 104:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_delete);
+ 105:./fs/fs_dentry.c **** 
+ 106:./fs/fs_dentry.c **** static void __d_add(struct dentry *dentry, struct dentry *parent){
+ 164              		.loc 1 106 66 is_stmt 1 view -0
+ 165              		.cfi_startproc
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 0, uses_anonymous_args = 0
+ 168              		@ link register save eliminated.
+ 107:./fs/fs_dentry.c ****     hlist_add_head(&dentry->d_sib, &parent->d_hash);
+ 169              		.loc 1 107 5 view .LVU24
+ 170 0000 00F10802 		add	r2, r0, #8
+ 171              	.LVL12:
+ 172              	.LBB40:
+ 173              	.LBI40:
+ 174              		.file 4 "./include/linux/list.h"
+   1:./include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:./include/linux/list.h **** #define _LINUX_LIST_H
+   4:./include/linux/list.h **** 
+   5:./include/linux/list.h **** #include <linux/container_of.h>
+   6:./include/linux/list.h **** #include <linux/types.h>
+ARM GAS  /tmp/ccL7RTiX.s 			page 7
+
+
+   7:./include/linux/list.h **** #include <linux/stddef.h>
+   8:./include/linux/list.h **** #include <linux/poison.h>
+   9:./include/linux/list.h **** #include <linux/const.h>
+  10:./include/linux/list.h **** 
+  11:./include/linux/list.h **** #include <asm/barrier.h>
+  12:./include/linux/list.h **** #include <linux/rwonce.h>
+  13:./include/linux/list.h **** /*
+  14:./include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:./include/linux/list.h ****  *
+  16:./include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:./include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:./include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:./include/linux/list.h ****  * generate better code by using them directly rather than
+  20:./include/linux/list.h ****  * using the generic single-entry routines.
+  21:./include/linux/list.h ****  */
+  22:./include/linux/list.h **** 
+  23:./include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:./include/linux/list.h **** 
+  25:./include/linux/list.h **** #define LIST_HEAD(name) \
+  26:./include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:./include/linux/list.h **** 
+  28:./include/linux/list.h **** /**
+  29:./include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:./include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:./include/linux/list.h ****  *
+  32:./include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:./include/linux/list.h ****  * the result is an empty list.
+  34:./include/linux/list.h ****  */
+  35:./include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+  36:./include/linux/list.h **** {
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+  38:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+  39:./include/linux/list.h **** }
+  40:./include/linux/list.h **** 
+  41:./include/linux/list.h **** #ifdef CONFIG_LIST_HARDENED
+  42:./include/linux/list.h **** 
+  43:./include/linux/list.h **** #ifdef CONFIG_DEBUG_LIST
+  44:./include/linux/list.h **** # define __list_valid_slowpath
+  45:./include/linux/list.h **** #else
+  46:./include/linux/list.h **** # define __list_valid_slowpath __cold __preserve_most
+  47:./include/linux/list.h **** #endif
+  48:./include/linux/list.h **** 
+  49:./include/linux/list.h **** /*
+  50:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_add().
+  51:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  52:./include/linux/list.h ****  */
+  53:./include/linux/list.h **** extern bool __list_valid_slowpath __list_add_valid_or_report(struct list_head *new,
+  54:./include/linux/list.h **** 							     struct list_head *prev,
+  55:./include/linux/list.h **** 							     struct list_head *next);
+  56:./include/linux/list.h **** 
+  57:./include/linux/list.h **** /*
+  58:./include/linux/list.h ****  * Performs list corruption checks before __list_add(). Returns false if a
+  59:./include/linux/list.h ****  * corruption is detected, true otherwise.
+  60:./include/linux/list.h ****  *
+  61:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+  62:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+  63:./include/linux/list.h ****  * detected calls the reporting function __list_add_valid_or_report().
+ARM GAS  /tmp/ccL7RTiX.s 			page 8
+
+
+  64:./include/linux/list.h ****  */
+  65:./include/linux/list.h **** static __always_inline bool __list_add_valid(struct list_head *new,
+  66:./include/linux/list.h **** 					     struct list_head *prev,
+  67:./include/linux/list.h **** 					     struct list_head *next)
+  68:./include/linux/list.h **** {
+  69:./include/linux/list.h **** 	bool ret = true;
+  70:./include/linux/list.h **** 
+  71:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+  72:./include/linux/list.h **** 		/*
+  73:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+  74:./include/linux/list.h **** 		 * are NULL, since the immediate dereference of them below would
+  75:./include/linux/list.h **** 		 * result in a fault if NULL.
+  76:./include/linux/list.h **** 		 *
+  77:./include/linux/list.h **** 		 * With the reduced set of checks, we can afford to inline the
+  78:./include/linux/list.h **** 		 * checks, which also gives the compiler a chance to elide some
+  79:./include/linux/list.h **** 		 * of them completely if they can be proven at compile-time. If
+  80:./include/linux/list.h **** 		 * one of the pre-conditions does not hold, the slow-path will
+  81:./include/linux/list.h **** 		 * show a report which pre-condition failed.
+  82:./include/linux/list.h **** 		 */
+  83:./include/linux/list.h **** 		if (likely(next->prev == prev && prev->next == next && new != prev && new != next))
+  84:./include/linux/list.h **** 			return true;
+  85:./include/linux/list.h **** 		ret = false;
+  86:./include/linux/list.h **** 	}
+  87:./include/linux/list.h **** 
+  88:./include/linux/list.h **** 	ret &= __list_add_valid_or_report(new, prev, next);
+  89:./include/linux/list.h **** 	return ret;
+  90:./include/linux/list.h **** }
+  91:./include/linux/list.h **** 
+  92:./include/linux/list.h **** /*
+  93:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_del_entry().
+  94:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  95:./include/linux/list.h ****  */
+  96:./include/linux/list.h **** extern bool __list_valid_slowpath __list_del_entry_valid_or_report(struct list_head *entry);
+  97:./include/linux/list.h **** 
+  98:./include/linux/list.h **** /*
+  99:./include/linux/list.h ****  * Performs list corruption checks before __list_del_entry(). Returns false if a
+ 100:./include/linux/list.h ****  * corruption is detected, true otherwise.
+ 101:./include/linux/list.h ****  *
+ 102:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+ 103:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ 104:./include/linux/list.h ****  * detected calls the reporting function __list_del_entry_valid_or_report().
+ 105:./include/linux/list.h ****  */
+ 106:./include/linux/list.h **** static __always_inline bool __list_del_entry_valid(struct list_head *entry)
+ 107:./include/linux/list.h **** {
+ 108:./include/linux/list.h **** 	bool ret = true;
+ 109:./include/linux/list.h **** 
+ 110:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+ 111:./include/linux/list.h **** 		struct list_head *prev = entry->prev;
+ 112:./include/linux/list.h **** 		struct list_head *next = entry->next;
+ 113:./include/linux/list.h **** 
+ 114:./include/linux/list.h **** 		/*
+ 115:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+ 116:./include/linux/list.h **** 		 * are NULL, LIST_POISON1 or LIST_POISON2, since the immediate
+ 117:./include/linux/list.h **** 		 * dereference of them below would result in a fault.
+ 118:./include/linux/list.h **** 		 */
+ 119:./include/linux/list.h **** 		if (likely(prev->next == entry && next->prev == entry))
+ 120:./include/linux/list.h **** 			return true;
+ARM GAS  /tmp/ccL7RTiX.s 			page 9
+
+
+ 121:./include/linux/list.h **** 		ret = false;
+ 122:./include/linux/list.h **** 	}
+ 123:./include/linux/list.h **** 
+ 124:./include/linux/list.h **** 	ret &= __list_del_entry_valid_or_report(entry);
+ 125:./include/linux/list.h **** 	return ret;
+ 126:./include/linux/list.h **** }
+ 127:./include/linux/list.h **** #else
+ 128:./include/linux/list.h **** static inline bool __list_add_valid(struct list_head *new,
+ 129:./include/linux/list.h **** 				struct list_head *prev,
+ 130:./include/linux/list.h **** 				struct list_head *next)
+ 131:./include/linux/list.h **** {
+ 132:./include/linux/list.h **** 	return true;
+ 133:./include/linux/list.h **** }
+ 134:./include/linux/list.h **** static inline bool __list_del_entry_valid(struct list_head *entry)
+ 135:./include/linux/list.h **** {
+ 136:./include/linux/list.h **** 	return true;
+ 137:./include/linux/list.h **** }
+ 138:./include/linux/list.h **** #endif
+ 139:./include/linux/list.h **** 
+ 140:./include/linux/list.h **** /*
+ 141:./include/linux/list.h ****  * Insert a new entry between two known consecutive entries.
+ 142:./include/linux/list.h ****  *
+ 143:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 144:./include/linux/list.h ****  * the prev/next entries already!
+ 145:./include/linux/list.h ****  */
+ 146:./include/linux/list.h **** static inline void __list_add(struct list_head *new,
+ 147:./include/linux/list.h **** 			      struct list_head *prev,
+ 148:./include/linux/list.h **** 			      struct list_head *next)
+ 149:./include/linux/list.h **** {
+ 150:./include/linux/list.h **** 	if (!__list_add_valid(new, prev, next))
+ 151:./include/linux/list.h **** 		return;
+ 152:./include/linux/list.h **** 
+ 153:./include/linux/list.h **** 	next->prev = new;
+ 154:./include/linux/list.h **** 	new->next = next;
+ 155:./include/linux/list.h **** 	new->prev = prev;
+ 156:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 157:./include/linux/list.h **** }
+ 158:./include/linux/list.h **** 
+ 159:./include/linux/list.h **** /**
+ 160:./include/linux/list.h ****  * list_add - add a new entry
+ 161:./include/linux/list.h ****  * @new: new entry to be added
+ 162:./include/linux/list.h ****  * @head: list head to add it after
+ 163:./include/linux/list.h ****  *
+ 164:./include/linux/list.h ****  * Insert a new entry after the specified head.
+ 165:./include/linux/list.h ****  * This is good for implementing stacks.
+ 166:./include/linux/list.h ****  */
+ 167:./include/linux/list.h **** static inline void list_add(struct list_head *new, struct list_head *head)
+ 168:./include/linux/list.h **** {
+ 169:./include/linux/list.h **** 	__list_add(new, head, head->next);
+ 170:./include/linux/list.h **** }
+ 171:./include/linux/list.h **** 
+ 172:./include/linux/list.h **** 
+ 173:./include/linux/list.h **** /**
+ 174:./include/linux/list.h ****  * list_add_tail - add a new entry
+ 175:./include/linux/list.h ****  * @new: new entry to be added
+ 176:./include/linux/list.h ****  * @head: list head to add it before
+ 177:./include/linux/list.h ****  *
+ARM GAS  /tmp/ccL7RTiX.s 			page 10
+
+
+ 178:./include/linux/list.h ****  * Insert a new entry before the specified head.
+ 179:./include/linux/list.h ****  * This is useful for implementing queues.
+ 180:./include/linux/list.h ****  */
+ 181:./include/linux/list.h **** static inline void list_add_tail(struct list_head *new, struct list_head *head)
+ 182:./include/linux/list.h **** {
+ 183:./include/linux/list.h **** 	__list_add(new, head->prev, head);
+ 184:./include/linux/list.h **** }
+ 185:./include/linux/list.h **** 
+ 186:./include/linux/list.h **** /*
+ 187:./include/linux/list.h ****  * Delete a list entry by making the prev/next entries
+ 188:./include/linux/list.h ****  * point to each other.
+ 189:./include/linux/list.h ****  *
+ 190:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 191:./include/linux/list.h ****  * the prev/next entries already!
+ 192:./include/linux/list.h ****  */
+ 193:./include/linux/list.h **** static inline void __list_del(struct list_head * prev, struct list_head * next)
+ 194:./include/linux/list.h **** {
+ 195:./include/linux/list.h **** 	next->prev = prev;
+ 196:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 197:./include/linux/list.h **** }
+ 198:./include/linux/list.h **** 
+ 199:./include/linux/list.h **** /*
+ 200:./include/linux/list.h ****  * Delete a list entry and clear the 'prev' pointer.
+ 201:./include/linux/list.h ****  *
+ 202:./include/linux/list.h ****  * This is a special-purpose list clearing method used in the networking code
+ 203:./include/linux/list.h ****  * for lists allocated as per-cpu, where we don't want to incur the extra
+ 204:./include/linux/list.h ****  * WRITE_ONCE() overhead of a regular list_del_init(). The code that uses this
+ 205:./include/linux/list.h ****  * needs to check the node 'prev' pointer instead of calling list_empty().
+ 206:./include/linux/list.h ****  */
+ 207:./include/linux/list.h **** static inline void __list_del_clearprev(struct list_head *entry)
+ 208:./include/linux/list.h **** {
+ 209:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 210:./include/linux/list.h **** 	entry->prev = NULL;
+ 211:./include/linux/list.h **** }
+ 212:./include/linux/list.h **** 
+ 213:./include/linux/list.h **** static inline void __list_del_entry(struct list_head *entry)
+ 214:./include/linux/list.h **** {
+ 215:./include/linux/list.h **** 	if (!__list_del_entry_valid(entry))
+ 216:./include/linux/list.h **** 		return;
+ 217:./include/linux/list.h **** 
+ 218:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 219:./include/linux/list.h **** }
+ 220:./include/linux/list.h **** 
+ 221:./include/linux/list.h **** /**
+ 222:./include/linux/list.h ****  * list_del - deletes entry from list.
+ 223:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 224:./include/linux/list.h ****  * Note: list_empty() on entry does not return true after this, the entry is
+ 225:./include/linux/list.h ****  * in an undefined state.
+ 226:./include/linux/list.h ****  */
+ 227:./include/linux/list.h **** static inline void list_del(struct list_head *entry)
+ 228:./include/linux/list.h **** {
+ 229:./include/linux/list.h **** 	__list_del_entry(entry);
+ 230:./include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 231:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 232:./include/linux/list.h **** }
+ 233:./include/linux/list.h **** 
+ 234:./include/linux/list.h **** /**
+ARM GAS  /tmp/ccL7RTiX.s 			page 11
+
+
+ 235:./include/linux/list.h ****  * list_replace - replace old entry by new one
+ 236:./include/linux/list.h ****  * @old : the element to be replaced
+ 237:./include/linux/list.h ****  * @new : the new element to insert
+ 238:./include/linux/list.h ****  *
+ 239:./include/linux/list.h ****  * If @old was empty, it will be overwritten.
+ 240:./include/linux/list.h ****  */
+ 241:./include/linux/list.h **** static inline void list_replace(struct list_head *old,
+ 242:./include/linux/list.h **** 				struct list_head *new)
+ 243:./include/linux/list.h **** {
+ 244:./include/linux/list.h **** 	new->next = old->next;
+ 245:./include/linux/list.h **** 	new->next->prev = new;
+ 246:./include/linux/list.h **** 	new->prev = old->prev;
+ 247:./include/linux/list.h **** 	new->prev->next = new;
+ 248:./include/linux/list.h **** }
+ 249:./include/linux/list.h **** 
+ 250:./include/linux/list.h **** /**
+ 251:./include/linux/list.h ****  * list_replace_init - replace old entry by new one and initialize the old one
+ 252:./include/linux/list.h ****  * @old : the element to be replaced
+ 253:./include/linux/list.h ****  * @new : the new element to insert
+ 254:./include/linux/list.h ****  *
+ 255:./include/linux/list.h ****  * If @old was empty, it will be overwritten.
+ 256:./include/linux/list.h ****  */
+ 257:./include/linux/list.h **** static inline void list_replace_init(struct list_head *old,
+ 258:./include/linux/list.h **** 				     struct list_head *new)
+ 259:./include/linux/list.h **** {
+ 260:./include/linux/list.h **** 	list_replace(old, new);
+ 261:./include/linux/list.h **** 	INIT_LIST_HEAD(old);
+ 262:./include/linux/list.h **** }
+ 263:./include/linux/list.h **** 
+ 264:./include/linux/list.h **** /**
+ 265:./include/linux/list.h ****  * list_swap - replace entry1 with entry2 and re-add entry1 at entry2's position
+ 266:./include/linux/list.h ****  * @entry1: the location to place entry2
+ 267:./include/linux/list.h ****  * @entry2: the location to place entry1
+ 268:./include/linux/list.h ****  */
+ 269:./include/linux/list.h **** static inline void list_swap(struct list_head *entry1,
+ 270:./include/linux/list.h **** 			     struct list_head *entry2)
+ 271:./include/linux/list.h **** {
+ 272:./include/linux/list.h **** 	struct list_head *pos = entry2->prev;
+ 273:./include/linux/list.h **** 
+ 274:./include/linux/list.h **** 	list_del(entry2);
+ 275:./include/linux/list.h **** 	list_replace(entry1, entry2);
+ 276:./include/linux/list.h **** 	if (pos == entry1)
+ 277:./include/linux/list.h **** 		pos = entry2;
+ 278:./include/linux/list.h **** 	list_add(entry1, pos);
+ 279:./include/linux/list.h **** }
+ 280:./include/linux/list.h **** 
+ 281:./include/linux/list.h **** /**
+ 282:./include/linux/list.h ****  * list_del_init - deletes entry from list and reinitialize it.
+ 283:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 284:./include/linux/list.h ****  */
+ 285:./include/linux/list.h **** static inline void list_del_init(struct list_head *entry)
+ 286:./include/linux/list.h **** {
+ 287:./include/linux/list.h **** 	__list_del_entry(entry);
+ 288:./include/linux/list.h **** 	INIT_LIST_HEAD(entry);
+ 289:./include/linux/list.h **** }
+ 290:./include/linux/list.h **** 
+ 291:./include/linux/list.h **** /**
+ARM GAS  /tmp/ccL7RTiX.s 			page 12
+
+
+ 292:./include/linux/list.h ****  * list_move - delete from one list and add as another's head
+ 293:./include/linux/list.h ****  * @list: the entry to move
+ 294:./include/linux/list.h ****  * @head: the head that will precede our entry
+ 295:./include/linux/list.h ****  */
+ 296:./include/linux/list.h **** static inline void list_move(struct list_head *list, struct list_head *head)
+ 297:./include/linux/list.h **** {
+ 298:./include/linux/list.h **** 	__list_del_entry(list);
+ 299:./include/linux/list.h **** 	list_add(list, head);
+ 300:./include/linux/list.h **** }
+ 301:./include/linux/list.h **** 
+ 302:./include/linux/list.h **** /**
+ 303:./include/linux/list.h ****  * list_move_tail - delete from one list and add as another's tail
+ 304:./include/linux/list.h ****  * @list: the entry to move
+ 305:./include/linux/list.h ****  * @head: the head that will follow our entry
+ 306:./include/linux/list.h ****  */
+ 307:./include/linux/list.h **** static inline void list_move_tail(struct list_head *list,
+ 308:./include/linux/list.h **** 				  struct list_head *head)
+ 309:./include/linux/list.h **** {
+ 310:./include/linux/list.h **** 	__list_del_entry(list);
+ 311:./include/linux/list.h **** 	list_add_tail(list, head);
+ 312:./include/linux/list.h **** }
+ 313:./include/linux/list.h **** 
+ 314:./include/linux/list.h **** /**
+ 315:./include/linux/list.h ****  * list_bulk_move_tail - move a subsection of a list to its tail
+ 316:./include/linux/list.h ****  * @head: the head that will follow our entry
+ 317:./include/linux/list.h ****  * @first: first entry to move
+ 318:./include/linux/list.h ****  * @last: last entry to move, can be the same as first
+ 319:./include/linux/list.h ****  *
+ 320:./include/linux/list.h ****  * Move all entries between @first and including @last before @head.
+ 321:./include/linux/list.h ****  * All three entries must belong to the same linked list.
+ 322:./include/linux/list.h ****  */
+ 323:./include/linux/list.h **** static inline void list_bulk_move_tail(struct list_head *head,
+ 324:./include/linux/list.h **** 				       struct list_head *first,
+ 325:./include/linux/list.h **** 				       struct list_head *last)
+ 326:./include/linux/list.h **** {
+ 327:./include/linux/list.h **** 	first->prev->next = last->next;
+ 328:./include/linux/list.h **** 	last->next->prev = first->prev;
+ 329:./include/linux/list.h **** 
+ 330:./include/linux/list.h **** 	head->prev->next = first;
+ 331:./include/linux/list.h **** 	first->prev = head->prev;
+ 332:./include/linux/list.h **** 
+ 333:./include/linux/list.h **** 	last->next = head;
+ 334:./include/linux/list.h **** 	head->prev = last;
+ 335:./include/linux/list.h **** }
+ 336:./include/linux/list.h **** 
+ 337:./include/linux/list.h **** /**
+ 338:./include/linux/list.h ****  * list_is_first -- tests whether @list is the first entry in list @head
+ 339:./include/linux/list.h ****  * @list: the entry to test
+ 340:./include/linux/list.h ****  * @head: the head of the list
+ 341:./include/linux/list.h ****  */
+ 342:./include/linux/list.h **** static inline int list_is_first(const struct list_head *list, const struct list_head *head)
+ 343:./include/linux/list.h **** {
+ 344:./include/linux/list.h **** 	return list->prev == head;
+ 345:./include/linux/list.h **** }
+ 346:./include/linux/list.h **** 
+ 347:./include/linux/list.h **** /**
+ 348:./include/linux/list.h ****  * list_is_last - tests whether @list is the last entry in list @head
+ARM GAS  /tmp/ccL7RTiX.s 			page 13
+
+
+ 349:./include/linux/list.h ****  * @list: the entry to test
+ 350:./include/linux/list.h ****  * @head: the head of the list
+ 351:./include/linux/list.h ****  */
+ 352:./include/linux/list.h **** static inline int list_is_last(const struct list_head *list, const struct list_head *head)
+ 353:./include/linux/list.h **** {
+ 354:./include/linux/list.h **** 	return list->next == head;
+ 355:./include/linux/list.h **** }
+ 356:./include/linux/list.h **** 
+ 357:./include/linux/list.h **** /**
+ 358:./include/linux/list.h ****  * list_is_head - tests whether @list is the list @head
+ 359:./include/linux/list.h ****  * @list: the entry to test
+ 360:./include/linux/list.h ****  * @head: the head of the list
+ 361:./include/linux/list.h ****  */
+ 362:./include/linux/list.h **** static inline int list_is_head(const struct list_head *list, const struct list_head *head)
+ 363:./include/linux/list.h **** {
+ 364:./include/linux/list.h **** 	return list == head;
+ 365:./include/linux/list.h **** }
+ 366:./include/linux/list.h **** 
+ 367:./include/linux/list.h **** /**
+ 368:./include/linux/list.h ****  * list_empty - tests whether a list is empty
+ 369:./include/linux/list.h ****  * @head: the list to test.
+ 370:./include/linux/list.h ****  */
+ 371:./include/linux/list.h **** static inline int list_empty(const struct list_head *head)
+ 372:./include/linux/list.h **** {
+ 373:./include/linux/list.h **** 	return READ_ONCE(head->next) == head;
+ 374:./include/linux/list.h **** }
+ 375:./include/linux/list.h **** 
+ 376:./include/linux/list.h **** /**
+ 377:./include/linux/list.h ****  * list_del_init_careful - deletes entry from list and reinitialize it.
+ 378:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 379:./include/linux/list.h ****  *
+ 380:./include/linux/list.h ****  * This is the same as list_del_init(), except designed to be used
+ 381:./include/linux/list.h ****  * together with list_empty_careful() in a way to guarantee ordering
+ 382:./include/linux/list.h ****  * of other memory operations.
+ 383:./include/linux/list.h ****  *
+ 384:./include/linux/list.h ****  * Any memory operations done before a list_del_init_careful() are
+ 385:./include/linux/list.h ****  * guaranteed to be visible after a list_empty_careful() test.
+ 386:./include/linux/list.h ****  */
+ 387:./include/linux/list.h **** static inline void list_del_init_careful(struct list_head *entry)
+ 388:./include/linux/list.h **** {
+ 389:./include/linux/list.h **** 	__list_del_entry(entry);
+ 390:./include/linux/list.h **** 	WRITE_ONCE(entry->prev, entry);
+ 391:./include/linux/list.h **** 	smp_store_release(&entry->next, entry);
+ 392:./include/linux/list.h **** }
+ 393:./include/linux/list.h **** 
+ 394:./include/linux/list.h **** /**
+ 395:./include/linux/list.h ****  * list_empty_careful - tests whether a list is empty and not being modified
+ 396:./include/linux/list.h ****  * @head: the list to test
+ 397:./include/linux/list.h ****  *
+ 398:./include/linux/list.h ****  * Description:
+ 399:./include/linux/list.h ****  * tests whether a list is empty _and_ checks that no other CPU might be
+ 400:./include/linux/list.h ****  * in the process of modifying either member (next or prev)
+ 401:./include/linux/list.h ****  *
+ 402:./include/linux/list.h ****  * NOTE: using list_empty_careful() without synchronization
+ 403:./include/linux/list.h ****  * can only be safe if the only activity that can happen
+ 404:./include/linux/list.h ****  * to the list entry is list_del_init(). Eg. it cannot be used
+ 405:./include/linux/list.h ****  * if another CPU could re-list_add() it.
+ARM GAS  /tmp/ccL7RTiX.s 			page 14
+
+
+ 406:./include/linux/list.h ****  */
+ 407:./include/linux/list.h **** static inline int list_empty_careful(const struct list_head *head)
+ 408:./include/linux/list.h **** {
+ 409:./include/linux/list.h **** 	struct list_head *next = smp_load_acquire(&head->next);
+ 410:./include/linux/list.h **** 	return list_is_head(next, head) && (next == READ_ONCE(head->prev));
+ 411:./include/linux/list.h **** }
+ 412:./include/linux/list.h **** 
+ 413:./include/linux/list.h **** /**
+ 414:./include/linux/list.h ****  * list_rotate_left - rotate the list to the left
+ 415:./include/linux/list.h ****  * @head: the head of the list
+ 416:./include/linux/list.h ****  */
+ 417:./include/linux/list.h **** static inline void list_rotate_left(struct list_head *head)
+ 418:./include/linux/list.h **** {
+ 419:./include/linux/list.h **** 	struct list_head *first;
+ 420:./include/linux/list.h **** 
+ 421:./include/linux/list.h **** 	if (!list_empty(head)) {
+ 422:./include/linux/list.h **** 		first = head->next;
+ 423:./include/linux/list.h **** 		list_move_tail(first, head);
+ 424:./include/linux/list.h **** 	}
+ 425:./include/linux/list.h **** }
+ 426:./include/linux/list.h **** 
+ 427:./include/linux/list.h **** /**
+ 428:./include/linux/list.h ****  * list_rotate_to_front() - Rotate list to specific item.
+ 429:./include/linux/list.h ****  * @list: The desired new front of the list.
+ 430:./include/linux/list.h ****  * @head: The head of the list.
+ 431:./include/linux/list.h ****  *
+ 432:./include/linux/list.h ****  * Rotates list so that @list becomes the new front of the list.
+ 433:./include/linux/list.h ****  */
+ 434:./include/linux/list.h **** static inline void list_rotate_to_front(struct list_head *list,
+ 435:./include/linux/list.h **** 					struct list_head *head)
+ 436:./include/linux/list.h **** {
+ 437:./include/linux/list.h **** 	/*
+ 438:./include/linux/list.h **** 	 * Deletes the list head from the list denoted by @head and
+ 439:./include/linux/list.h **** 	 * places it as the tail of @list, this effectively rotates the
+ 440:./include/linux/list.h **** 	 * list so that @list is at the front.
+ 441:./include/linux/list.h **** 	 */
+ 442:./include/linux/list.h **** 	list_move_tail(head, list);
+ 443:./include/linux/list.h **** }
+ 444:./include/linux/list.h **** 
+ 445:./include/linux/list.h **** /**
+ 446:./include/linux/list.h ****  * list_is_singular - tests whether a list has just one entry.
+ 447:./include/linux/list.h ****  * @head: the list to test.
+ 448:./include/linux/list.h ****  */
+ 449:./include/linux/list.h **** static inline int list_is_singular(const struct list_head *head)
+ 450:./include/linux/list.h **** {
+ 451:./include/linux/list.h **** 	return !list_empty(head) && (head->next == head->prev);
+ 452:./include/linux/list.h **** }
+ 453:./include/linux/list.h **** 
+ 454:./include/linux/list.h **** static inline void __list_cut_position(struct list_head *list,
+ 455:./include/linux/list.h **** 		struct list_head *head, struct list_head *entry)
+ 456:./include/linux/list.h **** {
+ 457:./include/linux/list.h **** 	struct list_head *new_first = entry->next;
+ 458:./include/linux/list.h **** 	list->next = head->next;
+ 459:./include/linux/list.h **** 	list->next->prev = list;
+ 460:./include/linux/list.h **** 	list->prev = entry;
+ 461:./include/linux/list.h **** 	entry->next = list;
+ 462:./include/linux/list.h **** 	head->next = new_first;
+ARM GAS  /tmp/ccL7RTiX.s 			page 15
+
+
+ 463:./include/linux/list.h **** 	new_first->prev = head;
+ 464:./include/linux/list.h **** }
+ 465:./include/linux/list.h **** 
+ 466:./include/linux/list.h **** /**
+ 467:./include/linux/list.h ****  * list_cut_position - cut a list into two
+ 468:./include/linux/list.h ****  * @list: a new list to add all removed entries
+ 469:./include/linux/list.h ****  * @head: a list with entries
+ 470:./include/linux/list.h ****  * @entry: an entry within head, could be the head itself
+ 471:./include/linux/list.h ****  *	and if so we won't cut the list
+ 472:./include/linux/list.h ****  *
+ 473:./include/linux/list.h ****  * This helper moves the initial part of @head, up to and
+ 474:./include/linux/list.h ****  * including @entry, from @head to @list. You should
+ 475:./include/linux/list.h ****  * pass on @entry an element you know is on @head. @list
+ 476:./include/linux/list.h ****  * should be an empty list or a list you do not care about
+ 477:./include/linux/list.h ****  * losing its data.
+ 478:./include/linux/list.h ****  *
+ 479:./include/linux/list.h ****  */
+ 480:./include/linux/list.h **** static inline void list_cut_position(struct list_head *list,
+ 481:./include/linux/list.h **** 		struct list_head *head, struct list_head *entry)
+ 482:./include/linux/list.h **** {
+ 483:./include/linux/list.h **** 	if (list_empty(head))
+ 484:./include/linux/list.h **** 		return;
+ 485:./include/linux/list.h **** 	if (list_is_singular(head) && !list_is_head(entry, head) && (entry != head->next))
+ 486:./include/linux/list.h **** 		return;
+ 487:./include/linux/list.h **** 	if (list_is_head(entry, head))
+ 488:./include/linux/list.h **** 		INIT_LIST_HEAD(list);
+ 489:./include/linux/list.h **** 	else
+ 490:./include/linux/list.h **** 		__list_cut_position(list, head, entry);
+ 491:./include/linux/list.h **** }
+ 492:./include/linux/list.h **** 
+ 493:./include/linux/list.h **** /**
+ 494:./include/linux/list.h ****  * list_cut_before - cut a list into two, before given entry
+ 495:./include/linux/list.h ****  * @list: a new list to add all removed entries
+ 496:./include/linux/list.h ****  * @head: a list with entries
+ 497:./include/linux/list.h ****  * @entry: an entry within head, could be the head itself
+ 498:./include/linux/list.h ****  *
+ 499:./include/linux/list.h ****  * This helper moves the initial part of @head, up to but
+ 500:./include/linux/list.h ****  * excluding @entry, from @head to @list.  You should pass
+ 501:./include/linux/list.h ****  * in @entry an element you know is on @head.  @list should
+ 502:./include/linux/list.h ****  * be an empty list or a list you do not care about losing
+ 503:./include/linux/list.h ****  * its data.
+ 504:./include/linux/list.h ****  * If @entry == @head, all entries on @head are moved to
+ 505:./include/linux/list.h ****  * @list.
+ 506:./include/linux/list.h ****  */
+ 507:./include/linux/list.h **** static inline void list_cut_before(struct list_head *list,
+ 508:./include/linux/list.h **** 				   struct list_head *head,
+ 509:./include/linux/list.h **** 				   struct list_head *entry)
+ 510:./include/linux/list.h **** {
+ 511:./include/linux/list.h **** 	if (head->next == entry) {
+ 512:./include/linux/list.h **** 		INIT_LIST_HEAD(list);
+ 513:./include/linux/list.h **** 		return;
+ 514:./include/linux/list.h **** 	}
+ 515:./include/linux/list.h **** 	list->next = head->next;
+ 516:./include/linux/list.h **** 	list->next->prev = list;
+ 517:./include/linux/list.h **** 	list->prev = entry->prev;
+ 518:./include/linux/list.h **** 	list->prev->next = list;
+ 519:./include/linux/list.h **** 	head->next = entry;
+ARM GAS  /tmp/ccL7RTiX.s 			page 16
+
+
+ 520:./include/linux/list.h **** 	entry->prev = head;
+ 521:./include/linux/list.h **** }
+ 522:./include/linux/list.h **** 
+ 523:./include/linux/list.h **** static inline void __list_splice(const struct list_head *list,
+ 524:./include/linux/list.h **** 				 struct list_head *prev,
+ 525:./include/linux/list.h **** 				 struct list_head *next)
+ 526:./include/linux/list.h **** {
+ 527:./include/linux/list.h **** 	struct list_head *first = list->next;
+ 528:./include/linux/list.h **** 	struct list_head *last = list->prev;
+ 529:./include/linux/list.h **** 
+ 530:./include/linux/list.h **** 	first->prev = prev;
+ 531:./include/linux/list.h **** 	prev->next = first;
+ 532:./include/linux/list.h **** 
+ 533:./include/linux/list.h **** 	last->next = next;
+ 534:./include/linux/list.h **** 	next->prev = last;
+ 535:./include/linux/list.h **** }
+ 536:./include/linux/list.h **** 
+ 537:./include/linux/list.h **** /**
+ 538:./include/linux/list.h ****  * list_splice - join two lists, this is designed for stacks
+ 539:./include/linux/list.h ****  * @list: the new list to add.
+ 540:./include/linux/list.h ****  * @head: the place to add it in the first list.
+ 541:./include/linux/list.h ****  */
+ 542:./include/linux/list.h **** static inline void list_splice(const struct list_head *list,
+ 543:./include/linux/list.h **** 				struct list_head *head)
+ 544:./include/linux/list.h **** {
+ 545:./include/linux/list.h **** 	if (!list_empty(list))
+ 546:./include/linux/list.h **** 		__list_splice(list, head, head->next);
+ 547:./include/linux/list.h **** }
+ 548:./include/linux/list.h **** 
+ 549:./include/linux/list.h **** /**
+ 550:./include/linux/list.h ****  * list_splice_tail - join two lists, each list being a queue
+ 551:./include/linux/list.h ****  * @list: the new list to add.
+ 552:./include/linux/list.h ****  * @head: the place to add it in the first list.
+ 553:./include/linux/list.h ****  */
+ 554:./include/linux/list.h **** static inline void list_splice_tail(struct list_head *list,
+ 555:./include/linux/list.h **** 				struct list_head *head)
+ 556:./include/linux/list.h **** {
+ 557:./include/linux/list.h **** 	if (!list_empty(list))
+ 558:./include/linux/list.h **** 		__list_splice(list, head->prev, head);
+ 559:./include/linux/list.h **** }
+ 560:./include/linux/list.h **** 
+ 561:./include/linux/list.h **** /**
+ 562:./include/linux/list.h ****  * list_splice_init - join two lists and reinitialise the emptied list.
+ 563:./include/linux/list.h ****  * @list: the new list to add.
+ 564:./include/linux/list.h ****  * @head: the place to add it in the first list.
+ 565:./include/linux/list.h ****  *
+ 566:./include/linux/list.h ****  * The list at @list is reinitialised
+ 567:./include/linux/list.h ****  */
+ 568:./include/linux/list.h **** static inline void list_splice_init(struct list_head *list,
+ 569:./include/linux/list.h **** 				    struct list_head *head)
+ 570:./include/linux/list.h **** {
+ 571:./include/linux/list.h **** 	if (!list_empty(list)) {
+ 572:./include/linux/list.h **** 		__list_splice(list, head, head->next);
+ 573:./include/linux/list.h **** 		INIT_LIST_HEAD(list);
+ 574:./include/linux/list.h **** 	}
+ 575:./include/linux/list.h **** }
+ 576:./include/linux/list.h **** 
+ARM GAS  /tmp/ccL7RTiX.s 			page 17
+
+
+ 577:./include/linux/list.h **** /**
+ 578:./include/linux/list.h ****  * list_splice_tail_init - join two lists and reinitialise the emptied list
+ 579:./include/linux/list.h ****  * @list: the new list to add.
+ 580:./include/linux/list.h ****  * @head: the place to add it in the first list.
+ 581:./include/linux/list.h ****  *
+ 582:./include/linux/list.h ****  * Each of the lists is a queue.
+ 583:./include/linux/list.h ****  * The list at @list is reinitialised
+ 584:./include/linux/list.h ****  */
+ 585:./include/linux/list.h **** static inline void list_splice_tail_init(struct list_head *list,
+ 586:./include/linux/list.h **** 					 struct list_head *head)
+ 587:./include/linux/list.h **** {
+ 588:./include/linux/list.h **** 	if (!list_empty(list)) {
+ 589:./include/linux/list.h **** 		__list_splice(list, head->prev, head);
+ 590:./include/linux/list.h **** 		INIT_LIST_HEAD(list);
+ 591:./include/linux/list.h **** 	}
+ 592:./include/linux/list.h **** }
+ 593:./include/linux/list.h **** 
+ 594:./include/linux/list.h **** /**
+ 595:./include/linux/list.h ****  * list_entry - get the struct for this entry
+ 596:./include/linux/list.h ****  * @ptr:	the &struct list_head pointer.
+ 597:./include/linux/list.h ****  * @type:	the type of the struct this is embedded in.
+ 598:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 599:./include/linux/list.h ****  */
+ 600:./include/linux/list.h **** #define list_entry(ptr, type, member) \
+ 601:./include/linux/list.h **** 	container_of(ptr, type, member)
+ 602:./include/linux/list.h **** 
+ 603:./include/linux/list.h **** /**
+ 604:./include/linux/list.h ****  * list_first_entry - get the first element from a list
+ 605:./include/linux/list.h ****  * @ptr:	the list head to take the element from.
+ 606:./include/linux/list.h ****  * @type:	the type of the struct this is embedded in.
+ 607:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 608:./include/linux/list.h ****  *
+ 609:./include/linux/list.h ****  * Note, that list is expected to be not empty.
+ 610:./include/linux/list.h ****  */
+ 611:./include/linux/list.h **** #define list_first_entry(ptr, type, member) \
+ 612:./include/linux/list.h **** 	list_entry((ptr)->next, type, member)
+ 613:./include/linux/list.h **** 
+ 614:./include/linux/list.h **** /**
+ 615:./include/linux/list.h ****  * list_last_entry - get the last element from a list
+ 616:./include/linux/list.h ****  * @ptr:	the list head to take the element from.
+ 617:./include/linux/list.h ****  * @type:	the type of the struct this is embedded in.
+ 618:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 619:./include/linux/list.h ****  *
+ 620:./include/linux/list.h ****  * Note, that list is expected to be not empty.
+ 621:./include/linux/list.h ****  */
+ 622:./include/linux/list.h **** #define list_last_entry(ptr, type, member) \
+ 623:./include/linux/list.h **** 	list_entry((ptr)->prev, type, member)
+ 624:./include/linux/list.h **** 
+ 625:./include/linux/list.h **** /**
+ 626:./include/linux/list.h ****  * list_first_entry_or_null - get the first element from a list
+ 627:./include/linux/list.h ****  * @ptr:	the list head to take the element from.
+ 628:./include/linux/list.h ****  * @type:	the type of the struct this is embedded in.
+ 629:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 630:./include/linux/list.h ****  *
+ 631:./include/linux/list.h ****  * Note that if the list is empty, it returns NULL.
+ 632:./include/linux/list.h ****  */
+ 633:./include/linux/list.h **** #define list_first_entry_or_null(ptr, type, member) ({ \
+ARM GAS  /tmp/ccL7RTiX.s 			page 18
+
+
+ 634:./include/linux/list.h **** 	struct list_head *head__ = (ptr); \
+ 635:./include/linux/list.h **** 	struct list_head *pos__ = READ_ONCE(head__->next); \
+ 636:./include/linux/list.h **** 	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
+ 637:./include/linux/list.h **** })
+ 638:./include/linux/list.h **** 
+ 639:./include/linux/list.h **** /**
+ 640:./include/linux/list.h ****  * list_next_entry - get the next element in list
+ 641:./include/linux/list.h ****  * @pos:	the type * to cursor
+ 642:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 643:./include/linux/list.h ****  */
+ 644:./include/linux/list.h **** #define list_next_entry(pos, member) \
+ 645:./include/linux/list.h **** 	list_entry((pos)->member.next, typeof(*(pos)), member)
+ 646:./include/linux/list.h **** 
+ 647:./include/linux/list.h **** /**
+ 648:./include/linux/list.h ****  * list_next_entry_circular - get the next element in list
+ 649:./include/linux/list.h ****  * @pos:	the type * to cursor.
+ 650:./include/linux/list.h ****  * @head:	the list head to take the element from.
+ 651:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 652:./include/linux/list.h ****  *
+ 653:./include/linux/list.h ****  * Wraparound if pos is the last element (return the first element).
+ 654:./include/linux/list.h ****  * Note, that list is expected to be not empty.
+ 655:./include/linux/list.h ****  */
+ 656:./include/linux/list.h **** #define list_next_entry_circular(pos, head, member) \
+ 657:./include/linux/list.h **** 	(list_is_last(&(pos)->member, head) ? \
+ 658:./include/linux/list.h **** 	list_first_entry(head, typeof(*(pos)), member) : list_next_entry(pos, member))
+ 659:./include/linux/list.h **** 
+ 660:./include/linux/list.h **** /**
+ 661:./include/linux/list.h ****  * list_prev_entry - get the prev element in list
+ 662:./include/linux/list.h ****  * @pos:	the type * to cursor
+ 663:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 664:./include/linux/list.h ****  */
+ 665:./include/linux/list.h **** #define list_prev_entry(pos, member) \
+ 666:./include/linux/list.h **** 	list_entry((pos)->member.prev, typeof(*(pos)), member)
+ 667:./include/linux/list.h **** 
+ 668:./include/linux/list.h **** /**
+ 669:./include/linux/list.h ****  * list_prev_entry_circular - get the prev element in list
+ 670:./include/linux/list.h ****  * @pos:	the type * to cursor.
+ 671:./include/linux/list.h ****  * @head:	the list head to take the element from.
+ 672:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 673:./include/linux/list.h ****  *
+ 674:./include/linux/list.h ****  * Wraparound if pos is the first element (return the last element).
+ 675:./include/linux/list.h ****  * Note, that list is expected to be not empty.
+ 676:./include/linux/list.h ****  */
+ 677:./include/linux/list.h **** #define list_prev_entry_circular(pos, head, member) \
+ 678:./include/linux/list.h **** 	(list_is_first(&(pos)->member, head) ? \
+ 679:./include/linux/list.h **** 	list_last_entry(head, typeof(*(pos)), member) : list_prev_entry(pos, member))
+ 680:./include/linux/list.h **** 
+ 681:./include/linux/list.h **** /**
+ 682:./include/linux/list.h ****  * list_for_each	-	iterate over a list
+ 683:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 684:./include/linux/list.h ****  * @head:	the head for your list.
+ 685:./include/linux/list.h ****  */
+ 686:./include/linux/list.h **** #define list_for_each(pos, head) \
+ 687:./include/linux/list.h **** 	for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+ 688:./include/linux/list.h **** 
+ 689:./include/linux/list.h **** /**
+ 690:./include/linux/list.h ****  * list_for_each_reverse - iterate backwards over a list
+ARM GAS  /tmp/ccL7RTiX.s 			page 19
+
+
+ 691:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 692:./include/linux/list.h ****  * @head:	the head for your list.
+ 693:./include/linux/list.h ****  */
+ 694:./include/linux/list.h **** #define list_for_each_reverse(pos, head) \
+ 695:./include/linux/list.h **** 	for (pos = (head)->prev; pos != (head); pos = pos->prev)
+ 696:./include/linux/list.h **** 
+ 697:./include/linux/list.h **** /**
+ 698:./include/linux/list.h ****  * list_for_each_rcu - Iterate over a list in an RCU-safe fashion
+ 699:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 700:./include/linux/list.h ****  * @head:	the head for your list.
+ 701:./include/linux/list.h ****  */
+ 702:./include/linux/list.h **** #define list_for_each_rcu(pos, head)		  \
+ 703:./include/linux/list.h **** 	for (pos = rcu_dereference((head)->next); \
+ 704:./include/linux/list.h **** 	     !list_is_head(pos, (head)); \
+ 705:./include/linux/list.h **** 	     pos = rcu_dereference(pos->next))
+ 706:./include/linux/list.h **** 
+ 707:./include/linux/list.h **** /**
+ 708:./include/linux/list.h ****  * list_for_each_continue - continue iteration over a list
+ 709:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 710:./include/linux/list.h ****  * @head:	the head for your list.
+ 711:./include/linux/list.h ****  *
+ 712:./include/linux/list.h ****  * Continue to iterate over a list, continuing after the current position.
+ 713:./include/linux/list.h ****  */
+ 714:./include/linux/list.h **** #define list_for_each_continue(pos, head) \
+ 715:./include/linux/list.h **** 	for (pos = pos->next; !list_is_head(pos, (head)); pos = pos->next)
+ 716:./include/linux/list.h **** 
+ 717:./include/linux/list.h **** /**
+ 718:./include/linux/list.h ****  * list_for_each_prev	-	iterate over a list backwards
+ 719:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 720:./include/linux/list.h ****  * @head:	the head for your list.
+ 721:./include/linux/list.h ****  */
+ 722:./include/linux/list.h **** #define list_for_each_prev(pos, head) \
+ 723:./include/linux/list.h **** 	for (pos = (head)->prev; !list_is_head(pos, (head)); pos = pos->prev)
+ 724:./include/linux/list.h **** 
+ 725:./include/linux/list.h **** /**
+ 726:./include/linux/list.h ****  * list_for_each_safe - iterate over a list safe against removal of list entry
+ 727:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 728:./include/linux/list.h ****  * @n:		another &struct list_head to use as temporary storage
+ 729:./include/linux/list.h ****  * @head:	the head for your list.
+ 730:./include/linux/list.h ****  */
+ 731:./include/linux/list.h **** #define list_for_each_safe(pos, n, head) \
+ 732:./include/linux/list.h **** 	for (pos = (head)->next, n = pos->next; \
+ 733:./include/linux/list.h **** 	     !list_is_head(pos, (head)); \
+ 734:./include/linux/list.h **** 	     pos = n, n = pos->next)
+ 735:./include/linux/list.h **** 
+ 736:./include/linux/list.h **** /**
+ 737:./include/linux/list.h ****  * list_for_each_prev_safe - iterate over a list backwards safe against removal of list entry
+ 738:./include/linux/list.h ****  * @pos:	the &struct list_head to use as a loop cursor.
+ 739:./include/linux/list.h ****  * @n:		another &struct list_head to use as temporary storage
+ 740:./include/linux/list.h ****  * @head:	the head for your list.
+ 741:./include/linux/list.h ****  */
+ 742:./include/linux/list.h **** #define list_for_each_prev_safe(pos, n, head) \
+ 743:./include/linux/list.h **** 	for (pos = (head)->prev, n = pos->prev; \
+ 744:./include/linux/list.h **** 	     !list_is_head(pos, (head)); \
+ 745:./include/linux/list.h **** 	     pos = n, n = pos->prev)
+ 746:./include/linux/list.h **** 
+ 747:./include/linux/list.h **** /**
+ARM GAS  /tmp/ccL7RTiX.s 			page 20
+
+
+ 748:./include/linux/list.h ****  * list_count_nodes - count nodes in the list
+ 749:./include/linux/list.h ****  * @head:	the head for your list.
+ 750:./include/linux/list.h ****  */
+ 751:./include/linux/list.h **** static inline size_t list_count_nodes(struct list_head *head)
+ 752:./include/linux/list.h **** {
+ 753:./include/linux/list.h **** 	struct list_head *pos;
+ 754:./include/linux/list.h **** 	size_t count = 0;
+ 755:./include/linux/list.h **** 
+ 756:./include/linux/list.h **** 	list_for_each(pos, head)
+ 757:./include/linux/list.h **** 		count++;
+ 758:./include/linux/list.h **** 
+ 759:./include/linux/list.h **** 	return count;
+ 760:./include/linux/list.h **** }
+ 761:./include/linux/list.h **** 
+ 762:./include/linux/list.h **** /**
+ 763:./include/linux/list.h ****  * list_entry_is_head - test if the entry points to the head of the list
+ 764:./include/linux/list.h ****  * @pos:	the type * to cursor
+ 765:./include/linux/list.h ****  * @head:	the head for your list.
+ 766:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 767:./include/linux/list.h ****  */
+ 768:./include/linux/list.h **** #define list_entry_is_head(pos, head, member)				\
+ 769:./include/linux/list.h **** 	list_is_head(&pos->member, (head))
+ 770:./include/linux/list.h **** 
+ 771:./include/linux/list.h **** /**
+ 772:./include/linux/list.h ****  * list_for_each_entry	-	iterate over list of given type
+ 773:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 774:./include/linux/list.h ****  * @head:	the head for your list.
+ 775:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 776:./include/linux/list.h ****  */
+ 777:./include/linux/list.h **** #define list_for_each_entry(pos, head, member)				\
+ 778:./include/linux/list.h **** 	for (pos = list_first_entry(head, typeof(*pos), member);	\
+ 779:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member);			\
+ 780:./include/linux/list.h **** 	     pos = list_next_entry(pos, member))
+ 781:./include/linux/list.h **** 
+ 782:./include/linux/list.h **** /**
+ 783:./include/linux/list.h ****  * list_for_each_entry_reverse - iterate backwards over list of given type.
+ 784:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 785:./include/linux/list.h ****  * @head:	the head for your list.
+ 786:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 787:./include/linux/list.h ****  */
+ 788:./include/linux/list.h **** #define list_for_each_entry_reverse(pos, head, member)			\
+ 789:./include/linux/list.h **** 	for (pos = list_last_entry(head, typeof(*pos), member);		\
+ 790:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member); 			\
+ 791:./include/linux/list.h **** 	     pos = list_prev_entry(pos, member))
+ 792:./include/linux/list.h **** 
+ 793:./include/linux/list.h **** /**
+ 794:./include/linux/list.h ****  * list_prepare_entry - prepare a pos entry for use in list_for_each_entry_continue()
+ 795:./include/linux/list.h ****  * @pos:	the type * to use as a start point
+ 796:./include/linux/list.h ****  * @head:	the head of the list
+ 797:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 798:./include/linux/list.h ****  *
+ 799:./include/linux/list.h ****  * Prepares a pos entry for use as a start point in list_for_each_entry_continue().
+ 800:./include/linux/list.h ****  */
+ 801:./include/linux/list.h **** #define list_prepare_entry(pos, head, member) \
+ 802:./include/linux/list.h **** 	((pos) ? : list_entry(head, typeof(*pos), member))
+ 803:./include/linux/list.h **** 
+ 804:./include/linux/list.h **** /**
+ARM GAS  /tmp/ccL7RTiX.s 			page 21
+
+
+ 805:./include/linux/list.h ****  * list_for_each_entry_continue - continue iteration over list of given type
+ 806:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 807:./include/linux/list.h ****  * @head:	the head for your list.
+ 808:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 809:./include/linux/list.h ****  *
+ 810:./include/linux/list.h ****  * Continue to iterate over list of given type, continuing after
+ 811:./include/linux/list.h ****  * the current position.
+ 812:./include/linux/list.h ****  */
+ 813:./include/linux/list.h **** #define list_for_each_entry_continue(pos, head, member) 		\
+ 814:./include/linux/list.h **** 	for (pos = list_next_entry(pos, member);			\
+ 815:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member);			\
+ 816:./include/linux/list.h **** 	     pos = list_next_entry(pos, member))
+ 817:./include/linux/list.h **** 
+ 818:./include/linux/list.h **** /**
+ 819:./include/linux/list.h ****  * list_for_each_entry_continue_reverse - iterate backwards from the given point
+ 820:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 821:./include/linux/list.h ****  * @head:	the head for your list.
+ 822:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 823:./include/linux/list.h ****  *
+ 824:./include/linux/list.h ****  * Start to iterate over list of given type backwards, continuing after
+ 825:./include/linux/list.h ****  * the current position.
+ 826:./include/linux/list.h ****  */
+ 827:./include/linux/list.h **** #define list_for_each_entry_continue_reverse(pos, head, member)		\
+ 828:./include/linux/list.h **** 	for (pos = list_prev_entry(pos, member);			\
+ 829:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member);			\
+ 830:./include/linux/list.h **** 	     pos = list_prev_entry(pos, member))
+ 831:./include/linux/list.h **** 
+ 832:./include/linux/list.h **** /**
+ 833:./include/linux/list.h ****  * list_for_each_entry_from - iterate over list of given type from the current point
+ 834:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 835:./include/linux/list.h ****  * @head:	the head for your list.
+ 836:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 837:./include/linux/list.h ****  *
+ 838:./include/linux/list.h ****  * Iterate over list of given type, continuing from current position.
+ 839:./include/linux/list.h ****  */
+ 840:./include/linux/list.h **** #define list_for_each_entry_from(pos, head, member) 			\
+ 841:./include/linux/list.h **** 	for (; !list_entry_is_head(pos, head, member);			\
+ 842:./include/linux/list.h **** 	     pos = list_next_entry(pos, member))
+ 843:./include/linux/list.h **** 
+ 844:./include/linux/list.h **** /**
+ 845:./include/linux/list.h ****  * list_for_each_entry_from_reverse - iterate backwards over list of given type
+ 846:./include/linux/list.h ****  *                                    from the current point
+ 847:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 848:./include/linux/list.h ****  * @head:	the head for your list.
+ 849:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 850:./include/linux/list.h ****  *
+ 851:./include/linux/list.h ****  * Iterate backwards over list of given type, continuing from current position.
+ 852:./include/linux/list.h ****  */
+ 853:./include/linux/list.h **** #define list_for_each_entry_from_reverse(pos, head, member)		\
+ 854:./include/linux/list.h **** 	for (; !list_entry_is_head(pos, head, member);			\
+ 855:./include/linux/list.h **** 	     pos = list_prev_entry(pos, member))
+ 856:./include/linux/list.h **** 
+ 857:./include/linux/list.h **** /**
+ 858:./include/linux/list.h ****  * list_for_each_entry_safe - iterate over list of given type safe against removal of list entry
+ 859:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 860:./include/linux/list.h ****  * @n:		another type * to use as temporary storage
+ 861:./include/linux/list.h ****  * @head:	the head for your list.
+ARM GAS  /tmp/ccL7RTiX.s 			page 22
+
+
+ 862:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 863:./include/linux/list.h ****  */
+ 864:./include/linux/list.h **** #define list_for_each_entry_safe(pos, n, head, member)			\
+ 865:./include/linux/list.h **** 	for (pos = list_first_entry(head, typeof(*pos), member),	\
+ 866:./include/linux/list.h **** 		n = list_next_entry(pos, member);			\
+ 867:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member); 			\
+ 868:./include/linux/list.h **** 	     pos = n, n = list_next_entry(n, member))
+ 869:./include/linux/list.h **** 
+ 870:./include/linux/list.h **** /**
+ 871:./include/linux/list.h ****  * list_for_each_entry_safe_continue - continue list iteration safe against removal
+ 872:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 873:./include/linux/list.h ****  * @n:		another type * to use as temporary storage
+ 874:./include/linux/list.h ****  * @head:	the head for your list.
+ 875:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 876:./include/linux/list.h ****  *
+ 877:./include/linux/list.h ****  * Iterate over list of given type, continuing after current point,
+ 878:./include/linux/list.h ****  * safe against removal of list entry.
+ 879:./include/linux/list.h ****  */
+ 880:./include/linux/list.h **** #define list_for_each_entry_safe_continue(pos, n, head, member) 		\
+ 881:./include/linux/list.h **** 	for (pos = list_next_entry(pos, member), 				\
+ 882:./include/linux/list.h **** 		n = list_next_entry(pos, member);				\
+ 883:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member);				\
+ 884:./include/linux/list.h **** 	     pos = n, n = list_next_entry(n, member))
+ 885:./include/linux/list.h **** 
+ 886:./include/linux/list.h **** /**
+ 887:./include/linux/list.h ****  * list_for_each_entry_safe_from - iterate over list from current point safe against removal
+ 888:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 889:./include/linux/list.h ****  * @n:		another type * to use as temporary storage
+ 890:./include/linux/list.h ****  * @head:	the head for your list.
+ 891:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 892:./include/linux/list.h ****  *
+ 893:./include/linux/list.h ****  * Iterate over list of given type from current point, safe against
+ 894:./include/linux/list.h ****  * removal of list entry.
+ 895:./include/linux/list.h ****  */
+ 896:./include/linux/list.h **** #define list_for_each_entry_safe_from(pos, n, head, member) 			\
+ 897:./include/linux/list.h **** 	for (n = list_next_entry(pos, member);					\
+ 898:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member);				\
+ 899:./include/linux/list.h **** 	     pos = n, n = list_next_entry(n, member))
+ 900:./include/linux/list.h **** 
+ 901:./include/linux/list.h **** /**
+ 902:./include/linux/list.h ****  * list_for_each_entry_safe_reverse - iterate backwards over list safe against removal
+ 903:./include/linux/list.h ****  * @pos:	the type * to use as a loop cursor.
+ 904:./include/linux/list.h ****  * @n:		another type * to use as temporary storage
+ 905:./include/linux/list.h ****  * @head:	the head for your list.
+ 906:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 907:./include/linux/list.h ****  *
+ 908:./include/linux/list.h ****  * Iterate backwards over list of given type, safe against removal
+ 909:./include/linux/list.h ****  * of list entry.
+ 910:./include/linux/list.h ****  */
+ 911:./include/linux/list.h **** #define list_for_each_entry_safe_reverse(pos, n, head, member)		\
+ 912:./include/linux/list.h **** 	for (pos = list_last_entry(head, typeof(*pos), member),		\
+ 913:./include/linux/list.h **** 		n = list_prev_entry(pos, member);			\
+ 914:./include/linux/list.h **** 	     !list_entry_is_head(pos, head, member); 			\
+ 915:./include/linux/list.h **** 	     pos = n, n = list_prev_entry(n, member))
+ 916:./include/linux/list.h **** 
+ 917:./include/linux/list.h **** /**
+ 918:./include/linux/list.h ****  * list_safe_reset_next - reset a stale list_for_each_entry_safe loop
+ARM GAS  /tmp/ccL7RTiX.s 			page 23
+
+
+ 919:./include/linux/list.h ****  * @pos:	the loop cursor used in the list_for_each_entry_safe loop
+ 920:./include/linux/list.h ****  * @n:		temporary storage used in list_for_each_entry_safe
+ 921:./include/linux/list.h ****  * @member:	the name of the list_head within the struct.
+ 922:./include/linux/list.h ****  *
+ 923:./include/linux/list.h ****  * list_safe_reset_next is not safe to use in general if the list may be
+ 924:./include/linux/list.h ****  * modified concurrently (eg. the lock is dropped in the loop body). An
+ 925:./include/linux/list.h ****  * exception to this is if the cursor element (pos) is pinned in the list,
+ 926:./include/linux/list.h ****  * and list_safe_reset_next is called after re-taking the lock and before
+ 927:./include/linux/list.h ****  * completing the current iteration of the loop body.
+ 928:./include/linux/list.h ****  */
+ 929:./include/linux/list.h **** #define list_safe_reset_next(pos, n, member)				\
+ 930:./include/linux/list.h **** 	n = list_next_entry(pos, member)
+ 931:./include/linux/list.h **** 
+ 932:./include/linux/list.h **** /*
+ 933:./include/linux/list.h ****  * Double linked lists with a single pointer list head.
+ 934:./include/linux/list.h ****  * Mostly useful for hash tables where the two pointer list head is
+ 935:./include/linux/list.h ****  * too wasteful.
+ 936:./include/linux/list.h ****  * You lose the ability to access the tail in O(1).
+ 937:./include/linux/list.h ****  */
+ 938:./include/linux/list.h **** 
+ 939:./include/linux/list.h **** #define HLIST_HEAD_INIT { .first = NULL }
+ 940:./include/linux/list.h **** #define HLIST_HEAD(name) struct hlist_head name = {  .first = NULL }
+ 941:./include/linux/list.h **** #define INIT_HLIST_HEAD(ptr) ((ptr)->first = NULL)
+ 942:./include/linux/list.h **** static inline void INIT_HLIST_NODE(struct hlist_node *h)
+ 943:./include/linux/list.h **** {
+ 944:./include/linux/list.h **** 	h->next = NULL;
+ 945:./include/linux/list.h **** 	h->pprev = NULL;
+ 946:./include/linux/list.h **** }
+ 947:./include/linux/list.h **** 
+ 948:./include/linux/list.h **** /**
+ 949:./include/linux/list.h ****  * hlist_unhashed - Has node been removed from list and reinitialized?
+ 950:./include/linux/list.h ****  * @h: Node to be checked
+ 951:./include/linux/list.h ****  *
+ 952:./include/linux/list.h ****  * Not that not all removal functions will leave a node in unhashed
+ 953:./include/linux/list.h ****  * state.  For example, hlist_nulls_del_init_rcu() does leave the
+ 954:./include/linux/list.h ****  * node in unhashed state, but hlist_nulls_del() does not.
+ 955:./include/linux/list.h ****  */
+ 956:./include/linux/list.h **** static inline int hlist_unhashed(const struct hlist_node *h)
+ 957:./include/linux/list.h **** {
+ 958:./include/linux/list.h **** 	return !h->pprev;
+ 959:./include/linux/list.h **** }
+ 960:./include/linux/list.h **** 
+ 961:./include/linux/list.h **** /**
+ 962:./include/linux/list.h ****  * hlist_unhashed_lockless - Version of hlist_unhashed for lockless use
+ 963:./include/linux/list.h ****  * @h: Node to be checked
+ 964:./include/linux/list.h ****  *
+ 965:./include/linux/list.h ****  * This variant of hlist_unhashed() must be used in lockless contexts
+ 966:./include/linux/list.h ****  * to avoid potential load-tearing.  The READ_ONCE() is paired with the
+ 967:./include/linux/list.h ****  * various WRITE_ONCE() in hlist helpers that are defined below.
+ 968:./include/linux/list.h ****  */
+ 969:./include/linux/list.h **** static inline int hlist_unhashed_lockless(const struct hlist_node *h)
+ 970:./include/linux/list.h **** {
+ 971:./include/linux/list.h **** 	return !READ_ONCE(h->pprev);
+ 972:./include/linux/list.h **** }
+ 973:./include/linux/list.h **** 
+ 974:./include/linux/list.h **** /**
+ 975:./include/linux/list.h ****  * hlist_empty - Is the specified hlist_head structure an empty hlist?
+ARM GAS  /tmp/ccL7RTiX.s 			page 24
+
+
+ 976:./include/linux/list.h ****  * @h: Structure to check.
+ 977:./include/linux/list.h ****  */
+ 978:./include/linux/list.h **** static inline int hlist_empty(const struct hlist_head *h)
+ 979:./include/linux/list.h **** {
+ 980:./include/linux/list.h **** 	return !READ_ONCE(h->first);
+ 981:./include/linux/list.h **** }
+ 982:./include/linux/list.h **** 
+ 983:./include/linux/list.h **** static inline void __hlist_del(struct hlist_node *n)
+ 984:./include/linux/list.h **** {
+ 985:./include/linux/list.h **** 	struct hlist_node *next = n->next;
+ 986:./include/linux/list.h **** 	struct hlist_node **pprev = n->pprev;
+ 987:./include/linux/list.h **** 
+ 988:./include/linux/list.h **** 	WRITE_ONCE(*pprev, next);
+ 989:./include/linux/list.h **** 	if (next)
+ 990:./include/linux/list.h **** 		WRITE_ONCE(next->pprev, pprev);
+ 991:./include/linux/list.h **** }
+ 992:./include/linux/list.h **** 
+ 993:./include/linux/list.h **** /**
+ 994:./include/linux/list.h ****  * hlist_del - Delete the specified hlist_node from its list
+ 995:./include/linux/list.h ****  * @n: Node to delete.
+ 996:./include/linux/list.h ****  *
+ 997:./include/linux/list.h ****  * Note that this function leaves the node in hashed state.  Use
+ 998:./include/linux/list.h ****  * hlist_del_init() or similar instead to unhash @n.
+ 999:./include/linux/list.h ****  */
+1000:./include/linux/list.h **** static inline void hlist_del(struct hlist_node *n)
+1001:./include/linux/list.h **** {
+1002:./include/linux/list.h **** 	__hlist_del(n);
+1003:./include/linux/list.h **** 	n->next = LIST_POISON1;
+1004:./include/linux/list.h **** 	n->pprev = LIST_POISON2;
+1005:./include/linux/list.h **** }
+1006:./include/linux/list.h **** 
+1007:./include/linux/list.h **** /**
+1008:./include/linux/list.h ****  * hlist_del_init - Delete the specified hlist_node from its list and initialize
+1009:./include/linux/list.h ****  * @n: Node to delete.
+1010:./include/linux/list.h ****  *
+1011:./include/linux/list.h ****  * Note that this function leaves the node in unhashed state.
+1012:./include/linux/list.h ****  */
+1013:./include/linux/list.h **** static inline void hlist_del_init(struct hlist_node *n)
+1014:./include/linux/list.h **** {
+1015:./include/linux/list.h **** 	if (!hlist_unhashed(n)) {
+1016:./include/linux/list.h **** 		__hlist_del(n);
+1017:./include/linux/list.h **** 		INIT_HLIST_NODE(n);
+1018:./include/linux/list.h **** 	}
+1019:./include/linux/list.h **** }
+1020:./include/linux/list.h **** 
+1021:./include/linux/list.h **** /**
+1022:./include/linux/list.h ****  * hlist_add_head - add a new entry at the beginning of the hlist
+1023:./include/linux/list.h ****  * @n: new entry to be added
+1024:./include/linux/list.h ****  * @h: hlist head to add it after
+1025:./include/linux/list.h ****  *
+1026:./include/linux/list.h ****  * Insert a new entry after the specified head.
+1027:./include/linux/list.h ****  * This is good for implementing stacks.
+1028:./include/linux/list.h ****  */
+1029:./include/linux/list.h **** static inline void hlist_add_head(struct hlist_node *n, struct hlist_head *h)
+ 175              		.loc 4 1029 20 view .LVU25
+ 176              	.LBB41:
+1030:./include/linux/list.h **** {
+ARM GAS  /tmp/ccL7RTiX.s 			page 25
+
+
+1031:./include/linux/list.h **** 	struct hlist_node *first = h->first;
+ 177              		.loc 4 1031 2 view .LVU26
+ 178              		.loc 4 1031 21 is_stmt 0 view .LVU27
+ 179 0004 0B68     		ldr	r3, [r1]
+ 180              	.LVL13:
+1032:./include/linux/list.h **** 	WRITE_ONCE(n->next, first);
+ 181              		.loc 4 1032 2 is_stmt 1 view .LVU28
+ 182              		.loc 4 1032 2 view .LVU29
+ 183              	.LBB42:
+ 184              		.loc 4 1032 2 view .LVU30
+ 185              		.loc 4 1032 2 view .LVU31
+ 186              	.LBE42:
+ 187              		.loc 4 1032 2 discriminator 2 view .LVU32
+ 188              		.loc 4 1032 2 discriminator 2 view .LVU33
+ 189              		.loc 4 1032 2 discriminator 2 view .LVU34
+ 190 0006 8360     		str	r3, [r0, #8]
+ 191              		.loc 4 1032 2 discriminator 2 view .LVU35
+ 192              		.loc 4 1032 2 discriminator 2 view .LVU36
+1033:./include/linux/list.h **** 	if (first)
+ 193              		.loc 4 1033 2 view .LVU37
+ 194              		.loc 4 1033 5 is_stmt 0 view .LVU38
+ 195 0008 33B1     		cbz	r3, .L12
+ 196              	.LBE41:
+ 197              	.LBE40:
+ 106:./fs/fs_dentry.c ****     hlist_add_head(&dentry->d_sib, &parent->d_hash);
+ 198              		.loc 1 106 66 view .LVU39
+ 199 000a 10B4     		push	{r4}
+ 200              	.LCFI2:
+ 201              		.cfi_def_cfa_offset 4
+ 202              		.cfi_offset 4, -4
+ 203              	.LBB50:
+ 204              	.LBB48:
+1034:./include/linux/list.h **** 		WRITE_ONCE(first->pprev, &n->next);
+ 205              		.loc 4 1034 3 is_stmt 1 view .LVU40
+ 206              		.loc 4 1034 3 view .LVU41
+ 207              	.LBB43:
+ 208              		.loc 4 1034 3 view .LVU42
+ 209              		.loc 4 1034 3 view .LVU43
+ 210              	.LBE43:
+ 211              		.loc 4 1034 3 discriminator 2 view .LVU44
+ 212              		.loc 4 1034 3 discriminator 2 view .LVU45
+ 213              		.loc 4 1034 3 discriminator 2 view .LVU46
+ 214 000c 5A60     		str	r2, [r3, #4]
+ 215              		.loc 4 1034 3 discriminator 3 view .LVU47
+ 216              		.loc 4 1034 3 discriminator 3 view .LVU48
+1035:./include/linux/list.h **** 	WRITE_ONCE(h->first, n);
+ 217              		.loc 4 1035 2 view .LVU49
+ 218              		.loc 4 1035 2 view .LVU50
+ 219              	.LBB44:
+ 220              		.loc 4 1035 2 view .LVU51
+ 221              		.loc 4 1035 2 view .LVU52
+ 222              	.LBE44:
+ 223              		.loc 4 1035 2 discriminator 2 view .LVU53
+ 224              		.loc 4 1035 2 discriminator 2 view .LVU54
+ 225              		.loc 4 1035 2 discriminator 2 view .LVU55
+ 226 000e 0A60     		str	r2, [r1]
+ 227              		.loc 4 1035 2 discriminator 2 view .LVU56
+ARM GAS  /tmp/ccL7RTiX.s 			page 26
+
+
+ 228              		.loc 4 1035 2 discriminator 2 view .LVU57
+1036:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 229              		.loc 4 1036 2 view .LVU58
+ 230              		.loc 4 1036 2 view .LVU59
+ 231              	.LBB45:
+ 232              		.loc 4 1036 2 view .LVU60
+ 233              		.loc 4 1036 2 view .LVU61
+ 234              	.LBE45:
+ 235              		.loc 4 1036 2 discriminator 2 view .LVU62
+ 236              		.loc 4 1036 2 discriminator 2 view .LVU63
+ 237              		.loc 4 1036 2 discriminator 2 view .LVU64
+ 238 0010 C160     		str	r1, [r0, #12]
+ 239              		.loc 4 1036 2 discriminator 2 view .LVU65
+ 240              		.loc 4 1036 2 discriminator 2 view .LVU66
+ 241              	.LVL14:
+ 242              		.loc 4 1036 2 is_stmt 0 discriminator 2 view .LVU67
+ 243              	.LBE48:
+ 244              	.LBE50:
+ 108:./fs/fs_dentry.c **** }
+ 245              		.loc 1 108 1 view .LVU68
+ 246 0012 5DF8044B 		ldr	r4, [sp], #4
+ 247              	.LCFI3:
+ 248              		.cfi_restore 4
+ 249              		.cfi_def_cfa_offset 0
+ 250 0016 7047     		bx	lr
+ 251              	.LVL15:
+ 252              	.L12:
+ 253              	.LBB51:
+ 254              	.LBB49:
+1034:./include/linux/list.h **** 	WRITE_ONCE(h->first, n);
+ 255              		.loc 4 1034 3 is_stmt 1 discriminator 3 view .LVU69
+1034:./include/linux/list.h **** 	WRITE_ONCE(h->first, n);
+ 256              		.loc 4 1034 3 discriminator 3 view .LVU70
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 257              		.loc 4 1035 2 view .LVU71
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 258              		.loc 4 1035 2 view .LVU72
+ 259              	.LBB46:
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 260              		.loc 4 1035 2 view .LVU73
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 261              		.loc 4 1035 2 view .LVU74
+ 262              	.LBE46:
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 263              		.loc 4 1035 2 discriminator 2 view .LVU75
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 264              		.loc 4 1035 2 discriminator 2 view .LVU76
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 265              		.loc 4 1035 2 discriminator 2 view .LVU77
+ 266 0018 0A60     		str	r2, [r1]
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 267              		.loc 4 1035 2 discriminator 2 view .LVU78
+1035:./include/linux/list.h **** 	WRITE_ONCE(n->pprev, &h->first);
+ 268              		.loc 4 1035 2 discriminator 2 view .LVU79
+ 269              		.loc 4 1036 2 view .LVU80
+ 270              		.loc 4 1036 2 view .LVU81
+ 271              	.LBB47:
+ARM GAS  /tmp/ccL7RTiX.s 			page 27
+
+
+ 272              		.loc 4 1036 2 view .LVU82
+ 273              		.loc 4 1036 2 view .LVU83
+ 274              	.LBE47:
+ 275              		.loc 4 1036 2 discriminator 2 view .LVU84
+ 276              		.loc 4 1036 2 discriminator 2 view .LVU85
+ 277              		.loc 4 1036 2 discriminator 2 view .LVU86
+ 278 001a C160     		str	r1, [r0, #12]
+ 279              		.loc 4 1036 2 discriminator 2 view .LVU87
+ 280              		.loc 4 1036 2 discriminator 2 view .LVU88
+ 281              	.LVL16:
+ 282              		.loc 4 1036 2 is_stmt 0 discriminator 2 view .LVU89
+ 283 001c 7047     		bx	lr
+ 284              	.LBE49:
+ 285              	.LBE51:
+ 286              		.cfi_endproc
+ 287              	.LFE1041:
+ 289              		.section	.text.dentry_rename,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	dentry_rename
+ 292              		.syntax unified
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	dentry_rename:
+ 297              	.LVL17:
+ 298              	.LFB1035:
+  17:./fs/fs_dentry.c **** 	if(d == NULL || name == NULL) 
+ 299              		.loc 1 17 1 is_stmt 1 view -0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 0
+ 302              		@ frame_needed = 0, uses_anonymous_args = 0
+  18:./fs/fs_dentry.c **** 		return -1;
+ 303              		.loc 1 18 2 view .LVU91
+  18:./fs/fs_dentry.c **** 		return -1;
+ 304              		.loc 1 18 4 is_stmt 0 view .LVU92
+ 305 0000 78B3     		cbz	r0, .L20
+  17:./fs/fs_dentry.c **** 	if(d == NULL || name == NULL) 
+ 306              		.loc 1 17 1 view .LVU93
+ 307 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 308              	.LCFI4:
+ 309              		.cfi_def_cfa_offset 24
+ 310              		.cfi_offset 4, -24
+ 311              		.cfi_offset 5, -20
+ 312              		.cfi_offset 6, -16
+ 313              		.cfi_offset 7, -12
+ 314              		.cfi_offset 8, -8
+ 315              		.cfi_offset 14, -4
+ 316 0006 0C46     		mov	r4, r1
+ 317 0008 0546     		mov	r5, r0
+  18:./fs/fs_dentry.c **** 		return -1;
+ 318              		.loc 1 18 15 discriminator 1 view .LVU94
+ 319 000a 69B3     		cbz	r1, .L21
+  21:./fs/fs_dentry.c **** 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失�
+ 320              		.loc 1 21 2 is_stmt 1 view .LVU95
+  21:./fs/fs_dentry.c **** 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失�
+ 321              		.loc 1 21 24 is_stmt 0 view .LVU96
+ 322 000c 0846     		mov	r0, r1
+ 323              	.LVL18:
+ARM GAS  /tmp/ccL7RTiX.s 			page 28
+
+
+  21:./fs/fs_dentry.c **** 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失�
+ 324              		.loc 1 21 24 view .LVU97
+ 325 000e FFF7FEFF 		bl	strlen
+ 326              	.LVL19:
+  21:./fs/fs_dentry.c **** 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失�
+ 327              		.loc 1 21 24 view .LVU98
+ 328 0012 0646     		mov	r6, r0
+ 329              	.LVL20:
+  22:./fs/fs_dentry.c ****     if(new_name == NULL) return -ENOMEM;
+ 330              		.loc 1 22 2 is_stmt 1 view .LVU99
+ 331              	.LBB52:
+ 332              	.LBI52:
+ 333              		.file 5 "./include/linux/slab.h"
+   1:./include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/slab.h **** /*
+   3:./include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:./include/linux/slab.h ****  *
+   5:./include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:./include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:./include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:./include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:./include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:./include/linux/slab.h ****  */
+  11:./include/linux/slab.h **** 
+  12:./include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:./include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:./include/linux/slab.h **** 
+  15:./include/linux/slab.h **** #include <linux/cache.h>
+  16:./include/linux/slab.h **** #include <linux/overflow.h>
+  17:./include/linux/slab.h **** #include <linux/types.h>
+  18:./include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:./include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:./include/linux/slab.h **** #include <linux/numa.h>
+  21:./include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:./include/linux/slab.h **** #include <linux/spinlock.h>
+  23:./include/linux/slab.h **** 
+  24:./include/linux/slab.h **** enum _slab_flag_bits {
+  25:./include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:./include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:./include/linux/slab.h **** 	_SLAB_POISON,
+  28:./include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:./include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:./include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:./include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:./include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:./include/linux/slab.h **** 	_SLAB_PANIC,
+  34:./include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:./include/linux/slab.h **** 	_SLAB_TRACE,
+  36:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:./include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:./include/linux/slab.h **** #endif
+  39:./include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:./include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:./include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:./include/linux/slab.h **** #endif
+  44:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ARM GAS  /tmp/ccL7RTiX.s 			page 29
+
+
+  45:./include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:./include/linux/slab.h **** #endif
+  47:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:./include/linux/slab.h **** 	_SLAB_KASAN,
+  49:./include/linux/slab.h **** #endif
+  50:./include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:./include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:./include/linux/slab.h **** #endif
+  54:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:./include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:./include/linux/slab.h **** #endif
+  57:./include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:./include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:./include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:./include/linux/slab.h **** #endif
+  62:./include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:./include/linux/slab.h **** };
+  64:./include/linux/slab.h **** 
+  65:./include/linux/slab.h **** 
+  66:./include/linux/slab.h **** 
+  67:./include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:./include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:./include/linux/slab.h **** 
+  70:./include/linux/slab.h **** /*
+  71:./include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:./include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:./include/linux/slab.h ****  */
+  74:./include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:./include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:./include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:./include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:./include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:./include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:./include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:./include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:./include/linux/slab.h **** /**
+  83:./include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:./include/linux/slab.h ****  *
+  85:./include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:./include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:./include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:./include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:./include/linux/slab.h ****  *
+  90:./include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:./include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:./include/linux/slab.h ****  */
+  93:./include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:./include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:./include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:./include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:./include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:./include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:./include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:./include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:./include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ARM GAS  /tmp/ccL7RTiX.s 			page 30
+
+
+ 102:./include/linux/slab.h **** /**
+ 103:./include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:./include/linux/slab.h ****  *
+ 105:./include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:./include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:./include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:./include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:./include/linux/slab.h ****  *
+ 110:./include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:./include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:./include/linux/slab.h ****  * object validation pass. Something like:
+ 113:./include/linux/slab.h ****  *
+ 114:./include/linux/slab.h ****  * ::
+ 115:./include/linux/slab.h ****  *
+ 116:./include/linux/slab.h ****  *  begin:
+ 117:./include/linux/slab.h ****  *   rcu_read_lock();
+ 118:./include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:./include/linux/slab.h ****  *   if (obj) {
+ 120:./include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:./include/linux/slab.h ****  *       goto begin;
+ 123:./include/linux/slab.h ****  *
+ 124:./include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:./include/linux/slab.h ****  *       put_ref(obj);
+ 126:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:./include/linux/slab.h ****  *       goto begin;
+ 128:./include/linux/slab.h ****  *     }
+ 129:./include/linux/slab.h ****  *   }
+ 130:./include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:./include/linux/slab.h ****  *
+ 132:./include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:./include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:./include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:./include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:./include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:./include/linux/slab.h ****  *
+ 138:./include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:./include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:./include/linux/slab.h ****  *
+ 141:./include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:./include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:./include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:./include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:./include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:./include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:./include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:./include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:./include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:./include/linux/slab.h ****  * protection.
+ 151:./include/linux/slab.h ****  *
+ 152:./include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:./include/linux/slab.h ****  */
+ 154:./include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:./include/linux/slab.h **** /* Trace allocations and frees */
+ 156:./include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:./include/linux/slab.h **** 
+ 158:./include/linux/slab.h **** /* Flag to prevent checks on free */
+ARM GAS  /tmp/ccL7RTiX.s 			page 31
+
+
+ 159:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:./include/linux/slab.h **** #else
+ 162:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:./include/linux/slab.h **** #endif
+ 164:./include/linux/slab.h **** 
+ 165:./include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:./include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:./include/linux/slab.h **** 
+ 168:./include/linux/slab.h **** /*
+ 169:./include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:./include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:./include/linux/slab.h ****  *
+ 172:./include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:./include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:./include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:./include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:./include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:./include/linux/slab.h ****  */
+ 178:./include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:./include/linux/slab.h **** 
+ 180:./include/linux/slab.h **** /* Fault injection mark */
+ 181:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:./include/linux/slab.h **** #else
+ 184:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:./include/linux/slab.h **** #endif
+ 186:./include/linux/slab.h **** /**
+ 187:./include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:./include/linux/slab.h ****  *
+ 189:./include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:./include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:./include/linux/slab.h ****  */
+ 192:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:./include/linux/slab.h **** #else
+ 195:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:./include/linux/slab.h **** #endif
+ 197:./include/linux/slab.h **** 
+ 198:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:./include/linux/slab.h **** #else
+ 201:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:./include/linux/slab.h **** #endif
+ 203:./include/linux/slab.h **** 
+ 204:./include/linux/slab.h **** /*
+ 205:./include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:./include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:./include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:./include/linux/slab.h ****  */
+ 209:./include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:./include/linux/slab.h **** 
+ 211:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:./include/linux/slab.h **** #else
+ 214:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:./include/linux/slab.h **** #endif
+ARM GAS  /tmp/ccL7RTiX.s 			page 32
+
+
+ 216:./include/linux/slab.h **** 
+ 217:./include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:./include/linux/slab.h **** /**
+ 219:./include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:./include/linux/slab.h ****  *
+ 221:./include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:./include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:./include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:./include/linux/slab.h ****  */
+ 225:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:./include/linux/slab.h **** #else
+ 228:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:./include/linux/slab.h **** #endif
+ 230:./include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:./include/linux/slab.h **** 
+ 232:./include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:./include/linux/slab.h **** #else
+ 236:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:./include/linux/slab.h **** #endif
+ 238:./include/linux/slab.h **** 
+ 239:./include/linux/slab.h **** /*
+ 240:./include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:./include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:./include/linux/slab.h ****  */
+ 243:./include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:./include/linux/slab.h **** 
+ 245:./include/linux/slab.h **** /*
+ 246:./include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:./include/linux/slab.h ****  *
+ 248:./include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:./include/linux/slab.h ****  *
+ 250:./include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:./include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:./include/linux/slab.h ****  */
+ 253:./include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:./include/linux/slab.h **** 
+ 255:./include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:./include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:./include/linux/slab.h **** 
+ 258:./include/linux/slab.h **** 
+ 259:./include/linux/slab.h **** 
+ 260:./include/linux/slab.h **** 
+ 261:./include/linux/slab.h **** 
+ 262:./include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:./include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:./include/linux/slab.h **** 
+ 265:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:./include/linux/slab.h **** ({						\
+ 267:./include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:./include/linux/slab.h **** })
+ 269:./include/linux/slab.h **** 
+ 270:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:./include/linux/slab.h **** #else
+ 272:./include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ARM GAS  /tmp/ccL7RTiX.s 			page 33
+
+
+ 273:./include/linux/slab.h **** 
+ 274:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:./include/linux/slab.h **** 
+ 276:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:./include/linux/slab.h **** 
+ 278:./include/linux/slab.h **** 
+ 279:./include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:./include/linux/slab.h **** 
+ 281:./include/linux/slab.h **** /*
+ 282:./include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:./include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:./include/linux/slab.h **** 	* given order would contain.
+ 285:./include/linux/slab.h **** 	*/				
+ 286:./include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:./include/linux/slab.h **** 	unsigned int x;
+ 288:./include/linux/slab.h **** };
+ 289:./include/linux/slab.h **** 
+ 290:./include/linux/slab.h **** struct kmem_cache_node {
+ 291:./include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:./include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:./include/linux/slab.h **** 	struct list_head partial;
+ 294:./include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:./include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:./include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:./include/linux/slab.h **** 	struct list_head full;
+ 298:./include/linux/slab.h **** #endif
+ 299:./include/linux/slab.h **** };
+ 300:./include/linux/slab.h **** 
+ 301:./include/linux/slab.h **** struct kmem_cache {
+ 302:./include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:./include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:./include/linux/slab.h **** 	#endif
+ 305:./include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:./include/linux/slab.h **** 		slab_flags_t flags;
+ 307:./include/linux/slab.h **** 		unsigned long min_partial;
+ 308:./include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:./include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:./include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:./include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:./include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:./include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:./include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:./include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:./include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:./include/linux/slab.h **** 	#endif
+ 318:./include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:./include/linux/slab.h **** 	
+ 320:./include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:./include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:./include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:./include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:./include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:./include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:./include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:./include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:./include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:./include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ARM GAS  /tmp/ccL7RTiX.s 			page 34
+
+
+ 330:./include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:./include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:./include/linux/slab.h **** 	#endif
+ 333:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:./include/linux/slab.h **** 		unsigned long random;
+ 335:./include/linux/slab.h **** 	#endif
+ 336:./include/linux/slab.h **** 	
+ 337:./include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:./include/linux/slab.h **** 		/*
+ 339:./include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:./include/linux/slab.h **** 			*/
+ 341:./include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:./include/linux/slab.h **** 	#endif
+ 343:./include/linux/slab.h **** 	
+ 344:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:./include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:./include/linux/slab.h **** 	#endif
+ 347:./include/linux/slab.h **** 	
+ 348:./include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:./include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:./include/linux/slab.h **** 	#endif
+ 351:./include/linux/slab.h **** 	
+ 352:./include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:./include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:./include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:./include/linux/slab.h **** 	#endif
+ 356:./include/linux/slab.h **** 	
+ 357:./include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:./include/linux/slab.h **** 	};
+ 359:./include/linux/slab.h **** 					
+ 360:./include/linux/slab.h **** 
+ 361:./include/linux/slab.h **** 
+ 362:./include/linux/slab.h **** 
+ 363:./include/linux/slab.h **** 
+ 364:./include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:./include/linux/slab.h **** 
+ 366:./include/linux/slab.h **** 
+ 367:./include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:./include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:./include/linux/slab.h **** 
+ 370:./include/linux/slab.h **** 
+ 371:./include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:./include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:./include/linux/slab.h **** }
+ 374:./include/linux/slab.h **** 
+ 375:./include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:./include/linux/slab.h **** 	__sfree__(addr);
+ 377:./include/linux/slab.h **** }
+ 378:./include/linux/slab.h **** 
+ 379:./include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 334              		.loc 5 379 21 view .LVU100
+ 335              	.LBB53:
+ 380:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 336              		.loc 5 380 2 view .LVU101
+ 337              		.loc 5 380 9 is_stmt 0 view .LVU102
+ 338 0014 4FF44C61 		mov	r1, #3264
+ 339 0018 FFF7FEFF 		bl	__smalloc__
+ARM GAS  /tmp/ccL7RTiX.s 			page 35
+
+
+ 340              	.LVL21:
+ 341              		.loc 5 380 9 view .LVU103
+ 342              	.LBE53:
+ 343              	.LBE52:
+  23:./fs/fs_dentry.c ****     strcpy(new_name,name);
+ 344              		.loc 1 23 5 is_stmt 1 view .LVU104
+  23:./fs/fs_dentry.c ****     strcpy(new_name,name);
+ 345              		.loc 1 23 7 is_stmt 0 view .LVU105
+ 346 001c 0746     		mov	r7, r0
+ 347 001e 30B3     		cbz	r0, .L22
+  24:./fs/fs_dentry.c **** 
+ 348              		.loc 1 24 5 is_stmt 1 view .LVU106
+ 349 0020 2146     		mov	r1, r4
+ 350 0022 FFF7FEFF 		bl	strcpy
+ 351              	.LVL22:
+  26:./fs/fs_dentry.c **** 	{
+ 352              		.loc 1 26 5 view .LVU107
+  26:./fs/fs_dentry.c **** 	{
+ 353              		.loc 1 26 17 is_stmt 0 view .LVU108
+ 354 0026 A869     		ldr	r0, [r5, #24]
+  26:./fs/fs_dentry.c **** 	{
+ 355              		.loc 1 26 23 view .LVU109
+ 356 0028 05F11C08 		add	r8, r5, #28
+  26:./fs/fs_dentry.c **** 	{
+ 357              		.loc 1 26 7 view .LVU110
+ 358 002c 4045     		cmp	r0, r8
+ 359 002e 0AD0     		beq	.L17
+  26:./fs/fs_dentry.c **** 	{
+ 360              		.loc 1 26 37 discriminator 1 view .LVU111
+ 361 0030 48B1     		cbz	r0, .L17
+ 362              	.L18:
+  37:./fs/fs_dentry.c ****         kfree(d->d_name.name);
+ 363              		.loc 1 37 5 is_stmt 1 view .LVU112
+  37:./fs/fs_dentry.c ****         kfree(d->d_name.name);
+ 364              		.loc 1 37 7 is_stmt 0 view .LVU113
+ 365 0032 18B1     		cbz	r0, .L19
+  37:./fs/fs_dentry.c ****         kfree(d->d_name.name);
+ 366              		.loc 1 37 31 discriminator 1 view .LVU114
+ 367 0034 4045     		cmp	r0, r8
+ 368 0036 01D0     		beq	.L19
+  38:./fs/fs_dentry.c **** 	d->d_name.len  = new_name_length;
+ 369              		.loc 1 38 9 is_stmt 1 view .LVU115
+ 370              	.LVL23:
+ 371              	.LBB54:
+ 372              	.LBI54:
+ 381:./include/linux/slab.h **** }
+ 382:./include/linux/slab.h **** 
+ 383:./include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 373              		.loc 5 383 20 view .LVU116
+ 374              	.LBB55:
+ 384:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 375              		.loc 5 384 2 view .LVU117
+ 376 0038 FFF7FEFF 		bl	__sfree__
+ 377              	.LVL24:
+ 378              	.L19:
+ 379              		.loc 5 384 2 is_stmt 0 view .LVU118
+ 380              	.LBE55:
+ARM GAS  /tmp/ccL7RTiX.s 			page 36
+
+
+ 381              	.LBE54:
+  39:./fs/fs_dentry.c **** 	d->d_name.name = new_name;		
+ 382              		.loc 1 39 2 is_stmt 1 view .LVU119
+  39:./fs/fs_dentry.c **** 	d->d_name.name = new_name;		
+ 383              		.loc 1 39 17 is_stmt 0 view .LVU120
+ 384 003c 6E61     		str	r6, [r5, #20]
+  40:./fs/fs_dentry.c ****     return 0;
+ 385              		.loc 1 40 2 is_stmt 1 view .LVU121
+  40:./fs/fs_dentry.c ****     return 0;
+ 386              		.loc 1 40 17 is_stmt 0 view .LVU122
+ 387 003e AF61     		str	r7, [r5, #24]
+  41:./fs/fs_dentry.c **** }
+ 388              		.loc 1 41 5 is_stmt 1 view .LVU123
+  41:./fs/fs_dentry.c **** }
+ 389              		.loc 1 41 12 is_stmt 0 view .LVU124
+ 390 0040 0020     		movs	r0, #0
+ 391              	.LVL25:
+ 392              	.L15:
+  42:./fs/fs_dentry.c **** EXPORT_SYMBOL(dentry_rename);
+ 393              		.loc 1 42 1 view .LVU125
+ 394 0042 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 395              	.LVL26:
+ 396              	.L17:
+  28:./fs/fs_dentry.c **** 		{
+ 397              		.loc 1 28 9 is_stmt 1 view .LVU126
+  28:./fs/fs_dentry.c **** 		{
+ 398              		.loc 1 28 11 is_stmt 0 view .LVU127
+ 399 0046 2A2E     		cmp	r6, #42
+ 400 0048 F3DC     		bgt	.L18
+  30:./fs/fs_dentry.c **** 			d->d_name.name = d->d_iname;
+ 401              		.loc 1 30 13 is_stmt 1 view .LVU128
+ 402              	.LVL27:
+ 403              	.LBB56:
+ 404              	.LBI56:
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 405              		.loc 5 383 20 view .LVU129
+ 406              	.LBB57:
+ 407              		.loc 5 384 2 view .LVU130
+ 408 004a 3846     		mov	r0, r7
+ 409 004c FFF7FEFF 		bl	__sfree__
+ 410              	.LVL28:
+ 411              		.loc 5 384 2 is_stmt 0 view .LVU131
+ 412              	.LBE57:
+ 413              	.LBE56:
+  31:./fs/fs_dentry.c **** 			strcpy(d->d_iname,name);
+ 414              		.loc 1 31 4 is_stmt 1 view .LVU132
+  31:./fs/fs_dentry.c **** 			strcpy(d->d_iname,name);
+ 415              		.loc 1 31 19 is_stmt 0 view .LVU133
+ 416 0050 C5F81880 		str	r8, [r5, #24]
+  32:./fs/fs_dentry.c ****             d->d_name.len = new_name_length;
+ 417              		.loc 1 32 4 is_stmt 1 view .LVU134
+ 418 0054 2146     		mov	r1, r4
+ 419 0056 4046     		mov	r0, r8
+ 420 0058 FFF7FEFF 		bl	strcpy
+ 421              	.LVL29:
+  33:./fs/fs_dentry.c ****             return 0;
+ 422              		.loc 1 33 13 view .LVU135
+ARM GAS  /tmp/ccL7RTiX.s 			page 37
+
+
+  33:./fs/fs_dentry.c ****             return 0;
+ 423              		.loc 1 33 27 is_stmt 0 view .LVU136
+ 424 005c 6E61     		str	r6, [r5, #20]
+  34:./fs/fs_dentry.c ****         }
+ 425              		.loc 1 34 13 is_stmt 1 view .LVU137
+  34:./fs/fs_dentry.c ****         }
+ 426              		.loc 1 34 20 is_stmt 0 view .LVU138
+ 427 005e 0020     		movs	r0, #0
+ 428 0060 EFE7     		b	.L15
+ 429              	.LVL30:
+ 430              	.L20:
+ 431              	.LCFI5:
+ 432              		.cfi_def_cfa_offset 0
+ 433              		.cfi_restore 4
+ 434              		.cfi_restore 5
+ 435              		.cfi_restore 6
+ 436              		.cfi_restore 7
+ 437              		.cfi_restore 8
+ 438              		.cfi_restore 14
+  19:./fs/fs_dentry.c ****     
+ 439              		.loc 1 19 10 view .LVU139
+ 440 0062 4FF0FF30 		mov	r0, #-1
+ 441              	.LVL31:
+  42:./fs/fs_dentry.c **** EXPORT_SYMBOL(dentry_rename);
+ 442              		.loc 1 42 1 view .LVU140
+ 443 0066 7047     		bx	lr
+ 444              	.LVL32:
+ 445              	.L21:
+ 446              	.LCFI6:
+ 447              		.cfi_def_cfa_offset 24
+ 448              		.cfi_offset 4, -24
+ 449              		.cfi_offset 5, -20
+ 450              		.cfi_offset 6, -16
+ 451              		.cfi_offset 7, -12
+ 452              		.cfi_offset 8, -8
+ 453              		.cfi_offset 14, -4
+  19:./fs/fs_dentry.c ****     
+ 454              		.loc 1 19 10 view .LVU141
+ 455 0068 4FF0FF30 		mov	r0, #-1
+ 456              	.LVL33:
+  19:./fs/fs_dentry.c ****     
+ 457              		.loc 1 19 10 view .LVU142
+ 458 006c E9E7     		b	.L15
+ 459              	.LVL34:
+ 460              	.L22:
+  23:./fs/fs_dentry.c ****     strcpy(new_name,name);
+ 461              		.loc 1 23 33 discriminator 1 view .LVU143
+ 462 006e 6FF00B00 		mvn	r0, #11
+ 463              	.LVL35:
+  23:./fs/fs_dentry.c ****     strcpy(new_name,name);
+ 464              		.loc 1 23 33 discriminator 1 view .LVU144
+ 465 0072 E6E7     		b	.L15
+ 466              		.cfi_endproc
+ 467              	.LFE1035:
+ 469              		.section	.text.__d_drop,"ax",%progbits
+ 470              		.align	1
+ 471              		.global	__d_drop
+ARM GAS  /tmp/ccL7RTiX.s 			page 38
+
+
+ 472              		.syntax unified
+ 473              		.thumb
+ 474              		.thumb_func
+ 476              	__d_drop:
+ 477              	.LVL36:
+ 478              	.LFB1039:
+  86:./fs/fs_dentry.c ****     dput_dlock(dentry->d_parent);
+ 479              		.loc 1 86 1 is_stmt 1 view -0
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ 482              		@ frame_needed = 0, uses_anonymous_args = 0
+  86:./fs/fs_dentry.c ****     dput_dlock(dentry->d_parent);
+ 483              		.loc 1 86 1 is_stmt 0 view .LVU146
+ 484 0000 10B5     		push	{r4, lr}
+ 485              	.LCFI7:
+ 486              		.cfi_def_cfa_offset 8
+ 487              		.cfi_offset 4, -8
+ 488              		.cfi_offset 14, -4
+ 489 0002 0446     		mov	r4, r0
+  87:./fs/fs_dentry.c **** 	if(dentry->d_iname == dentry->d_name.name){
+ 490              		.loc 1 87 5 is_stmt 1 view .LVU147
+ 491 0004 4268     		ldr	r2, [r0, #4]
+ 492              	.LVL37:
+ 493              	.LBB58:
+ 494              	.LBI58:
+ 495              		.file 6 "./include/linux/dcache.h"
+   1:./include/linux/dcache.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/dcache.h **** #ifndef __LINUX_DCACHE_H
+   3:./include/linux/dcache.h **** #define __LINUX_DCACHE_H
+   4:./include/linux/dcache.h **** 
+   5:./include/linux/dcache.h **** 
+   6:./include/linux/dcache.h **** #include <linux/list.h>
+   7:./include/linux/dcache.h **** #include <linux/math.h>
+   8:./include/linux/dcache.h **** #include <linux/cache.h>
+   9:./include/linux/dcache.h **** #include <linux/wait.h>
+  10:./include/linux/dcache.h **** #include <linux/lockref.h>
+  11:./include/linux/dcache.h **** 
+  12:./include/linux/dcache.h **** 
+  13:./include/linux/dcache.h **** struct path;
+  14:./include/linux/dcache.h **** struct file;
+  15:./include/linux/dcache.h **** // struct vfsmount;
+  16:./include/linux/dcache.h **** 
+  17:./include/linux/dcache.h **** /*
+  18:./include/linux/dcache.h ****  * linux/include/linux/dcache.h
+  19:./include/linux/dcache.h ****  *
+  20:./include/linux/dcache.h ****  * Dirent cache data structures
+  21:./include/linux/dcache.h ****  *
+  22:./include/linux/dcache.h ****  * (C) Copyright 1997 Thomas Schoebel-Theuer,
+  23:./include/linux/dcache.h ****  * with heavy changes by Linus Torvalds
+  24:./include/linux/dcache.h ****  */
+  25:./include/linux/dcache.h **** 
+  26:./include/linux/dcache.h **** #define IS_ROOT(x) ((x) == (x)->d_parent)
+  27:./include/linux/dcache.h **** 
+  28:./include/linux/dcache.h **** /* The hash is always the low bits of hash_len */
+  29:./include/linux/dcache.h **** #ifdef __LITTLE_ENDIAN
+  30:./include/linux/dcache.h ****  #define HASH_LEN_DECLARE u32 hash; u32 len
+  31:./include/linux/dcache.h ****  #define bytemask_from_count(cnt)	(~(~0ul << (cnt)*8))
+ARM GAS  /tmp/ccL7RTiX.s 			page 39
+
+
+  32:./include/linux/dcache.h **** #else
+  33:./include/linux/dcache.h ****  #define HASH_LEN_DECLARE u32 len; u32 hash
+  34:./include/linux/dcache.h ****  #define bytemask_from_count(cnt)	(~(~0ul >> (cnt)*8))
+  35:./include/linux/dcache.h **** #endif
+  36:./include/linux/dcache.h **** 
+  37:./include/linux/dcache.h **** /*
+  38:./include/linux/dcache.h ****  * "quick string" -- eases parameter passing, but more importantly
+  39:./include/linux/dcache.h ****  * saves "metadata" about the string (ie length and the hash).
+  40:./include/linux/dcache.h ****  *
+  41:./include/linux/dcache.h ****  * hash comes first so it snuggles against d_parent in the
+  42:./include/linux/dcache.h ****  * dentry.
+  43:./include/linux/dcache.h ****  */
+  44:./include/linux/dcache.h **** struct qstr {
+  45:./include/linux/dcache.h **** 	union {
+  46:./include/linux/dcache.h **** 		struct {
+  47:./include/linux/dcache.h **** 			HASH_LEN_DECLARE;
+  48:./include/linux/dcache.h **** 		};
+  49:./include/linux/dcache.h **** 		u64 hash_len;
+  50:./include/linux/dcache.h **** 	};
+  51:./include/linux/dcache.h **** 	const unsigned char *name;
+  52:./include/linux/dcache.h **** };
+  53:./include/linux/dcache.h **** 
+  54:./include/linux/dcache.h **** #define QSTR_INIT(n,l) { { { .len = l } }, .name = n }
+  55:./include/linux/dcache.h **** 
+  56:./include/linux/dcache.h **** extern const struct qstr empty_name;
+  57:./include/linux/dcache.h **** extern const struct qstr slash_name;
+  58:./include/linux/dcache.h **** extern const struct qstr dotdot_name;
+  59:./include/linux/dcache.h **** 
+  60:./include/linux/dcache.h **** /*
+  61:./include/linux/dcache.h ****  * Try to keep struct dentry aligned on 64 byte cachelines (this will
+  62:./include/linux/dcache.h ****  * give reasonable cacheline footprint with larger lines without the
+  63:./include/linux/dcache.h ****  * large memory footprint increase).
+  64:./include/linux/dcache.h ****  */
+  65:./include/linux/dcache.h **** #ifdef CONFIG_64BIT
+  66:./include/linux/dcache.h **** # define DNAME_INLINE_LEN 40 /* 192 bytes */
+  67:./include/linux/dcache.h **** #else
+  68:./include/linux/dcache.h **** # ifdef CONFIG_SMP
+  69:./include/linux/dcache.h **** #  define DNAME_INLINE_LEN 36 /* 128 bytes */
+  70:./include/linux/dcache.h **** # else
+  71:./include/linux/dcache.h **** #  define DNAME_INLINE_LEN 44 /* 128 bytes */
+  72:./include/linux/dcache.h **** # endif
+  73:./include/linux/dcache.h **** #endif
+  74:./include/linux/dcache.h **** 
+  75:./include/linux/dcache.h ****  
+  76:./include/linux/dcache.h **** struct dentry {
+  77:./include/linux/dcache.h **** 
+  78:./include/linux/dcache.h **** 	struct hlist_head   d_hash;	/* lookup hash list */
+  79:./include/linux/dcache.h **** 	
+  80:./include/linux/dcache.h **** 	struct dentry      *d_parent;	/* parent directory */
+  81:./include/linux/dcache.h **** 	struct hlist_node   d_sib;	/* child of parent list */
+  82:./include/linux/dcache.h **** 
+  83:./include/linux/dcache.h **** 	struct   qstr       d_name;
+  84:./include/linux/dcache.h **** 	unsigned char       d_iname[DNAME_INLINE_LEN];	/* small names */
+  85:./include/linux/dcache.h **** 
+  86:./include/linux/dcache.h **** 	struct inode       *d_inode;		
+  87:./include/linux/dcache.h **** 
+  88:./include/linux/dcache.h **** 	const struct dentry_operations *d_op;
+ARM GAS  /tmp/ccL7RTiX.s 			page 40
+
+
+  89:./include/linux/dcache.h **** 	struct super_block *d_sb;	/* The root of the dentry tree */
+  90:./include/linux/dcache.h **** 
+  91:./include/linux/dcache.h **** 	void               *d_fsdata;			/* fs-specific data */
+  92:./include/linux/dcache.h **** 		/* --- cacheline 2 boundary (128 bytes) --- */
+  93:./include/linux/dcache.h **** 	
+  94:./include/linux/dcache.h **** 	struct lockref d_lockref;	/* per-dentry lock and refcount
+  95:./include/linux/dcache.h **** 		* keep separate from RCU lookup area if
+  96:./include/linux/dcache.h **** 		* possible!
+  97:./include/linux/dcache.h **** 		*/
+  98:./include/linux/dcache.h **** 
+  99:./include/linux/dcache.h **** 	spinlock_t          d_lock;
+ 100:./include/linux/dcache.h **** };
+ 101:./include/linux/dcache.h **** 
+ 102:./include/linux/dcache.h **** 
+ 103:./include/linux/dcache.h **** /*
+ 104:./include/linux/dcache.h ****  * dentry->d_lock spinlock nesting subclasses:
+ 105:./include/linux/dcache.h ****  *
+ 106:./include/linux/dcache.h ****  * 0: normal
+ 107:./include/linux/dcache.h ****  * 1: nested
+ 108:./include/linux/dcache.h ****  */
+ 109:./include/linux/dcache.h **** enum dentry_d_lock_class
+ 110:./include/linux/dcache.h **** {
+ 111:./include/linux/dcache.h **** 	DENTRY_D_LOCK_NORMAL, /* implicitly used by plain spin_lock() APIs. */
+ 112:./include/linux/dcache.h **** 	DENTRY_D_LOCK_NESTED
+ 113:./include/linux/dcache.h **** };
+ 114:./include/linux/dcache.h **** 
+ 115:./include/linux/dcache.h **** enum d_real_type {
+ 116:./include/linux/dcache.h **** 	D_REAL_DATA,
+ 117:./include/linux/dcache.h **** 	D_REAL_METADATA,
+ 118:./include/linux/dcache.h **** };
+ 119:./include/linux/dcache.h **** 
+ 120:./include/linux/dcache.h **** struct dentry_operations {
+ 121:./include/linux/dcache.h **** 	int (*d_revalidate)(struct dentry *, unsigned int);
+ 122:./include/linux/dcache.h **** 	int (*d_weak_revalidate)(struct dentry *, unsigned int);
+ 123:./include/linux/dcache.h **** 	int (*d_hash)(const struct dentry *, struct qstr *);
+ 124:./include/linux/dcache.h **** 	int (*d_compare)(const struct dentry *,
+ 125:./include/linux/dcache.h **** 			unsigned int, const char *, const struct qstr *);
+ 126:./include/linux/dcache.h **** 	int (*d_delete)(const struct dentry *);
+ 127:./include/linux/dcache.h **** 	int (*d_init)(struct dentry *);
+ 128:./include/linux/dcache.h **** 	void (*d_release)(struct dentry *);
+ 129:./include/linux/dcache.h **** 	void (*d_prune)(struct dentry *);
+ 130:./include/linux/dcache.h **** 	void (*d_iput)(struct dentry *, struct inode *);
+ 131:./include/linux/dcache.h **** 	char *(*d_dname)(struct dentry *, char *, int);
+ 132:./include/linux/dcache.h **** 	struct vfsmount *(*d_automount)(struct path *);
+ 133:./include/linux/dcache.h **** 	int (*d_manage)(const struct path *, bool);
+ 134:./include/linux/dcache.h **** 	struct dentry *(*d_real)(struct dentry *, enum d_real_type type);
+ 135:./include/linux/dcache.h **** } ____cacheline_aligned;
+ 136:./include/linux/dcache.h **** 
+ 137:./include/linux/dcache.h **** /*
+ 138:./include/linux/dcache.h ****  * Locking rules for dentry_operations callbacks are to be found in
+ 139:./include/linux/dcache.h ****  * Documentation/filesystems/locking.rst. Keep it updated!
+ 140:./include/linux/dcache.h ****  *
+ 141:./include/linux/dcache.h ****  * FUrther descriptions are found in Documentation/filesystems/vfs.rst.
+ 142:./include/linux/dcache.h ****  * Keep it updated too!
+ 143:./include/linux/dcache.h ****  */
+ 144:./include/linux/dcache.h **** 
+ 145:./include/linux/dcache.h **** /* d_flags entries */
+ARM GAS  /tmp/ccL7RTiX.s 			page 41
+
+
+ 146:./include/linux/dcache.h **** #define DCACHE_OP_HASH			BIT(0)
+ 147:./include/linux/dcache.h **** #define DCACHE_OP_COMPARE		BIT(1)
+ 148:./include/linux/dcache.h **** #define DCACHE_OP_REVALIDATE		BIT(2)
+ 149:./include/linux/dcache.h **** #define DCACHE_OP_DELETE		BIT(3)
+ 150:./include/linux/dcache.h **** #define DCACHE_OP_PRUNE			BIT(4)
+ 151:./include/linux/dcache.h **** 
+ 152:./include/linux/dcache.h **** #define	DCACHE_DISCONNECTED		BIT(5)
+ 153:./include/linux/dcache.h ****      /* This dentry is possibly not currently connected to the dcache tree, in
+ 154:./include/linux/dcache.h ****       * which case its parent will either be itself, or will have this flag as
+ 155:./include/linux/dcache.h ****       * well.  nfsd will not use a dentry with this bit set, but will first
+ 156:./include/linux/dcache.h ****       * endeavour to clear the bit either by discovering that it is connected,
+ 157:./include/linux/dcache.h ****       * or by performing lookup operations.   Any filesystem which supports
+ 158:./include/linux/dcache.h ****       * nfsd_operations MUST have a lookup function which, if it finds a
+ 159:./include/linux/dcache.h ****       * directory inode with a DCACHE_DISCONNECTED dentry, will d_move that
+ 160:./include/linux/dcache.h ****       * dentry into place and return that dentry rather than the passed one,
+ 161:./include/linux/dcache.h ****       * typically using d_splice_alias. */
+ 162:./include/linux/dcache.h **** 
+ 163:./include/linux/dcache.h **** #define DCACHE_REFERENCED		BIT(6) /* Recently used, don't discard. */
+ 164:./include/linux/dcache.h **** 
+ 165:./include/linux/dcache.h **** #define DCACHE_DONTCACHE		BIT(7) /* Purge from memory on final dput() */
+ 166:./include/linux/dcache.h **** 
+ 167:./include/linux/dcache.h **** #define DCACHE_CANT_MOUNT		BIT(8)
+ 168:./include/linux/dcache.h **** #define DCACHE_GENOCIDE			BIT(9)
+ 169:./include/linux/dcache.h **** #define DCACHE_SHRINK_LIST		BIT(10)
+ 170:./include/linux/dcache.h **** 
+ 171:./include/linux/dcache.h **** #define DCACHE_OP_WEAK_REVALIDATE	BIT(11)
+ 172:./include/linux/dcache.h **** 
+ 173:./include/linux/dcache.h **** #define DCACHE_NFSFS_RENAMED		BIT(12)
+ 174:./include/linux/dcache.h ****      /* this dentry has been "silly renamed" and has to be deleted on the last
+ 175:./include/linux/dcache.h ****       * dput() */
+ 176:./include/linux/dcache.h **** #define DCACHE_FSNOTIFY_PARENT_WATCHED	BIT(14)
+ 177:./include/linux/dcache.h ****      /* Parent inode is watched by some fsnotify listener */
+ 178:./include/linux/dcache.h **** 
+ 179:./include/linux/dcache.h **** #define DCACHE_DENTRY_KILLED		BIT(15)
+ 180:./include/linux/dcache.h **** 
+ 181:./include/linux/dcache.h **** #define DCACHE_MOUNTED			BIT(16) /* is a mountpoint */
+ 182:./include/linux/dcache.h **** #define DCACHE_NEED_AUTOMOUNT		BIT(17) /* handle automount on this dir */
+ 183:./include/linux/dcache.h **** #define DCACHE_MANAGE_TRANSIT		BIT(18) /* manage transit from this dirent */
+ 184:./include/linux/dcache.h **** #define DCACHE_MANAGED_DENTRY \
+ 185:./include/linux/dcache.h **** 	(DCACHE_MOUNTED|DCACHE_NEED_AUTOMOUNT|DCACHE_MANAGE_TRANSIT)
+ 186:./include/linux/dcache.h **** 
+ 187:./include/linux/dcache.h **** #define DCACHE_LRU_LIST			BIT(19)
+ 188:./include/linux/dcache.h **** 
+ 189:./include/linux/dcache.h **** #define DCACHE_ENTRY_TYPE		(7 << 20) /* bits 20..22 are for storing type: */
+ 190:./include/linux/dcache.h **** #define DCACHE_MISS_TYPE		(0 << 20) /* Negative dentry */
+ 191:./include/linux/dcache.h **** #define DCACHE_WHITEOUT_TYPE		(1 << 20) /* Whiteout dentry (stop pathwalk) */
+ 192:./include/linux/dcache.h **** #define DCACHE_DIRECTORY_TYPE		(2 << 20) /* Normal directory */
+ 193:./include/linux/dcache.h **** #define DCACHE_AUTODIR_TYPE		(3 << 20) /* Lookupless directory (presumed automount) */
+ 194:./include/linux/dcache.h **** #define DCACHE_REGULAR_TYPE		(4 << 20) /* Regular file type */
+ 195:./include/linux/dcache.h **** #define DCACHE_SPECIAL_TYPE		(5 << 20) /* Other file type */
+ 196:./include/linux/dcache.h **** #define DCACHE_SYMLINK_TYPE		(6 << 20) /* Symlink */
+ 197:./include/linux/dcache.h **** 
+ 198:./include/linux/dcache.h **** #define DCACHE_NOKEY_NAME		BIT(25) /* Encrypted name encoded without key */
+ 199:./include/linux/dcache.h **** #define DCACHE_OP_REAL			BIT(26)
+ 200:./include/linux/dcache.h **** 
+ 201:./include/linux/dcache.h **** #define DCACHE_PAR_LOOKUP		BIT(28) /* being looked up (with parent locked shared) */
+ 202:./include/linux/dcache.h **** #define DCACHE_DENTRY_CURSOR		BIT(29)
+ARM GAS  /tmp/ccL7RTiX.s 			page 42
+
+
+ 203:./include/linux/dcache.h **** #define DCACHE_NORCU			BIT(30) /* No RCU delay for freeing */
+ 204:./include/linux/dcache.h **** 
+ 205:./include/linux/dcache.h **** 
+ 206:./include/linux/dcache.h **** 
+ 207:./include/linux/dcache.h **** 
+ 208:./include/linux/dcache.h **** 
+ 209:./include/linux/dcache.h **** extern int dentry_rename(struct dentry *d,char *name);
+ 210:./include/linux/dcache.h **** extern struct dentry *__d_alloc(struct super_block *sb, const char *name);
+ 211:./include/linux/dcache.h **** extern struct dentry *d_alloc(struct dentry * parent, const char *name);
+ 212:./include/linux/dcache.h **** extern char * d_getname(struct dentry * dentry);
+ 213:./include/linux/dcache.h **** extern void d_delete(struct dentry * dentry); //释放dentry。并减少inode的引用计数。
+ 214:./include/linux/dcache.h **** extern struct dentry *d_lookup_dentry(struct dentry *parent, const char *name); //查询缓存中�
+ 215:./include/linux/dcache.h **** extern void __d_drop(struct dentry *dentry); //撤销dentry创建，只适用于分配后未使用�
+ 216:./include/linux/dcache.h **** 
+ 217:./include/linux/dcache.h **** extern struct inode* new_inode(struct super_block *sb);
+ 218:./include/linux/dcache.h **** extern void destroy_inode(struct inode *node);
+ 219:./include/linux/dcache.h **** extern void inode_get(struct inode *inode);
+ 220:./include/linux/dcache.h **** extern void inode_put(struct inode *inode);
+ 221:./include/linux/dcache.h **** 
+ 222:./include/linux/dcache.h **** extern struct super_block *alloc_super(struct block_device *);
+ 223:./include/linux/dcache.h **** extern void put_super(struct super_block *);
+ 224:./include/linux/dcache.h **** 
+ 225:./include/linux/dcache.h **** extern struct dentry * d_add(struct dentry *dentry, struct inode *inode);
+ 226:./include/linux/dcache.h **** extern int simple_unlink(struct inode *dir, struct dentry *dentry); //将denrty从父目录的缓�
+ 227:./include/linux/dcache.h **** 
+ 228:./include/linux/dcache.h **** extern struct file * f_get(struct dentry * dentry);
+ 229:./include/linux/dcache.h **** extern struct file* f_put(struct file * file);
+ 230:./include/linux/dcache.h **** 
+ 231:./include/linux/dcache.h **** 
+ 232:./include/linux/dcache.h **** 
+ 233:./include/linux/dcache.h **** // extern struct inode* new_inode(struct super_block *sb);
+ 234:./include/linux/dcache.h **** // extern void   inode_put	 	  (struct inode *inode);
+ 235:./include/linux/dcache.h **** 
+ 236:./include/linux/dcache.h ****  //暂时未空函数，所以目前还不支持目录缓存
+ 237:./include/linux/dcache.h **** // extern int simple_unlink(struct inode *dir ,struct dentry * dentry);
+ 238:./include/linux/dcache.h **** 
+ 239:./include/linux/dcache.h **** // extern void d_put(struct dentry *dentry);
+ 240:./include/linux/dcache.h **** 
+ 241:./include/linux/dcache.h **** 
+ 242:./include/linux/dcache.h **** // extern struct dentry * d_alloc     (struct dentry * parent, const struct qstr *name);   //创建
+ 243:./include/linux/dcache.h **** // extern struct dentry * d_alloc_anon(struct super_block *);
+ 244:./include/linux/dcache.h **** // extern void   d_delete        (struct dentry * dentry);                                      //�
+ 245:./include/linux/dcache.h **** // extern void   destroy_inode   (struct inode *node);                                         
+ 246:./include/linux/dcache.h **** // extern void   inode_get       (struct inode *inode);
+ 247:./include/linux/dcache.h **** 
+ 248:./include/linux/dcache.h ****  
+ 249:./include/linux/dcache.h **** 
+ 250:./include/linux/dcache.h **** 
+ 251:./include/linux/dcache.h **** 
+ 252:./include/linux/dcache.h **** /* Allocation counts.. */
+ 253:./include/linux/dcache.h **** 
+ 254:./include/linux/dcache.h **** /**
+ 255:./include/linux/dcache.h ****  * dget_dlock -	get a reference to a dentry
+ 256:./include/linux/dcache.h ****  * @dentry: dentry to get a reference to
+ 257:./include/linux/dcache.h ****  *
+ 258:./include/linux/dcache.h ****  * Given a live dentry, increment the reference count and return the dentry.
+ 259:./include/linux/dcache.h ****  * Caller must hold @dentry->d_lock.  Making sure that dentry is alive is
+ARM GAS  /tmp/ccL7RTiX.s 			page 43
+
+
+ 260:./include/linux/dcache.h ****  * caller's resonsibility.  There are many conditions sufficient to guarantee
+ 261:./include/linux/dcache.h ****  * that; e.g. anything with non-negative refcount is alive, so's anything
+ 262:./include/linux/dcache.h ****  * hashed, anything positive, anyone's parent, etc.
+ 263:./include/linux/dcache.h ****  */
+ 264:./include/linux/dcache.h **** static inline struct dentry *dget_dlock(struct dentry *dentry)
+ 265:./include/linux/dcache.h **** {
+ 266:./include/linux/dcache.h **** 	dentry->d_lockref.count++;
+ 267:./include/linux/dcache.h **** 	return dentry;
+ 268:./include/linux/dcache.h **** }
+ 269:./include/linux/dcache.h **** static inline struct dentry *dput_dlock(struct dentry *dentry)
+ 496              		.loc 6 269 30 view .LVU148
+ 497              	.LBB59:
+ 270:./include/linux/dcache.h **** {
+ 271:./include/linux/dcache.h **** 	dentry->d_lockref.count--;
+ 498              		.loc 6 271 2 view .LVU149
+ 499              		.loc 6 271 19 is_stmt 0 view .LVU150
+ 500 0006 936E     		ldr	r3, [r2, #104]
+ 501              		.loc 6 271 25 view .LVU151
+ 502 0008 013B     		subs	r3, r3, #1
+ 503 000a 9366     		str	r3, [r2, #104]
+ 272:./include/linux/dcache.h **** 	return dentry;
+ 504              		.loc 6 272 2 is_stmt 1 view .LVU152
+ 505              	.LVL38:
+ 506              		.loc 6 272 2 is_stmt 0 view .LVU153
+ 507              	.LBE59:
+ 508              	.LBE58:
+  88:./fs/fs_dentry.c **** 		kfree(dentry);
+ 509              		.loc 1 88 2 is_stmt 1 view .LVU154
+  88:./fs/fs_dentry.c **** 		kfree(dentry);
+ 510              		.loc 1 88 5 is_stmt 0 view .LVU155
+ 511 000c 00F11C03 		add	r3, r0, #28
+  88:./fs/fs_dentry.c **** 		kfree(dentry);
+ 512              		.loc 1 88 38 view .LVU156
+ 513 0010 8069     		ldr	r0, [r0, #24]
+ 514              	.LVL39:
+  88:./fs/fs_dentry.c **** 		kfree(dentry);
+ 515              		.loc 1 88 4 view .LVU157
+ 516 0012 8342     		cmp	r3, r0
+ 517 0014 05D0     		beq	.L31
+  92:./fs/fs_dentry.c **** 		kfree(dentry);
+ 518              		.loc 1 92 3 is_stmt 1 view .LVU158
+ 519              	.LVL40:
+ 520              	.LBB60:
+ 521              	.LBI60:
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 522              		.loc 5 383 20 view .LVU159
+ 523              	.LBB61:
+ 524              		.loc 5 384 2 view .LVU160
+ 525 0016 FFF7FEFF 		bl	__sfree__
+ 526              	.LVL41:
+ 527              		.loc 5 384 2 is_stmt 0 view .LVU161
+ 528              	.LBE61:
+ 529              	.LBE60:
+  93:./fs/fs_dentry.c **** 	}
+ 530              		.loc 1 93 3 is_stmt 1 view .LVU162
+ 531              	.LBB62:
+ 532              	.LBI62:
+ARM GAS  /tmp/ccL7RTiX.s 			page 44
+
+
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 533              		.loc 5 383 20 view .LVU163
+ 534              	.LBB63:
+ 535              		.loc 5 384 2 view .LVU164
+ 536 001a 2046     		mov	r0, r4
+ 537 001c FFF7FEFF 		bl	__sfree__
+ 538              	.LVL42:
+ 539              	.L27:
+ 540              		.loc 5 384 2 is_stmt 0 view .LVU165
+ 541              	.LBE63:
+ 542              	.LBE62:
+  95:./fs/fs_dentry.c **** EXPORT_SYMBOL(__d_drop);
+ 543              		.loc 1 95 1 view .LVU166
+ 544 0020 10BD     		pop	{r4, pc}
+ 545              	.LVL43:
+ 546              	.L31:
+  89:./fs/fs_dentry.c **** 	}
+ 547              		.loc 1 89 3 is_stmt 1 view .LVU167
+ 548              	.LBB64:
+ 549              	.LBI64:
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 550              		.loc 5 383 20 view .LVU168
+ 551              	.LBB65:
+ 552              		.loc 5 384 2 view .LVU169
+ 553 0022 2046     		mov	r0, r4
+ 554 0024 FFF7FEFF 		bl	__sfree__
+ 555              	.LVL44:
+ 385:./include/linux/slab.h **** }
+ 556              		.loc 5 385 1 is_stmt 0 view .LVU170
+ 557 0028 FAE7     		b	.L27
+ 558              	.LBE65:
+ 559              	.LBE64:
+ 560              		.cfi_endproc
+ 561              	.LFE1039:
+ 563              		.section	.text.__d_alloc,"ax",%progbits
+ 564              		.align	1
+ 565              		.global	__d_alloc
+ 566              		.syntax unified
+ 567              		.thumb
+ 568              		.thumb_func
+ 570              	__d_alloc:
+ 571              	.LVL45:
+ 572              	.LFB1036:
+  46:./fs/fs_dentry.c **** 	struct dentry *dentry;
+ 573              		.loc 1 46 1 is_stmt 1 view -0
+ 574              		.cfi_startproc
+ 575              		@ args = 0, pretend = 0, frame = 0
+ 576              		@ frame_needed = 0, uses_anonymous_args = 0
+  46:./fs/fs_dentry.c **** 	struct dentry *dentry;
+ 577              		.loc 1 46 1 is_stmt 0 view .LVU172
+ 578 0000 70B5     		push	{r4, r5, r6, lr}
+ 579              	.LCFI8:
+ 580              		.cfi_def_cfa_offset 16
+ 581              		.cfi_offset 4, -16
+ 582              		.cfi_offset 5, -12
+ 583              		.cfi_offset 6, -8
+ 584              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccL7RTiX.s 			page 45
+
+
+ 585 0002 0646     		mov	r6, r0
+ 586 0004 0D46     		mov	r5, r1
+  47:./fs/fs_dentry.c ****     dentry = kmalloc(sizeof(struct dentry),GFP_KERNEL);
+ 587              		.loc 1 47 2 is_stmt 1 view .LVU173
+  48:./fs/fs_dentry.c ****     if(dentry == NULL) return -ENOMEM;
+ 588              		.loc 1 48 5 view .LVU174
+ 589              	.LVL46:
+ 590              	.LBB66:
+ 591              	.LBI66:
+ 379:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 592              		.loc 5 379 21 view .LVU175
+ 593              	.LBB67:
+ 380:./include/linux/slab.h **** }
+ 594              		.loc 5 380 2 view .LVU176
+ 380:./include/linux/slab.h **** }
+ 595              		.loc 5 380 9 is_stmt 0 view .LVU177
+ 596 0006 4FF44C61 		mov	r1, #3264
+ 597              	.LVL47:
+ 380:./include/linux/slab.h **** }
+ 598              		.loc 5 380 9 view .LVU178
+ 599 000a 7C20     		movs	r0, #124
+ 600              	.LVL48:
+ 380:./include/linux/slab.h **** }
+ 601              		.loc 5 380 9 view .LVU179
+ 602 000c FFF7FEFF 		bl	__smalloc__
+ 603              	.LVL49:
+ 380:./include/linux/slab.h **** }
+ 604              		.loc 5 380 9 view .LVU180
+ 605              	.LBE67:
+ 606              	.LBE66:
+  49:./fs/fs_dentry.c **** 	memset(dentry,0,sizeof(struct dentry));
+ 607              		.loc 1 49 5 is_stmt 1 view .LVU181
+  49:./fs/fs_dentry.c **** 	memset(dentry,0,sizeof(struct dentry));
+ 608              		.loc 1 49 7 is_stmt 0 view .LVU182
+ 609 0010 D8B1     		cbz	r0, .L35
+ 610 0012 0446     		mov	r4, r0
+  50:./fs/fs_dentry.c **** 	if( dentry_rename(dentry,name) < 0){
+ 611              		.loc 1 50 2 is_stmt 1 view .LVU183
+ 612 0014 7C22     		movs	r2, #124
+ 613 0016 0021     		movs	r1, #0
+ 614 0018 FFF7FEFF 		bl	memset
+ 615              	.LVL50:
+  51:./fs/fs_dentry.c **** 		kfree(dentry);
+ 616              		.loc 1 51 2 view .LVU184
+  51:./fs/fs_dentry.c **** 		kfree(dentry);
+ 617              		.loc 1 51 6 is_stmt 0 view .LVU185
+ 618 001c 2946     		mov	r1, r5
+ 619 001e 2046     		mov	r0, r4
+ 620 0020 FFF7FEFF 		bl	dentry_rename
+ 621              	.LVL51:
+  51:./fs/fs_dentry.c **** 		kfree(dentry);
+ 622              		.loc 1 51 4 discriminator 1 view .LVU186
+ 623 0024 0028     		cmp	r0, #0
+ 624 0026 0ADB     		blt	.L37
+  56:./fs/fs_dentry.c **** 	INIT_HLIST_NODE(&dentry->d_sib);
+ 625              		.loc 1 56 2 is_stmt 1 view .LVU187
+ 626 0028 0023     		movs	r3, #0
+ARM GAS  /tmp/ccL7RTiX.s 			page 46
+
+
+ 627 002a 2360     		str	r3, [r4]
+  57:./fs/fs_dentry.c **** 	spin_lock_init(&dentry->d_lock);
+ 628              		.loc 1 57 2 view .LVU188
+ 629              	.LVL52:
+ 630              	.LBB68:
+ 631              	.LBI68:
+ 942:./include/linux/list.h **** {
+ 632              		.loc 4 942 20 view .LVU189
+ 633              	.LBB69:
+ 944:./include/linux/list.h **** 	h->pprev = NULL;
+ 634              		.loc 4 944 2 view .LVU190
+ 944:./include/linux/list.h **** 	h->pprev = NULL;
+ 635              		.loc 4 944 10 is_stmt 0 view .LVU191
+ 636 002c A360     		str	r3, [r4, #8]
+ 945:./include/linux/list.h **** }
+ 637              		.loc 4 945 2 is_stmt 1 view .LVU192
+ 945:./include/linux/list.h **** }
+ 638              		.loc 4 945 11 is_stmt 0 view .LVU193
+ 639 002e E360     		str	r3, [r4, #12]
+ 640              	.LVL53:
+ 945:./include/linux/list.h **** }
+ 641              		.loc 4 945 11 view .LVU194
+ 642              	.LBE69:
+ 643              	.LBE68:
+  58:./fs/fs_dentry.c **** 	dentry->d_sb = sb;
+ 644              		.loc 1 58 2 is_stmt 1 view .LVU195
+ 645 0030 04F16C00 		add	r0, r4, #108
+ 646 0034 FFF7FEFF 		bl	spin_lock_init
+ 647              	.LVL54:
+  59:./fs/fs_dentry.c **** 	return dentry;
+ 648              		.loc 1 59 2 view .LVU196
+  59:./fs/fs_dentry.c **** 	return dentry;
+ 649              		.loc 1 59 15 is_stmt 0 view .LVU197
+ 650 0038 2665     		str	r6, [r4, #80]
+  60:./fs/fs_dentry.c **** }
+ 651              		.loc 1 60 2 is_stmt 1 view .LVU198
+ 652              	.LVL55:
+ 653              	.L32:
+  61:./fs/fs_dentry.c **** EXPORT_SYMBOL(__d_alloc);
+ 654              		.loc 1 61 1 is_stmt 0 view .LVU199
+ 655 003a 2046     		mov	r0, r4
+ 656 003c 70BD     		pop	{r4, r5, r6, pc}
+ 657              	.LVL56:
+ 658              	.L37:
+  52:./fs/fs_dentry.c **** 		return -ENOMEM;
+ 659              		.loc 1 52 3 is_stmt 1 view .LVU200
+ 660              	.LBB70:
+ 661              	.LBI70:
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 662              		.loc 5 383 20 view .LVU201
+ 663              	.LBB71:
+ 384:./include/linux/slab.h **** }
+ 664              		.loc 5 384 2 view .LVU202
+ 665 003e 2046     		mov	r0, r4
+ 666 0040 FFF7FEFF 		bl	__sfree__
+ 667              	.LVL57:
+ 384:./include/linux/slab.h **** }
+ARM GAS  /tmp/ccL7RTiX.s 			page 47
+
+
+ 668              		.loc 5 384 2 is_stmt 0 view .LVU203
+ 669              	.LBE71:
+ 670              	.LBE70:
+  53:./fs/fs_dentry.c **** 	}
+ 671              		.loc 1 53 3 is_stmt 1 view .LVU204
+  53:./fs/fs_dentry.c **** 	}
+ 672              		.loc 1 53 10 is_stmt 0 view .LVU205
+ 673 0044 6FF00B04 		mvn	r4, #11
+ 674              	.LVL58:
+  53:./fs/fs_dentry.c **** 	}
+ 675              		.loc 1 53 10 view .LVU206
+ 676 0048 F7E7     		b	.L32
+ 677              	.LVL59:
+ 678              	.L35:
+  49:./fs/fs_dentry.c **** 	memset(dentry,0,sizeof(struct dentry));
+ 679              		.loc 1 49 31 discriminator 1 view .LVU207
+ 680 004a 6FF00B04 		mvn	r4, #11
+ 681 004e F4E7     		b	.L32
+ 682              		.cfi_endproc
+ 683              	.LFE1036:
+ 685              		.section	.text.__spin_lock,"ax",%progbits
+ 686              		.align	1
+ 687              		.syntax unified
+ 688              		.thumb
+ 689              		.thumb_func
+ 691              	__spin_lock:
+ 692              	.LVL60:
+ 693              	.LFB229:
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 694              		.loc 2 15 47 is_stmt 1 view -0
+ 695              		.cfi_startproc
+ 696              		@ args = 0, pretend = 0, frame = 0
+ 697              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 698              		.loc 2 15 47 is_stmt 0 view .LVU209
+ 699 0000 38B5     		push	{r3, r4, r5, lr}
+ 700              	.LCFI9:
+ 701              		.cfi_def_cfa_offset 16
+ 702              		.cfi_offset 3, -16
+ 703              		.cfi_offset 4, -12
+ 704              		.cfi_offset 5, -8
+ 705              		.cfi_offset 14, -4
+ 706 0002 0446     		mov	r4, r0
+  17:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+ 707              		.loc 2 17 5 is_stmt 1 view .LVU210
+ 708 0004 FFF7FEFF 		bl	stop_all_scheduler
+ 709              	.LVL61:
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 710              		.loc 2 18 5 view .LVU211
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 711              		.loc 2 18 12 is_stmt 0 view .LVU212
+ 712 0008 2368     		ldr	r3, [r4]
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 713              		.loc 2 18 7 view .LVU213
+ 714 000a 2BB9     		cbnz	r3, .L39
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 715              		.loc 2 19 11 is_stmt 1 view .LVU214
+ARM GAS  /tmp/ccL7RTiX.s 			page 48
+
+
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 716              		.loc 2 19 22 is_stmt 0 view .LVU215
+ 717 000c 0125     		movs	r5, #1
+ 718 000e 2560     		str	r5, [r4]
+  20:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+ 719              		.loc 2 20 11 is_stmt 1 view .LVU216
+ 720 0010 FFF7FEFF 		bl	start_all_scheduler
+ 721              	.LVL62:
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 722              		.loc 2 21 9 view .LVU217
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 723              		.loc 2 21 16 is_stmt 0 view .LVU218
+ 724 0014 2846     		mov	r0, r5
+ 725              	.L38:
+  28:./arch/arm_m/include/asm/spinlock.h **** 
+ 726              		.loc 2 28 1 view .LVU219
+ 727 0016 38BD     		pop	{r3, r4, r5, pc}
+ 728              	.LVL63:
+ 729              	.L39:
+  25:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+ 730              		.loc 2 25 9 is_stmt 1 view .LVU220
+ 731 0018 FFF7FEFF 		bl	start_all_scheduler
+ 732              	.LVL64:
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 733              		.loc 2 26 9 view .LVU221
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 734              		.loc 2 26 16 is_stmt 0 view .LVU222
+ 735 001c 0020     		movs	r0, #0
+ 736 001e FAE7     		b	.L38
+ 737              		.cfi_endproc
+ 738              	.LFE229:
+ 740              		.section	.text.spin_lock,"ax",%progbits
+ 741              		.align	1
+ 742              		.syntax unified
+ 743              		.thumb
+ 744              		.thumb_func
+ 746              	spin_lock:
+ 747              	.LVL65:
+ 748              	.LFB232:
+  15:./include/linux/spinlock.h ****     while (1)
+ 749              		.loc 3 15 1 is_stmt 1 view -0
+ 750              		.cfi_startproc
+ 751              		@ args = 0, pretend = 0, frame = 0
+ 752              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./include/linux/spinlock.h ****     while (1)
+ 753              		.loc 3 15 1 is_stmt 0 view .LVU224
+ 754 0000 38B5     		push	{r3, r4, r5, lr}
+ 755              	.LCFI10:
+ 756              		.cfi_def_cfa_offset 16
+ 757              		.cfi_offset 3, -16
+ 758              		.cfi_offset 4, -12
+ 759              		.cfi_offset 5, -8
+ 760              		.cfi_offset 14, -4
+ 761 0002 0446     		mov	r4, r0
+ 762 0004 06E0     		b	.L45
+ 763              	.LVL66:
+ 764              	.L47:
+ARM GAS  /tmp/ccL7RTiX.s 			page 49
+
+
+  19:./include/linux/spinlock.h ****             break;
+ 765              		.loc 3 19 13 is_stmt 1 view .LVU225
+  19:./include/linux/spinlock.h ****             break;
+ 766              		.loc 3 19 27 is_stmt 0 view .LVU226
+ 767 0006 FFF7FEFF 		bl	get_current_task
+ 768              	.LVL67:
+  19:./include/linux/spinlock.h ****             break;
+ 769              		.loc 3 19 25 discriminator 1 view .LVU227
+ 770 000a 2060     		str	r0, [r4]
+  20:./include/linux/spinlock.h ****         }
+ 771              		.loc 3 20 13 is_stmt 1 view .LVU228
+ 772              	.L42:
+  29:./include/linux/spinlock.h **** 
+ 773              		.loc 3 29 1 is_stmt 0 view .LVU229
+ 774 000c 38BD     		pop	{r3, r4, r5, pc}
+ 775              	.LVL68:
+ 776              	.L48:
+  26:./include/linux/spinlock.h ****         }
+ 777              		.loc 3 26 13 is_stmt 1 view .LVU230
+ 778 000e 0520     		movs	r0, #5
+ 779 0010 FFF7FEFF 		bl	__delay
+ 780              	.LVL69:
+  16:./include/linux/spinlock.h ****     {
+ 781              		.loc 3 16 11 view .LVU231
+ 782              	.L45:
+  16:./include/linux/spinlock.h ****     {
+ 783              		.loc 3 16 5 view .LVU232
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 784              		.loc 3 18 9 view .LVU233
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 785              		.loc 3 18 12 is_stmt 0 view .LVU234
+ 786 0014 2046     		mov	r0, r4
+ 787 0016 FFF7FEFF 		bl	__spin_lock
+ 788              	.LVL70:
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 789              		.loc 3 18 11 discriminator 1 view .LVU235
+ 790 001a 0128     		cmp	r0, #1
+ 791 001c F3D0     		beq	.L47
+  22:./include/linux/spinlock.h ****             return;   
+ 792              		.loc 3 22 15 is_stmt 1 view .LVU236
+  22:./include/linux/spinlock.h ****             return;   
+ 793              		.loc 3 22 22 is_stmt 0 view .LVU237
+ 794 001e 2568     		ldr	r5, [r4]
+  22:./include/linux/spinlock.h ****             return;   
+ 795              		.loc 3 22 33 view .LVU238
+ 796 0020 FFF7FEFF 		bl	get_current_task
+ 797              	.LVL71:
+  22:./include/linux/spinlock.h ****             return;   
+ 798              		.loc 3 22 17 discriminator 1 view .LVU239
+ 799 0024 8542     		cmp	r5, r0
+ 800 0026 F2D1     		bne	.L48
+ 801 0028 F0E7     		b	.L42
+ 802              		.cfi_endproc
+ 803              	.LFE232:
+ 805              		.section	.text.d_alloc,"ax",%progbits
+ 806              		.align	1
+ 807              		.global	d_alloc
+ARM GAS  /tmp/ccL7RTiX.s 			page 50
+
+
+ 808              		.syntax unified
+ 809              		.thumb
+ 810              		.thumb_func
+ 812              	d_alloc:
+ 813              	.LVL72:
+ 814              	.LFB1037:
+  65:./fs/fs_dentry.c **** 	struct dentry *dentry = __d_alloc(parent->d_sb, name);
+ 815              		.loc 1 65 1 is_stmt 1 view -0
+ 816              		.cfi_startproc
+ 817              		@ args = 0, pretend = 0, frame = 0
+ 818              		@ frame_needed = 0, uses_anonymous_args = 0
+  65:./fs/fs_dentry.c **** 	struct dentry *dentry = __d_alloc(parent->d_sb, name);
+ 819              		.loc 1 65 1 is_stmt 0 view .LVU241
+ 820 0000 70B5     		push	{r4, r5, r6, lr}
+ 821              	.LCFI11:
+ 822              		.cfi_def_cfa_offset 16
+ 823              		.cfi_offset 4, -16
+ 824              		.cfi_offset 5, -12
+ 825              		.cfi_offset 6, -8
+ 826              		.cfi_offset 14, -4
+ 827 0002 0446     		mov	r4, r0
+  66:./fs/fs_dentry.c **** 	if (!dentry)
+ 828              		.loc 1 66 2 is_stmt 1 view .LVU242
+  66:./fs/fs_dentry.c **** 	if (!dentry)
+ 829              		.loc 1 66 26 is_stmt 0 view .LVU243
+ 830 0004 006D     		ldr	r0, [r0, #80]
+ 831              	.LVL73:
+  66:./fs/fs_dentry.c **** 	if (!dentry)
+ 832              		.loc 1 66 26 view .LVU244
+ 833 0006 FFF7FEFF 		bl	__d_alloc
+ 834              	.LVL74:
+  67:./fs/fs_dentry.c **** 		return NULL;
+ 835              		.loc 1 67 2 is_stmt 1 view .LVU245
+  67:./fs/fs_dentry.c **** 		return NULL;
+ 836              		.loc 1 67 5 is_stmt 0 view .LVU246
+ 837 000a 0546     		mov	r5, r0
+ 838 000c 68B1     		cbz	r0, .L49
+  69:./fs/fs_dentry.c **** 	dentry->d_parent = dget_dlock(parent);
+ 839              		.loc 1 69 2 is_stmt 1 view .LVU247
+ 840 000e 04F16C06 		add	r6, r4, #108
+ 841 0012 3046     		mov	r0, r6
+ 842              	.LVL75:
+  69:./fs/fs_dentry.c **** 	dentry->d_parent = dget_dlock(parent);
+ 843              		.loc 1 69 2 is_stmt 0 view .LVU248
+ 844 0014 FFF7FEFF 		bl	spin_lock
+ 845              	.LVL76:
+  70:./fs/fs_dentry.c **** 	dentry->d_sb = dentry->d_parent->d_sb;
+ 846              		.loc 1 70 2 is_stmt 1 view .LVU249
+ 847              	.LBB72:
+ 848              	.LBI72:
+ 264:./include/linux/dcache.h **** {
+ 849              		.loc 6 264 30 view .LVU250
+ 850              	.LBB73:
+ 266:./include/linux/dcache.h **** 	return dentry;
+ 851              		.loc 6 266 2 view .LVU251
+ 266:./include/linux/dcache.h **** 	return dentry;
+ 852              		.loc 6 266 19 is_stmt 0 view .LVU252
+ARM GAS  /tmp/ccL7RTiX.s 			page 51
+
+
+ 853 0018 A36E     		ldr	r3, [r4, #104]
+ 266:./include/linux/dcache.h **** 	return dentry;
+ 854              		.loc 6 266 25 view .LVU253
+ 855 001a 0133     		adds	r3, r3, #1
+ 856 001c A366     		str	r3, [r4, #104]
+ 267:./include/linux/dcache.h **** }
+ 857              		.loc 6 267 2 is_stmt 1 view .LVU254
+ 858              	.LVL77:
+ 267:./include/linux/dcache.h **** }
+ 859              		.loc 6 267 2 is_stmt 0 view .LVU255
+ 860              	.LBE73:
+ 861              	.LBE72:
+  70:./fs/fs_dentry.c **** 	dentry->d_sb = dentry->d_parent->d_sb;
+ 862              		.loc 1 70 19 discriminator 1 view .LVU256
+ 863 001e 6C60     		str	r4, [r5, #4]
+  71:./fs/fs_dentry.c **** 	spin_unlock(&parent->d_lock);
+ 864              		.loc 1 71 2 is_stmt 1 view .LVU257
+  71:./fs/fs_dentry.c **** 	spin_unlock(&parent->d_lock);
+ 865              		.loc 1 71 33 is_stmt 0 view .LVU258
+ 866 0020 236D     		ldr	r3, [r4, #80]
+  71:./fs/fs_dentry.c **** 	spin_unlock(&parent->d_lock);
+ 867              		.loc 1 71 15 view .LVU259
+ 868 0022 2B65     		str	r3, [r5, #80]
+  72:./fs/fs_dentry.c **** 	return dentry;
+ 869              		.loc 1 72 2 is_stmt 1 view .LVU260
+ 870 0024 3046     		mov	r0, r6
+ 871 0026 FFF7FEFF 		bl	spin_unlock
+ 872              	.LVL78:
+  73:./fs/fs_dentry.c **** }
+ 873              		.loc 1 73 2 view .LVU261
+ 874              	.L49:
+  74:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_alloc);
+ 875              		.loc 1 74 1 is_stmt 0 view .LVU262
+ 876 002a 2846     		mov	r0, r5
+ 877 002c 70BD     		pop	{r4, r5, r6, pc}
+  74:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_alloc);
+ 878              		.loc 1 74 1 view .LVU263
+ 879              		.cfi_endproc
+ 880              	.LFE1037:
+ 882              		.section	.text.d_add,"ax",%progbits
+ 883              		.align	1
+ 884              		.global	d_add
+ 885              		.syntax unified
+ 886              		.thumb
+ 887              		.thumb_func
+ 889              	d_add:
+ 890              	.LVL79:
+ 891              	.LFB1043:
+ 109:./fs/fs_dentry.c **** void __d_put(struct dentry *dentry){
+ 110:./fs/fs_dentry.c **** 	hlist_del(&dentry->d_sib);
+ 111:./fs/fs_dentry.c **** }
+ 112:./fs/fs_dentry.c **** 
+ 113:./fs/fs_dentry.c **** struct dentry * d_add(struct dentry *dentry, struct inode *inode){
+ 892              		.loc 1 113 66 is_stmt 1 view -0
+ 893              		.cfi_startproc
+ 894              		@ args = 0, pretend = 0, frame = 0
+ 895              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccL7RTiX.s 			page 52
+
+
+ 896              		.loc 1 113 66 is_stmt 0 view .LVU265
+ 897 0000 38B5     		push	{r3, r4, r5, lr}
+ 898              	.LCFI12:
+ 899              		.cfi_def_cfa_offset 16
+ 900              		.cfi_offset 3, -16
+ 901              		.cfi_offset 4, -12
+ 902              		.cfi_offset 5, -8
+ 903              		.cfi_offset 14, -4
+ 904 0002 0446     		mov	r4, r0
+ 905 0004 0D46     		mov	r5, r1
+ 114:./fs/fs_dentry.c **** 	spin_lock(&dentry->d_parent->d_inode->i_lock);
+ 906              		.loc 1 114 2 is_stmt 1 view .LVU266
+ 907              		.loc 1 114 19 is_stmt 0 view .LVU267
+ 908 0006 4368     		ldr	r3, [r0, #4]
+ 909              		.loc 1 114 29 view .LVU268
+ 910 0008 986C     		ldr	r0, [r3, #72]
+ 911              	.LVL80:
+ 912              		.loc 1 114 2 view .LVU269
+ 913 000a 2C30     		adds	r0, r0, #44
+ 914 000c FFF7FEFF 		bl	spin_lock
+ 915              	.LVL81:
+ 115:./fs/fs_dentry.c **** 	dentry->d_inode = inode;
+ 916              		.loc 1 115 2 is_stmt 1 view .LVU270
+ 917              		.loc 1 115 18 is_stmt 0 view .LVU271
+ 918 0010 A564     		str	r5, [r4, #72]
+ 116:./fs/fs_dentry.c **** 	dentry->d_sb = inode->i_sb;
+ 919              		.loc 1 116 2 is_stmt 1 view .LVU272
+ 920              		.loc 1 116 22 is_stmt 0 view .LVU273
+ 921 0012 EB68     		ldr	r3, [r5, #12]
+ 922              		.loc 1 116 15 view .LVU274
+ 923 0014 2365     		str	r3, [r4, #80]
+ 117:./fs/fs_dentry.c **** 	__d_add(dentry,dentry->d_parent);
+ 924              		.loc 1 117 2 is_stmt 1 view .LVU275
+ 925 0016 6168     		ldr	r1, [r4, #4]
+ 926 0018 2046     		mov	r0, r4
+ 927 001a FFF7FEFF 		bl	__d_add
+ 928              	.LVL82:
+ 118:./fs/fs_dentry.c **** 	spin_unlock(&dentry->d_parent->d_inode->i_lock);
+ 929              		.loc 1 118 2 view .LVU276
+ 930              		.loc 1 118 21 is_stmt 0 view .LVU277
+ 931 001e 6368     		ldr	r3, [r4, #4]
+ 932              		.loc 1 118 31 view .LVU278
+ 933 0020 986C     		ldr	r0, [r3, #72]
+ 934              		.loc 1 118 2 view .LVU279
+ 935 0022 2C30     		adds	r0, r0, #44
+ 936 0024 FFF7FEFF 		bl	spin_unlock
+ 937              	.LVL83:
+ 119:./fs/fs_dentry.c **** 	return dentry;
+ 938              		.loc 1 119 2 is_stmt 1 view .LVU280
+ 120:./fs/fs_dentry.c **** }
+ 939              		.loc 1 120 1 is_stmt 0 view .LVU281
+ 940 0028 2046     		mov	r0, r4
+ 941 002a 38BD     		pop	{r3, r4, r5, pc}
+ 942              		.loc 1 120 1 view .LVU282
+ 943              		.cfi_endproc
+ 944              	.LFE1043:
+ 946              		.section	.text.d_delete,"ax",%progbits
+ARM GAS  /tmp/ccL7RTiX.s 			page 53
+
+
+ 947              		.align	1
+ 948              		.global	d_delete
+ 949              		.syntax unified
+ 950              		.thumb
+ 951              		.thumb_func
+ 953              	d_delete:
+ 954              	.LVL84:
+ 955              	.LFB1040:
+  99:./fs/fs_dentry.c ****     if(dentry == NULL) return;
+ 956              		.loc 1 99 38 is_stmt 1 view -0
+ 957              		.cfi_startproc
+ 958              		@ args = 0, pretend = 0, frame = 0
+ 959              		@ frame_needed = 0, uses_anonymous_args = 0
+ 100:./fs/fs_dentry.c **** 	inode_put(&dentry->d_inode);
+ 960              		.loc 1 100 5 view .LVU284
+ 100:./fs/fs_dentry.c **** 	inode_put(&dentry->d_inode);
+ 961              		.loc 1 100 7 is_stmt 0 view .LVU285
+ 962 0000 40B1     		cbz	r0, .L57
+  99:./fs/fs_dentry.c ****     if(dentry == NULL) return;
+ 963              		.loc 1 99 38 view .LVU286
+ 964 0002 10B5     		push	{r4, lr}
+ 965              	.LCFI13:
+ 966              		.cfi_def_cfa_offset 8
+ 967              		.cfi_offset 4, -8
+ 968              		.cfi_offset 14, -4
+ 969 0004 0446     		mov	r4, r0
+ 101:./fs/fs_dentry.c **** 	__d_drop(dentry);
+ 970              		.loc 1 101 2 is_stmt 1 view .LVU287
+ 971 0006 4830     		adds	r0, r0, #72
+ 972              	.LVL85:
+ 101:./fs/fs_dentry.c **** 	__d_drop(dentry);
+ 973              		.loc 1 101 2 is_stmt 0 view .LVU288
+ 974 0008 FFF7FEFF 		bl	inode_put
+ 975              	.LVL86:
+ 102:./fs/fs_dentry.c **** }
+ 976              		.loc 1 102 2 is_stmt 1 view .LVU289
+ 977 000c 2046     		mov	r0, r4
+ 978 000e FFF7FEFF 		bl	__d_drop
+ 979              	.LVL87:
+ 103:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_delete);
+ 980              		.loc 1 103 1 is_stmt 0 view .LVU290
+ 981 0012 10BD     		pop	{r4, pc}
+ 982              	.LVL88:
+ 983              	.L57:
+ 984              	.LCFI14:
+ 985              		.cfi_def_cfa_offset 0
+ 986              		.cfi_restore 4
+ 987              		.cfi_restore 14
+ 103:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_delete);
+ 988              		.loc 1 103 1 view .LVU291
+ 989 0014 7047     		bx	lr
+ 990              		.cfi_endproc
+ 991              	.LFE1040:
+ 993              		.section	.text.d_lookup_dentry,"ax",%progbits
+ 994              		.align	1
+ 995              		.global	d_lookup_dentry
+ 996              		.syntax unified
+ARM GAS  /tmp/ccL7RTiX.s 			page 54
+
+
+ 997              		.thumb
+ 998              		.thumb_func
+ 1000              	d_lookup_dentry:
+ 1001              	.LVL89:
+ 1002              	.LFB1045:
+ 121:./fs/fs_dentry.c **** EXPORT_SYMBOL(d_add);
+ 122:./fs/fs_dentry.c **** 
+ 123:./fs/fs_dentry.c **** 
+ 124:./fs/fs_dentry.c **** 
+ 125:./fs/fs_dentry.c **** int simple_unlink(struct inode *dir, struct dentry *dentry)
+ 126:./fs/fs_dentry.c **** {
+ 127:./fs/fs_dentry.c **** 	if(dir != NULL)
+ 128:./fs/fs_dentry.c **** 	spin_lock(&dir->i_lock);
+ 129:./fs/fs_dentry.c **** 	__d_put(dentry);
+ 130:./fs/fs_dentry.c **** 	d_delete(dentry);
+ 131:./fs/fs_dentry.c **** 	if(dir != NULL)
+ 132:./fs/fs_dentry.c **** 	spin_unlock(&dir->i_lock);
+ 133:./fs/fs_dentry.c **** }
+ 134:./fs/fs_dentry.c **** EXPORT_SYMBOL(simple_unlink);
+ 135:./fs/fs_dentry.c **** 
+ 136:./fs/fs_dentry.c **** 
+ 137:./fs/fs_dentry.c **** struct dentry *d_lookup_dentry(struct dentry *parent, const char *name)
+ 138:./fs/fs_dentry.c **** {
+ 1003              		.loc 1 138 1 is_stmt 1 view -0
+ 1004              		.cfi_startproc
+ 1005              		@ args = 0, pretend = 0, frame = 0
+ 1006              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1007              		.loc 1 138 1 is_stmt 0 view .LVU293
+ 1008 0000 38B5     		push	{r3, r4, r5, lr}
+ 1009              	.LCFI15:
+ 1010              		.cfi_def_cfa_offset 16
+ 1011              		.cfi_offset 3, -16
+ 1012              		.cfi_offset 4, -12
+ 1013              		.cfi_offset 5, -8
+ 1014              		.cfi_offset 14, -4
+ 1015 0002 0D46     		mov	r5, r1
+ 139:./fs/fs_dentry.c ****     struct dentry *dentry;
+ 1016              		.loc 1 139 5 is_stmt 1 view .LVU294
+ 140:./fs/fs_dentry.c ****     struct hlist_node *node;
+ 1017              		.loc 1 140 5 view .LVU295
+ 141:./fs/fs_dentry.c ****     hlist_for_each_entry(dentry, &parent->d_hash, d_sib) {
+ 1018              		.loc 1 141 5 view .LVU296
+ 1019              	.LBB74:
+ 1020              		.loc 1 141 5 view .LVU297
+ 1021 0004 0468     		ldr	r4, [r0]
+ 1022              	.LVL90:
+ 1023              		.loc 1 141 5 view .LVU298
+ 1024 0006 14B1     		cbz	r4, .L64
+ 1025              	.LBB75:
+ 1026              		.loc 1 141 5 discriminator 1 view .LVU299
+ 1027              	.LVL91:
+ 1028              		.loc 1 141 5 discriminator 1 view .LVU300
+ 1029              		.loc 1 141 5 discriminator 1 view .LVU301
+ 1030 0008 083C     		subs	r4, r4, #8
+ 1031              	.LVL92:
+ 1032              		.loc 1 141 5 is_stmt 0 discriminator 1 view .LVU302
+ 1033              	.LBE75:
+ARM GAS  /tmp/ccL7RTiX.s 			page 55
+
+
+ 1034 000a 00E0     		b	.L64
+ 1035              	.LVL93:
+ 1036              	.L67:
+ 1037              		.loc 1 141 5 discriminator 1 view .LVU303
+ 1038              	.LBE74:
+ 1039              	.LBB76:
+ 1040              	.LBB77:
+ 1041              		.loc 1 141 5 is_stmt 1 discriminator 6 view .LVU304
+ 1042              		.loc 1 141 5 discriminator 6 view .LVU305
+ 1043              		.loc 1 141 5 discriminator 6 view .LVU306
+ 1044 000c 083C     		subs	r4, r4, #8
+ 1045              	.LVL94:
+ 1046              	.L64:
+ 1047              		.loc 1 141 5 is_stmt 0 discriminator 6 view .LVU307
+ 1048              	.LBE77:
+ 1049              	.LBE76:
+ 1050              		.loc 1 141 5 is_stmt 1 discriminator 10 view .LVU308
+ 1051 000e 44B1     		cbz	r4, .L60
+ 142:./fs/fs_dentry.c ****         if (strcmp(dentry->d_name.name, name) == 0) {
+ 1052              		.loc 1 142 9 view .LVU309
+ 1053              		.loc 1 142 13 is_stmt 0 view .LVU310
+ 1054 0010 2946     		mov	r1, r5
+ 1055 0012 A069     		ldr	r0, [r4, #24]
+ 1056 0014 FFF7FEFF 		bl	strcmp
+ 1057              	.LVL95:
+ 1058              		.loc 1 142 12 discriminator 1 view .LVU311
+ 1059 0018 18B1     		cbz	r0, .L60
+ 141:./fs/fs_dentry.c ****     hlist_for_each_entry(dentry, &parent->d_hash, d_sib) {
+ 1060              		.loc 1 141 5 is_stmt 1 view .LVU312
+ 1061              	.LBB78:
+ 141:./fs/fs_dentry.c ****     hlist_for_each_entry(dentry, &parent->d_hash, d_sib) {
+ 1062              		.loc 1 141 5 view .LVU313
+ 1063 001a A468     		ldr	r4, [r4, #8]
+ 1064              	.LVL96:
+ 141:./fs/fs_dentry.c ****     hlist_for_each_entry(dentry, &parent->d_hash, d_sib) {
+ 1065              		.loc 1 141 5 view .LVU314
+ 1066 001c 002C     		cmp	r4, #0
+ 1067 001e F5D1     		bne	.L67
+ 1068 0020 F5E7     		b	.L64
+ 1069              	.LVL97:
+ 1070              	.L60:
+ 141:./fs/fs_dentry.c ****     hlist_for_each_entry(dentry, &parent->d_hash, d_sib) {
+ 1071              		.loc 1 141 5 is_stmt 0 view .LVU315
+ 1072              	.LBE78:
+ 143:./fs/fs_dentry.c ****             return dentry;  
+ 144:./fs/fs_dentry.c ****         }
+ 145:./fs/fs_dentry.c ****     }
+ 146:./fs/fs_dentry.c ****     return NULL;
+ 147:./fs/fs_dentry.c **** }
+ 1073              		.loc 1 147 1 view .LVU316
+ 1074 0022 2046     		mov	r0, r4
+ 1075 0024 38BD     		pop	{r3, r4, r5, pc}
+ 1076              		.loc 1 147 1 view .LVU317
+ 1077              		.cfi_endproc
+ 1078              	.LFE1045:
+ 1080              		.section	.text.__d_put,"ax",%progbits
+ 1081              		.align	1
+ARM GAS  /tmp/ccL7RTiX.s 			page 56
+
+
+ 1082              		.global	__d_put
+ 1083              		.syntax unified
+ 1084              		.thumb
+ 1085              		.thumb_func
+ 1087              	__d_put:
+ 1088              	.LVL98:
+ 1089              	.LFB1042:
+ 109:./fs/fs_dentry.c **** 	hlist_del(&dentry->d_sib);
+ 1090              		.loc 1 109 36 is_stmt 1 view -0
+ 1091              		.cfi_startproc
+ 1092              		@ args = 0, pretend = 0, frame = 0
+ 1093              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1094              		@ link register save eliminated.
+ 110:./fs/fs_dentry.c **** }
+ 1095              		.loc 1 110 2 view .LVU319
+ 1096              	.LBB79:
+ 1097              	.LBI79:
+1000:./include/linux/list.h **** {
+ 1098              		.loc 4 1000 20 view .LVU320
+ 1099              	.LBB80:
+1002:./include/linux/list.h **** 	n->next = LIST_POISON1;
+ 1100              		.loc 4 1002 2 view .LVU321
+ 1101              	.LBB81:
+ 1102              	.LBI81:
+ 983:./include/linux/list.h **** {
+ 1103              		.loc 4 983 20 view .LVU322
+ 1104              	.LBB82:
+ 985:./include/linux/list.h **** 	struct hlist_node **pprev = n->pprev;
+ 1105              		.loc 4 985 2 view .LVU323
+ 985:./include/linux/list.h **** 	struct hlist_node **pprev = n->pprev;
+ 1106              		.loc 4 985 21 is_stmt 0 view .LVU324
+ 1107 0000 8368     		ldr	r3, [r0, #8]
+ 1108              	.LVL99:
+ 986:./include/linux/list.h **** 
+ 1109              		.loc 4 986 2 is_stmt 1 view .LVU325
+ 986:./include/linux/list.h **** 
+ 1110              		.loc 4 986 22 is_stmt 0 view .LVU326
+ 1111 0002 C268     		ldr	r2, [r0, #12]
+ 1112              	.LVL100:
+ 988:./include/linux/list.h **** 	if (next)
+ 1113              		.loc 4 988 2 is_stmt 1 view .LVU327
+ 988:./include/linux/list.h **** 	if (next)
+ 1114              		.loc 4 988 2 view .LVU328
+ 1115              	.LBB83:
+ 988:./include/linux/list.h **** 	if (next)
+ 1116              		.loc 4 988 2 view .LVU329
+ 988:./include/linux/list.h **** 	if (next)
+ 1117              		.loc 4 988 2 view .LVU330
+ 1118              	.LBE83:
+ 988:./include/linux/list.h **** 	if (next)
+ 1119              		.loc 4 988 2 discriminator 2 view .LVU331
+ 988:./include/linux/list.h **** 	if (next)
+ 1120              		.loc 4 988 2 discriminator 2 view .LVU332
+ 988:./include/linux/list.h **** 	if (next)
+ 1121              		.loc 4 988 2 discriminator 2 view .LVU333
+ 1122 0004 1360     		str	r3, [r2]
+ 988:./include/linux/list.h **** 	if (next)
+ARM GAS  /tmp/ccL7RTiX.s 			page 57
+
+
+ 1123              		.loc 4 988 2 discriminator 2 view .LVU334
+ 988:./include/linux/list.h **** 	if (next)
+ 1124              		.loc 4 988 2 discriminator 2 view .LVU335
+ 989:./include/linux/list.h **** 		WRITE_ONCE(next->pprev, pprev);
+ 1125              		.loc 4 989 2 view .LVU336
+ 989:./include/linux/list.h **** 		WRITE_ONCE(next->pprev, pprev);
+ 1126              		.loc 4 989 5 is_stmt 0 view .LVU337
+ 1127 0006 03B1     		cbz	r3, .L69
+ 990:./include/linux/list.h **** }
+ 1128              		.loc 4 990 3 is_stmt 1 view .LVU338
+ 990:./include/linux/list.h **** }
+ 1129              		.loc 4 990 3 view .LVU339
+ 1130              	.LBB84:
+ 990:./include/linux/list.h **** }
+ 1131              		.loc 4 990 3 view .LVU340
+ 990:./include/linux/list.h **** }
+ 1132              		.loc 4 990 3 view .LVU341
+ 1133              	.LBE84:
+ 990:./include/linux/list.h **** }
+ 1134              		.loc 4 990 3 discriminator 2 view .LVU342
+ 990:./include/linux/list.h **** }
+ 1135              		.loc 4 990 3 discriminator 2 view .LVU343
+ 990:./include/linux/list.h **** }
+ 1136              		.loc 4 990 3 discriminator 2 view .LVU344
+ 1137 0008 5A60     		str	r2, [r3, #4]
+ 1138              	.L69:
+ 990:./include/linux/list.h **** }
+ 1139              		.loc 4 990 3 discriminator 3 view .LVU345
+ 990:./include/linux/list.h **** }
+ 1140              		.loc 4 990 3 discriminator 3 view .LVU346
+ 1141              	.LVL101:
+ 990:./include/linux/list.h **** }
+ 1142              		.loc 4 990 3 is_stmt 0 discriminator 3 view .LVU347
+ 1143              	.LBE82:
+ 1144              	.LBE81:
+1003:./include/linux/list.h **** 	n->pprev = LIST_POISON2;
+ 1145              		.loc 4 1003 2 is_stmt 1 view .LVU348
+1003:./include/linux/list.h **** 	n->pprev = LIST_POISON2;
+ 1146              		.loc 4 1003 10 is_stmt 0 view .LVU349
+ 1147 000a 4FF48073 		mov	r3, #256
+ 1148 000e 8360     		str	r3, [r0, #8]
+1004:./include/linux/list.h **** }
+ 1149              		.loc 4 1004 2 is_stmt 1 view .LVU350
+1004:./include/linux/list.h **** }
+ 1150              		.loc 4 1004 11 is_stmt 0 view .LVU351
+ 1151 0010 4FF49173 		mov	r3, #290
+ 1152 0014 C360     		str	r3, [r0, #12]
+ 1153              	.LVL102:
+1004:./include/linux/list.h **** }
+ 1154              		.loc 4 1004 11 view .LVU352
+ 1155              	.LBE80:
+ 1156              	.LBE79:
+ 111:./fs/fs_dentry.c **** 
+ 1157              		.loc 1 111 1 view .LVU353
+ 1158 0016 7047     		bx	lr
+ 1159              		.cfi_endproc
+ 1160              	.LFE1042:
+ARM GAS  /tmp/ccL7RTiX.s 			page 58
+
+
+ 1162              		.section	.text.simple_unlink,"ax",%progbits
+ 1163              		.align	1
+ 1164              		.global	simple_unlink
+ 1165              		.syntax unified
+ 1166              		.thumb
+ 1167              		.thumb_func
+ 1169              	simple_unlink:
+ 1170              	.LVL103:
+ 1171              	.LFB1044:
+ 126:./fs/fs_dentry.c **** 	if(dir != NULL)
+ 1172              		.loc 1 126 1 is_stmt 1 view -0
+ 1173              		.cfi_startproc
+ 1174              		@ args = 0, pretend = 0, frame = 0
+ 1175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126:./fs/fs_dentry.c **** 	if(dir != NULL)
+ 1176              		.loc 1 126 1 is_stmt 0 view .LVU355
+ 1177 0000 38B5     		push	{r3, r4, r5, lr}
+ 1178              	.LCFI16:
+ 1179              		.cfi_def_cfa_offset 16
+ 1180              		.cfi_offset 3, -16
+ 1181              		.cfi_offset 4, -12
+ 1182              		.cfi_offset 5, -8
+ 1183              		.cfi_offset 14, -4
+ 1184 0002 0C46     		mov	r4, r1
+ 127:./fs/fs_dentry.c **** 	spin_lock(&dir->i_lock);
+ 1185              		.loc 1 127 2 is_stmt 1 view .LVU356
+ 127:./fs/fs_dentry.c **** 	spin_lock(&dir->i_lock);
+ 1186              		.loc 1 127 4 is_stmt 0 view .LVU357
+ 1187 0004 0546     		mov	r5, r0
+ 1188 0006 10B1     		cbz	r0, .L71
+ 128:./fs/fs_dentry.c **** 	__d_put(dentry);
+ 1189              		.loc 1 128 2 is_stmt 1 view .LVU358
+ 1190 0008 2C30     		adds	r0, r0, #44
+ 1191              	.LVL104:
+ 128:./fs/fs_dentry.c **** 	__d_put(dentry);
+ 1192              		.loc 1 128 2 is_stmt 0 view .LVU359
+ 1193 000a FFF7FEFF 		bl	spin_lock
+ 1194              	.LVL105:
+ 1195              	.L71:
+ 129:./fs/fs_dentry.c **** 	d_delete(dentry);
+ 1196              		.loc 1 129 2 is_stmt 1 view .LVU360
+ 1197 000e 2046     		mov	r0, r4
+ 1198 0010 FFF7FEFF 		bl	__d_put
+ 1199              	.LVL106:
+ 130:./fs/fs_dentry.c **** 	if(dir != NULL)
+ 1200              		.loc 1 130 2 view .LVU361
+ 1201 0014 2046     		mov	r0, r4
+ 1202 0016 FFF7FEFF 		bl	d_delete
+ 1203              	.LVL107:
+ 131:./fs/fs_dentry.c **** 	spin_unlock(&dir->i_lock);
+ 1204              		.loc 1 131 2 view .LVU362
+ 131:./fs/fs_dentry.c **** 	spin_unlock(&dir->i_lock);
+ 1205              		.loc 1 131 4 is_stmt 0 view .LVU363
+ 1206 001a 1DB1     		cbz	r5, .L72
+ 132:./fs/fs_dentry.c **** }
+ 1207              		.loc 1 132 2 is_stmt 1 view .LVU364
+ 1208 001c 05F12C00 		add	r0, r5, #44
+ARM GAS  /tmp/ccL7RTiX.s 			page 59
+
+
+ 1209 0020 FFF7FEFF 		bl	spin_unlock
+ 1210              	.LVL108:
+ 1211              	.L72:
+ 133:./fs/fs_dentry.c **** EXPORT_SYMBOL(simple_unlink);
+ 1212              		.loc 1 133 1 is_stmt 0 view .LVU365
+ 1213 0024 38BD     		pop	{r3, r4, r5, pc}
+ 133:./fs/fs_dentry.c **** EXPORT_SYMBOL(simple_unlink);
+ 1214              		.loc 1 133 1 view .LVU366
+ 1215              		.cfi_endproc
+ 1216              	.LFE1044:
+ 1218              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1219              		.align	2
+ 1220              	.LC0:
+ 1221 0000 645F6C6F 		.ascii	"d_lookup_dentry\000"
+ 1221      6F6B7570 
+ 1221      5F64656E 
+ 1221      74727900 
+ 1222              		.align	2
+ 1223              	.LC1:
+ 1224 0010 00       		.ascii	"\000"
+ 1225              		.section	.export_table,"aw"
+ 1226              		.align	2
+ 1229              	d_lookup_dentry_export_struct:
+ 1230 0000 00000000 		.word	.LC0
+ 1231 0004 10000000 		.word	.LC1
+ 1232 0008 00000000 		.word	d_lookup_dentry
+ 1233              		.section	.rodata.str1.4
+ 1234 0011 000000   		.align	2
+ 1235              	.LC2:
+ 1236 0014 73696D70 		.ascii	"simple_unlink\000"
+ 1236      6C655F75 
+ 1236      6E6C696E 
+ 1236      6B00
+ 1237              		.section	.export_table
+ 1238              		.align	2
+ 1241              	simple_unlink_export_struct:
+ 1242 000c 14000000 		.word	.LC2
+ 1243 0010 10000000 		.word	.LC1
+ 1244 0014 00000000 		.word	simple_unlink
+ 1245              		.section	.rodata.str1.4
+ 1246 0022 0000     		.align	2
+ 1247              	.LC3:
+ 1248 0024 645F6164 		.ascii	"d_add\000"
+ 1248      6400
+ 1249              		.section	.export_table
+ 1250              		.align	2
+ 1253              	d_add_export_struct:
+ 1254 0018 24000000 		.word	.LC3
+ 1255 001c 10000000 		.word	.LC1
+ 1256 0020 00000000 		.word	d_add
+ 1257              		.section	.rodata.str1.4
+ 1258 002a 0000     		.align	2
+ 1259              	.LC4:
+ 1260 002c 645F6465 		.ascii	"d_delete\000"
+ 1260      6C657465 
+ 1260      00
+ 1261              		.section	.export_table
+ARM GAS  /tmp/ccL7RTiX.s 			page 60
+
+
+ 1262              		.align	2
+ 1265              	d_delete_export_struct:
+ 1266 0024 2C000000 		.word	.LC4
+ 1267 0028 10000000 		.word	.LC1
+ 1268 002c 00000000 		.word	d_delete
+ 1269              		.section	.rodata.str1.4
+ 1270 0035 000000   		.align	2
+ 1271              	.LC5:
+ 1272 0038 5F5F645F 		.ascii	"__d_drop\000"
+ 1272      64726F70 
+ 1272      00
+ 1273              		.section	.export_table
+ 1274              		.align	2
+ 1277              	__d_drop_export_struct:
+ 1278 0030 38000000 		.word	.LC5
+ 1279 0034 10000000 		.word	.LC1
+ 1280 0038 00000000 		.word	__d_drop
+ 1281              		.section	.rodata.str1.4
+ 1282 0041 000000   		.align	2
+ 1283              	.LC6:
+ 1284 0044 645F6765 		.ascii	"d_getname\000"
+ 1284      746E616D 
+ 1284      6500
+ 1285              		.section	.export_table
+ 1286              		.align	2
+ 1289              	d_getname_export_struct:
+ 1290 003c 44000000 		.word	.LC6
+ 1291 0040 10000000 		.word	.LC1
+ 1292 0044 00000000 		.word	d_getname
+ 1293              		.section	.rodata.str1.4
+ 1294 004e 0000     		.align	2
+ 1295              	.LC7:
+ 1296 0050 645F616C 		.ascii	"d_alloc\000"
+ 1296      6C6F6300 
+ 1297              		.section	.export_table
+ 1298              		.align	2
+ 1301              	d_alloc_export_struct:
+ 1302 0048 50000000 		.word	.LC7
+ 1303 004c 10000000 		.word	.LC1
+ 1304 0050 00000000 		.word	d_alloc
+ 1305              		.section	.rodata.str1.4
+ 1306              		.align	2
+ 1307              	.LC8:
+ 1308 0058 5F5F645F 		.ascii	"__d_alloc\000"
+ 1308      616C6C6F 
+ 1308      6300
+ 1309              		.section	.export_table
+ 1310              		.align	2
+ 1313              	__d_alloc_export_struct:
+ 1314 0054 58000000 		.word	.LC8
+ 1315 0058 10000000 		.word	.LC1
+ 1316 005c 00000000 		.word	__d_alloc
+ 1317              		.section	.rodata.str1.4
+ 1318 0062 0000     		.align	2
+ 1319              	.LC9:
+ 1320 0064 64656E74 		.ascii	"dentry_rename\000"
+ 1320      72795F72 
+ARM GAS  /tmp/ccL7RTiX.s 			page 61
+
+
+ 1320      656E616D 
+ 1320      6500
+ 1321              		.section	.export_table
+ 1322              		.align	2
+ 1325              	dentry_rename_export_struct:
+ 1326 0060 64000000 		.word	.LC9
+ 1327 0064 10000000 		.word	.LC1
+ 1328 0068 00000000 		.word	dentry_rename
+ 1329              		.text
+ 1330              	.Letext0:
+ 1331              		.file 7 "./include/asm-generic/int-l64.h"
+ 1332              		.file 8 "./include/asm-generic/posix_types.h"
+ 1333              		.file 9 "./include/uapi/linux/types.h"
+ 1334              		.file 10 "./include/linux/types.h"
+ 1335              		.file 11 "./include/linux/export.h"
+ 1336              		.file 12 "./include/linux/errseq.h"
+ 1337              		.file 13 "./include/linux/time64.h"
+ 1338              		.file 14 "./arch/arm_m/include/asm/sched.h"
+ 1339              		.file 15 "./include/linux/sched.h"
+ 1340              		.file 16 "./include/linux/spinlock_types_raw.h"
+ 1341              		.file 17 "./include/linux/spinlock_types.h"
+ 1342              		.file 18 "./include/linux/rbtree_types.h"
+ 1343              		.file 19 "./include/linux/uidgid_types.h"
+ 1344              		.file 20 "./include/linux/projid.h"
+ 1345              		.file 21 "./include/linux/fs.h"
+ 1346              		.file 22 "./include/linux/mnt_idmapping.h"
+ 1347              		.file 23 "./include/linux/mutex.h"
+ 1348              		.file 24 "./include/linux/uio.h"
+ 1349              		.file 25 "./include/linux/migrate_mode.h"
+ 1350              		.file 26 "./include/linux/wait.h"
+ 1351              		.file 27 "./include/linux/xarray.h"
+ 1352              		.file 28 "./include/linux/rw_hint.h"
+ 1353              		.file 29 "./include/linux/reciprocal_div.h"
+ 1354              		.file 30 "./include/linux/mm_type.h"
+ 1355              		.file 31 "./include/linux/bvec.h"
+ 1356              		.file 32 "./include/linux/blk_types.h"
+ 1357              		.file 33 "./include/linux/blkdev.h"
+ 1358              		.file 34 "./include/linux/bio.h"
+ 1359              		.file 35 "./include/linux/mempool_super_haper.h"
+ 1360              		.file 36 "./include/linux/mempool.h"
+ 1361              		.file 37 "./include/linux/lockdep_types.h"
+ 1362              		.file 38 "./include/linux/workqueue_types.h"
+ 1363              		.file 39 "./include/linux/blk-mq.h"
+ 1364              		.file 40 "./include/uapi/linux/pr.h"
+ 1365              		.file 41 "./include/linux/pr.h"
+ 1366              		.file 42 "./include/linux/hdreg.h"
+ 1367              		.file 43 "./include/linux/lockref.h"
+ 1368              		.file 44 "./include/linux/path.h"
+ 1369              		.file 45 "./include/linux/statfs.h"
+ 1370              		.file 46 "./include/linux/stat.h"
+ 1371              		.file 47 "./include/linux/gfp_types.h"
+ 1372              		.file 48 "./arch/arm_m/include/asm/string.h"
+ 1373              		.file 49 "./include/linux/string.h"
+ 1374              		.file 50 "<built-in>"
+ARM GAS  /tmp/ccL7RTiX.s 			page 62
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fs_dentry.c
+     /tmp/ccL7RTiX.s:21     .text.__spin_init:00000000 $t
+     /tmp/ccL7RTiX.s:26     .text.__spin_init:00000000 __spin_init
+     /tmp/ccL7RTiX.s:46     .text.__spin_unlock:00000000 $t
+     /tmp/ccL7RTiX.s:51     .text.__spin_unlock:00000000 __spin_unlock
+     /tmp/ccL7RTiX.s:69     .text.spin_lock_init:00000000 $t
+     /tmp/ccL7RTiX.s:74     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccL7RTiX.s:97     .text.spin_unlock:00000000 $t
+     /tmp/ccL7RTiX.s:102    .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccL7RTiX.s:124    .text.d_getname:00000000 $t
+     /tmp/ccL7RTiX.s:130    .text.d_getname:00000000 d_getname
+     /tmp/ccL7RTiX.s:156    .text.__d_add:00000000 $t
+     /tmp/ccL7RTiX.s:161    .text.__d_add:00000000 __d_add
+     /tmp/ccL7RTiX.s:290    .text.dentry_rename:00000000 $t
+     /tmp/ccL7RTiX.s:296    .text.dentry_rename:00000000 dentry_rename
+     /tmp/ccL7RTiX.s:470    .text.__d_drop:00000000 $t
+     /tmp/ccL7RTiX.s:476    .text.__d_drop:00000000 __d_drop
+     /tmp/ccL7RTiX.s:564    .text.__d_alloc:00000000 $t
+     /tmp/ccL7RTiX.s:570    .text.__d_alloc:00000000 __d_alloc
+     /tmp/ccL7RTiX.s:686    .text.__spin_lock:00000000 $t
+     /tmp/ccL7RTiX.s:691    .text.__spin_lock:00000000 __spin_lock
+     /tmp/ccL7RTiX.s:741    .text.spin_lock:00000000 $t
+     /tmp/ccL7RTiX.s:746    .text.spin_lock:00000000 spin_lock
+     /tmp/ccL7RTiX.s:806    .text.d_alloc:00000000 $t
+     /tmp/ccL7RTiX.s:812    .text.d_alloc:00000000 d_alloc
+     /tmp/ccL7RTiX.s:883    .text.d_add:00000000 $t
+     /tmp/ccL7RTiX.s:889    .text.d_add:00000000 d_add
+     /tmp/ccL7RTiX.s:947    .text.d_delete:00000000 $t
+     /tmp/ccL7RTiX.s:953    .text.d_delete:00000000 d_delete
+     /tmp/ccL7RTiX.s:994    .text.d_lookup_dentry:00000000 $t
+     /tmp/ccL7RTiX.s:1000   .text.d_lookup_dentry:00000000 d_lookup_dentry
+     /tmp/ccL7RTiX.s:1081   .text.__d_put:00000000 $t
+     /tmp/ccL7RTiX.s:1087   .text.__d_put:00000000 __d_put
+     /tmp/ccL7RTiX.s:1163   .text.simple_unlink:00000000 $t
+     /tmp/ccL7RTiX.s:1169   .text.simple_unlink:00000000 simple_unlink
+     /tmp/ccL7RTiX.s:1219   .rodata.str1.4:00000000 $d
+     /tmp/ccL7RTiX.s:1226   .export_table:00000000 $d
+     /tmp/ccL7RTiX.s:1229   .export_table:00000000 d_lookup_dentry_export_struct
+     /tmp/ccL7RTiX.s:1241   .export_table:0000000c simple_unlink_export_struct
+     /tmp/ccL7RTiX.s:1253   .export_table:00000018 d_add_export_struct
+     /tmp/ccL7RTiX.s:1265   .export_table:00000024 d_delete_export_struct
+     /tmp/ccL7RTiX.s:1277   .export_table:00000030 __d_drop_export_struct
+     /tmp/ccL7RTiX.s:1289   .export_table:0000003c d_getname_export_struct
+     /tmp/ccL7RTiX.s:1301   .export_table:00000048 d_alloc_export_struct
+     /tmp/ccL7RTiX.s:1313   .export_table:00000054 __d_alloc_export_struct
+     /tmp/ccL7RTiX.s:1325   .export_table:00000060 dentry_rename_export_struct
+
+UNDEFINED SYMBOLS
+strlen
+__smalloc__
+strcpy
+__sfree__
+memset
+stop_all_scheduler
+start_all_scheduler
+get_current_task
+ARM GAS  /tmp/ccL7RTiX.s 			page 63
+
+
+__delay
+inode_put
+strcmp

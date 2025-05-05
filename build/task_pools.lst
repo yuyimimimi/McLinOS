@@ -1,0 +1,1216 @@
+ARM GAS  /tmp/cc6YNvYS.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"task_pools.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./kernel/sched/task_pools.c"
+  20              		.section	.rodata.register_task_pool.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 7461736B 		.ascii	"task pool %s already registered\012\000"
+  23      20706F6F 
+  23      6C202573 
+  23      20616C72 
+  23      65616479 
+  24 0021 000000   		.align	2
+  25              	.LC1:
+  26 0024 52656769 		.ascii	"Registered task pool: %s\012\000"
+  26      73746572 
+  26      65642074 
+  26      61736B20 
+  26      706F6F6C 
+  27              		.section	.text.register_task_pool,"ax",%progbits
+  28              		.align	1
+  29              		.global	register_task_pool
+  30              		.syntax unified
+  31              		.thumb
+  32              		.thumb_func
+  34              	register_task_pool:
+  35              	.LVL0:
+  36              	.LFB272:
+   1:./kernel/sched/task_pools.c **** #include <linux/kernel.h> 
+   2:./kernel/sched/task_pools.c **** #include <linux/list.h>
+   3:./kernel/sched/task_pools.c **** #include <linux/slab.h>
+   4:./kernel/sched/task_pools.c **** #include <linux/string.h>
+   5:./kernel/sched/task_pools.c **** 
+   6:./kernel/sched/task_pools.c **** static LIST_HEAD(task_pool_list);
+   7:./kernel/sched/task_pools.c **** 
+   8:./kernel/sched/task_pools.c **** int register_task_pool(struct task_pool_types *new_pool){
+  37              		.loc 1 8 57 view -0
+  38              		.cfi_startproc
+  39              		@ args = 0, pretend = 0, frame = 0
+  40              		@ frame_needed = 0, uses_anonymous_args = 0
+  41              		.loc 1 8 57 is_stmt 0 view .LVU1
+  42 0000 70B5     		push	{r4, r5, r6, lr}
+ARM GAS  /tmp/cc6YNvYS.s 			page 2
+
+
+  43              	.LCFI0:
+  44              		.cfi_def_cfa_offset 16
+  45              		.cfi_offset 4, -16
+  46              		.cfi_offset 5, -12
+  47              		.cfi_offset 6, -8
+  48              		.cfi_offset 14, -4
+  49 0002 0646     		mov	r6, r0
+   9:./kernel/sched/task_pools.c ****     struct task_pool_types *entry;
+  50              		.loc 1 9 5 is_stmt 1 view .LVU2
+  10:./kernel/sched/task_pools.c ****     list_for_each_entry(entry, &task_pool_list, node) {
+  51              		.loc 1 10 5 view .LVU3
+  52              	.LBB47:
+  53              		.loc 1 10 5 view .LVU4
+  54 0004 0F4B     		ldr	r3, .L8
+  55 0006 1C68     		ldr	r4, [r3]
+  56              	.LVL1:
+  57              		.loc 1 10 5 view .LVU5
+  58              		.loc 1 10 5 view .LVU6
+  59              		.loc 1 10 5 is_stmt 0 view .LVU7
+  60              	.LBE47:
+  61 0008 00E0     		b	.L2
+  62              	.LVL2:
+  63              	.L3:
+  64              		.loc 1 10 5 is_stmt 1 discriminator 2 view .LVU8
+  65              	.LBB48:
+  66              		.loc 1 10 5 discriminator 2 view .LVU9
+  67 000a 2468     		ldr	r4, [r4]
+  68              	.LVL3:
+  69              		.loc 1 10 5 discriminator 2 view .LVU10
+  70              		.loc 1 10 5 discriminator 2 view .LVU11
+  71              	.L2:
+  72              		.loc 1 10 5 is_stmt 0 discriminator 2 view .LVU12
+  73              	.LBE48:
+  74              		.loc 1 10 5 is_stmt 1 discriminator 1 view .LVU13
+  75 000c 0D4B     		ldr	r3, .L8
+  76 000e 9C42     		cmp	r4, r3
+  77 0010 0DD0     		beq	.L7
+  11:./kernel/sched/task_pools.c ****         if (strcmp(entry->name, new_pool->name) == 0) {
+  78              		.loc 1 11 9 view .LVU14
+  79              		.loc 1 11 41 is_stmt 0 view .LVU15
+  80 0012 B568     		ldr	r5, [r6, #8]
+  81              		.loc 1 11 13 view .LVU16
+  82 0014 2946     		mov	r1, r5
+  83 0016 A068     		ldr	r0, [r4, #8]
+  84 0018 FFF7FEFF 		bl	strcmp
+  85              	.LVL4:
+  86              		.loc 1 11 12 discriminator 1 view .LVU17
+  87 001c 0028     		cmp	r0, #0
+  88 001e F4D1     		bne	.L3
+  12:./kernel/sched/task_pools.c ****             pr_warn("task pool %s already registered\n", new_pool->name);
+  89              		.loc 1 12 13 is_stmt 1 view .LVU18
+  90 0020 2946     		mov	r1, r5
+  91 0022 0948     		ldr	r0, .L8+4
+  92 0024 FFF7FEFF 		bl	printk
+  93              	.LVL5:
+  13:./kernel/sched/task_pools.c ****             return -EEXIST;
+  94              		.loc 1 13 13 view .LVU19
+ARM GAS  /tmp/cc6YNvYS.s 			page 3
+
+
+  95              		.loc 1 13 20 is_stmt 0 view .LVU20
+  96 0028 6FF01000 		mvn	r0, #16
+  97 002c 09E0     		b	.L1
+  98              	.L7:
+  14:./kernel/sched/task_pools.c ****         }
+  15:./kernel/sched/task_pools.c ****     }
+  16:./kernel/sched/task_pools.c ****     list_add_tail(&new_pool->node, &task_pool_list);
+  99              		.loc 1 16 5 is_stmt 1 view .LVU21
+ 100              	.LVL6:
+ 101              	.LBB49:
+ 102              	.LBI49:
+ 103              		.file 2 "./include/linux/list.h"
+   1:./include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:./include/linux/list.h **** #define _LINUX_LIST_H
+   4:./include/linux/list.h **** 
+   5:./include/linux/list.h **** #include <linux/container_of.h>
+   6:./include/linux/list.h **** #include <linux/types.h>
+   7:./include/linux/list.h **** #include <linux/stddef.h>
+   8:./include/linux/list.h **** #include <linux/poison.h>
+   9:./include/linux/list.h **** #include <linux/const.h>
+  10:./include/linux/list.h **** 
+  11:./include/linux/list.h **** #include <asm/barrier.h>
+  12:./include/linux/list.h **** #include <linux/rwonce.h>
+  13:./include/linux/list.h **** /*
+  14:./include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:./include/linux/list.h ****  *
+  16:./include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:./include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:./include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:./include/linux/list.h ****  * generate better code by using them directly rather than
+  20:./include/linux/list.h ****  * using the generic single-entry routines.
+  21:./include/linux/list.h ****  */
+  22:./include/linux/list.h **** 
+  23:./include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:./include/linux/list.h **** 
+  25:./include/linux/list.h **** #define LIST_HEAD(name) \
+  26:./include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:./include/linux/list.h **** 
+  28:./include/linux/list.h **** /**
+  29:./include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:./include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:./include/linux/list.h ****  *
+  32:./include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:./include/linux/list.h ****  * the result is an empty list.
+  34:./include/linux/list.h ****  */
+  35:./include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+  36:./include/linux/list.h **** {
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+  38:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+  39:./include/linux/list.h **** }
+  40:./include/linux/list.h **** 
+  41:./include/linux/list.h **** #ifdef CONFIG_LIST_HARDENED
+  42:./include/linux/list.h **** 
+  43:./include/linux/list.h **** #ifdef CONFIG_DEBUG_LIST
+  44:./include/linux/list.h **** # define __list_valid_slowpath
+  45:./include/linux/list.h **** #else
+ARM GAS  /tmp/cc6YNvYS.s 			page 4
+
+
+  46:./include/linux/list.h **** # define __list_valid_slowpath __cold __preserve_most
+  47:./include/linux/list.h **** #endif
+  48:./include/linux/list.h **** 
+  49:./include/linux/list.h **** /*
+  50:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_add().
+  51:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  52:./include/linux/list.h ****  */
+  53:./include/linux/list.h **** extern bool __list_valid_slowpath __list_add_valid_or_report(struct list_head *new,
+  54:./include/linux/list.h **** 							     struct list_head *prev,
+  55:./include/linux/list.h **** 							     struct list_head *next);
+  56:./include/linux/list.h **** 
+  57:./include/linux/list.h **** /*
+  58:./include/linux/list.h ****  * Performs list corruption checks before __list_add(). Returns false if a
+  59:./include/linux/list.h ****  * corruption is detected, true otherwise.
+  60:./include/linux/list.h ****  *
+  61:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+  62:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+  63:./include/linux/list.h ****  * detected calls the reporting function __list_add_valid_or_report().
+  64:./include/linux/list.h ****  */
+  65:./include/linux/list.h **** static __always_inline bool __list_add_valid(struct list_head *new,
+  66:./include/linux/list.h **** 					     struct list_head *prev,
+  67:./include/linux/list.h **** 					     struct list_head *next)
+  68:./include/linux/list.h **** {
+  69:./include/linux/list.h **** 	bool ret = true;
+  70:./include/linux/list.h **** 
+  71:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+  72:./include/linux/list.h **** 		/*
+  73:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+  74:./include/linux/list.h **** 		 * are NULL, since the immediate dereference of them below would
+  75:./include/linux/list.h **** 		 * result in a fault if NULL.
+  76:./include/linux/list.h **** 		 *
+  77:./include/linux/list.h **** 		 * With the reduced set of checks, we can afford to inline the
+  78:./include/linux/list.h **** 		 * checks, which also gives the compiler a chance to elide some
+  79:./include/linux/list.h **** 		 * of them completely if they can be proven at compile-time. If
+  80:./include/linux/list.h **** 		 * one of the pre-conditions does not hold, the slow-path will
+  81:./include/linux/list.h **** 		 * show a report which pre-condition failed.
+  82:./include/linux/list.h **** 		 */
+  83:./include/linux/list.h **** 		if (likely(next->prev == prev && prev->next == next && new != prev && new != next))
+  84:./include/linux/list.h **** 			return true;
+  85:./include/linux/list.h **** 		ret = false;
+  86:./include/linux/list.h **** 	}
+  87:./include/linux/list.h **** 
+  88:./include/linux/list.h **** 	ret &= __list_add_valid_or_report(new, prev, next);
+  89:./include/linux/list.h **** 	return ret;
+  90:./include/linux/list.h **** }
+  91:./include/linux/list.h **** 
+  92:./include/linux/list.h **** /*
+  93:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_del_entry().
+  94:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  95:./include/linux/list.h ****  */
+  96:./include/linux/list.h **** extern bool __list_valid_slowpath __list_del_entry_valid_or_report(struct list_head *entry);
+  97:./include/linux/list.h **** 
+  98:./include/linux/list.h **** /*
+  99:./include/linux/list.h ****  * Performs list corruption checks before __list_del_entry(). Returns false if a
+ 100:./include/linux/list.h ****  * corruption is detected, true otherwise.
+ 101:./include/linux/list.h ****  *
+ 102:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+ARM GAS  /tmp/cc6YNvYS.s 			page 5
+
+
+ 103:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ 104:./include/linux/list.h ****  * detected calls the reporting function __list_del_entry_valid_or_report().
+ 105:./include/linux/list.h ****  */
+ 106:./include/linux/list.h **** static __always_inline bool __list_del_entry_valid(struct list_head *entry)
+ 107:./include/linux/list.h **** {
+ 108:./include/linux/list.h **** 	bool ret = true;
+ 109:./include/linux/list.h **** 
+ 110:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+ 111:./include/linux/list.h **** 		struct list_head *prev = entry->prev;
+ 112:./include/linux/list.h **** 		struct list_head *next = entry->next;
+ 113:./include/linux/list.h **** 
+ 114:./include/linux/list.h **** 		/*
+ 115:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+ 116:./include/linux/list.h **** 		 * are NULL, LIST_POISON1 or LIST_POISON2, since the immediate
+ 117:./include/linux/list.h **** 		 * dereference of them below would result in a fault.
+ 118:./include/linux/list.h **** 		 */
+ 119:./include/linux/list.h **** 		if (likely(prev->next == entry && next->prev == entry))
+ 120:./include/linux/list.h **** 			return true;
+ 121:./include/linux/list.h **** 		ret = false;
+ 122:./include/linux/list.h **** 	}
+ 123:./include/linux/list.h **** 
+ 124:./include/linux/list.h **** 	ret &= __list_del_entry_valid_or_report(entry);
+ 125:./include/linux/list.h **** 	return ret;
+ 126:./include/linux/list.h **** }
+ 127:./include/linux/list.h **** #else
+ 128:./include/linux/list.h **** static inline bool __list_add_valid(struct list_head *new,
+ 129:./include/linux/list.h **** 				struct list_head *prev,
+ 130:./include/linux/list.h **** 				struct list_head *next)
+ 131:./include/linux/list.h **** {
+ 132:./include/linux/list.h **** 	return true;
+ 133:./include/linux/list.h **** }
+ 134:./include/linux/list.h **** static inline bool __list_del_entry_valid(struct list_head *entry)
+ 135:./include/linux/list.h **** {
+ 136:./include/linux/list.h **** 	return true;
+ 137:./include/linux/list.h **** }
+ 138:./include/linux/list.h **** #endif
+ 139:./include/linux/list.h **** 
+ 140:./include/linux/list.h **** /*
+ 141:./include/linux/list.h ****  * Insert a new entry between two known consecutive entries.
+ 142:./include/linux/list.h ****  *
+ 143:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 144:./include/linux/list.h ****  * the prev/next entries already!
+ 145:./include/linux/list.h ****  */
+ 146:./include/linux/list.h **** static inline void __list_add(struct list_head *new,
+ 147:./include/linux/list.h **** 			      struct list_head *prev,
+ 148:./include/linux/list.h **** 			      struct list_head *next)
+ 149:./include/linux/list.h **** {
+ 150:./include/linux/list.h **** 	if (!__list_add_valid(new, prev, next))
+ 151:./include/linux/list.h **** 		return;
+ 152:./include/linux/list.h **** 
+ 153:./include/linux/list.h **** 	next->prev = new;
+ 154:./include/linux/list.h **** 	new->next = next;
+ 155:./include/linux/list.h **** 	new->prev = prev;
+ 156:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 157:./include/linux/list.h **** }
+ 158:./include/linux/list.h **** 
+ 159:./include/linux/list.h **** /**
+ARM GAS  /tmp/cc6YNvYS.s 			page 6
+
+
+ 160:./include/linux/list.h ****  * list_add - add a new entry
+ 161:./include/linux/list.h ****  * @new: new entry to be added
+ 162:./include/linux/list.h ****  * @head: list head to add it after
+ 163:./include/linux/list.h ****  *
+ 164:./include/linux/list.h ****  * Insert a new entry after the specified head.
+ 165:./include/linux/list.h ****  * This is good for implementing stacks.
+ 166:./include/linux/list.h ****  */
+ 167:./include/linux/list.h **** static inline void list_add(struct list_head *new, struct list_head *head)
+ 168:./include/linux/list.h **** {
+ 169:./include/linux/list.h **** 	__list_add(new, head, head->next);
+ 170:./include/linux/list.h **** }
+ 171:./include/linux/list.h **** 
+ 172:./include/linux/list.h **** 
+ 173:./include/linux/list.h **** /**
+ 174:./include/linux/list.h ****  * list_add_tail - add a new entry
+ 175:./include/linux/list.h ****  * @new: new entry to be added
+ 176:./include/linux/list.h ****  * @head: list head to add it before
+ 177:./include/linux/list.h ****  *
+ 178:./include/linux/list.h ****  * Insert a new entry before the specified head.
+ 179:./include/linux/list.h ****  * This is useful for implementing queues.
+ 180:./include/linux/list.h ****  */
+ 181:./include/linux/list.h **** static inline void list_add_tail(struct list_head *new, struct list_head *head)
+ 104              		.loc 2 181 20 view .LVU22
+ 105              	.LBB50:
+ 182:./include/linux/list.h **** {
+ 183:./include/linux/list.h **** 	__list_add(new, head->prev, head);
+ 106              		.loc 2 183 2 view .LVU23
+ 107 002e 5A68     		ldr	r2, [r3, #4]
+ 108              	.LVL7:
+ 109              	.LBB51:
+ 110              	.LBI51:
+ 146:./include/linux/list.h **** 			      struct list_head *prev,
+ 111              		.loc 2 146 20 view .LVU24
+ 112              	.LBB52:
+ 150:./include/linux/list.h **** 		return;
+ 113              		.loc 2 150 2 view .LVU25
+ 153:./include/linux/list.h **** 	new->next = next;
+ 114              		.loc 2 153 2 view .LVU26
+ 153:./include/linux/list.h **** 	new->next = next;
+ 115              		.loc 2 153 13 is_stmt 0 view .LVU27
+ 116 0030 5E60     		str	r6, [r3, #4]
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 117              		.loc 2 154 2 is_stmt 1 view .LVU28
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 118              		.loc 2 154 12 is_stmt 0 view .LVU29
+ 119 0032 3360     		str	r3, [r6]
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 120              		.loc 2 155 2 is_stmt 1 view .LVU30
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 121              		.loc 2 155 12 is_stmt 0 view .LVU31
+ 122 0034 7260     		str	r2, [r6, #4]
+ 156:./include/linux/list.h **** }
+ 123              		.loc 2 156 2 is_stmt 1 view .LVU32
+ 156:./include/linux/list.h **** }
+ 124              		.loc 2 156 2 view .LVU33
+ 125              	.LBB53:
+ 156:./include/linux/list.h **** }
+ARM GAS  /tmp/cc6YNvYS.s 			page 7
+
+
+ 126              		.loc 2 156 2 view .LVU34
+ 156:./include/linux/list.h **** }
+ 127              		.loc 2 156 2 view .LVU35
+ 128              	.LBE53:
+ 156:./include/linux/list.h **** }
+ 129              		.loc 2 156 2 discriminator 2 view .LVU36
+ 156:./include/linux/list.h **** }
+ 130              		.loc 2 156 2 discriminator 2 view .LVU37
+ 156:./include/linux/list.h **** }
+ 131              		.loc 2 156 2 discriminator 2 view .LVU38
+ 132 0036 1660     		str	r6, [r2]
+ 156:./include/linux/list.h **** }
+ 133              		.loc 2 156 2 discriminator 3 view .LVU39
+ 156:./include/linux/list.h **** }
+ 134              		.loc 2 156 2 discriminator 3 view .LVU40
+ 135              	.LVL8:
+ 156:./include/linux/list.h **** }
+ 136              		.loc 2 156 2 is_stmt 0 discriminator 3 view .LVU41
+ 137              	.LBE52:
+ 138              	.LBE51:
+ 139              	.LBE50:
+ 140              	.LBE49:
+  17:./kernel/sched/task_pools.c ****     pr_info("Registered task pool: %s\n", new_pool->name);
+ 141              		.loc 1 17 5 is_stmt 1 view .LVU42
+ 142 0038 B168     		ldr	r1, [r6, #8]
+ 143 003a 0448     		ldr	r0, .L8+8
+ 144 003c FFF7FEFF 		bl	printk
+ 145              	.LVL9:
+  18:./kernel/sched/task_pools.c ****     return 0;
+ 146              		.loc 1 18 5 view .LVU43
+ 147              		.loc 1 18 12 is_stmt 0 view .LVU44
+ 148 0040 0020     		movs	r0, #0
+ 149              	.L1:
+  19:./kernel/sched/task_pools.c **** }
+ 150              		.loc 1 19 1 view .LVU45
+ 151 0042 70BD     		pop	{r4, r5, r6, pc}
+ 152              	.LVL10:
+ 153              	.L9:
+ 154              		.loc 1 19 1 view .LVU46
+ 155              		.align	2
+ 156              	.L8:
+ 157 0044 00000000 		.word	task_pool_list
+ 158 0048 00000000 		.word	.LC0
+ 159 004c 24000000 		.word	.LC1
+ 160              		.cfi_endproc
+ 161              	.LFE272:
+ 163              		.section	.text.find_task_pool,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	find_task_pool
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	find_task_pool:
+ 171              	.LVL11:
+ 172              	.LFB273:
+  20:./kernel/sched/task_pools.c **** 
+  21:./kernel/sched/task_pools.c **** struct task_pool_types *find_task_pool(const char *name){
+ARM GAS  /tmp/cc6YNvYS.s 			page 8
+
+
+ 173              		.loc 1 21 57 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177              		.loc 1 21 57 is_stmt 0 view .LVU48
+ 178 0000 38B5     		push	{r3, r4, r5, lr}
+ 179              	.LCFI1:
+ 180              		.cfi_def_cfa_offset 16
+ 181              		.cfi_offset 3, -16
+ 182              		.cfi_offset 4, -12
+ 183              		.cfi_offset 5, -8
+ 184              		.cfi_offset 14, -4
+ 185 0002 0546     		mov	r5, r0
+  22:./kernel/sched/task_pools.c ****     struct task_pool_types *entry;
+ 186              		.loc 1 22 5 is_stmt 1 view .LVU49
+  23:./kernel/sched/task_pools.c ****     list_for_each_entry(entry, &task_pool_list, node) {
+ 187              		.loc 1 23 5 view .LVU50
+ 188              	.LBB54:
+ 189              		.loc 1 23 5 view .LVU51
+ 190 0004 084B     		ldr	r3, .L17
+ 191 0006 1C68     		ldr	r4, [r3]
+ 192              	.LVL12:
+ 193              		.loc 1 23 5 view .LVU52
+ 194              		.loc 1 23 5 view .LVU53
+ 195              		.loc 1 23 5 is_stmt 0 view .LVU54
+ 196              	.LBE54:
+ 197 0008 00E0     		b	.L11
+ 198              	.LVL13:
+ 199              	.L16:
+ 200              		.loc 1 23 5 is_stmt 1 discriminator 2 view .LVU55
+ 201              	.LBB55:
+ 202              		.loc 1 23 5 discriminator 2 view .LVU56
+ 203 000a 2468     		ldr	r4, [r4]
+ 204              	.LVL14:
+ 205              		.loc 1 23 5 discriminator 2 view .LVU57
+ 206              		.loc 1 23 5 discriminator 2 view .LVU58
+ 207              	.L11:
+ 208              		.loc 1 23 5 is_stmt 0 discriminator 2 view .LVU59
+ 209              	.LBE55:
+ 210              		.loc 1 23 5 is_stmt 1 discriminator 1 view .LVU60
+ 211 000c 064B     		ldr	r3, .L17
+ 212 000e 9C42     		cmp	r4, r3
+ 213 0010 06D0     		beq	.L15
+  24:./kernel/sched/task_pools.c ****         if (strcmp(entry->name, name) == 0)
+ 214              		.loc 1 24 9 view .LVU61
+ 215              		.loc 1 24 13 is_stmt 0 view .LVU62
+ 216 0012 2946     		mov	r1, r5
+ 217 0014 A068     		ldr	r0, [r4, #8]
+ 218 0016 FFF7FEFF 		bl	strcmp
+ 219              	.LVL15:
+ 220              		.loc 1 24 12 discriminator 1 view .LVU63
+ 221 001a 0028     		cmp	r0, #0
+ 222 001c F5D1     		bne	.L16
+ 223 001e 00E0     		b	.L10
+ 224              	.L15:
+  25:./kernel/sched/task_pools.c ****             return entry;
+  26:./kernel/sched/task_pools.c ****     }
+ARM GAS  /tmp/cc6YNvYS.s 			page 9
+
+
+  27:./kernel/sched/task_pools.c ****     return NULL; 
+ 225              		.loc 1 27 12 view .LVU64
+ 226 0020 0024     		movs	r4, #0
+ 227              	.LVL16:
+ 228              	.L10:
+  28:./kernel/sched/task_pools.c **** }
+ 229              		.loc 1 28 1 view .LVU65
+ 230 0022 2046     		mov	r0, r4
+ 231 0024 38BD     		pop	{r3, r4, r5, pc}
+ 232              	.LVL17:
+ 233              	.L18:
+ 234              		.loc 1 28 1 view .LVU66
+ 235 0026 00BF     		.align	2
+ 236              	.L17:
+ 237 0028 00000000 		.word	task_pool_list
+ 238              		.cfi_endproc
+ 239              	.LFE273:
+ 241              		.section	.rodata.unregister_task_pool.str1.4,"aMS",%progbits,1
+ 242              		.align	2
+ 243              	.LC2:
+ 244 0000 556E7265 		.ascii	"Unregistered task pool: %s\012\000"
+ 244      67697374 
+ 244      65726564 
+ 244      20746173 
+ 244      6B20706F 
+ 245              		.section	.text.unregister_task_pool,"ax",%progbits
+ 246              		.align	1
+ 247              		.global	unregister_task_pool
+ 248              		.syntax unified
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	unregister_task_pool:
+ 253              	.LVL18:
+ 254              	.LFB274:
+  29:./kernel/sched/task_pools.c **** 
+  30:./kernel/sched/task_pools.c **** int unregister_task_pool(const char *name){
+ 255              		.loc 1 30 43 is_stmt 1 view -0
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 259              		.loc 1 30 43 is_stmt 0 view .LVU68
+ 260 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 261              	.LCFI2:
+ 262              		.cfi_def_cfa_offset 24
+ 263              		.cfi_offset 3, -24
+ 264              		.cfi_offset 4, -20
+ 265              		.cfi_offset 5, -16
+ 266              		.cfi_offset 6, -12
+ 267              		.cfi_offset 7, -8
+ 268              		.cfi_offset 14, -4
+ 269 0002 0646     		mov	r6, r0
+  31:./kernel/sched/task_pools.c ****     struct task_pool_types *entry, *tmp;
+ 270              		.loc 1 31 5 is_stmt 1 view .LVU69
+  32:./kernel/sched/task_pools.c ****     list_for_each_entry_safe(entry, tmp, &task_pool_list, node) {
+ 271              		.loc 1 32 5 view .LVU70
+ 272              	.LBB56:
+ 273              		.loc 1 32 5 view .LVU71
+ARM GAS  /tmp/cc6YNvYS.s 			page 10
+
+
+ 274 0004 144B     		ldr	r3, .L26
+ 275 0006 1C68     		ldr	r4, [r3]
+ 276              	.LVL19:
+ 277              		.loc 1 32 5 view .LVU72
+ 278              		.loc 1 32 5 view .LVU73
+ 279              		.loc 1 32 5 is_stmt 0 view .LVU74
+ 280              	.LBE56:
+ 281              	.LBB57:
+ 282              		.loc 1 32 5 is_stmt 1 view .LVU75
+ 283 0008 2568     		ldr	r5, [r4]
+ 284              	.LVL20:
+ 285              		.loc 1 32 5 view .LVU76
+ 286              		.loc 1 32 5 view .LVU77
+ 287              		.loc 1 32 5 is_stmt 0 view .LVU78
+ 288              	.LBE57:
+ 289 000a 01E0     		b	.L20
+ 290              	.LVL21:
+ 291              	.L21:
+ 292              		.loc 1 32 5 is_stmt 1 discriminator 2 view .LVU79
+ 293              	.LBB58:
+ 294              		.loc 1 32 5 discriminator 2 view .LVU80
+ 295              		.loc 1 32 5 discriminator 2 view .LVU81
+ 296              		.loc 1 32 5 discriminator 2 view .LVU82
+ 297              		.loc 1 32 5 is_stmt 0 discriminator 2 view .LVU83
+ 298              	.LBE58:
+ 299 000c 2C46     		mov	r4, r5
+ 300 000e 2D68     		ldr	r5, [r5]
+ 301              	.LVL22:
+ 302              	.L20:
+ 303              		.loc 1 32 5 is_stmt 1 discriminator 1 view .LVU84
+ 304 0010 114B     		ldr	r3, .L26
+ 305 0012 9C42     		cmp	r4, r3
+ 306 0014 1BD0     		beq	.L25
+  33:./kernel/sched/task_pools.c ****         if (strcmp(entry->name, name) == 0) {
+ 307              		.loc 1 33 9 view .LVU85
+ 308              		.loc 1 33 13 is_stmt 0 view .LVU86
+ 309 0016 3146     		mov	r1, r6
+ 310 0018 A068     		ldr	r0, [r4, #8]
+ 311 001a FFF7FEFF 		bl	strcmp
+ 312              	.LVL23:
+ 313              		.loc 1 33 12 discriminator 1 view .LVU87
+ 314 001e 0746     		mov	r7, r0
+ 315 0020 0028     		cmp	r0, #0
+ 316 0022 F3D1     		bne	.L21
+  34:./kernel/sched/task_pools.c ****             list_del(&entry->node);
+ 317              		.loc 1 34 13 is_stmt 1 view .LVU88
+ 318              	.LVL24:
+ 319              	.LBB59:
+ 320              	.LBI59:
+ 184:./include/linux/list.h **** }
+ 185:./include/linux/list.h **** 
+ 186:./include/linux/list.h **** /*
+ 187:./include/linux/list.h ****  * Delete a list entry by making the prev/next entries
+ 188:./include/linux/list.h ****  * point to each other.
+ 189:./include/linux/list.h ****  *
+ 190:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 191:./include/linux/list.h ****  * the prev/next entries already!
+ARM GAS  /tmp/cc6YNvYS.s 			page 11
+
+
+ 192:./include/linux/list.h ****  */
+ 193:./include/linux/list.h **** static inline void __list_del(struct list_head * prev, struct list_head * next)
+ 194:./include/linux/list.h **** {
+ 195:./include/linux/list.h **** 	next->prev = prev;
+ 196:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 197:./include/linux/list.h **** }
+ 198:./include/linux/list.h **** 
+ 199:./include/linux/list.h **** /*
+ 200:./include/linux/list.h ****  * Delete a list entry and clear the 'prev' pointer.
+ 201:./include/linux/list.h ****  *
+ 202:./include/linux/list.h ****  * This is a special-purpose list clearing method used in the networking code
+ 203:./include/linux/list.h ****  * for lists allocated as per-cpu, where we don't want to incur the extra
+ 204:./include/linux/list.h ****  * WRITE_ONCE() overhead of a regular list_del_init(). The code that uses this
+ 205:./include/linux/list.h ****  * needs to check the node 'prev' pointer instead of calling list_empty().
+ 206:./include/linux/list.h ****  */
+ 207:./include/linux/list.h **** static inline void __list_del_clearprev(struct list_head *entry)
+ 208:./include/linux/list.h **** {
+ 209:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 210:./include/linux/list.h **** 	entry->prev = NULL;
+ 211:./include/linux/list.h **** }
+ 212:./include/linux/list.h **** 
+ 213:./include/linux/list.h **** static inline void __list_del_entry(struct list_head *entry)
+ 214:./include/linux/list.h **** {
+ 215:./include/linux/list.h **** 	if (!__list_del_entry_valid(entry))
+ 216:./include/linux/list.h **** 		return;
+ 217:./include/linux/list.h **** 
+ 218:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 219:./include/linux/list.h **** }
+ 220:./include/linux/list.h **** 
+ 221:./include/linux/list.h **** /**
+ 222:./include/linux/list.h ****  * list_del - deletes entry from list.
+ 223:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 224:./include/linux/list.h ****  * Note: list_empty() on entry does not return true after this, the entry is
+ 225:./include/linux/list.h ****  * in an undefined state.
+ 226:./include/linux/list.h ****  */
+ 227:./include/linux/list.h **** static inline void list_del(struct list_head *entry)
+ 321              		.loc 2 227 20 view .LVU89
+ 322              	.LBB60:
+ 228:./include/linux/list.h **** {
+ 229:./include/linux/list.h **** 	__list_del_entry(entry);
+ 323              		.loc 2 229 2 view .LVU90
+ 324              	.LBB61:
+ 325              	.LBI61:
+ 213:./include/linux/list.h **** {
+ 326              		.loc 2 213 20 view .LVU91
+ 327              	.LBB62:
+ 215:./include/linux/list.h **** 		return;
+ 328              		.loc 2 215 2 view .LVU92
+ 218:./include/linux/list.h **** }
+ 329              		.loc 2 218 2 view .LVU93
+ 330 0024 6368     		ldr	r3, [r4, #4]
+ 331 0026 2268     		ldr	r2, [r4]
+ 332              	.LVL25:
+ 333              	.LBB63:
+ 334              	.LBI63:
+ 193:./include/linux/list.h **** {
+ 335              		.loc 2 193 20 view .LVU94
+ARM GAS  /tmp/cc6YNvYS.s 			page 12
+
+
+ 336              	.LBB64:
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 337              		.loc 2 195 2 view .LVU95
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 338              		.loc 2 195 13 is_stmt 0 view .LVU96
+ 339 0028 5360     		str	r3, [r2, #4]
+ 196:./include/linux/list.h **** }
+ 340              		.loc 2 196 2 is_stmt 1 view .LVU97
+ 196:./include/linux/list.h **** }
+ 341              		.loc 2 196 2 view .LVU98
+ 342              	.LBB65:
+ 196:./include/linux/list.h **** }
+ 343              		.loc 2 196 2 view .LVU99
+ 196:./include/linux/list.h **** }
+ 344              		.loc 2 196 2 view .LVU100
+ 345              	.LBE65:
+ 196:./include/linux/list.h **** }
+ 346              		.loc 2 196 2 discriminator 2 view .LVU101
+ 196:./include/linux/list.h **** }
+ 347              		.loc 2 196 2 discriminator 2 view .LVU102
+ 196:./include/linux/list.h **** }
+ 348              		.loc 2 196 2 discriminator 2 view .LVU103
+ 349 002a 1A60     		str	r2, [r3]
+ 196:./include/linux/list.h **** }
+ 350              		.loc 2 196 2 discriminator 2 view .LVU104
+ 196:./include/linux/list.h **** }
+ 351              		.loc 2 196 2 discriminator 2 view .LVU105
+ 352              	.LVL26:
+ 196:./include/linux/list.h **** }
+ 353              		.loc 2 196 2 is_stmt 0 discriminator 2 view .LVU106
+ 354              	.LBE64:
+ 355              	.LBE63:
+ 356              	.LBE62:
+ 357              	.LBE61:
+ 230:./include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 358              		.loc 2 230 2 is_stmt 1 view .LVU107
+ 359              		.loc 2 230 14 is_stmt 0 view .LVU108
+ 360 002c 4FF48073 		mov	r3, #256
+ 361 0030 2360     		str	r3, [r4]
+ 231:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 362              		.loc 2 231 2 is_stmt 1 view .LVU109
+ 363              		.loc 2 231 14 is_stmt 0 view .LVU110
+ 364 0032 4FF49173 		mov	r3, #290
+ 365 0036 6360     		str	r3, [r4, #4]
+ 366              	.LVL27:
+ 367              		.loc 2 231 14 view .LVU111
+ 368              	.LBE60:
+ 369              	.LBE59:
+  35:./kernel/sched/task_pools.c ****             pr_info("Unregistered task pool: %s\n", name);
+ 370              		.loc 1 35 13 is_stmt 1 view .LVU112
+ 371 0038 3146     		mov	r1, r6
+ 372 003a 0848     		ldr	r0, .L26+4
+ 373 003c FFF7FEFF 		bl	printk
+ 374              	.LVL28:
+  36:./kernel/sched/task_pools.c ****             kfree(entry->name);
+ 375              		.loc 1 36 13 view .LVU113
+ 376              	.LBB66:
+ARM GAS  /tmp/cc6YNvYS.s 			page 13
+
+
+ 377              	.LBI66:
+ 378              		.file 3 "./include/linux/slab.h"
+   1:./include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/slab.h **** /*
+   3:./include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:./include/linux/slab.h ****  *
+   5:./include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:./include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:./include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:./include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:./include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:./include/linux/slab.h ****  */
+  11:./include/linux/slab.h **** 
+  12:./include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:./include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:./include/linux/slab.h **** 
+  15:./include/linux/slab.h **** #include <linux/cache.h>
+  16:./include/linux/slab.h **** #include <linux/overflow.h>
+  17:./include/linux/slab.h **** #include <linux/types.h>
+  18:./include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:./include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:./include/linux/slab.h **** #include <linux/numa.h>
+  21:./include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:./include/linux/slab.h **** #include <linux/spinlock.h>
+  23:./include/linux/slab.h **** 
+  24:./include/linux/slab.h **** enum _slab_flag_bits {
+  25:./include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:./include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:./include/linux/slab.h **** 	_SLAB_POISON,
+  28:./include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:./include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:./include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:./include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:./include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:./include/linux/slab.h **** 	_SLAB_PANIC,
+  34:./include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:./include/linux/slab.h **** 	_SLAB_TRACE,
+  36:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:./include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:./include/linux/slab.h **** #endif
+  39:./include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:./include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:./include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:./include/linux/slab.h **** #endif
+  44:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:./include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:./include/linux/slab.h **** #endif
+  47:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:./include/linux/slab.h **** 	_SLAB_KASAN,
+  49:./include/linux/slab.h **** #endif
+  50:./include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:./include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:./include/linux/slab.h **** #endif
+  54:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:./include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+ARM GAS  /tmp/cc6YNvYS.s 			page 14
+
+
+  56:./include/linux/slab.h **** #endif
+  57:./include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:./include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:./include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:./include/linux/slab.h **** #endif
+  62:./include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:./include/linux/slab.h **** };
+  64:./include/linux/slab.h **** 
+  65:./include/linux/slab.h **** 
+  66:./include/linux/slab.h **** 
+  67:./include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:./include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:./include/linux/slab.h **** 
+  70:./include/linux/slab.h **** /*
+  71:./include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:./include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:./include/linux/slab.h ****  */
+  74:./include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:./include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:./include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:./include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:./include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:./include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:./include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:./include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:./include/linux/slab.h **** /**
+  83:./include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:./include/linux/slab.h ****  *
+  85:./include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:./include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:./include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:./include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:./include/linux/slab.h ****  *
+  90:./include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:./include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:./include/linux/slab.h ****  */
+  93:./include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:./include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:./include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:./include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:./include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:./include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:./include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:./include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:./include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:./include/linux/slab.h **** /**
+ 103:./include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:./include/linux/slab.h ****  *
+ 105:./include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:./include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:./include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:./include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:./include/linux/slab.h ****  *
+ 110:./include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:./include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:./include/linux/slab.h ****  * object validation pass. Something like:
+ARM GAS  /tmp/cc6YNvYS.s 			page 15
+
+
+ 113:./include/linux/slab.h ****  *
+ 114:./include/linux/slab.h ****  * ::
+ 115:./include/linux/slab.h ****  *
+ 116:./include/linux/slab.h ****  *  begin:
+ 117:./include/linux/slab.h ****  *   rcu_read_lock();
+ 118:./include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:./include/linux/slab.h ****  *   if (obj) {
+ 120:./include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:./include/linux/slab.h ****  *       goto begin;
+ 123:./include/linux/slab.h ****  *
+ 124:./include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:./include/linux/slab.h ****  *       put_ref(obj);
+ 126:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:./include/linux/slab.h ****  *       goto begin;
+ 128:./include/linux/slab.h ****  *     }
+ 129:./include/linux/slab.h ****  *   }
+ 130:./include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:./include/linux/slab.h ****  *
+ 132:./include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:./include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:./include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:./include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:./include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:./include/linux/slab.h ****  *
+ 138:./include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:./include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:./include/linux/slab.h ****  *
+ 141:./include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:./include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:./include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:./include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:./include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:./include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:./include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:./include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:./include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:./include/linux/slab.h ****  * protection.
+ 151:./include/linux/slab.h ****  *
+ 152:./include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:./include/linux/slab.h ****  */
+ 154:./include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:./include/linux/slab.h **** /* Trace allocations and frees */
+ 156:./include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:./include/linux/slab.h **** 
+ 158:./include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:./include/linux/slab.h **** #else
+ 162:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:./include/linux/slab.h **** #endif
+ 164:./include/linux/slab.h **** 
+ 165:./include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:./include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:./include/linux/slab.h **** 
+ 168:./include/linux/slab.h **** /*
+ 169:./include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ARM GAS  /tmp/cc6YNvYS.s 			page 16
+
+
+ 170:./include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:./include/linux/slab.h ****  *
+ 172:./include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:./include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:./include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:./include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:./include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:./include/linux/slab.h ****  */
+ 178:./include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:./include/linux/slab.h **** 
+ 180:./include/linux/slab.h **** /* Fault injection mark */
+ 181:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:./include/linux/slab.h **** #else
+ 184:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:./include/linux/slab.h **** #endif
+ 186:./include/linux/slab.h **** /**
+ 187:./include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:./include/linux/slab.h ****  *
+ 189:./include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:./include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:./include/linux/slab.h ****  */
+ 192:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:./include/linux/slab.h **** #else
+ 195:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:./include/linux/slab.h **** #endif
+ 197:./include/linux/slab.h **** 
+ 198:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:./include/linux/slab.h **** #else
+ 201:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:./include/linux/slab.h **** #endif
+ 203:./include/linux/slab.h **** 
+ 204:./include/linux/slab.h **** /*
+ 205:./include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:./include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:./include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:./include/linux/slab.h ****  */
+ 209:./include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:./include/linux/slab.h **** 
+ 211:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:./include/linux/slab.h **** #else
+ 214:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:./include/linux/slab.h **** #endif
+ 216:./include/linux/slab.h **** 
+ 217:./include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:./include/linux/slab.h **** /**
+ 219:./include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:./include/linux/slab.h ****  *
+ 221:./include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:./include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:./include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:./include/linux/slab.h ****  */
+ 225:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ARM GAS  /tmp/cc6YNvYS.s 			page 17
+
+
+ 227:./include/linux/slab.h **** #else
+ 228:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:./include/linux/slab.h **** #endif
+ 230:./include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:./include/linux/slab.h **** 
+ 232:./include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:./include/linux/slab.h **** #else
+ 236:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:./include/linux/slab.h **** #endif
+ 238:./include/linux/slab.h **** 
+ 239:./include/linux/slab.h **** /*
+ 240:./include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:./include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:./include/linux/slab.h ****  */
+ 243:./include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:./include/linux/slab.h **** 
+ 245:./include/linux/slab.h **** /*
+ 246:./include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:./include/linux/slab.h ****  *
+ 248:./include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:./include/linux/slab.h ****  *
+ 250:./include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:./include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:./include/linux/slab.h ****  */
+ 253:./include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:./include/linux/slab.h **** 
+ 255:./include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:./include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:./include/linux/slab.h **** 
+ 258:./include/linux/slab.h **** 
+ 259:./include/linux/slab.h **** 
+ 260:./include/linux/slab.h **** 
+ 261:./include/linux/slab.h **** 
+ 262:./include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:./include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:./include/linux/slab.h **** 
+ 265:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:./include/linux/slab.h **** ({						\
+ 267:./include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:./include/linux/slab.h **** })
+ 269:./include/linux/slab.h **** 
+ 270:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:./include/linux/slab.h **** #else
+ 272:./include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:./include/linux/slab.h **** 
+ 274:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:./include/linux/slab.h **** 
+ 276:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:./include/linux/slab.h **** 
+ 278:./include/linux/slab.h **** 
+ 279:./include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:./include/linux/slab.h **** 
+ 281:./include/linux/slab.h **** /*
+ 282:./include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:./include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ARM GAS  /tmp/cc6YNvYS.s 			page 18
+
+
+ 284:./include/linux/slab.h **** 	* given order would contain.
+ 285:./include/linux/slab.h **** 	*/				
+ 286:./include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:./include/linux/slab.h **** 	unsigned int x;
+ 288:./include/linux/slab.h **** };
+ 289:./include/linux/slab.h **** 
+ 290:./include/linux/slab.h **** struct kmem_cache_node {
+ 291:./include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:./include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:./include/linux/slab.h **** 	struct list_head partial;
+ 294:./include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:./include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:./include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:./include/linux/slab.h **** 	struct list_head full;
+ 298:./include/linux/slab.h **** #endif
+ 299:./include/linux/slab.h **** };
+ 300:./include/linux/slab.h **** 
+ 301:./include/linux/slab.h **** struct kmem_cache {
+ 302:./include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:./include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:./include/linux/slab.h **** 	#endif
+ 305:./include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:./include/linux/slab.h **** 		slab_flags_t flags;
+ 307:./include/linux/slab.h **** 		unsigned long min_partial;
+ 308:./include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:./include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:./include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:./include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:./include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:./include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:./include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:./include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:./include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:./include/linux/slab.h **** 	#endif
+ 318:./include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:./include/linux/slab.h **** 	
+ 320:./include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:./include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:./include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:./include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:./include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:./include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:./include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:./include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:./include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:./include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:./include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:./include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:./include/linux/slab.h **** 	#endif
+ 333:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:./include/linux/slab.h **** 		unsigned long random;
+ 335:./include/linux/slab.h **** 	#endif
+ 336:./include/linux/slab.h **** 	
+ 337:./include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:./include/linux/slab.h **** 		/*
+ 339:./include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:./include/linux/slab.h **** 			*/
+ARM GAS  /tmp/cc6YNvYS.s 			page 19
+
+
+ 341:./include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:./include/linux/slab.h **** 	#endif
+ 343:./include/linux/slab.h **** 	
+ 344:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:./include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:./include/linux/slab.h **** 	#endif
+ 347:./include/linux/slab.h **** 	
+ 348:./include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:./include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:./include/linux/slab.h **** 	#endif
+ 351:./include/linux/slab.h **** 	
+ 352:./include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:./include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:./include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:./include/linux/slab.h **** 	#endif
+ 356:./include/linux/slab.h **** 	
+ 357:./include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:./include/linux/slab.h **** 	};
+ 359:./include/linux/slab.h **** 					
+ 360:./include/linux/slab.h **** 
+ 361:./include/linux/slab.h **** 
+ 362:./include/linux/slab.h **** 
+ 363:./include/linux/slab.h **** 
+ 364:./include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:./include/linux/slab.h **** 
+ 366:./include/linux/slab.h **** 
+ 367:./include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:./include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:./include/linux/slab.h **** 
+ 370:./include/linux/slab.h **** 
+ 371:./include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:./include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:./include/linux/slab.h **** }
+ 374:./include/linux/slab.h **** 
+ 375:./include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:./include/linux/slab.h **** 	__sfree__(addr);
+ 377:./include/linux/slab.h **** }
+ 378:./include/linux/slab.h **** 
+ 379:./include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 380:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 381:./include/linux/slab.h **** }
+ 382:./include/linux/slab.h **** 
+ 383:./include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 379              		.loc 3 383 20 view .LVU114
+ 380              	.LBB67:
+ 384:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 381              		.loc 3 384 2 view .LVU115
+ 382 0040 A068     		ldr	r0, [r4, #8]
+ 383 0042 FFF7FEFF 		bl	__sfree__
+ 384              	.LVL29:
+ 385              		.loc 3 384 2 is_stmt 0 view .LVU116
+ 386              	.LBE67:
+ 387              	.LBE66:
+  37:./kernel/sched/task_pools.c ****             kfree(entry);
+ 388              		.loc 1 37 13 is_stmt 1 view .LVU117
+ 389              	.LBB68:
+ 390              	.LBI68:
+ARM GAS  /tmp/cc6YNvYS.s 			page 20
+
+
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 391              		.loc 3 383 20 view .LVU118
+ 392              	.LBB69:
+ 393              		.loc 3 384 2 view .LVU119
+ 394 0046 2046     		mov	r0, r4
+ 395 0048 FFF7FEFF 		bl	__sfree__
+ 396              	.LVL30:
+ 397              		.loc 3 384 2 is_stmt 0 view .LVU120
+ 398              	.LBE69:
+ 399              	.LBE68:
+  38:./kernel/sched/task_pools.c ****             return 0;
+ 400              		.loc 1 38 13 is_stmt 1 view .LVU121
+ 401              		.loc 1 38 20 is_stmt 0 view .LVU122
+ 402 004c 01E0     		b	.L19
+ 403              	.L25:
+  39:./kernel/sched/task_pools.c ****         }
+  40:./kernel/sched/task_pools.c ****     }
+  41:./kernel/sched/task_pools.c ****     return -ENOENT;
+ 404              		.loc 1 41 12 view .LVU123
+ 405 004e 6FF00107 		mvn	r7, #1
+ 406              	.L19:
+  42:./kernel/sched/task_pools.c **** }
+ 407              		.loc 1 42 1 view .LVU124
+ 408 0052 3846     		mov	r0, r7
+ 409 0054 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 410              	.LVL31:
+ 411              	.L27:
+ 412              		.loc 1 42 1 view .LVU125
+ 413 0056 00BF     		.align	2
+ 414              	.L26:
+ 415 0058 00000000 		.word	task_pool_list
+ 416 005c 00000000 		.word	.LC2
+ 417              		.cfi_endproc
+ 418              	.LFE274:
+ 420              		.section	.data.task_pool_list,"aw"
+ 421              		.align	2
+ 424              	task_pool_list:
+ 425 0000 00000000 		.word	task_pool_list
+ 426 0004 00000000 		.word	task_pool_list
+ 427              		.text
+ 428              	.Letext0:
+ 429              		.file 4 "./include/asm-generic/int-l64.h"
+ 430              		.file 5 "./include/asm-generic/posix_types.h"
+ 431              		.file 6 "./include/linux/types.h"
+ 432              		.file 7 "./include/linux/time64.h"
+ 433              		.file 8 "./arch/arm_m/include/asm/sched.h"
+ 434              		.file 9 "./include/linux/sched.h"
+ 435              		.file 10 "./include/linux/printk.h"
+ 436              		.file 11 "./include/linux/stddef.h"
+ 437              		.file 12 "./arch/arm_m/include/asm/string.h"
+ARM GAS  /tmp/cc6YNvYS.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 task_pools.c
+     /tmp/cc6YNvYS.s:21     .rodata.register_task_pool.str1.4:00000000 $d
+     /tmp/cc6YNvYS.s:28     .text.register_task_pool:00000000 $t
+     /tmp/cc6YNvYS.s:34     .text.register_task_pool:00000000 register_task_pool
+     /tmp/cc6YNvYS.s:157    .text.register_task_pool:00000044 $d
+     /tmp/cc6YNvYS.s:424    .data.task_pool_list:00000000 task_pool_list
+     /tmp/cc6YNvYS.s:164    .text.find_task_pool:00000000 $t
+     /tmp/cc6YNvYS.s:170    .text.find_task_pool:00000000 find_task_pool
+     /tmp/cc6YNvYS.s:237    .text.find_task_pool:00000028 $d
+     /tmp/cc6YNvYS.s:242    .rodata.unregister_task_pool.str1.4:00000000 $d
+     /tmp/cc6YNvYS.s:246    .text.unregister_task_pool:00000000 $t
+     /tmp/cc6YNvYS.s:252    .text.unregister_task_pool:00000000 unregister_task_pool
+     /tmp/cc6YNvYS.s:415    .text.unregister_task_pool:00000058 $d
+     /tmp/cc6YNvYS.s:421    .data.task_pool_list:00000000 $d
+
+UNDEFINED SYMBOLS
+strcmp
+printk
+__sfree__

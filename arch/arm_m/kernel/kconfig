@@ -1,0 +1,11 @@
+menu "Boot Configuration"
+
+    menu "interrupt Config"
+    config INTERRUPT_NUMBERS
+        int "interrupt numbers"
+        default 16
+        help
+            This config is use for create new interrupt vector scale.
+    endmenu
+    
+endmenu

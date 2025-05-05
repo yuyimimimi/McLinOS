@@ -1,0 +1,3013 @@
+ARM GAS  /tmp/ccccSwDa.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4_tty0.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./drivers/tty/stm32f4_tty0.c"
+  20              		.section	.text.USART_1_SendByte,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	USART_1_SendByte:
+  27              	.LFB1087:
+   1:./drivers/tty/stm32f4_tty0.c **** #include <linux/kernel.h>
+   2:./drivers/tty/stm32f4_tty0.c **** #include <linux/types.h>
+   3:./drivers/tty/stm32f4_tty0.c **** #include <linux/init.h> 
+   4:./drivers/tty/stm32f4_tty0.c **** #include <linux/stdarg.h>
+   5:./drivers/tty/stm32f4_tty0.c **** #include <linux/fs.h>
+   6:./drivers/tty/stm32f4_tty0.c **** #include <linux/module.h>
+   7:./drivers/tty/stm32f4_tty0.c **** #include <linux/devfs.h>
+   8:./drivers/tty/stm32f4_tty0.c **** #include <linux/init.h>
+   9:./drivers/tty/stm32f4_tty0.c **** #include <linux/sprintf.h>
+  10:./drivers/tty/stm32f4_tty0.c **** #include <linux/stdarg.h>
+  11:./drivers/tty/stm32f4_tty0.c **** #include <linux/device.h>
+  12:./drivers/tty/stm32f4_tty0.c **** #include <linux/of.h>
+  13:./drivers/tty/stm32f4_tty0.c **** #include <generated/autoconf.h>
+  14:./drivers/tty/stm32f4_tty0.c **** 
+  15:./drivers/tty/stm32f4_tty0.c **** 
+  16:./drivers/tty/stm32f4_tty0.c **** unsigned int major = 0;
+  17:./drivers/tty/stm32f4_tty0.c **** 
+  18:./drivers/tty/stm32f4_tty0.c **** #define RCC_BASE        0x40023800
+  19:./drivers/tty/stm32f4_tty0.c **** #define GPIOA_BASE      0x40020000
+  20:./drivers/tty/stm32f4_tty0.c **** #define USART1_BASE     0x40011000
+  21:./drivers/tty/stm32f4_tty0.c **** #define NVIC_BASE       0xE000E100
+  22:./drivers/tty/stm32f4_tty0.c **** 
+  23:./drivers/tty/stm32f4_tty0.c **** typedef struct {
+  24:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t MODER;    // 模式寄存器
+  25:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t OTYPER;   // 输出类型寄存器
+  26:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t OSPEEDR;  // 输出速度寄存器
+  27:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t PUPDR;    // 上下拉寄存器
+  28:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t IDR;      // 输入数据寄存器
+  29:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t ODR;      // 输出数据寄存器
+  30:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t BSRR;     // 位设置/清除寄存器
+  31:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t LCKR;     // 配置锁定寄存器
+ARM GAS  /tmp/ccccSwDa.s 			page 2
+
+
+  32:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t AFR[2];   // 复用功能寄存器
+  33:./drivers/tty/stm32f4_tty0.c **** } GPIO_TypeDef;
+  34:./drivers/tty/stm32f4_tty0.c **** 
+  35:./drivers/tty/stm32f4_tty0.c **** typedef struct {
+  36:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t SR;       // 状态寄存器
+  37:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t DR;       // 数据寄存器
+  38:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t BRR;      // 波特率寄存器
+  39:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t CR1;      // 控制寄存器1
+  40:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t CR2;      // 控制寄存器2
+  41:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t CR3;      // 控制寄存器3
+  42:./drivers/tty/stm32f4_tty0.c ****     volatile uint32_t GTPR;     // 保护时间和预分频寄存器
+  43:./drivers/tty/stm32f4_tty0.c **** } USART_TypeDef;
+  44:./drivers/tty/stm32f4_tty0.c **** 
+  45:./drivers/tty/stm32f4_tty0.c **** 
+  46:./drivers/tty/stm32f4_tty0.c **** #define RCC     ((volatile uint32_t*)RCC_BASE)
+  47:./drivers/tty/stm32f4_tty0.c **** #define GPIOA   ((GPIO_TypeDef*)GPIOA_BASE)
+  48:./drivers/tty/stm32f4_tty0.c **** #define USART1  ((USART_TypeDef*)USART1_BASE)
+  49:./drivers/tty/stm32f4_tty0.c **** #define NVIC_ISER0  (*(volatile uint32_t*)(NVIC_BASE + 0x00))
+  50:./drivers/tty/stm32f4_tty0.c **** #define NVIC_IPR9   (*(volatile uint32_t*)(NVIC_BASE + 0x424))
+  51:./drivers/tty/stm32f4_tty0.c **** 
+  52:./drivers/tty/stm32f4_tty0.c **** static void uart1_device_init_function_from_dtb(void)
+  53:./drivers/tty/stm32f4_tty0.c **** {
+  54:./drivers/tty/stm32f4_tty0.c **** 
+  55:./drivers/tty/stm32f4_tty0.c ****     struct device_node *uart_np;
+  56:./drivers/tty/stm32f4_tty0.c ****     u32 reg[2];
+  57:./drivers/tty/stm32f4_tty0.c ****     u32 irq_num = 0;
+  58:./drivers/tty/stm32f4_tty0.c ****     u32 baudrate = CONFIG_UART1_SPEED; 
+  59:./drivers/tty/stm32f4_tty0.c ****     const char *path = "/soc/serial@40011000";
+  60:./drivers/tty/stm32f4_tty0.c **** 
+  61:./drivers/tty/stm32f4_tty0.c ****     uart_np = of_find_compatible_node(NULL, NULL, "st,stm32-uart");
+  62:./drivers/tty/stm32f4_tty0.c ****     if (!uart_np) {
+  63:./drivers/tty/stm32f4_tty0.c ****         uart_np = of_find_node_by_path(path);
+  64:./drivers/tty/stm32f4_tty0.c ****         if (!uart_np) {
+  65:./drivers/tty/stm32f4_tty0.c ****             return;
+  66:./drivers/tty/stm32f4_tty0.c ****         }
+  67:./drivers/tty/stm32f4_tty0.c ****     }
+  68:./drivers/tty/stm32f4_tty0.c **** 
+  69:./drivers/tty/stm32f4_tty0.c ****     if (of_property_read_u32_array(uart_np, "reg", reg, 2) != 0)
+  70:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
+  71:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32(uart_np, "current-speed", &baudrate);
+  72:./drivers/tty/stm32f4_tty0.c **** 
+  73:./drivers/tty/stm32f4_tty0.c ****     USART_TypeDef *uart = (USART_TypeDef *)reg[0];
+  74:./drivers/tty/stm32f4_tty0.c **** 
+  75:./drivers/tty/stm32f4_tty0.c ****     RCC[0x30/4] |= (1 << 0);          
+  76:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER &= ~(0xF << 18);     
+  77:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER |= (0xA << 18);      
+  78:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] &= ~(0xFF << 4);
+  79:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] |= (0x77 << 4);    
+  80:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OSPEEDR |= (0xF << 18);
+  81:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR &= ~(0xF << 18);
+  82:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR |= (0x5 << 18);
+  83:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OTYPER &= ~(0x3 << 9);
+  84:./drivers/tty/stm32f4_tty0.c **** 
+  85:./drivers/tty/stm32f4_tty0.c ****     RCC[0x44/4] |= (1 << 4);
+  86:./drivers/tty/stm32f4_tty0.c **** 
+  87:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 = 0;
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->BRR = (84000000 + baudrate/2) / baudrate;
+ARM GAS  /tmp/ccccSwDa.s 			page 3
+
+
+  89:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+  90:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |=  (1 << 13) ;
+  91:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 5) ;
+  92:./drivers/tty/stm32f4_tty0.c **** 
+  93:./drivers/tty/stm32f4_tty0.c ****     if (irq_num < 32)
+  94:./drivers/tty/stm32f4_tty0.c ****         NVIC_ISER0 |= (1 << (irq_num & 0x1F));
+  95:./drivers/tty/stm32f4_tty0.c **** 
+  96:./drivers/tty/stm32f4_tty0.c ****     if (irq_num >= 36 && irq_num <= 39) {
+  97:./drivers/tty/stm32f4_tty0.c ****         NVIC_IPR9 |= (3 << ((irq_num - 36) * 8 + 6)); 
+  98:./drivers/tty/stm32f4_tty0.c ****     }
+  99:./drivers/tty/stm32f4_tty0.c **** }
+ 100:./drivers/tty/stm32f4_tty0.c **** 
+ 101:./drivers/tty/stm32f4_tty0.c **** void base_out_opt_device_init(void){
+ 102:./drivers/tty/stm32f4_tty0.c ****     uart1_device_init_function_from_dtb();
+ 103:./drivers/tty/stm32f4_tty0.c **** }
+ 104:./drivers/tty/stm32f4_tty0.c **** 
+ 105:./drivers/tty/stm32f4_tty0.c **** static void USART_1_SendByte(uint8_t byte)
+ 106:./drivers/tty/stm32f4_tty0.c **** {
+  28              		.loc 1 106 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34              	.L2:
+ 107:./drivers/tty/stm32f4_tty0.c ****     while(!(USART1->SR & (1 << 7)));
+  35              		.loc 1 107 11 discriminator 1 view .LVU1
+  36              		.loc 1 107 19 is_stmt 0 discriminator 1 view .LVU2
+  37 0000 034B     		ldr	r3, .L3
+  38 0002 1B68     		ldr	r3, [r3]
+  39              		.loc 1 107 11 discriminator 1 view .LVU3
+  40 0004 13F0800F 		tst	r3, #128
+  41 0008 FAD0     		beq	.L2
+ 108:./drivers/tty/stm32f4_tty0.c ****     USART1->DR = byte;
+  42              		.loc 1 108 5 is_stmt 1 view .LVU4
+  43              		.loc 1 108 16 is_stmt 0 view .LVU5
+  44 000a 014B     		ldr	r3, .L3
+  45 000c 5860     		str	r0, [r3, #4]
+ 109:./drivers/tty/stm32f4_tty0.c **** }
+  46              		.loc 1 109 1 view .LVU6
+  47 000e 7047     		bx	lr
+  48              	.L4:
+  49              		.align	2
+  50              	.L3:
+  51 0010 00100140 		.word	1073811456
+  52              		.cfi_endproc
+  53              	.LFE1087:
+  55              		.section	.text.tty_open,"ax",%progbits
+  56              		.align	1
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  61              	tty_open:
+  62              	.LVL1:
+  63              	.LFB1089:
+ 110:./drivers/tty/stm32f4_tty0.c **** 
+ 111:./drivers/tty/stm32f4_tty0.c **** void early_printk(const char *fmt, ...){
+ARM GAS  /tmp/ccccSwDa.s 			page 4
+
+
+ 112:./drivers/tty/stm32f4_tty0.c ****     char buf[256];
+ 113:./drivers/tty/stm32f4_tty0.c ****     va_list args;
+ 114:./drivers/tty/stm32f4_tty0.c ****     va_start(args, fmt);
+ 115:./drivers/tty/stm32f4_tty0.c ****     vsnprintf(buf, sizeof(buf), fmt, args);
+ 116:./drivers/tty/stm32f4_tty0.c ****     va_end(args);
+ 117:./drivers/tty/stm32f4_tty0.c ****     for(int i = 0; buf[i]!= '\0'; i++){
+ 118:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 119:./drivers/tty/stm32f4_tty0.c ****         if(buf[i] == '\n')
+ 120:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte('\r');
+ 121:./drivers/tty/stm32f4_tty0.c ****     }
+ 122:./drivers/tty/stm32f4_tty0.c **** }  
+ 123:./drivers/tty/stm32f4_tty0.c ****  
+ 124:./drivers/tty/stm32f4_tty0.c **** 
+ 125:./drivers/tty/stm32f4_tty0.c **** static int tty_open(struct inode *node, struct file *file){
+  64              		.loc 1 125 59 is_stmt 1 view -0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+ 126:./drivers/tty/stm32f4_tty0.c ****     return 0;
+  69              		.loc 1 126 5 view .LVU8
+ 127:./drivers/tty/stm32f4_tty0.c **** }
+  70              		.loc 1 127 1 is_stmt 0 view .LVU9
+  71 0000 0020     		movs	r0, #0
+  72              	.LVL2:
+  73              		.loc 1 127 1 view .LVU10
+  74 0002 7047     		bx	lr
+  75              		.cfi_endproc
+  76              	.LFE1089:
+  78              		.section	.text.tty_write,"ax",%progbits
+  79              		.align	1
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	tty_write:
+  85              	.LVL3:
+  86              	.LFB1090:
+ 128:./drivers/tty/stm32f4_tty0.c **** 
+ 129:./drivers/tty/stm32f4_tty0.c **** static ssize_t tty_write(struct file *file, const char __user *buserdata, size_t size, loff_t *offs
+  87              		.loc 1 129 103 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		.loc 1 129 103 is_stmt 0 view .LVU12
+  92 0000 70B5     		push	{r4, r5, r6, lr}
+  93              	.LCFI0:
+  94              		.cfi_def_cfa_offset 16
+  95              		.cfi_offset 4, -16
+  96              		.cfi_offset 5, -12
+  97              		.cfi_offset 6, -8
+  98              		.cfi_offset 14, -4
+  99 0002 0D46     		mov	r5, r1
+ 100 0004 1646     		mov	r6, r2
+ 130:./drivers/tty/stm32f4_tty0.c ****     for(int i = 0;i< size ;i++){
+ 101              		.loc 1 130 5 is_stmt 1 view .LVU13
+ 102              	.LBB12:
+ 103              		.loc 1 130 9 view .LVU14
+ARM GAS  /tmp/ccccSwDa.s 			page 5
+
+
+ 104              	.LVL4:
+ 105              		.loc 1 130 13 is_stmt 0 view .LVU15
+ 106 0006 0024     		movs	r4, #0
+ 107              		.loc 1 130 5 view .LVU16
+ 108 0008 00E0     		b	.L7
+ 109              	.LVL5:
+ 110              	.L8:
+ 111              		.loc 1 130 29 is_stmt 1 discriminator 2 view .LVU17
+ 112 000a 0134     		adds	r4, r4, #1
+ 113              	.LVL6:
+ 114              	.L7:
+ 115              		.loc 1 130 20 discriminator 1 view .LVU18
+ 116 000c B442     		cmp	r4, r6
+ 117 000e 09D2     		bcs	.L11
+ 131:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buserdata[i]);     
+ 118              		.loc 1 131 9 view .LVU19
+ 119 0010 285D     		ldrb	r0, [r5, r4]	@ zero_extendqisi2
+ 120 0012 FFF7FEFF 		bl	USART_1_SendByte
+ 121              	.LVL7:
+ 132:./drivers/tty/stm32f4_tty0.c ****         if(buserdata[i] == '\n'){
+ 122              		.loc 1 132 9 view .LVU20
+ 123              		.loc 1 132 21 is_stmt 0 view .LVU21
+ 124 0016 2B5D     		ldrb	r3, [r5, r4]	@ zero_extendqisi2
+ 125              		.loc 1 132 11 view .LVU22
+ 126 0018 0A2B     		cmp	r3, #10
+ 127 001a F6D1     		bne	.L8
+ 133:./drivers/tty/stm32f4_tty0.c ****             USART_1_SendByte('\r');
+ 128              		.loc 1 133 13 is_stmt 1 view .LVU23
+ 129 001c 0D20     		movs	r0, #13
+ 130 001e FFF7FEFF 		bl	USART_1_SendByte
+ 131              	.LVL8:
+ 132 0022 F2E7     		b	.L8
+ 133              	.L11:
+ 134              		.loc 1 133 13 is_stmt 0 view .LVU24
+ 135              	.LBE12:
+ 134:./drivers/tty/stm32f4_tty0.c ****         }
+ 135:./drivers/tty/stm32f4_tty0.c ****     }
+ 136:./drivers/tty/stm32f4_tty0.c ****     return size;
+ 136              		.loc 1 136 5 is_stmt 1 view .LVU25
+ 137:./drivers/tty/stm32f4_tty0.c **** }
+ 137              		.loc 1 137 1 is_stmt 0 view .LVU26
+ 138 0024 3046     		mov	r0, r6
+ 139 0026 70BD     		pop	{r4, r5, r6, pc}
+ 140              		.loc 1 137 1 view .LVU27
+ 141              		.cfi_endproc
+ 142              	.LFE1090:
+ 144              		.section	.text.tty_close,"ax",%progbits
+ 145              		.align	1
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	tty_close:
+ 151              	.LVL9:
+ 152              	.LFB1091:
+ 138:./drivers/tty/stm32f4_tty0.c **** 
+ 139:./drivers/tty/stm32f4_tty0.c **** static int tty_close(struct inode *node, struct file *file){
+ 153              		.loc 1 139 60 is_stmt 1 view -0
+ARM GAS  /tmp/ccccSwDa.s 			page 6
+
+
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		@ link register save eliminated.
+ 140:./drivers/tty/stm32f4_tty0.c ****     return 0;
+ 158              		.loc 1 140 5 view .LVU29
+ 141:./drivers/tty/stm32f4_tty0.c **** }
+ 159              		.loc 1 141 1 is_stmt 0 view .LVU30
+ 160 0000 0020     		movs	r0, #0
+ 161              	.LVL10:
+ 162              		.loc 1 141 1 view .LVU31
+ 163 0002 7047     		bx	lr
+ 164              		.cfi_endproc
+ 165              	.LFE1091:
+ 167              		.section	.text.of_property_read_u32_array,"ax",%progbits
+ 168              		.align	1
+ 169              		.syntax unified
+ 170              		.thumb
+ 171              		.thumb_func
+ 173              	of_property_read_u32_array:
+ 174              	.LVL11:
+ 175              	.LFB1080:
+ 176              		.file 2 "./include/linux/of.h"
+   1:./include/linux/of.h **** #ifndef __LINUX_OF_H
+   2:./include/linux/of.h **** #define __LINUX_OF_H
+   3:./include/linux/of.h **** 
+   4:./include/linux/of.h **** #include <linux/types.h>
+   5:./include/linux/of.h **** #include <linux/libfdt.h>
+   6:./include/linux/of.h **** #include <linux/string.h>
+   7:./include/linux/of.h **** #include <linux/errno.h>
+   8:./include/linux/of.h **** 
+   9:./include/linux/of.h **** struct device_node {
+  10:./include/linux/of.h ****     const void *fdt;
+  11:./include/linux/of.h ****     int offset;
+  12:./include/linux/of.h **** };
+  13:./include/linux/of.h **** 
+  14:./include/linux/of.h **** static const void *of_flat_dtb = __dtb_file_start_address; // 全局 dtb 指针，移植前先赋�
+  15:./include/linux/of.h **** 
+  16:./include/linux/of.h **** /* 查找 compatible 节点 */
+  17:./include/linux/of.h **** static inline struct device_node *of_find_compatible_node(const struct device_node *from, const cha
+  18:./include/linux/of.h **** {
+  19:./include/linux/of.h ****     static struct device_node node;
+  20:./include/linux/of.h ****     int offset = -1;
+  21:./include/linux/of.h ****     const void *fdt = of_flat_dtb;
+  22:./include/linux/of.h **** 
+  23:./include/linux/of.h ****     if (!fdt)
+  24:./include/linux/of.h ****         return 0;
+  25:./include/linux/of.h **** 
+  26:./include/linux/of.h ****     if (from)
+  27:./include/linux/of.h ****         offset = from->offset;
+  28:./include/linux/of.h **** 
+  29:./include/linux/of.h ****     while (1) {
+  30:./include/linux/of.h ****         offset = fdt_next_node(fdt, offset, 0);
+  31:./include/linux/of.h ****         if (offset < 0)
+  32:./include/linux/of.h ****             return 0;
+  33:./include/linux/of.h **** 
+  34:./include/linux/of.h ****         const char *prop = fdt_getprop(fdt, offset, "compatible", 0);
+ARM GAS  /tmp/ccccSwDa.s 			page 7
+
+
+  35:./include/linux/of.h ****         if (prop && strcmp(prop, compatible) == 0) {
+  36:./include/linux/of.h ****             node.fdt = fdt;
+  37:./include/linux/of.h ****             node.offset = offset;
+  38:./include/linux/of.h ****             return &node;
+  39:./include/linux/of.h ****         }
+  40:./include/linux/of.h ****     }
+  41:./include/linux/of.h **** }
+  42:./include/linux/of.h **** 
+  43:./include/linux/of.h **** /* 获取属性指针 */
+  44:./include/linux/of.h **** static inline const void *of_get_property(const struct device_node *np, const char *propname, int *
+  45:./include/linux/of.h **** {
+  46:./include/linux/of.h ****     if (!np)
+  47:./include/linux/of.h ****         return 0;
+  48:./include/linux/of.h ****     return fdt_getprop(np->fdt, np->offset, propname, len);
+  49:./include/linux/of.h **** }
+  50:./include/linux/of.h **** 
+  51:./include/linux/of.h **** /* 读 u32 属性 */
+  52:./include/linux/of.h **** static inline int of_property_read_u32(const struct device_node *np, const char *propname, u32 *out
+  53:./include/linux/of.h **** {
+  54:./include/linux/of.h ****     int len;
+  55:./include/linux/of.h ****     const u32 *val;
+  56:./include/linux/of.h **** 
+  57:./include/linux/of.h ****     if (!np || !out_value)
+  58:./include/linux/of.h ****         return -EINVAL;
+  59:./include/linux/of.h **** 
+  60:./include/linux/of.h ****     val = fdt_getprop(np->fdt, np->offset, propname, &len);
+  61:./include/linux/of.h ****     if (!val || len < 4)
+  62:./include/linux/of.h ****         return -EINVAL;
+  63:./include/linux/of.h **** 
+  64:./include/linux/of.h ****     *out_value = fdt32_to_cpu(*val);
+  65:./include/linux/of.h ****     return 0;
+  66:./include/linux/of.h **** }
+  67:./include/linux/of.h **** 
+  68:./include/linux/of.h **** /* 读 u32 数组属性 */
+  69:./include/linux/of.h **** static inline int of_property_read_u32_array(const struct device_node *np, const char *propname, u3
+  70:./include/linux/of.h **** {
+ 177              		.loc 2 70 1 is_stmt 1 view -0
+ 178              		.cfi_startproc
+ 179              		@ args = 0, pretend = 0, frame = 8
+ 180              		@ frame_needed = 0, uses_anonymous_args = 0
+  71:./include/linux/of.h ****     int len, i;
+ 181              		.loc 2 71 5 view .LVU33
+  72:./include/linux/of.h ****     const u32 *val;
+ 182              		.loc 2 72 5 view .LVU34
+  73:./include/linux/of.h **** 
+  74:./include/linux/of.h ****     if (!np || !out_values || count <= 0)
+ 183              		.loc 2 74 5 view .LVU35
+ 184              		.loc 2 74 8 is_stmt 0 view .LVU36
+ 185 0000 48B3     		cbz	r0, .L17
+  70:./include/linux/of.h ****     int len, i;
+ 186              		.loc 2 70 1 view .LVU37
+ 187 0002 30B5     		push	{r4, r5, lr}
+ 188              	.LCFI1:
+ 189              		.cfi_def_cfa_offset 12
+ 190              		.cfi_offset 4, -12
+ 191              		.cfi_offset 5, -8
+ 192              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccccSwDa.s 			page 8
+
+
+ 193 0004 83B0     		sub	sp, sp, #12
+ 194              	.LCFI2:
+ 195              		.cfi_def_cfa_offset 24
+ 196 0006 1546     		mov	r5, r2
+ 197 0008 1C46     		mov	r4, r3
+ 198              		.loc 2 74 13 discriminator 1 view .LVU38
+ 199 000a 3AB3     		cbz	r2, .L18
+ 200              		.loc 2 74 28 discriminator 2 view .LVU39
+ 201 000c 002B     		cmp	r3, #0
+ 202 000e 28DD     		ble	.L19
+  75:./include/linux/of.h ****         return -EINVAL;
+  76:./include/linux/of.h **** 
+  77:./include/linux/of.h ****     val = fdt_getprop(np->fdt, np->offset, propname, &len);
+ 203              		.loc 2 77 5 is_stmt 1 view .LVU40
+ 204              		.loc 2 77 11 is_stmt 0 view .LVU41
+ 205 0010 01AB     		add	r3, sp, #4
+ 206              	.LVL12:
+ 207              		.loc 2 77 11 view .LVU42
+ 208 0012 0A46     		mov	r2, r1
+ 209              	.LVL13:
+ 210              		.loc 2 77 11 view .LVU43
+ 211 0014 4168     		ldr	r1, [r0, #4]
+ 212              	.LVL14:
+ 213              		.loc 2 77 11 view .LVU44
+ 214 0016 0068     		ldr	r0, [r0]
+ 215              	.LVL15:
+ 216              		.loc 2 77 11 view .LVU45
+ 217 0018 FFF7FEFF 		bl	fdt_getprop
+ 218              	.LVL16:
+  78:./include/linux/of.h ****     if (!val || len < count * 4)
+ 219              		.loc 2 78 5 is_stmt 1 view .LVU46
+ 220              		.loc 2 78 8 is_stmt 0 view .LVU47
+ 221 001c 8446     		mov	ip, r0
+ 222 001e 18B3     		cbz	r0, .L20
+ 223              		.loc 2 78 21 discriminator 1 view .LVU48
+ 224 0020 019B     		ldr	r3, [sp, #4]
+ 225              		.loc 2 78 14 discriminator 1 view .LVU49
+ 226 0022 B3EB840F 		cmp	r3, r4, lsl #2
+ 227 0026 22DB     		blt	.L21
+  79:./include/linux/of.h ****         return -EINVAL;
+  80:./include/linux/of.h **** 
+  81:./include/linux/of.h ****     for (i = 0; i < count; i++)
+ 228              		.loc 2 81 12 view .LVU50
+ 229 0028 0020     		movs	r0, #0
+ 230              	.LVL17:
+ 231              		.loc 2 81 12 view .LVU51
+ 232 002a 0FE0     		b	.L15
+ 233              	.LVL18:
+ 234              	.L16:
+  82:./include/linux/of.h ****         out_values[i] = fdt32_to_cpu(val[i]);
+ 235              		.loc 2 82 9 is_stmt 1 view .LVU52
+ 236              		.loc 2 82 25 is_stmt 0 view .LVU53
+ 237 002c 5CF82030 		ldr	r3, [ip, r0, lsl #2]
+ 238              	.LVL19:
+ 239              	.LBB13:
+ 240              	.LBI13:
+ 241              		.file 3 "./include/linux/libfdt_env.h"
+ARM GAS  /tmp/ccccSwDa.s 			page 9
+
+
+   1:./include/linux/libfdt_env.h **** /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+   2:./include/linux/libfdt_env.h **** #ifndef LIBFDT_ENV_H
+   3:./include/linux/libfdt_env.h **** #define LIBFDT_ENV_H
+   4:./include/linux/libfdt_env.h **** /*
+   5:./include/linux/libfdt_env.h ****  * libfdt - Flat Device Tree manipulation
+   6:./include/linux/libfdt_env.h ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   7:./include/linux/libfdt_env.h ****  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
+   8:./include/linux/libfdt_env.h ****  */
+   9:./include/linux/libfdt_env.h **** 
+  10:./include/linux/libfdt_env.h **** #include <linux/types.h>
+  11:./include/linux/libfdt_env.h **** #include <linux/stddef.h>
+  12:./include/linux/libfdt_env.h **** #include <linux/string.h>
+  13:./include/linux/libfdt_env.h **** #include <linux/limits.h>
+  14:./include/linux/libfdt_env.h **** 
+  15:./include/linux/libfdt_env.h **** 
+  16:./include/linux/libfdt_env.h **** #ifdef __CHECKER__
+  17:./include/linux/libfdt_env.h **** #define FDT_FORCE __attribute__((force))
+  18:./include/linux/libfdt_env.h **** #define FDT_BITWISE __attribute__((bitwise))
+  19:./include/linux/libfdt_env.h **** #else
+  20:./include/linux/libfdt_env.h **** #define FDT_FORCE
+  21:./include/linux/libfdt_env.h **** #define FDT_BITWISE
+  22:./include/linux/libfdt_env.h **** #endif
+  23:./include/linux/libfdt_env.h **** 
+  24:./include/linux/libfdt_env.h **** typedef uint16_t FDT_BITWISE fdt16_t;
+  25:./include/linux/libfdt_env.h **** typedef uint32_t FDT_BITWISE fdt32_t;
+  26:./include/linux/libfdt_env.h **** typedef uint64_t FDT_BITWISE fdt64_t;
+  27:./include/linux/libfdt_env.h **** 
+  28:./include/linux/libfdt_env.h **** #define EXTRACT_BYTE(x, n)	((unsigned long long)((uint8_t *)&x)[n])
+  29:./include/linux/libfdt_env.h **** 
+  30:./include/linux/libfdt_env.h **** #define CPU_TO_FDT16(x) ((EXTRACT_BYTE(x, 0) << 8) | EXTRACT_BYTE(x, 1))
+  31:./include/linux/libfdt_env.h **** #define CPU_TO_FDT32(x) ((EXTRACT_BYTE(x, 0) << 24) | (EXTRACT_BYTE(x, 1) << 16) | \
+  32:./include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 2) << 8) | EXTRACT_BYTE(x, 3))
+  33:./include/linux/libfdt_env.h **** #define CPU_TO_FDT64(x) ((EXTRACT_BYTE(x, 0) << 56) | (EXTRACT_BYTE(x, 1) << 48) | \
+  34:./include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 2) << 40) | (EXTRACT_BYTE(x, 3) << 32) | \
+  35:./include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 4) << 24) | (EXTRACT_BYTE(x, 5) << 16) | \
+  36:./include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 6) << 8) | EXTRACT_BYTE(x, 7))
+  37:./include/linux/libfdt_env.h **** 
+  38:./include/linux/libfdt_env.h **** 
+  39:./include/linux/libfdt_env.h **** // #define CPU_TO_FDT16(x) x
+  40:./include/linux/libfdt_env.h **** // #define CPU_TO_FDT32(x) x
+  41:./include/linux/libfdt_env.h **** // #define CPU_TO_FDT64(x) x
+  42:./include/linux/libfdt_env.h **** 
+  43:./include/linux/libfdt_env.h **** 
+  44:./include/linux/libfdt_env.h **** static inline uint16_t fdt16_to_cpu(fdt16_t x)
+  45:./include/linux/libfdt_env.h **** {
+  46:./include/linux/libfdt_env.h **** 	return (FDT_FORCE uint16_t)CPU_TO_FDT16(x);
+  47:./include/linux/libfdt_env.h **** }
+  48:./include/linux/libfdt_env.h **** static inline fdt16_t cpu_to_fdt16(uint16_t x)
+  49:./include/linux/libfdt_env.h **** {
+  50:./include/linux/libfdt_env.h **** 	return (FDT_FORCE fdt16_t)CPU_TO_FDT16(x);
+  51:./include/linux/libfdt_env.h **** }
+  52:./include/linux/libfdt_env.h **** 
+  53:./include/linux/libfdt_env.h **** static inline uint32_t fdt32_to_cpu(fdt32_t x)
+ 242              		.loc 3 53 24 is_stmt 1 view .LVU54
+ 243              	.LBB14:
+  54:./include/linux/libfdt_env.h **** {
+  55:./include/linux/libfdt_env.h **** 	return (FDT_FORCE uint32_t)CPU_TO_FDT32(x);
+ARM GAS  /tmp/ccccSwDa.s 			page 10
+
+
+ 244              		.loc 3 55 2 view .LVU55
+ 245              		.loc 3 55 29 is_stmt 0 view .LVU56
+ 246 0030 C3F30721 		ubfx	r1, r3, #8, #8
+ 247 0034 0904     		lsls	r1, r1, #16
+ 248 0036 41EA0361 		orr	r1, r1, r3, lsl #24
+ 249 003a C3F30742 		ubfx	r2, r3, #16, #8
+ 250 003e 41EA0221 		orr	r1, r1, r2, lsl #8
+ 251              		.loc 3 55 9 view .LVU57
+ 252 0042 41EA1361 		orr	r1, r1, r3, lsr #24
+ 253              	.LVL20:
+ 254              		.loc 3 55 9 view .LVU58
+ 255              	.LBE14:
+ 256              	.LBE13:
+ 257              		.loc 2 82 23 discriminator 1 view .LVU59
+ 258 0046 45F82010 		str	r1, [r5, r0, lsl #2]
+  81:./include/linux/of.h ****         out_values[i] = fdt32_to_cpu(val[i]);
+ 259              		.loc 2 81 29 is_stmt 1 discriminator 3 view .LVU60
+ 260 004a 0130     		adds	r0, r0, #1
+ 261              	.LVL21:
+ 262              	.L15:
+  81:./include/linux/of.h ****         out_values[i] = fdt32_to_cpu(val[i]);
+ 263              		.loc 2 81 19 discriminator 1 view .LVU61
+ 264 004c A042     		cmp	r0, r4
+ 265 004e EDDB     		blt	.L16
+  83:./include/linux/of.h **** 
+  84:./include/linux/of.h ****     return 0;
+ 266              		.loc 2 84 12 is_stmt 0 view .LVU62
+ 267 0050 0020     		movs	r0, #0
+ 268              	.LVL22:
+ 269              	.L13:
+  85:./include/linux/of.h **** }
+ 270              		.loc 2 85 1 view .LVU63
+ 271 0052 03B0     		add	sp, sp, #12
+ 272              	.LCFI3:
+ 273              		.cfi_def_cfa_offset 12
+ 274              		@ sp needed
+ 275 0054 30BD     		pop	{r4, r5, pc}
+ 276              	.LVL23:
+ 277              	.L17:
+ 278              	.LCFI4:
+ 279              		.cfi_def_cfa_offset 0
+ 280              		.cfi_restore 4
+ 281              		.cfi_restore 5
+ 282              		.cfi_restore 14
+  75:./include/linux/of.h **** 
+ 283              		.loc 2 75 16 view .LVU64
+ 284 0056 6FF01500 		mvn	r0, #21
+ 285              	.LVL24:
+ 286              		.loc 2 85 1 view .LVU65
+ 287 005a 7047     		bx	lr
+ 288              	.LVL25:
+ 289              	.L18:
+ 290              	.LCFI5:
+ 291              		.cfi_def_cfa_offset 24
+ 292              		.cfi_offset 4, -12
+ 293              		.cfi_offset 5, -8
+ 294              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccccSwDa.s 			page 11
+
+
+  75:./include/linux/of.h **** 
+ 295              		.loc 2 75 16 view .LVU66
+ 296 005c 6FF01500 		mvn	r0, #21
+ 297              	.LVL26:
+  75:./include/linux/of.h **** 
+ 298              		.loc 2 75 16 view .LVU67
+ 299 0060 F7E7     		b	.L13
+ 300              	.LVL27:
+ 301              	.L19:
+  75:./include/linux/of.h **** 
+ 302              		.loc 2 75 16 view .LVU68
+ 303 0062 6FF01500 		mvn	r0, #21
+ 304              	.LVL28:
+  75:./include/linux/of.h **** 
+ 305              		.loc 2 75 16 view .LVU69
+ 306 0066 F4E7     		b	.L13
+ 307              	.LVL29:
+ 308              	.L20:
+  79:./include/linux/of.h **** 
+ 309              		.loc 2 79 16 view .LVU70
+ 310 0068 6FF01500 		mvn	r0, #21
+ 311              	.LVL30:
+  79:./include/linux/of.h **** 
+ 312              		.loc 2 79 16 view .LVU71
+ 313 006c F1E7     		b	.L13
+ 314              	.LVL31:
+ 315              	.L21:
+  79:./include/linux/of.h **** 
+ 316              		.loc 2 79 16 view .LVU72
+ 317 006e 6FF01500 		mvn	r0, #21
+ 318              	.LVL32:
+  79:./include/linux/of.h **** 
+ 319              		.loc 2 79 16 view .LVU73
+ 320 0072 EEE7     		b	.L13
+ 321              		.cfi_endproc
+ 322              	.LFE1080:
+ 324              		.section	.text.of_property_read_u32,"ax",%progbits
+ 325              		.align	1
+ 326              		.syntax unified
+ 327              		.thumb
+ 328              		.thumb_func
+ 330              	of_property_read_u32:
+ 331              	.LVL33:
+ 332              	.LFB1079:
+  53:./include/linux/of.h ****     int len;
+ 333              		.loc 2 53 1 is_stmt 1 view -0
+ 334              		.cfi_startproc
+ 335              		@ args = 0, pretend = 0, frame = 8
+ 336              		@ frame_needed = 0, uses_anonymous_args = 0
+  54:./include/linux/of.h ****     const u32 *val;
+ 337              		.loc 2 54 5 view .LVU75
+  55:./include/linux/of.h **** 
+ 338              		.loc 2 55 5 view .LVU76
+  57:./include/linux/of.h ****         return -EINVAL;
+ 339              		.loc 2 57 5 view .LVU77
+  57:./include/linux/of.h ****         return -EINVAL;
+ 340              		.loc 2 57 8 is_stmt 0 view .LVU78
+ARM GAS  /tmp/ccccSwDa.s 			page 12
+
+
+ 341 0000 E8B1     		cbz	r0, .L28
+  53:./include/linux/of.h ****     int len;
+ 342              		.loc 2 53 1 view .LVU79
+ 343 0002 10B5     		push	{r4, lr}
+ 344              	.LCFI6:
+ 345              		.cfi_def_cfa_offset 8
+ 346              		.cfi_offset 4, -8
+ 347              		.cfi_offset 14, -4
+ 348 0004 82B0     		sub	sp, sp, #8
+ 349              	.LCFI7:
+ 350              		.cfi_def_cfa_offset 16
+ 351 0006 1446     		mov	r4, r2
+  57:./include/linux/of.h ****         return -EINVAL;
+ 352              		.loc 2 57 13 discriminator 1 view .LVU80
+ 353 0008 E2B1     		cbz	r2, .L29
+  60:./include/linux/of.h ****     if (!val || len < 4)
+ 354              		.loc 2 60 5 is_stmt 1 view .LVU81
+  60:./include/linux/of.h ****     if (!val || len < 4)
+ 355              		.loc 2 60 11 is_stmt 0 view .LVU82
+ 356 000a 01AB     		add	r3, sp, #4
+ 357 000c 0A46     		mov	r2, r1
+ 358              	.LVL34:
+  60:./include/linux/of.h ****     if (!val || len < 4)
+ 359              		.loc 2 60 11 view .LVU83
+ 360 000e 4168     		ldr	r1, [r0, #4]
+ 361              	.LVL35:
+  60:./include/linux/of.h ****     if (!val || len < 4)
+ 362              		.loc 2 60 11 view .LVU84
+ 363 0010 0068     		ldr	r0, [r0]
+ 364              	.LVL36:
+  60:./include/linux/of.h ****     if (!val || len < 4)
+ 365              		.loc 2 60 11 view .LVU85
+ 366 0012 FFF7FEFF 		bl	fdt_getprop
+ 367              	.LVL37:
+  61:./include/linux/of.h ****         return -EINVAL;
+ 368              		.loc 2 61 5 is_stmt 1 view .LVU86
+  61:./include/linux/of.h ****         return -EINVAL;
+ 369              		.loc 2 61 8 is_stmt 0 view .LVU87
+ 370 0016 C0B1     		cbz	r0, .L30
+  61:./include/linux/of.h ****         return -EINVAL;
+ 371              		.loc 2 61 21 discriminator 1 view .LVU88
+ 372 0018 019B     		ldr	r3, [sp, #4]
+  61:./include/linux/of.h ****         return -EINVAL;
+ 373              		.loc 2 61 14 discriminator 1 view .LVU89
+ 374 001a 032B     		cmp	r3, #3
+ 375 001c 18DD     		ble	.L31
+  64:./include/linux/of.h ****     return 0;
+ 376              		.loc 2 64 5 is_stmt 1 view .LVU90
+  64:./include/linux/of.h ****     return 0;
+ 377              		.loc 2 64 18 is_stmt 0 view .LVU91
+ 378 001e 0268     		ldr	r2, [r0]
+ 379              	.LVL38:
+ 380              	.LBB15:
+ 381              	.LBI15:
+  53:./include/linux/libfdt_env.h **** {
+ 382              		.loc 3 53 24 is_stmt 1 view .LVU92
+ 383              	.LBB16:
+ARM GAS  /tmp/ccccSwDa.s 			page 13
+
+
+ 384              		.loc 3 55 2 view .LVU93
+ 385              		.loc 3 55 29 is_stmt 0 view .LVU94
+ 386 0020 C2F30723 		ubfx	r3, r2, #8, #8
+ 387 0024 1B04     		lsls	r3, r3, #16
+ 388 0026 43EA0263 		orr	r3, r3, r2, lsl #24
+ 389 002a C2F30741 		ubfx	r1, r2, #16, #8
+ 390 002e 43EA0123 		orr	r3, r3, r1, lsl #8
+ 391              		.loc 3 55 9 view .LVU95
+ 392 0032 43EA1263 		orr	r3, r3, r2, lsr #24
+ 393              	.LVL39:
+ 394              		.loc 3 55 9 view .LVU96
+ 395              	.LBE16:
+ 396              	.LBE15:
+  64:./include/linux/of.h ****     return 0;
+ 397              		.loc 2 64 16 discriminator 1 view .LVU97
+ 398 0036 2360     		str	r3, [r4]
+  65:./include/linux/of.h **** }
+ 399              		.loc 2 65 5 is_stmt 1 view .LVU98
+  65:./include/linux/of.h **** }
+ 400              		.loc 2 65 12 is_stmt 0 view .LVU99
+ 401 0038 0020     		movs	r0, #0
+ 402              	.LVL40:
+ 403              	.L26:
+  66:./include/linux/of.h **** 
+ 404              		.loc 2 66 1 view .LVU100
+ 405 003a 02B0     		add	sp, sp, #8
+ 406              	.LCFI8:
+ 407              		.cfi_def_cfa_offset 8
+ 408              		@ sp needed
+ 409 003c 10BD     		pop	{r4, pc}
+ 410              	.LVL41:
+ 411              	.L28:
+ 412              	.LCFI9:
+ 413              		.cfi_def_cfa_offset 0
+ 414              		.cfi_restore 4
+ 415              		.cfi_restore 14
+  58:./include/linux/of.h **** 
+ 416              		.loc 2 58 16 view .LVU101
+ 417 003e 6FF01500 		mvn	r0, #21
+ 418              	.LVL42:
+  66:./include/linux/of.h **** 
+ 419              		.loc 2 66 1 view .LVU102
+ 420 0042 7047     		bx	lr
+ 421              	.LVL43:
+ 422              	.L29:
+ 423              	.LCFI10:
+ 424              		.cfi_def_cfa_offset 16
+ 425              		.cfi_offset 4, -8
+ 426              		.cfi_offset 14, -4
+  58:./include/linux/of.h **** 
+ 427              		.loc 2 58 16 view .LVU103
+ 428 0044 6FF01500 		mvn	r0, #21
+ 429              	.LVL44:
+  58:./include/linux/of.h **** 
+ 430              		.loc 2 58 16 view .LVU104
+ 431 0048 F7E7     		b	.L26
+ 432              	.LVL45:
+ARM GAS  /tmp/ccccSwDa.s 			page 14
+
+
+ 433              	.L30:
+  62:./include/linux/of.h **** 
+ 434              		.loc 2 62 16 view .LVU105
+ 435 004a 6FF01500 		mvn	r0, #21
+ 436              	.LVL46:
+  62:./include/linux/of.h **** 
+ 437              		.loc 2 62 16 view .LVU106
+ 438 004e F4E7     		b	.L26
+ 439              	.LVL47:
+ 440              	.L31:
+  62:./include/linux/of.h **** 
+ 441              		.loc 2 62 16 view .LVU107
+ 442 0050 6FF01500 		mvn	r0, #21
+ 443              	.LVL48:
+  62:./include/linux/of.h **** 
+ 444              		.loc 2 62 16 view .LVU108
+ 445 0054 F1E7     		b	.L26
+ 446              		.cfi_endproc
+ 447              	.LFE1079:
+ 449              		.section	.rodata.of_find_compatible_node.str1.4,"aMS",%progbits,1
+ 450              		.align	2
+ 451              	.LC0:
+ 452 0000 636F6D70 		.ascii	"compatible\000"
+ 452      61746962 
+ 452      6C6500
+ 453              		.section	.text.of_find_compatible_node,"ax",%progbits
+ 454              		.align	1
+ 455              		.syntax unified
+ 456              		.thumb
+ 457              		.thumb_func
+ 459              	of_find_compatible_node:
+ 460              	.LVL49:
+ 461              	.LFB1077:
+  18:./include/linux/of.h ****     static struct device_node node;
+ 462              		.loc 2 18 1 is_stmt 1 view -0
+ 463              		.cfi_startproc
+ 464              		@ args = 0, pretend = 0, frame = 0
+ 465              		@ frame_needed = 0, uses_anonymous_args = 0
+  18:./include/linux/of.h ****     static struct device_node node;
+ 466              		.loc 2 18 1 is_stmt 0 view .LVU110
+ 467 0000 38B5     		push	{r3, r4, r5, lr}
+ 468              	.LCFI11:
+ 469              		.cfi_def_cfa_offset 16
+ 470              		.cfi_offset 3, -16
+ 471              		.cfi_offset 4, -12
+ 472              		.cfi_offset 5, -8
+ 473              		.cfi_offset 14, -4
+ 474 0002 1546     		mov	r5, r2
+  19:./include/linux/of.h ****     int offset = -1;
+ 475              		.loc 2 19 5 is_stmt 1 view .LVU111
+  20:./include/linux/of.h ****     const void *fdt = of_flat_dtb;
+ 476              		.loc 2 20 5 view .LVU112
+ 477              	.LVL50:
+  21:./include/linux/of.h **** 
+ 478              		.loc 2 21 5 view .LVU113
+  23:./include/linux/of.h ****         return 0;
+ 479              		.loc 2 23 5 view .LVU114
+ARM GAS  /tmp/ccccSwDa.s 			page 15
+
+
+  26:./include/linux/of.h ****         offset = from->offset;
+ 480              		.loc 2 26 5 view .LVU115
+  26:./include/linux/of.h ****         offset = from->offset;
+ 481              		.loc 2 26 8 is_stmt 0 view .LVU116
+ 482 0004 C8B1     		cbz	r0, .L40
+  27:./include/linux/of.h **** 
+ 483              		.loc 2 27 9 is_stmt 1 view .LVU117
+  27:./include/linux/of.h **** 
+ 484              		.loc 2 27 16 is_stmt 0 view .LVU118
+ 485 0006 4468     		ldr	r4, [r0, #4]
+ 486              	.LVL51:
+ 487              	.L39:
+  29:./include/linux/of.h ****         offset = fdt_next_node(fdt, offset, 0);
+ 488              		.loc 2 29 5 is_stmt 1 view .LVU119
+ 489              	.LBB17:
+  30:./include/linux/of.h ****         if (offset < 0)
+ 490              		.loc 2 30 9 view .LVU120
+  30:./include/linux/of.h ****         if (offset < 0)
+ 491              		.loc 2 30 18 is_stmt 0 view .LVU121
+ 492 0008 0022     		movs	r2, #0
+ 493 000a 2146     		mov	r1, r4
+ 494 000c 0D48     		ldr	r0, .L43
+ 495 000e FFF7FEFF 		bl	fdt_next_node
+ 496              	.LVL52:
+  31:./include/linux/of.h ****             return 0;
+ 497              		.loc 2 31 9 is_stmt 1 view .LVU122
+  31:./include/linux/of.h ****             return 0;
+ 498              		.loc 2 31 12 is_stmt 0 view .LVU123
+ 499 0012 041E     		subs	r4, r0, #0
+ 500 0014 14DB     		blt	.L41
+  34:./include/linux/of.h ****         if (prop && strcmp(prop, compatible) == 0) {
+ 501              		.loc 2 34 9 is_stmt 1 view .LVU124
+  34:./include/linux/of.h ****         if (prop && strcmp(prop, compatible) == 0) {
+ 502              		.loc 2 34 28 is_stmt 0 view .LVU125
+ 503 0016 0023     		movs	r3, #0
+ 504 0018 0B4A     		ldr	r2, .L43+4
+ 505 001a 2146     		mov	r1, r4
+ 506 001c 0948     		ldr	r0, .L43
+ 507              	.LVL53:
+  34:./include/linux/of.h ****         if (prop && strcmp(prop, compatible) == 0) {
+ 508              		.loc 2 34 28 view .LVU126
+ 509 001e FFF7FEFF 		bl	fdt_getprop
+ 510              	.LVL54:
+  35:./include/linux/of.h ****             node.fdt = fdt;
+ 511              		.loc 2 35 9 is_stmt 1 view .LVU127
+  35:./include/linux/of.h ****             node.fdt = fdt;
+ 512              		.loc 2 35 12 is_stmt 0 view .LVU128
+ 513 0022 0028     		cmp	r0, #0
+ 514 0024 F0D0     		beq	.L39
+  35:./include/linux/of.h ****             node.fdt = fdt;
+ 515              		.loc 2 35 21 discriminator 1 view .LVU129
+ 516 0026 2946     		mov	r1, r5
+ 517 0028 FFF7FEFF 		bl	strcmp
+ 518              	.LVL55:
+  35:./include/linux/of.h ****             node.fdt = fdt;
+ 519              		.loc 2 35 18 discriminator 1 view .LVU130
+ 520 002c 0028     		cmp	r0, #0
+ARM GAS  /tmp/ccccSwDa.s 			page 16
+
+
+ 521 002e EBD1     		bne	.L39
+  36:./include/linux/of.h ****             node.offset = offset;
+ 522              		.loc 2 36 13 is_stmt 1 view .LVU131
+  36:./include/linux/of.h ****             node.offset = offset;
+ 523              		.loc 2 36 22 is_stmt 0 view .LVU132
+ 524 0030 0648     		ldr	r0, .L43+8
+ 525 0032 044B     		ldr	r3, .L43
+ 526 0034 0360     		str	r3, [r0]
+  37:./include/linux/of.h ****             return &node;
+ 527              		.loc 2 37 13 is_stmt 1 view .LVU133
+  37:./include/linux/of.h ****             return &node;
+ 528              		.loc 2 37 25 is_stmt 0 view .LVU134
+ 529 0036 4460     		str	r4, [r0, #4]
+  38:./include/linux/of.h ****         }
+ 530              		.loc 2 38 13 is_stmt 1 view .LVU135
+  38:./include/linux/of.h ****         }
+ 531              		.loc 2 38 20 is_stmt 0 view .LVU136
+ 532 0038 03E0     		b	.L36
+ 533              	.LVL56:
+ 534              	.L40:
+  38:./include/linux/of.h ****         }
+ 535              		.loc 2 38 20 view .LVU137
+ 536              	.LBE17:
+  20:./include/linux/of.h ****     const void *fdt = of_flat_dtb;
+ 537              		.loc 2 20 9 view .LVU138
+ 538 003a 4FF0FF34 		mov	r4, #-1
+ 539 003e E3E7     		b	.L39
+ 540              	.LVL57:
+ 541              	.L41:
+ 542              	.LBB18:
+  32:./include/linux/of.h **** 
+ 543              		.loc 2 32 20 view .LVU139
+ 544 0040 0020     		movs	r0, #0
+ 545              	.LVL58:
+ 546              	.L36:
+  32:./include/linux/of.h **** 
+ 547              		.loc 2 32 20 view .LVU140
+ 548              	.LBE18:
+  41:./include/linux/of.h **** 
+ 549              		.loc 2 41 1 view .LVU141
+ 550 0042 38BD     		pop	{r3, r4, r5, pc}
+ 551              	.LVL59:
+ 552              	.L44:
+  41:./include/linux/of.h **** 
+ 553              		.loc 2 41 1 view .LVU142
+ 554              		.align	2
+ 555              	.L43:
+ 556 0044 00000000 		.word	__dtb_file_start_address
+ 557 0048 00000000 		.word	.LC0
+ 558 004c 00000000 		.word	node.1
+ 559              		.cfi_endproc
+ 560              	.LFE1077:
+ 562              		.section	.text.of_find_node_by_path,"ax",%progbits
+ 563              		.align	1
+ 564              		.syntax unified
+ 565              		.thumb
+ 566              		.thumb_func
+ARM GAS  /tmp/ccccSwDa.s 			page 17
+
+
+ 568              	of_find_node_by_path:
+ 569              	.LVL60:
+ 570              	.LFB1083:
+  86:./include/linux/of.h **** 
+  87:./include/linux/of.h **** /* 读字符串属性 */
+  88:./include/linux/of.h **** static inline int of_property_read_string(const struct device_node *np, const char *propname, const
+  89:./include/linux/of.h **** {
+  90:./include/linux/of.h ****     int len;
+  91:./include/linux/of.h ****     const char *val;
+  92:./include/linux/of.h **** 
+  93:./include/linux/of.h ****     if (!np || !out_string)
+  94:./include/linux/of.h ****         return -EINVAL;
+  95:./include/linux/of.h **** 
+  96:./include/linux/of.h ****     val = fdt_getprop(np->fdt, np->offset, propname, &len);
+  97:./include/linux/of.h ****     if (!val)
+  98:./include/linux/of.h ****         return -EINVAL;
+  99:./include/linux/of.h **** 
+ 100:./include/linux/of.h ****     *out_string = val;
+ 101:./include/linux/of.h ****     return 0;
+ 102:./include/linux/of.h **** }
+ 103:./include/linux/of.h **** 
+ 104:./include/linux/of.h **** /* 判断节点名称是否匹配 */
+ 105:./include/linux/of.h **** static inline int of_node_name_eq(const struct device_node *np, const char *name)
+ 106:./include/linux/of.h **** {
+ 107:./include/linux/of.h ****     const char *node_name;
+ 108:./include/linux/of.h ****     if (!np)
+ 109:./include/linux/of.h ****         return 0;
+ 110:./include/linux/of.h **** 
+ 111:./include/linux/of.h ****     node_name = fdt_get_name(np->fdt, np->offset, 0);
+ 112:./include/linux/of.h ****     return (strcmp(node_name, name) == 0);
+ 113:./include/linux/of.h **** }
+ 114:./include/linux/of.h **** 
+ 115:./include/linux/of.h **** /* 查找路径节点 */
+ 116:./include/linux/of.h **** static inline struct device_node *of_find_node_by_path(const char *path)
+ 117:./include/linux/of.h **** {
+ 571              		.loc 2 117 1 is_stmt 1 view -0
+ 572              		.cfi_startproc
+ 573              		@ args = 0, pretend = 0, frame = 0
+ 574              		@ frame_needed = 0, uses_anonymous_args = 0
+ 575              		.loc 2 117 1 is_stmt 0 view .LVU144
+ 576 0000 08B5     		push	{r3, lr}
+ 577              	.LCFI12:
+ 578              		.cfi_def_cfa_offset 8
+ 579              		.cfi_offset 3, -8
+ 580              		.cfi_offset 14, -4
+ 581 0002 0146     		mov	r1, r0
+ 118:./include/linux/of.h ****     static struct device_node node;
+ 582              		.loc 2 118 5 is_stmt 1 view .LVU145
+ 119:./include/linux/of.h ****     int offset;
+ 583              		.loc 2 119 5 view .LVU146
+ 120:./include/linux/of.h ****     const void *fdt = of_flat_dtb;
+ 584              		.loc 2 120 5 view .LVU147
+ 585              	.LVL61:
+ 121:./include/linux/of.h **** 
+ 122:./include/linux/of.h ****     if (!fdt)
+ 586              		.loc 2 122 5 view .LVU148
+ 123:./include/linux/of.h ****         return 0;
+ARM GAS  /tmp/ccccSwDa.s 			page 18
+
+
+ 124:./include/linux/of.h **** 
+ 125:./include/linux/of.h ****     offset = fdt_path_offset(fdt, path);
+ 587              		.loc 2 125 5 view .LVU149
+ 588              		.loc 2 125 14 is_stmt 0 view .LVU150
+ 589 0004 0548     		ldr	r0, .L49
+ 590              	.LVL62:
+ 591              		.loc 2 125 14 view .LVU151
+ 592 0006 FFF7FEFF 		bl	fdt_path_offset
+ 593              	.LVL63:
+ 126:./include/linux/of.h ****     if (offset < 0)
+ 594              		.loc 2 126 5 is_stmt 1 view .LVU152
+ 595              		.loc 2 126 8 is_stmt 0 view .LVU153
+ 596 000a 031E     		subs	r3, r0, #0
+ 597 000c 04DB     		blt	.L47
+ 127:./include/linux/of.h ****         return 0;
+ 128:./include/linux/of.h **** 
+ 129:./include/linux/of.h ****     node.fdt = fdt;
+ 598              		.loc 2 129 5 is_stmt 1 view .LVU154
+ 599              		.loc 2 129 14 is_stmt 0 view .LVU155
+ 600 000e 0448     		ldr	r0, .L49+4
+ 601              	.LVL64:
+ 602              		.loc 2 129 14 view .LVU156
+ 603 0010 024A     		ldr	r2, .L49
+ 604 0012 0260     		str	r2, [r0]
+ 130:./include/linux/of.h ****     node.offset = offset;
+ 605              		.loc 2 130 5 is_stmt 1 view .LVU157
+ 606              		.loc 2 130 17 is_stmt 0 view .LVU158
+ 607 0014 4360     		str	r3, [r0, #4]
+ 131:./include/linux/of.h ****     return &node;
+ 608              		.loc 2 131 5 is_stmt 1 view .LVU159
+ 609              	.L45:
+ 132:./include/linux/of.h **** }
+ 610              		.loc 2 132 1 is_stmt 0 view .LVU160
+ 611 0016 08BD     		pop	{r3, pc}
+ 612              	.LVL65:
+ 613              	.L47:
+ 127:./include/linux/of.h **** 
+ 614              		.loc 2 127 16 view .LVU161
+ 615 0018 0020     		movs	r0, #0
+ 616              	.LVL66:
+ 127:./include/linux/of.h **** 
+ 617              		.loc 2 127 16 view .LVU162
+ 618 001a FCE7     		b	.L45
+ 619              	.L50:
+ 620              		.align	2
+ 621              	.L49:
+ 622 001c 00000000 		.word	__dtb_file_start_address
+ 623 0020 00000000 		.word	node.0
+ 624              		.cfi_endproc
+ 625              	.LFE1083:
+ 627              		.section	.rodata.uart1_device_init_function_from_dtb.str1.4,"aMS",%progbits,1
+ 628              		.align	2
+ 629              	.LC1:
+ 630 0000 73742C73 		.ascii	"st,stm32-uart\000"
+ 630      746D3332 
+ 630      2D756172 
+ 630      7400
+ARM GAS  /tmp/ccccSwDa.s 			page 19
+
+
+ 631 000e 0000     		.align	2
+ 632              	.LC2:
+ 633 0010 2F736F63 		.ascii	"/soc/serial@40011000\000"
+ 633      2F736572 
+ 633      69616C40 
+ 633      34303031 
+ 633      31303030 
+ 634 0025 000000   		.align	2
+ 635              	.LC3:
+ 636 0028 72656700 		.ascii	"reg\000"
+ 637              		.align	2
+ 638              	.LC4:
+ 639 002c 696E7465 		.ascii	"interrupts\000"
+ 639      72727570 
+ 639      747300
+ 640 0037 00       		.align	2
+ 641              	.LC5:
+ 642 0038 63757272 		.ascii	"current-speed\000"
+ 642      656E742D 
+ 642      73706565 
+ 642      6400
+ 643              		.section	.text.uart1_device_init_function_from_dtb,"ax",%progbits
+ 644              		.align	1
+ 645              		.syntax unified
+ 646              		.thumb
+ 647              		.thumb_func
+ 649              	uart1_device_init_function_from_dtb:
+ 650              	.LFB1085:
+  53:./drivers/tty/stm32f4_tty0.c **** 
+ 651              		.loc 1 53 1 is_stmt 1 view -0
+ 652              		.cfi_startproc
+ 653              		@ args = 0, pretend = 0, frame = 16
+ 654              		@ frame_needed = 0, uses_anonymous_args = 0
+ 655 0000 10B5     		push	{r4, lr}
+ 656              	.LCFI13:
+ 657              		.cfi_def_cfa_offset 8
+ 658              		.cfi_offset 4, -8
+ 659              		.cfi_offset 14, -4
+ 660 0002 84B0     		sub	sp, sp, #16
+ 661              	.LCFI14:
+ 662              		.cfi_def_cfa_offset 24
+  55:./drivers/tty/stm32f4_tty0.c ****     u32 reg[2];
+ 663              		.loc 1 55 5 view .LVU164
+  56:./drivers/tty/stm32f4_tty0.c ****     u32 irq_num = 0;
+ 664              		.loc 1 56 5 view .LVU165
+  57:./drivers/tty/stm32f4_tty0.c ****     u32 baudrate = CONFIG_UART1_SPEED; 
+ 665              		.loc 1 57 5 view .LVU166
+  57:./drivers/tty/stm32f4_tty0.c ****     u32 baudrate = CONFIG_UART1_SPEED; 
+ 666              		.loc 1 57 9 is_stmt 0 view .LVU167
+ 667 0004 0020     		movs	r0, #0
+ 668 0006 0190     		str	r0, [sp, #4]
+  58:./drivers/tty/stm32f4_tty0.c ****     const char *path = "/soc/serial@40011000";
+ 669              		.loc 1 58 5 is_stmt 1 view .LVU168
+  58:./drivers/tty/stm32f4_tty0.c ****     const char *path = "/soc/serial@40011000";
+ 670              		.loc 1 58 9 is_stmt 0 view .LVU169
+ 671 0008 4FF4E133 		mov	r3, #115200
+ 672 000c 0093     		str	r3, [sp]
+ARM GAS  /tmp/ccccSwDa.s 			page 20
+
+
+  59:./drivers/tty/stm32f4_tty0.c **** 
+ 673              		.loc 1 59 5 is_stmt 1 view .LVU170
+ 674              	.LVL67:
+  61:./drivers/tty/stm32f4_tty0.c ****     if (!uart_np) {
+ 675              		.loc 1 61 5 view .LVU171
+  61:./drivers/tty/stm32f4_tty0.c ****     if (!uart_np) {
+ 676              		.loc 1 61 15 is_stmt 0 view .LVU172
+ 677 000e 444A     		ldr	r2, .L60
+ 678 0010 0146     		mov	r1, r0
+ 679 0012 FFF7FEFF 		bl	of_find_compatible_node
+ 680              	.LVL68:
+  62:./drivers/tty/stm32f4_tty0.c ****         uart_np = of_find_node_by_path(path);
+ 681              		.loc 1 62 5 is_stmt 1 view .LVU173
+  62:./drivers/tty/stm32f4_tty0.c ****         uart_np = of_find_node_by_path(path);
+ 682              		.loc 1 62 8 is_stmt 0 view .LVU174
+ 683 0016 0446     		mov	r4, r0
+ 684 0018 0028     		cmp	r0, #0
+ 685 001a 73D0     		beq	.L58
+ 686              	.L52:
+  69:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
+ 687              		.loc 1 69 5 is_stmt 1 view .LVU175
+  69:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
+ 688              		.loc 1 69 9 is_stmt 0 view .LVU176
+ 689 001c 0223     		movs	r3, #2
+ 690 001e 02AA     		add	r2, sp, #8
+ 691 0020 4049     		ldr	r1, .L60+4
+ 692 0022 2046     		mov	r0, r4
+  69:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
+ 693              		.loc 1 69 9 view .LVU177
+ 694 0024 FFF7FEFF 		bl	of_property_read_u32_array
+ 695              	.LVL69:
+  69:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
+ 696              		.loc 1 69 8 discriminator 1 view .LVU178
+ 697 0028 0028     		cmp	r0, #0
+ 698 002a 72D1     		bne	.L59
+ 699              	.L54:
+  71:./drivers/tty/stm32f4_tty0.c **** 
+ 700              		.loc 1 71 5 is_stmt 1 view .LVU179
+ 701 002c 6A46     		mov	r2, sp
+ 702 002e 3E49     		ldr	r1, .L60+8
+ 703 0030 2046     		mov	r0, r4
+ 704 0032 FFF7FEFF 		bl	of_property_read_u32
+ 705              	.LVL70:
+  73:./drivers/tty/stm32f4_tty0.c **** 
+ 706              		.loc 1 73 5 view .LVU180
+  73:./drivers/tty/stm32f4_tty0.c **** 
+ 707              		.loc 1 73 47 is_stmt 0 view .LVU181
+ 708 0036 029A     		ldr	r2, [sp, #8]
+ 709              	.LVL71:
+  75:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER &= ~(0xF << 18);     
+ 710              		.loc 1 75 5 is_stmt 1 view .LVU182
+  75:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER &= ~(0xF << 18);     
+ 711              		.loc 1 75 8 is_stmt 0 view .LVU183
+ 712 0038 3C49     		ldr	r1, .L60+12
+ 713 003a D1F83038 		ldr	r3, [r1, #2096]
+  75:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER &= ~(0xF << 18);     
+ 714              		.loc 1 75 17 view .LVU184
+ARM GAS  /tmp/ccccSwDa.s 			page 21
+
+
+ 715 003e 43F00103 		orr	r3, r3, #1
+ 716 0042 C1F83038 		str	r3, [r1, #2096]
+  76:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER |= (0xA << 18);      
+ 717              		.loc 1 76 5 is_stmt 1 view .LVU185
+  76:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER |= (0xA << 18);      
+ 718              		.loc 1 76 10 is_stmt 0 view .LVU186
+ 719 0046 3A4B     		ldr	r3, .L60+16
+ 720 0048 1868     		ldr	r0, [r3]
+  76:./drivers/tty/stm32f4_tty0.c ****     GPIOA->MODER |= (0xA << 18);      
+ 721              		.loc 1 76 18 view .LVU187
+ 722 004a 20F47010 		bic	r0, r0, #3932160
+ 723 004e 1860     		str	r0, [r3]
+  77:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] &= ~(0xFF << 4);
+ 724              		.loc 1 77 5 is_stmt 1 view .LVU188
+  77:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] &= ~(0xFF << 4);
+ 725              		.loc 1 77 10 is_stmt 0 view .LVU189
+ 726 0050 1868     		ldr	r0, [r3]
+  77:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] &= ~(0xFF << 4);
+ 727              		.loc 1 77 18 view .LVU190
+ 728 0052 40F42010 		orr	r0, r0, #2621440
+ 729 0056 1860     		str	r0, [r3]
+  78:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] |= (0x77 << 4);    
+ 730              		.loc 1 78 5 is_stmt 1 view .LVU191
+  78:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] |= (0x77 << 4);    
+ 731              		.loc 1 78 15 is_stmt 0 view .LVU192
+ 732 0058 586A     		ldr	r0, [r3, #36]
+  78:./drivers/tty/stm32f4_tty0.c ****     GPIOA->AFR[1] |= (0x77 << 4);    
+ 733              		.loc 1 78 19 view .LVU193
+ 734 005a 20F47F60 		bic	r0, r0, #4080
+ 735 005e 5862     		str	r0, [r3, #36]
+  79:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OSPEEDR |= (0xF << 18);
+ 736              		.loc 1 79 5 is_stmt 1 view .LVU194
+  79:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OSPEEDR |= (0xF << 18);
+ 737              		.loc 1 79 15 is_stmt 0 view .LVU195
+ 738 0060 586A     		ldr	r0, [r3, #36]
+  79:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OSPEEDR |= (0xF << 18);
+ 739              		.loc 1 79 19 view .LVU196
+ 740 0062 40F4EE60 		orr	r0, r0, #1904
+ 741 0066 5862     		str	r0, [r3, #36]
+  80:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR &= ~(0xF << 18);
+ 742              		.loc 1 80 5 is_stmt 1 view .LVU197
+  80:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR &= ~(0xF << 18);
+ 743              		.loc 1 80 10 is_stmt 0 view .LVU198
+ 744 0068 9868     		ldr	r0, [r3, #8]
+  80:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR &= ~(0xF << 18);
+ 745              		.loc 1 80 20 view .LVU199
+ 746 006a 40F47010 		orr	r0, r0, #3932160
+ 747 006e 9860     		str	r0, [r3, #8]
+  81:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR |= (0x5 << 18);
+ 748              		.loc 1 81 5 is_stmt 1 view .LVU200
+  81:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR |= (0x5 << 18);
+ 749              		.loc 1 81 10 is_stmt 0 view .LVU201
+ 750 0070 D868     		ldr	r0, [r3, #12]
+  81:./drivers/tty/stm32f4_tty0.c ****     GPIOA->PUPDR |= (0x5 << 18);
+ 751              		.loc 1 81 18 view .LVU202
+ 752 0072 20F47010 		bic	r0, r0, #3932160
+ 753 0076 D860     		str	r0, [r3, #12]
+ARM GAS  /tmp/ccccSwDa.s 			page 22
+
+
+  82:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OTYPER &= ~(0x3 << 9);
+ 754              		.loc 1 82 5 is_stmt 1 view .LVU203
+  82:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OTYPER &= ~(0x3 << 9);
+ 755              		.loc 1 82 10 is_stmt 0 view .LVU204
+ 756 0078 D868     		ldr	r0, [r3, #12]
+  82:./drivers/tty/stm32f4_tty0.c ****     GPIOA->OTYPER &= ~(0x3 << 9);
+ 757              		.loc 1 82 18 view .LVU205
+ 758 007a 40F4A010 		orr	r0, r0, #1310720
+ 759 007e D860     		str	r0, [r3, #12]
+  83:./drivers/tty/stm32f4_tty0.c **** 
+ 760              		.loc 1 83 5 is_stmt 1 view .LVU206
+  83:./drivers/tty/stm32f4_tty0.c **** 
+ 761              		.loc 1 83 10 is_stmt 0 view .LVU207
+ 762 0080 5868     		ldr	r0, [r3, #4]
+  83:./drivers/tty/stm32f4_tty0.c **** 
+ 763              		.loc 1 83 19 view .LVU208
+ 764 0082 20F4C060 		bic	r0, r0, #1536
+ 765 0086 5860     		str	r0, [r3, #4]
+  85:./drivers/tty/stm32f4_tty0.c **** 
+ 766              		.loc 1 85 5 is_stmt 1 view .LVU209
+  85:./drivers/tty/stm32f4_tty0.c **** 
+ 767              		.loc 1 85 8 is_stmt 0 view .LVU210
+ 768 0088 D1F84438 		ldr	r3, [r1, #2116]
+  85:./drivers/tty/stm32f4_tty0.c **** 
+ 769              		.loc 1 85 17 view .LVU211
+ 770 008c 43F01003 		orr	r3, r3, #16
+ 771 0090 C1F84438 		str	r3, [r1, #2116]
+  87:./drivers/tty/stm32f4_tty0.c ****     uart->BRR = (84000000 + baudrate/2) / baudrate;
+ 772              		.loc 1 87 5 is_stmt 1 view .LVU212
+  87:./drivers/tty/stm32f4_tty0.c ****     uart->BRR = (84000000 + baudrate/2) / baudrate;
+ 773              		.loc 1 87 15 is_stmt 0 view .LVU213
+ 774 0094 0023     		movs	r3, #0
+ 775 0096 D360     		str	r3, [r2, #12]
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+ 776              		.loc 1 88 5 is_stmt 1 view .LVU214
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+ 777              		.loc 1 88 37 is_stmt 0 view .LVU215
+ 778 0098 0099     		ldr	r1, [sp]
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+ 779              		.loc 1 88 27 view .LVU216
+ 780 009a 264B     		ldr	r3, .L60+20
+ 781 009c 03EB5103 		add	r3, r3, r1, lsr #1
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+ 782              		.loc 1 88 41 view .LVU217
+ 783 00a0 B3FBF1F3 		udiv	r3, r3, r1
+  88:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 3) | (1 << 2);
+ 784              		.loc 1 88 15 view .LVU218
+ 785 00a4 9360     		str	r3, [r2, #8]
+  89:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |=  (1 << 13) ;
+ 786              		.loc 1 89 5 is_stmt 1 view .LVU219
+  89:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |=  (1 << 13) ;
+ 787              		.loc 1 89 9 is_stmt 0 view .LVU220
+ 788 00a6 D368     		ldr	r3, [r2, #12]
+  89:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |=  (1 << 13) ;
+ 789              		.loc 1 89 15 view .LVU221
+ 790 00a8 43F00C03 		orr	r3, r3, #12
+ 791 00ac D360     		str	r3, [r2, #12]
+ARM GAS  /tmp/ccccSwDa.s 			page 23
+
+
+  90:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 5) ;
+ 792              		.loc 1 90 5 is_stmt 1 view .LVU222
+  90:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 5) ;
+ 793              		.loc 1 90 9 is_stmt 0 view .LVU223
+ 794 00ae D368     		ldr	r3, [r2, #12]
+  90:./drivers/tty/stm32f4_tty0.c ****     uart->CR1 |= (1 << 5) ;
+ 795              		.loc 1 90 15 view .LVU224
+ 796 00b0 43F40053 		orr	r3, r3, #8192
+ 797 00b4 D360     		str	r3, [r2, #12]
+  91:./drivers/tty/stm32f4_tty0.c **** 
+ 798              		.loc 1 91 5 is_stmt 1 view .LVU225
+  91:./drivers/tty/stm32f4_tty0.c **** 
+ 799              		.loc 1 91 9 is_stmt 0 view .LVU226
+ 800 00b6 D368     		ldr	r3, [r2, #12]
+  91:./drivers/tty/stm32f4_tty0.c **** 
+ 801              		.loc 1 91 15 view .LVU227
+ 802 00b8 43F02003 		orr	r3, r3, #32
+ 803 00bc D360     		str	r3, [r2, #12]
+  93:./drivers/tty/stm32f4_tty0.c ****         NVIC_ISER0 |= (1 << (irq_num & 0x1F));
+ 804              		.loc 1 93 5 is_stmt 1 view .LVU228
+  93:./drivers/tty/stm32f4_tty0.c ****         NVIC_ISER0 |= (1 << (irq_num & 0x1F));
+ 805              		.loc 1 93 17 is_stmt 0 view .LVU229
+ 806 00be 019B     		ldr	r3, [sp, #4]
+  93:./drivers/tty/stm32f4_tty0.c ****         NVIC_ISER0 |= (1 << (irq_num & 0x1F));
+ 807              		.loc 1 93 8 view .LVU230
+ 808 00c0 1F2B     		cmp	r3, #31
+ 809 00c2 0BD8     		bhi	.L55
+  94:./drivers/tty/stm32f4_tty0.c **** 
+ 810              		.loc 1 94 9 is_stmt 1 view .LVU231
+ 811 00c4 4FF0E020 		mov	r0, #-536813568
+ 812 00c8 D0F80021 		ldr	r2, [r0, #256]
+ 813              	.LVL72:
+  94:./drivers/tty/stm32f4_tty0.c **** 
+ 814              		.loc 1 94 38 is_stmt 0 view .LVU232
+ 815 00cc 03F01F03 		and	r3, r3, #31
+  94:./drivers/tty/stm32f4_tty0.c **** 
+ 816              		.loc 1 94 26 view .LVU233
+ 817 00d0 0121     		movs	r1, #1
+ 818 00d2 01FA03F3 		lsl	r3, r1, r3
+  94:./drivers/tty/stm32f4_tty0.c **** 
+ 819              		.loc 1 94 20 view .LVU234
+ 820 00d6 1343     		orrs	r3, r3, r2
+ 821 00d8 C0F80031 		str	r3, [r0, #256]
+ 822              	.L55:
+  96:./drivers/tty/stm32f4_tty0.c ****         NVIC_IPR9 |= (3 << ((irq_num - 36) * 8 + 6)); 
+ 823              		.loc 1 96 5 is_stmt 1 view .LVU235
+  96:./drivers/tty/stm32f4_tty0.c ****         NVIC_IPR9 |= (3 << ((irq_num - 36) * 8 + 6)); 
+ 824              		.loc 1 96 23 is_stmt 0 view .LVU236
+ 825 00dc 019B     		ldr	r3, [sp, #4]
+ 826 00de A3F12402 		sub	r2, r3, #36
+  96:./drivers/tty/stm32f4_tty0.c ****         NVIC_IPR9 |= (3 << ((irq_num - 36) * 8 + 6)); 
+ 827              		.loc 1 96 8 view .LVU237
+ 828 00e2 032A     		cmp	r2, #3
+ 829 00e4 0CD8     		bhi	.L51
+  97:./drivers/tty/stm32f4_tty0.c ****     }
+ 830              		.loc 1 97 9 is_stmt 1 view .LVU238
+ 831 00e6 4FF0E020 		mov	r0, #-536813568
+ARM GAS  /tmp/ccccSwDa.s 			page 24
+
+
+ 832 00ea D0F82425 		ldr	r2, [r0, #1316]
+  97:./drivers/tty/stm32f4_tty0.c ****     }
+ 833              		.loc 1 97 48 is_stmt 0 view .LVU239
+ 834 00ee DB00     		lsls	r3, r3, #3
+ 835 00f0 A3F58D73 		sub	r3, r3, #282
+  97:./drivers/tty/stm32f4_tty0.c ****     }
+ 836              		.loc 1 97 25 view .LVU240
+ 837 00f4 0321     		movs	r1, #3
+ 838 00f6 01FA03F3 		lsl	r3, r1, r3
+  97:./drivers/tty/stm32f4_tty0.c ****     }
+ 839              		.loc 1 97 19 view .LVU241
+ 840 00fa 1343     		orrs	r3, r3, r2
+ 841 00fc C0F82435 		str	r3, [r0, #1316]
+ 842              	.LVL73:
+ 843              	.L51:
+  99:./drivers/tty/stm32f4_tty0.c **** 
+ 844              		.loc 1 99 1 view .LVU242
+ 845 0100 04B0     		add	sp, sp, #16
+ 846              	.LCFI15:
+ 847              		.cfi_remember_state
+ 848              		.cfi_def_cfa_offset 8
+ 849              		@ sp needed
+ 850 0102 10BD     		pop	{r4, pc}
+ 851              	.LVL74:
+ 852              	.L58:
+ 853              	.LCFI16:
+ 854              		.cfi_restore_state
+  63:./drivers/tty/stm32f4_tty0.c ****         if (!uart_np) {
+ 855              		.loc 1 63 9 is_stmt 1 view .LVU243
+  63:./drivers/tty/stm32f4_tty0.c ****         if (!uart_np) {
+ 856              		.loc 1 63 19 is_stmt 0 view .LVU244
+ 857 0104 0C48     		ldr	r0, .L60+24
+ 858              	.LVL75:
+  63:./drivers/tty/stm32f4_tty0.c ****         if (!uart_np) {
+ 859              		.loc 1 63 19 view .LVU245
+ 860 0106 FFF7FEFF 		bl	of_find_node_by_path
+ 861              	.LVL76:
+  64:./drivers/tty/stm32f4_tty0.c ****             return;
+ 862              		.loc 1 64 9 is_stmt 1 view .LVU246
+  64:./drivers/tty/stm32f4_tty0.c ****             return;
+ 863              		.loc 1 64 12 is_stmt 0 view .LVU247
+ 864 010a 0446     		mov	r4, r0
+ 865 010c 0028     		cmp	r0, #0
+ 866 010e 85D1     		bne	.L52
+ 867 0110 F6E7     		b	.L51
+ 868              	.LVL77:
+ 869              	.L59:
+  70:./drivers/tty/stm32f4_tty0.c ****     of_property_read_u32(uart_np, "current-speed", &baudrate);
+ 870              		.loc 1 70 5 is_stmt 1 view .LVU248
+ 871 0112 0123     		movs	r3, #1
+ 872 0114 01AA     		add	r2, sp, #4
+ 873 0116 0949     		ldr	r1, .L60+28
+ 874 0118 2046     		mov	r0, r4
+ 875 011a FFF7FEFF 		bl	of_property_read_u32_array
+ 876              	.LVL78:
+ 877 011e 85E7     		b	.L54
+ 878              	.L61:
+ARM GAS  /tmp/ccccSwDa.s 			page 25
+
+
+ 879              		.align	2
+ 880              	.L60:
+ 881 0120 00000000 		.word	.LC1
+ 882 0124 28000000 		.word	.LC3
+ 883 0128 38000000 		.word	.LC5
+ 884 012c 00300240 		.word	1073885184
+ 885 0130 00000240 		.word	1073872896
+ 886 0134 00BD0105 		.word	84000000
+ 887 0138 10000000 		.word	.LC2
+ 888 013c 2C000000 		.word	.LC4
+ 889              		.cfi_endproc
+ 890              	.LFE1085:
+ 892              		.section	.text.base_out_opt_device_init,"ax",%progbits
+ 893              		.align	1
+ 894              		.global	base_out_opt_device_init
+ 895              		.syntax unified
+ 896              		.thumb
+ 897              		.thumb_func
+ 899              	base_out_opt_device_init:
+ 900              	.LFB1086:
+ 101:./drivers/tty/stm32f4_tty0.c ****     uart1_device_init_function_from_dtb();
+ 901              		.loc 1 101 36 view -0
+ 902              		.cfi_startproc
+ 903              		@ args = 0, pretend = 0, frame = 0
+ 904              		@ frame_needed = 0, uses_anonymous_args = 0
+ 905 0000 08B5     		push	{r3, lr}
+ 906              	.LCFI17:
+ 907              		.cfi_def_cfa_offset 8
+ 908              		.cfi_offset 3, -8
+ 909              		.cfi_offset 14, -4
+ 102:./drivers/tty/stm32f4_tty0.c **** }
+ 910              		.loc 1 102 5 view .LVU250
+ 911 0002 FFF7FEFF 		bl	uart1_device_init_function_from_dtb
+ 912              	.LVL79:
+ 103:./drivers/tty/stm32f4_tty0.c **** 
+ 913              		.loc 1 103 1 is_stmt 0 view .LVU251
+ 914 0006 08BD     		pop	{r3, pc}
+ 915              		.cfi_endproc
+ 916              	.LFE1086:
+ 918              		.section	.text.early_printk,"ax",%progbits
+ 919              		.align	1
+ 920              		.global	early_printk
+ 921              		.syntax unified
+ 922              		.thumb
+ 923              		.thumb_func
+ 925              	early_printk:
+ 926              	.LVL80:
+ 927              	.LFB1088:
+ 111:./drivers/tty/stm32f4_tty0.c ****     char buf[256];
+ 928              		.loc 1 111 40 is_stmt 1 view -0
+ 929              		.cfi_startproc
+ 930              		@ args = 4, pretend = 16, frame = 264
+ 931              		@ frame_needed = 0, uses_anonymous_args = 1
+ 111:./drivers/tty/stm32f4_tty0.c ****     char buf[256];
+ 932              		.loc 1 111 40 is_stmt 0 view .LVU253
+ 933 0000 0FB4     		push	{r0, r1, r2, r3}
+ 934              	.LCFI18:
+ARM GAS  /tmp/ccccSwDa.s 			page 26
+
+
+ 935              		.cfi_def_cfa_offset 16
+ 936              		.cfi_offset 0, -16
+ 937              		.cfi_offset 1, -12
+ 938              		.cfi_offset 2, -8
+ 939              		.cfi_offset 3, -4
+ 940 0002 10B5     		push	{r4, lr}
+ 941              	.LCFI19:
+ 942              		.cfi_def_cfa_offset 24
+ 943              		.cfi_offset 4, -24
+ 944              		.cfi_offset 14, -20
+ 945 0004 C2B0     		sub	sp, sp, #264
+ 946              	.LCFI20:
+ 947              		.cfi_def_cfa_offset 288
+ 948 0006 44AB     		add	r3, sp, #272
+ 949 0008 53F8042B 		ldr	r2, [r3], #4
+ 112:./drivers/tty/stm32f4_tty0.c ****     va_list args;
+ 950              		.loc 1 112 5 is_stmt 1 view .LVU254
+ 113:./drivers/tty/stm32f4_tty0.c ****     va_start(args, fmt);
+ 951              		.loc 1 113 5 view .LVU255
+ 114:./drivers/tty/stm32f4_tty0.c ****     vsnprintf(buf, sizeof(buf), fmt, args);
+ 952              		.loc 1 114 5 view .LVU256
+ 953 000c 0193     		str	r3, [sp, #4]
+ 115:./drivers/tty/stm32f4_tty0.c ****     va_end(args);
+ 954              		.loc 1 115 5 view .LVU257
+ 955 000e 4FF48071 		mov	r1, #256
+ 956 0012 02A8     		add	r0, sp, #8
+ 957 0014 FFF7FEFF 		bl	vsnprintf
+ 958              	.LVL81:
+ 116:./drivers/tty/stm32f4_tty0.c ****     for(int i = 0; buf[i]!= '\0'; i++){
+ 959              		.loc 1 116 5 view .LVU258
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 960              		.loc 1 117 5 view .LVU259
+ 961              	.LBB19:
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 962              		.loc 1 117 9 view .LVU260
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 963              		.loc 1 117 13 is_stmt 0 view .LVU261
+ 964 0018 0024     		movs	r4, #0
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 965              		.loc 1 117 5 view .LVU262
+ 966 001a 00E0     		b	.L65
+ 967              	.LVL82:
+ 968              	.L66:
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 969              		.loc 1 117 36 is_stmt 1 discriminator 2 view .LVU263
+ 970 001c 0134     		adds	r4, r4, #1
+ 971              	.LVL83:
+ 972              	.L65:
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 973              		.loc 1 117 26 discriminator 1 view .LVU264
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 974              		.loc 1 117 23 is_stmt 0 discriminator 1 view .LVU265
+ 975 001e 02AB     		add	r3, sp, #8
+ 976 0020 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
+ 117:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte(buf[i]);
+ 977              		.loc 1 117 26 discriminator 1 view .LVU266
+ 978 0022 48B1     		cbz	r0, .L69
+ARM GAS  /tmp/ccccSwDa.s 			page 27
+
+
+ 118:./drivers/tty/stm32f4_tty0.c ****         if(buf[i] == '\n')
+ 979              		.loc 1 118 9 is_stmt 1 view .LVU267
+ 980 0024 FFF7FEFF 		bl	USART_1_SendByte
+ 981              	.LVL84:
+ 119:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte('\r');
+ 982              		.loc 1 119 9 view .LVU268
+ 119:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte('\r');
+ 983              		.loc 1 119 15 is_stmt 0 view .LVU269
+ 984 0028 02AB     		add	r3, sp, #8
+ 985 002a 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+ 119:./drivers/tty/stm32f4_tty0.c ****         USART_1_SendByte('\r');
+ 986              		.loc 1 119 11 view .LVU270
+ 987 002c 0A2B     		cmp	r3, #10
+ 988 002e F5D1     		bne	.L66
+ 120:./drivers/tty/stm32f4_tty0.c ****     }
+ 989              		.loc 1 120 9 is_stmt 1 view .LVU271
+ 990 0030 0D20     		movs	r0, #13
+ 991 0032 FFF7FEFF 		bl	USART_1_SendByte
+ 992              	.LVL85:
+ 993 0036 F1E7     		b	.L66
+ 994              	.L69:
+ 995              	.LBE19:
+ 122:./drivers/tty/stm32f4_tty0.c ****  
+ 996              		.loc 1 122 1 is_stmt 0 view .LVU272
+ 997 0038 42B0     		add	sp, sp, #264
+ 998              	.LCFI21:
+ 999              		.cfi_def_cfa_offset 24
+ 1000              		@ sp needed
+ 1001 003a BDE81040 		pop	{r4, lr}
+ 1002              	.LCFI22:
+ 1003              		.cfi_restore 14
+ 1004              		.cfi_restore 4
+ 1005              		.cfi_def_cfa_offset 16
+ 1006              	.LVL86:
+ 122:./drivers/tty/stm32f4_tty0.c ****  
+ 1007              		.loc 1 122 1 view .LVU273
+ 1008 003e 04B0     		add	sp, sp, #16
+ 1009              	.LCFI23:
+ 1010              		.cfi_restore 3
+ 1011              		.cfi_restore 2
+ 1012              		.cfi_restore 1
+ 1013              		.cfi_restore 0
+ 1014              		.cfi_def_cfa_offset 0
+ 1015 0040 7047     		bx	lr
+ 1016              		.cfi_endproc
+ 1017              	.LFE1088:
+ 1019              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1020              		.align	2
+ 1021              	.LC6:
+ 1022 0000 74747953 		.ascii	"ttyS0\000"
+ 1022      3000
+ 1023 0006 0000     		.align	2
+ 1024              	.LC7:
+ 1025 0008 72656769 		.ascii	"register ttyS0 (%d)\012\000"
+ 1025      73746572 
+ 1025      20747479 
+ 1025      53302028 
+ARM GAS  /tmp/ccccSwDa.s 			page 28
+
+
+ 1025      2564290A 
+ 1026 001d 000000   		.align	2
+ 1027              	.LC8:
+ 1028 0020 63616E20 		.ascii	"can not create tty class\012\000"
+ 1028      6E6F7420 
+ 1028      63726561 
+ 1028      74652074 
+ 1028      74792063 
+ 1029 003a 0000     		.align	2
+ 1030              	.LC9:
+ 1031 003c 74747953 		.ascii	"ttyS%d\000"
+ 1031      256400
+ 1032 0043 00       		.align	2
+ 1033              	.LC10:
+ 1034 0044 63616E20 		.ascii	"can not create tty device\012\000"
+ 1034      6E6F7420 
+ 1034      63726561 
+ 1034      74652074 
+ 1034      74792064 
+ 1035              		.section	.init.text,"ax",%progbits
+ 1036              		.align	1
+ 1037              		.global	main_tty_dev_init
+ 1038              		.syntax unified
+ 1039              		.thumb
+ 1040              		.thumb_func
+ 1042              	main_tty_dev_init:
+ 1043              	.LFB1092:
+ 142:./drivers/tty/stm32f4_tty0.c **** 
+ 143:./drivers/tty/stm32f4_tty0.c **** static struct file_operations tty_fop = {
+ 144:./drivers/tty/stm32f4_tty0.c ****     .open = tty_open,
+ 145:./drivers/tty/stm32f4_tty0.c ****     .write = tty_write,
+ 146:./drivers/tty/stm32f4_tty0.c ****     .release = tty_close
+ 147:./drivers/tty/stm32f4_tty0.c **** };
+ 148:./drivers/tty/stm32f4_tty0.c **** 
+ 149:./drivers/tty/stm32f4_tty0.c **** 
+ 150:./drivers/tty/stm32f4_tty0.c **** int __init main_tty_dev_init(void)
+ 151:./drivers/tty/stm32f4_tty0.c **** {
+ 1044              		.loc 1 151 1 is_stmt 1 view -0
+ 1045              		.cfi_startproc
+ 1046              		@ args = 0, pretend = 0, frame = 0
+ 1047              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1048 0000 30B5     		push	{r4, r5, lr}
+ 1049              	.LCFI24:
+ 1050              		.cfi_def_cfa_offset 12
+ 1051              		.cfi_offset 4, -12
+ 1052              		.cfi_offset 5, -8
+ 1053              		.cfi_offset 14, -4
+ 1054 0002 83B0     		sub	sp, sp, #12
+ 1055              	.LCFI25:
+ 1056              		.cfi_def_cfa_offset 24
+ 152:./drivers/tty/stm32f4_tty0.c **** 
+ 153:./drivers/tty/stm32f4_tty0.c ****     major = register_chrdev(major,"ttyS0",&tty_fop);
+ 1057              		.loc 1 153 5 view .LVU275
+ 1058              		.loc 1 153 13 is_stmt 0 view .LVU276
+ 1059 0004 174D     		ldr	r5, .L76
+ 1060              	.LVL87:
+ 1061              	.LBB20:
+ARM GAS  /tmp/ccccSwDa.s 			page 29
+
+
+ 1062              	.LBI20:
+ 1063              		.file 4 "./include/linux/fs.h"
+   1:./include/linux/fs.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/fs.h **** #ifndef _LINUX_FS_H
+   3:./include/linux/fs.h **** #define _LINUX_FS_H
+   4:./include/linux/fs.h **** 
+   5:./include/linux/fs.h **** #include <linux/types.h>
+   6:./include/linux/fs.h **** #include <linux/errseq.h> 
+   7:./include/linux/fs.h **** #include <linux/spinlock.h> 
+   8:./include/linux/fs.h **** #include <linux/list.h>
+   9:./include/linux/fs.h **** #include <linux/rbtree_types.h>  
+  10:./include/linux/fs.h **** #include <linux/uuid.h>  
+  11:./include/linux/fs.h **** #include <linux/uidgid_types.h>   
+  12:./include/linux/fs.h **** #include <linux/projid.h>       
+  13:./include/linux/fs.h **** #include <linux/time64.h> 
+  14:./include/linux/fs.h **** #include <linux/mnt_idmapping.h>  
+  15:./include/linux/fs.h **** #include <linux/mutex.h>         
+  16:./include/linux/fs.h **** #include <linux/uio.h>              
+  17:./include/linux/fs.h **** #include <linux/migrate_mode.h>  
+  18:./include/linux/fs.h **** #include <linux/raid/pq.h> 
+  19:./include/linux/fs.h **** #include <linux/lockdep_types.h>
+  20:./include/linux/fs.h **** #include <linux/wait.h>				
+  21:./include/linux/fs.h **** #include <linux/pipe_fs_i.h>
+  22:./include/linux/fs.h **** #include <linux/fcntl.h>
+  23:./include/linux/fs.h **** #include <linux/xarray.h>
+  24:./include/linux/fs.h **** #include <linux/blkdev.h>
+  25:./include/linux/fs.h **** #include <linux/dcache.h>
+  26:./include/linux/fs.h **** #include <linux/mm_type.h>
+  27:./include/linux/fs.h **** #include <linux/statfs.h>
+  28:./include/linux/fs.h **** #include <linux/stat.h>
+  29:./include/linux/fs.h **** #include <linux/path.h>
+  30:./include/linux/fs.h **** 
+  31:./include/linux/fs.h **** 
+  32:./include/linux/fs.h **** struct dentry;
+  33:./include/linux/fs.h **** struct file;
+  34:./include/linux/fs.h **** struct inode;
+  35:./include/linux/fs.h **** struct kiocb;
+  36:./include/linux/fs.h **** struct file_operations;
+  37:./include/linux/fs.h **** struct inode_operations  ;
+  38:./include/linux/fs.h **** struct dentry_operations ;
+  39:./include/linux/fs.h **** struct writeback_control ;
+  40:./include/linux/fs.h **** struct address_space;
+  41:./include/linux/fs.h **** struct seq_file ;
+  42:./include/linux/fs.h **** struct shrink_control;
+  43:./include/linux/fs.h **** struct file_system_type;
+  44:./include/linux/fs.h **** 
+  45:./include/linux/fs.h **** 
+  46:./include/linux/fs.h **** #define MAY_EXEC		0x00000001
+  47:./include/linux/fs.h **** #define MAY_WRITE		0x00000002
+  48:./include/linux/fs.h **** #define MAY_READ		0x00000004
+  49:./include/linux/fs.h **** #define MAY_APPEND		0x00000008
+  50:./include/linux/fs.h **** #define MAY_ACCESS		0x00000010
+  51:./include/linux/fs.h **** #define MAY_OPEN		0x00000020
+  52:./include/linux/fs.h **** #define MAY_CHDIR		0x00000040
+  53:./include/linux/fs.h **** /* called from RCU mode, don't block */
+  54:./include/linux/fs.h **** #define MAY_NOT_BLOCK		0x00000080
+  55:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 30
+
+
+  56:./include/linux/fs.h **** /*
+  57:./include/linux/fs.h ****  * flags in file.f_mode.  Note that FMODE_READ and FMODE_WRITE must correspond
+  58:./include/linux/fs.h ****  * to O_WRONLY and O_RDWR via the strange trick in do_dentry_open()
+  59:./include/linux/fs.h ****  */
+  60:./include/linux/fs.h **** 
+  61:./include/linux/fs.h **** /* file is open for reading */
+  62:./include/linux/fs.h **** #define FMODE_READ		((__force fmode_t)(1 << 0))
+  63:./include/linux/fs.h **** /* file is open for writing */
+  64:./include/linux/fs.h **** #define FMODE_WRITE		((__force fmode_t)(1 << 1))
+  65:./include/linux/fs.h **** /* file is seekable */
+  66:./include/linux/fs.h **** #define FMODE_LSEEK		((__force fmode_t)(1 << 2))
+  67:./include/linux/fs.h **** /* file can be accessed using pread */
+  68:./include/linux/fs.h **** #define FMODE_PREAD		((__force fmode_t)(1 << 3))
+  69:./include/linux/fs.h **** /* file can be accessed using pwrite */
+  70:./include/linux/fs.h **** #define FMODE_PWRITE		((__force fmode_t)(1 << 4))
+  71:./include/linux/fs.h **** /* File is opened for execution with sys_execve / sys_uselib */
+  72:./include/linux/fs.h **** #define FMODE_EXEC		((__force fmode_t)(1 << 5))
+  73:./include/linux/fs.h **** /* File writes are restricted (block device specific) */
+  74:./include/linux/fs.h **** #define FMODE_WRITE_RESTRICTED	((__force fmode_t)(1 << 6))
+  75:./include/linux/fs.h **** /* File supports atomic writes */
+  76:./include/linux/fs.h **** #define FMODE_CAN_ATOMIC_WRITE	((__force fmode_t)(1 << 7))
+  77:./include/linux/fs.h **** 
+  78:./include/linux/fs.h **** /* FMODE_* bit 8 */
+  79:./include/linux/fs.h **** 
+  80:./include/linux/fs.h **** /* 32bit hashes as llseek() offset (for directories) */
+  81:./include/linux/fs.h **** #define FMODE_32BITHASH         ((__force fmode_t)(1 << 9))
+  82:./include/linux/fs.h **** /* 64bit hashes as llseek() offset (for directories) */
+  83:./include/linux/fs.h **** #define FMODE_64BITHASH         ((__force fmode_t)(1 << 10))
+  84:./include/linux/fs.h **** 
+  85:./include/linux/fs.h **** /*
+  86:./include/linux/fs.h ****  * Don't update ctime and mtime.
+  87:./include/linux/fs.h ****  *
+  88:./include/linux/fs.h ****  * Currently a special hack for the XFS open_by_handle ioctl, but we'll
+  89:./include/linux/fs.h ****  * hopefully graduate it to a proper O_CMTIME flag supported by open(2) soon.
+  90:./include/linux/fs.h ****  */
+  91:./include/linux/fs.h **** #define FMODE_NOCMTIME		((__force fmode_t)(1 << 11))
+  92:./include/linux/fs.h **** 
+  93:./include/linux/fs.h **** /* Expect random access pattern */
+  94:./include/linux/fs.h **** #define FMODE_RANDOM		((__force fmode_t)(1 << 12))
+  95:./include/linux/fs.h **** 
+  96:./include/linux/fs.h **** /* FMODE_* bit 13 */
+  97:./include/linux/fs.h **** 
+  98:./include/linux/fs.h **** /* File is opened with O_PATH; almost nothing can be done with it */
+  99:./include/linux/fs.h **** #define FMODE_PATH		((__force fmode_t)(1 << 14))
+ 100:./include/linux/fs.h **** 
+ 101:./include/linux/fs.h **** /* File needs atomic accesses to f_pos */
+ 102:./include/linux/fs.h **** #define FMODE_ATOMIC_POS	((__force fmode_t)(1 << 15))
+ 103:./include/linux/fs.h **** /* Write access to underlying fs */
+ 104:./include/linux/fs.h **** #define FMODE_WRITER		((__force fmode_t)(1 << 16))
+ 105:./include/linux/fs.h **** /* Has read method(s) */
+ 106:./include/linux/fs.h **** #define FMODE_CAN_READ          ((__force fmode_t)(1 << 17))
+ 107:./include/linux/fs.h **** /* Has write method(s) */
+ 108:./include/linux/fs.h **** #define FMODE_CAN_WRITE         ((__force fmode_t)(1 << 18))
+ 109:./include/linux/fs.h **** 
+ 110:./include/linux/fs.h **** #define FMODE_OPENED		((__force fmode_t)(1 << 19))
+ 111:./include/linux/fs.h **** #define FMODE_CREATED		((__force fmode_t)(1 << 20))
+ 112:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 31
+
+
+ 113:./include/linux/fs.h **** /* File is stream-like */
+ 114:./include/linux/fs.h **** #define FMODE_STREAM		((__force fmode_t)(1 << 21))
+ 115:./include/linux/fs.h **** 
+ 116:./include/linux/fs.h **** /* File supports DIRECT IO */
+ 117:./include/linux/fs.h **** #define	FMODE_CAN_ODIRECT	((__force fmode_t)(1 << 22))
+ 118:./include/linux/fs.h **** 
+ 119:./include/linux/fs.h **** #define	FMODE_NOREUSE		((__force fmode_t)(1 << 23))
+ 120:./include/linux/fs.h **** 
+ 121:./include/linux/fs.h **** /* FMODE_* bit 24 */
+ 122:./include/linux/fs.h **** 
+ 123:./include/linux/fs.h **** /* File is embedded in backing_file object */
+ 124:./include/linux/fs.h **** #define FMODE_BACKING		((__force fmode_t)(1 << 25))
+ 125:./include/linux/fs.h **** 
+ 126:./include/linux/fs.h **** /* File was opened by fanotify and shouldn't generate fanotify events */
+ 127:./include/linux/fs.h **** #define FMODE_NONOTIFY		((__force fmode_t)(1 << 26))
+ 128:./include/linux/fs.h **** 
+ 129:./include/linux/fs.h **** /* File is capable of returning -EAGAIN if I/O will block */
+ 130:./include/linux/fs.h **** #define FMODE_NOWAIT		((__force fmode_t)(1 << 27))
+ 131:./include/linux/fs.h **** 
+ 132:./include/linux/fs.h **** /* File represents mount that needs unmounting */
+ 133:./include/linux/fs.h **** #define FMODE_NEED_UNMOUNT	((__force fmode_t)(1 << 28))
+ 134:./include/linux/fs.h **** 
+ 135:./include/linux/fs.h **** /* File does not contribute to nr_files count */
+ 136:./include/linux/fs.h **** #define FMODE_NOACCOUNT		((__force fmode_t)(1 << 29))
+ 137:./include/linux/fs.h **** 
+ 138:./include/linux/fs.h **** /*
+ 139:./include/linux/fs.h ****  * Attribute flags.  These should be or-ed together to figure out what
+ 140:./include/linux/fs.h ****  * has been changed!
+ 141:./include/linux/fs.h ****  */
+ 142:./include/linux/fs.h **** #define ATTR_MODE	(1 << 0)
+ 143:./include/linux/fs.h **** #define ATTR_UID	(1 << 1)
+ 144:./include/linux/fs.h **** #define ATTR_GID	(1 << 2)
+ 145:./include/linux/fs.h **** #define ATTR_SIZE	(1 << 3)
+ 146:./include/linux/fs.h **** #define ATTR_ATIME	(1 << 4)
+ 147:./include/linux/fs.h **** #define ATTR_MTIME	(1 << 5)
+ 148:./include/linux/fs.h **** #define ATTR_CTIME	(1 << 6)
+ 149:./include/linux/fs.h **** #define ATTR_ATIME_SET	(1 << 7)
+ 150:./include/linux/fs.h **** #define ATTR_MTIME_SET	(1 << 8)
+ 151:./include/linux/fs.h **** #define ATTR_FORCE	(1 << 9) /* Not a change, but a change it */
+ 152:./include/linux/fs.h **** #define ATTR_KILL_SUID	(1 << 11)
+ 153:./include/linux/fs.h **** #define ATTR_KILL_SGID	(1 << 12)
+ 154:./include/linux/fs.h **** #define ATTR_FILE	(1 << 13)
+ 155:./include/linux/fs.h **** #define ATTR_KILL_PRIV	(1 << 14)
+ 156:./include/linux/fs.h **** #define ATTR_OPEN	(1 << 15) /* Truncating from open(O_TRUNC) */
+ 157:./include/linux/fs.h **** #define ATTR_TIMES_SET	(1 << 16)
+ 158:./include/linux/fs.h **** #define ATTR_TOUCH	(1 << 17)
+ 159:./include/linux/fs.h **** #define ATTR_DELEG	(1 << 18) /* Delegated attrs. Don't break write delegations */
+ 160:./include/linux/fs.h **** 
+ 161:./include/linux/fs.h **** /*
+ 162:./include/linux/fs.h ****  * Whiteout is represented by a char device.  The following constants define the
+ 163:./include/linux/fs.h ****  * mode and device number to use.
+ 164:./include/linux/fs.h ****  */
+ 165:./include/linux/fs.h **** #define WHITEOUT_MODE 0
+ 166:./include/linux/fs.h **** #define WHITEOUT_DEV 0
+ 167:./include/linux/fs.h **** 
+ 168:./include/linux/fs.h **** struct buffer_head {
+ 169:./include/linux/fs.h **** 	char * b_data;			/* pointer to data block (1024 bytes) 数据块 */
+ARM GAS  /tmp/ccccSwDa.s 			page 32
+
+
+ 170:./include/linux/fs.h **** 	unsigned long b_blocknr;	/* block number 块号 */
+ 171:./include/linux/fs.h **** 	unsigned short b_dev;		/* device (0 = free) 数据源的设备号 */
+ 172:./include/linux/fs.h **** 	unsigned char b_uptodate;   // 更新标志，表示数据是否已经更新
+ 173:./include/linux/fs.h **** 	unsigned char b_dirt;		/* 0-clean,1-dirty */
+ 174:./include/linux/fs.h **** 	unsigned char b_count;		/* users using this block */  //使用的用户数, reference count? 
+ 175:./include/linux/fs.h **** 	unsigned char b_lock;		/* 0 - ok, 1 -locked */
+ 176:./include/linux/fs.h **** 	struct mutex b_wait;
+ 177:./include/linux/fs.h **** 	struct buffer_head * b_prev;		// 前一块（这四个指针用于缓冲区的管理）
+ 178:./include/linux/fs.h **** 	struct buffer_head * b_next;		// 下一块
+ 179:./include/linux/fs.h **** 	struct buffer_head * b_prev_free;	// 前一空闲块
+ 180:./include/linux/fs.h **** 	struct buffer_head * b_next_free;	// 下一空闲块
+ 181:./include/linux/fs.h **** };
+ 182:./include/linux/fs.h **** 
+ 183:./include/linux/fs.h **** /********************************************************
+ 184:./include/linux/fs.h ****  * 														*
+ 185:./include/linux/fs.h ****  * 			   		     iattr  						*
+ 186:./include/linux/fs.h ****  *														* 
+ 187:./include/linux/fs.h **** *********************************************************/
+ 188:./include/linux/fs.h **** 
+ 189:./include/linux/fs.h **** 
+ 190:./include/linux/fs.h **** struct iattr {
+ 191:./include/linux/fs.h **** 	unsigned int	ia_valid;
+ 192:./include/linux/fs.h **** 	umode_t		ia_mode;
+ 193:./include/linux/fs.h **** 	union {
+ 194:./include/linux/fs.h **** 		kuid_t		ia_uid;
+ 195:./include/linux/fs.h **** 		vfsuid_t	ia_vfsuid;
+ 196:./include/linux/fs.h **** 	};
+ 197:./include/linux/fs.h **** 	union {
+ 198:./include/linux/fs.h **** 		kgid_t		ia_gid;
+ 199:./include/linux/fs.h **** 		vfsgid_t	ia_vfsgid;
+ 200:./include/linux/fs.h **** 	};
+ 201:./include/linux/fs.h **** 	loff_t		ia_size;
+ 202:./include/linux/fs.h **** 	struct timespec64 ia_atime;
+ 203:./include/linux/fs.h **** 	struct timespec64 ia_mtime;
+ 204:./include/linux/fs.h **** 	struct timespec64 ia_ctime;
+ 205:./include/linux/fs.h **** 	struct file	*ia_file;
+ 206:./include/linux/fs.h **** };
+ 207:./include/linux/fs.h **** 
+ 208:./include/linux/fs.h **** /********************************************************
+ 209:./include/linux/fs.h ****  * 														*
+ 210:./include/linux/fs.h ****  * 			     address_space  						*
+ 211:./include/linux/fs.h ****  *														* 
+ 212:./include/linux/fs.h **** *********************************************************/
+ 213:./include/linux/fs.h **** struct file_ra_state {
+ 214:./include/linux/fs.h **** 	pgoff_t start;
+ 215:./include/linux/fs.h **** 	unsigned int size;
+ 216:./include/linux/fs.h **** 	unsigned int async_size;
+ 217:./include/linux/fs.h **** 	unsigned int ra_pages;
+ 218:./include/linux/fs.h **** 	unsigned int mmap_miss;
+ 219:./include/linux/fs.h **** 	loff_t prev_pos;
+ 220:./include/linux/fs.h **** };
+ 221:./include/linux/fs.h **** 
+ 222:./include/linux/fs.h **** struct iov_iter {
+ 223:./include/linux/fs.h **** 	u8 iter_type;
+ 224:./include/linux/fs.h **** 	bool nofault;
+ 225:./include/linux/fs.h **** 	bool data_source;
+ 226:./include/linux/fs.h **** 	size_t iov_offset;
+ARM GAS  /tmp/ccccSwDa.s 			page 33
+
+
+ 227:./include/linux/fs.h **** 	/*
+ 228:./include/linux/fs.h **** 	 * Hack alert: overlay ubuf_iovec with iovec + count, so
+ 229:./include/linux/fs.h **** 	 * that the members resolve correctly regardless of the type
+ 230:./include/linux/fs.h **** 	 * of iterator used. This means that you can use:
+ 231:./include/linux/fs.h **** 	 *
+ 232:./include/linux/fs.h **** 	 * &iter->__ubuf_iovec or iter->__iov
+ 233:./include/linux/fs.h **** 	 *
+ 234:./include/linux/fs.h **** 	 * interchangably for the user_backed cases, hence simplifying
+ 235:./include/linux/fs.h **** 	 * some of the cases that need to deal with both.
+ 236:./include/linux/fs.h **** 	 */
+ 237:./include/linux/fs.h **** 	union {
+ 238:./include/linux/fs.h **** 		/*
+ 239:./include/linux/fs.h **** 		 * This really should be a const, but we cannot do that without
+ 240:./include/linux/fs.h **** 		 * also modifying any of the zero-filling iter init functions.
+ 241:./include/linux/fs.h **** 		 * Leave it non-const for now, but it should be treated as such.
+ 242:./include/linux/fs.h **** 		 */
+ 243:./include/linux/fs.h **** 		struct iovec __ubuf_iovec;
+ 244:./include/linux/fs.h **** 		struct {
+ 245:./include/linux/fs.h **** 			union {
+ 246:./include/linux/fs.h **** 				/* use iter_iov() to get the current vec */
+ 247:./include/linux/fs.h **** 				const struct iovec *__iov;
+ 248:./include/linux/fs.h **** 				const struct kvec *kvec;
+ 249:./include/linux/fs.h **** 				const struct bio_vec *bvec;
+ 250:./include/linux/fs.h **** 				const struct folio_queue *folioq;
+ 251:./include/linux/fs.h **** 				struct xarray *xarray;
+ 252:./include/linux/fs.h **** 				void __user *ubuf;
+ 253:./include/linux/fs.h **** 			};
+ 254:./include/linux/fs.h **** 			size_t count;
+ 255:./include/linux/fs.h **** 		};
+ 256:./include/linux/fs.h **** 	};
+ 257:./include/linux/fs.h **** 	union {
+ 258:./include/linux/fs.h **** 		unsigned long nr_segs;
+ 259:./include/linux/fs.h **** 		u8 folioq_slot;
+ 260:./include/linux/fs.h **** 		loff_t xarray_start;
+ 261:./include/linux/fs.h **** 	};
+ 262:./include/linux/fs.h **** };
+ 263:./include/linux/fs.h **** 
+ 264:./include/linux/fs.h **** struct address_space_operations {
+ 265:./include/linux/fs.h **** 	int (*writepage)(struct page *page, struct writeback_control *wbc);
+ 266:./include/linux/fs.h **** 	int (*read_folio)(struct file *, struct folio *);
+ 267:./include/linux/fs.h **** 
+ 268:./include/linux/fs.h **** 	/* Write back some dirty pages from this mapping. */
+ 269:./include/linux/fs.h **** 	int (*writepages)(struct address_space *, struct writeback_control *);
+ 270:./include/linux/fs.h **** 
+ 271:./include/linux/fs.h **** 	/* Mark a folio dirty.  Return true if this dirtied it */
+ 272:./include/linux/fs.h **** 	bool (*dirty_folio)(struct address_space *, struct folio *);
+ 273:./include/linux/fs.h **** 
+ 274:./include/linux/fs.h **** 	void (*readahead)(struct readahead_control *);
+ 275:./include/linux/fs.h **** 
+ 276:./include/linux/fs.h **** 	int (*write_begin)(struct file *, struct address_space *mapping,
+ 277:./include/linux/fs.h **** 				loff_t pos, unsigned len,
+ 278:./include/linux/fs.h **** 				struct folio **foliop, void **fsdata);
+ 279:./include/linux/fs.h **** 	int (*write_end)(struct file *, struct address_space *mapping,
+ 280:./include/linux/fs.h **** 				loff_t pos, unsigned len, unsigned copied,
+ 281:./include/linux/fs.h **** 				struct folio *folio, void *fsdata);
+ 282:./include/linux/fs.h **** 
+ 283:./include/linux/fs.h **** 	/* Unfortunately this kludge is needed for FIBMAP. Don't use it */
+ARM GAS  /tmp/ccccSwDa.s 			page 34
+
+
+ 284:./include/linux/fs.h **** 	sector_t (*bmap)(struct address_space *, sector_t);
+ 285:./include/linux/fs.h **** 	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+ 286:./include/linux/fs.h **** 	bool (*release_folio)(struct folio *, gfp_t);
+ 287:./include/linux/fs.h **** 	void (*free_folio)(struct folio *folio);
+ 288:./include/linux/fs.h **** 	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+ 289:./include/linux/fs.h **** 	/*
+ 290:./include/linux/fs.h **** 	 * migrate the contents of a folio to the specified target. If
+ 291:./include/linux/fs.h **** 	 * migrate_mode is MIGRATE_ASYNC, it must not block.
+ 292:./include/linux/fs.h **** 	 */
+ 293:./include/linux/fs.h **** 	int (*migrate_folio)(struct address_space *, struct folio *dst,
+ 294:./include/linux/fs.h **** 			struct folio *src, enum migrate_mode);
+ 295:./include/linux/fs.h **** 	int (*launder_folio)(struct folio *);
+ 296:./include/linux/fs.h **** 	bool (*is_partially_uptodate) (struct folio *, size_t from,
+ 297:./include/linux/fs.h **** 			size_t count);
+ 298:./include/linux/fs.h **** 	void (*is_dirty_writeback) (struct folio *, bool *dirty, bool *wb);
+ 299:./include/linux/fs.h **** 	int (*error_remove_folio)(struct address_space *, struct folio *);
+ 300:./include/linux/fs.h **** 
+ 301:./include/linux/fs.h **** 	/* swapfile support */
+ 302:./include/linux/fs.h **** 	// int (*swap_activate)(struct swap_info_struct *sis, struct file *file,
+ 303:./include/linux/fs.h **** 	// 			sector_t *span);
+ 304:./include/linux/fs.h **** 	// void (*swap_deactivate)(struct file *file);
+ 305:./include/linux/fs.h **** 	// int (*swap_rw)(struct kiocb *iocb, struct iov_iter *iter);
+ 306:./include/linux/fs.h **** };
+ 307:./include/linux/fs.h **** 
+ 308:./include/linux/fs.h ****  struct address_space {
+ 309:./include/linux/fs.h **** 	struct inode		*host;
+ 310:./include/linux/fs.h **** 	struct xarray		i_pages;
+ 311:./include/linux/fs.h **** 	gfp_t			gfp_mask;
+ 312:./include/linux/fs.h **** 	atomic_t		i_mmap_writable;
+ 313:./include/linux/fs.h **** #ifdef CONFIG_READ_ONLY_THP_FOR_FS
+ 314:./include/linux/fs.h **** 	/* number of thp, only for non-shmem files */
+ 315:./include/linux/fs.h **** 	atomic_t		nr_thps;
+ 316:./include/linux/fs.h **** #endif
+ 317:./include/linux/fs.h **** 	struct rb_root_cached	i_mmap;
+ 318:./include/linux/fs.h **** 	unsigned long		nrpages;
+ 319:./include/linux/fs.h **** 	pgoff_t			writeback_index;
+ 320:./include/linux/fs.h **** 	const struct address_space_operations *a_ops;
+ 321:./include/linux/fs.h **** 	unsigned long		flags;
+ 322:./include/linux/fs.h **** 	errseq_t		wb_err;
+ 323:./include/linux/fs.h **** 	spinlock_t		i_private_lock;
+ 324:./include/linux/fs.h **** 	struct list_head	i_private_list;
+ 325:./include/linux/fs.h **** 	void *			i_private_data;
+ 326:./include/linux/fs.h **** } __attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 327:./include/linux/fs.h **** 
+ 328:./include/linux/fs.h **** /********************************************************
+ 329:./include/linux/fs.h ****  * 														*
+ 330:./include/linux/fs.h ****  * 			   		  file struct						*
+ 331:./include/linux/fs.h ****  *														* 
+ 332:./include/linux/fs.h **** *********************************************************/
+ 333:./include/linux/fs.h **** 
+ 334:./include/linux/fs.h **** struct file {
+ 335:./include/linux/fs.h **** 	struct mutex					f_ref;
+ 336:./include/linux/fs.h **** 	struct mutex					f_lock;
+ 337:./include/linux/fs.h **** 	fmode_t							f_mode;
+ 338:./include/linux/fs.h **** 	const struct file_operations	*f_op;                            
+ 339:./include/linux/fs.h **** 	//	struct address_space			*f_mapping;
+ 340:./include/linux/fs.h **** 	void							*private_data;
+ARM GAS  /tmp/ccccSwDa.s 			page 35
+
+
+ 341:./include/linux/fs.h **** 	struct inode					*f_inode;
+ 342:./include/linux/fs.h **** 	unsigned int					f_flags;
+ 343:./include/linux/fs.h **** 	unsigned int					f_iocb_flags;
+ 344:./include/linux/fs.h **** 	char *						    f_path;
+ 345:./include/linux/fs.h **** 	union {
+ 346:./include/linux/fs.h **** 		struct mutex				f_pos_lock;
+ 347:./include/linux/fs.h **** 		u64							f_pipe;
+ 348:./include/linux/fs.h **** 	};
+ 349:./include/linux/fs.h **** 	loff_t							f_pos;
+ 350:./include/linux/fs.h **** 	void *							f_private;
+ 351:./include/linux/fs.h **** 	spinlock_t                      f_slock;
+ 352:./include/linux/fs.h **** }__attribute__((aligned(sizeof(long)))) __randomize_layout;	
+ 353:./include/linux/fs.h **** 
+ 354:./include/linux/fs.h **** 
+ 355:./include/linux/fs.h **** /********************************************************
+ 356:./include/linux/fs.h ****  * 														*
+ 357:./include/linux/fs.h ****  * 			   		  inode struct						*
+ 358:./include/linux/fs.h ****  *														* 
+ 359:./include/linux/fs.h **** *********************************************************/
+ 360:./include/linux/fs.h **** 
+ 361:./include/linux/fs.h **** #define IOP_FASTPERM	0x0001
+ 362:./include/linux/fs.h **** #define IOP_LOOKUP	0x0002
+ 363:./include/linux/fs.h **** #define IOP_NOFOLLOW	0x0004
+ 364:./include/linux/fs.h **** #define IOP_XATTR	0x0008
+ 365:./include/linux/fs.h **** #define IOP_DEFAULT_READLINK	0x0010
+ 366:./include/linux/fs.h **** #define IOP_MGTIME	0x0020
+ 367:./include/linux/fs.h **** 
+ 368:./include/linux/fs.h **** /*
+ 369:./include/linux/fs.h ****  * Keep mostly read-only and often accessed (especially for
+ 370:./include/linux/fs.h ****  * the RCU path lookup and 'stat' data) fields at the beginning
+ 371:./include/linux/fs.h ****  * of the 'struct inode'
+ 372:./include/linux/fs.h ****  */
+ 373:./include/linux/fs.h **** 
+ 374:./include/linux/fs.h **** struct inode {
+ 375:./include/linux/fs.h **** 	umode_t            i_mode;        /* 文件模式（如：文件类型、权限） */
+ 376:./include/linux/fs.h **** 	unsigned int       i_flags;       /* 文件标志（如：不可变、同步） */
+ 377:./include/linux/fs.h **** 
+ 378:./include/linux/fs.h **** 	const struct inode_operations *i_op;         /* inode 操作函数指针 */
+ 379:./include/linux/fs.h **** 	struct super_block            *i_sb;        /* 所属文件系统的超级块 */	
+ 380:./include/linux/fs.h **** 	struct address_space	      *i_mapping;   /* 指向文件数据所在的块设备的映射 */
+ 381:./include/linux/fs.h **** 
+ 382:./include/linux/fs.h **** 	dev_t             i_rdev;         /* 设备号（如：字符设备、块设备） */
+ 383:./include/linux/fs.h **** 
+ 384:./include/linux/fs.h **** 	u32			i_state;
+ 385:./include/linux/fs.h **** 
+ 386:./include/linux/fs.h **** 	struct hlist_node	i_hash;
+ 387:./include/linux/fs.h **** 	struct list_head	i_io_list;	/* backing dev IO list */
+ 388:./include/linux/fs.h **** 
+ 389:./include/linux/fs.h **** 	spinlock_t	        i_lock;	/* i_blocks, i_bytes, maybe i_size */
+ 390:./include/linux/fs.h **** 		
+ 391:./include/linux/fs.h **** 
+ 392:./include/linux/fs.h **** 	struct list_head	i_sb_list;
+ 393:./include/linux/fs.h **** 
+ 394:./include/linux/fs.h **** 	struct list_head	i_dentry;
+ 395:./include/linux/fs.h **** 
+ 396:./include/linux/fs.h **** 	atomic_t		i_count;
+ 397:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 36
+
+
+ 398:./include/linux/fs.h **** 	const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
+ 399:./include/linux/fs.h **** 	void (*free_inode)(struct inode *);
+ 400:./include/linux/fs.h **** 
+ 401:./include/linux/fs.h **** 	void			*i_private; /* fs or device private pointer */
+ 402:./include/linux/fs.h **** 
+ 403:./include/linux/fs.h **** }__attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 404:./include/linux/fs.h **** 
+ 405:./include/linux/fs.h **** /********************************************************
+ 406:./include/linux/fs.h ****  * 														*
+ 407:./include/linux/fs.h ****  * 			   inode inode_operations					*
+ 408:./include/linux/fs.h ****  *														* 
+ 409:./include/linux/fs.h **** *********************************************************/
+ 410:./include/linux/fs.h **** 
+ 411:./include/linux/fs.h **** struct mnt_idmap {void * no_data;};
+ 412:./include/linux/fs.h **** 
+ 413:./include/linux/fs.h **** struct inode_operations {
+ 414:./include/linux/fs.h **** 	struct dentry  	 *(*lookup) 	   (struct inode *    ,struct dentry *, unsigned int);
+ 415:./include/linux/fs.h **** 	const char 	     *(*get_link) 	   (struct dentry *   , struct inode *, struct delayed_call *);
+ 416:./include/linux/fs.h **** 	int 			  (*permission)    (struct mnt_idmap *, struct inode *, int);
+ 417:./include/linux/fs.h **** 	struct posix_acl *(*get_inode_acl) (struct inode *	  , int, bool);
+ 418:./include/linux/fs.h **** 	int 			  (*readlink) 	   (struct dentry *   , char __user * ,int);
+ 419:./include/linux/fs.h **** 	int 			  (*create) 	   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t, bool);
+ 420:./include/linux/fs.h **** 	int 			  (*link) 		   (struct dentry *   ,struct inode * ,struct dentry *);
+ 421:./include/linux/fs.h **** 	int 			  (*unlink) 	   (struct inode *	  ,struct dentry * );
+ 422:./include/linux/fs.h **** 	int 			  (*symlink) 	   (struct mnt_idmap *, struct inode *,struct dentry *,const char *);
+ 423:./include/linux/fs.h **** 	int 			  (*mkdir) 		   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t);
+ 424:./include/linux/fs.h **** 	int 			  (*rmdir)		   (struct inode *	  ,struct dentry * );
+ 425:./include/linux/fs.h **** 	int 			  (*mknod) 		   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t,dev_t);
+ 426:./include/linux/fs.h **** 	int 			  (*rename) 	   (struct mnt_idmap *, struct inode *, struct dentry *,struct inode *, struct
+ 427:./include/linux/fs.h **** 	int 			  (*setattr)	   (struct mnt_idmap *, struct dentry*, struct iattr *);
+ 428:./include/linux/fs.h **** 	int 			  (*getattr) 	   (struct mnt_idmap *, const struct path *,struct kstat *, u32, unsigned int
+ 429:./include/linux/fs.h **** 	ssize_t 		  (*listxattr) 	   (struct dentry *	  , char *		  , size_t);
+ 430:./include/linux/fs.h **** 	int 			  (*fiemap)		   (struct inode *	  , struct fiemap_extent_info *, u64 start,u64 len);
+ 431:./include/linux/fs.h **** 	int 			  (*update_time)   (struct inode *    , int);
+ 432:./include/linux/fs.h **** 	int 			  (*atomic_open)   (struct inode *    , struct dentry*,struct file *, unsigned open_flag,um
+ 433:./include/linux/fs.h **** 	int 			  (*tmpfile)	   (struct mnt_idmap *, struct inode *,struct file *, umode_t);
+ 434:./include/linux/fs.h **** 	struct posix_acl *(*get_acl)	   (struct mnt_idmap *, struct dentry*,int);
+ 435:./include/linux/fs.h **** 	int 			  (*set_acl)	   (struct mnt_idmap *, struct dentry*,struct posix_acl *, int);
+ 436:./include/linux/fs.h **** 	int 			  (*fileattr_set)  (struct mnt_idmap *idmap,struct dentry *dentry, struct fileattr *fa);
+ 437:./include/linux/fs.h **** 	int 			  (*fileattr_get)  (struct dentry *dentry  , struct fileattr *fa);
+ 438:./include/linux/fs.h **** 	struct offset_ctx*(*get_offset_ctx)(struct inode *inode);
+ 439:./include/linux/fs.h **** };
+ 440:./include/linux/fs.h **** 
+ 441:./include/linux/fs.h **** /********************************************************
+ 442:./include/linux/fs.h ****  * 														*
+ 443:./include/linux/fs.h ****  * 			       file_operations						*
+ 444:./include/linux/fs.h ****  *														* 
+ 445:./include/linux/fs.h **** *********************************************************/
+ 446:./include/linux/fs.h **** 
+ 447:./include/linux/fs.h **** struct kiocb {
+ 448:./include/linux/fs.h **** 	struct file		*ki_filp;
+ 449:./include/linux/fs.h **** 	loff_t			ki_pos;
+ 450:./include/linux/fs.h **** 	void (*ki_complete)(struct kiocb *iocb, long ret);
+ 451:./include/linux/fs.h **** 	void			*private;
+ 452:./include/linux/fs.h **** 	int			ki_flags;
+ 453:./include/linux/fs.h **** 	u16			ki_ioprio; /* See linux/ioprio.h */
+ 454:./include/linux/fs.h **** 	union {
+ARM GAS  /tmp/ccccSwDa.s 			page 37
+
+
+ 455:./include/linux/fs.h **** 	//	struct wait_page_queue	*ki_waitq;
+ 456:./include/linux/fs.h **** 		ssize_t (*dio_complete)(void *data);
+ 457:./include/linux/fs.h **** 	};
+ 458:./include/linux/fs.h **** };
+ 459:./include/linux/fs.h **** 
+ 460:./include/linux/fs.h **** struct dir_context;
+ 461:./include/linux/fs.h **** typedef bool (*filldir_t)(struct dir_context *, const char *, int, loff_t, u64,
+ 462:./include/linux/fs.h **** 			 unsigned);
+ 463:./include/linux/fs.h **** 
+ 464:./include/linux/fs.h **** struct dir_context {
+ 465:./include/linux/fs.h **** 	filldir_t actor;
+ 466:./include/linux/fs.h **** 	loff_t pos;
+ 467:./include/linux/fs.h **** };
+ 468:./include/linux/fs.h **** 
+ 469:./include/linux/fs.h **** 
+ 470:./include/linux/fs.h **** 
+ 471:./include/linux/fs.h **** 
+ 472:./include/linux/fs.h **** typedef void (*poll_queue_proc)(struct file *, wait_queue_head_t *, struct poll_table_struct *);
+ 473:./include/linux/fs.h **** 
+ 474:./include/linux/fs.h **** typedef struct poll_table_struct {
+ 475:./include/linux/fs.h **** 	poll_queue_proc _qproc;
+ 476:./include/linux/fs.h **** 	__poll_t _key;
+ 477:./include/linux/fs.h **** } poll_table;
+ 478:./include/linux/fs.h **** 
+ 479:./include/linux/fs.h **** typedef unsigned int __bitwise fop_flags_t;
+ 480:./include/linux/fs.h **** typedef void *fl_owner_t;
+ 481:./include/linux/fs.h **** 
+ 482:./include/linux/fs.h **** struct file_operations {
+ 483:./include/linux/fs.h **** 	void *owner;
+ 484:./include/linux/fs.h **** 	fop_flags_t fop_flags;
+ 485:./include/linux/fs.h **** 	loff_t (*llseek) (struct file *, loff_t, int);
+ 486:./include/linux/fs.h **** 	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+ 487:./include/linux/fs.h **** 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+ 488:./include/linux/fs.h **** ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
+ 489:./include/linux/fs.h **** ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
+ 490:./include/linux/fs.h **** 	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,unsigned int flags);
+ 491:./include/linux/fs.h **** 	int (*iterate_shared) (struct file *, struct dir_context *);
+ 492:./include/linux/fs.h **** 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
+ 493:./include/linux/fs.h **** 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+ 494:./include/linux/fs.h **** 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+ 495:./include/linux/fs.h **** int (*mmap) (struct file *, struct vm_area_struct *);
+ 496:./include/linux/fs.h **** 	int (*open) (struct inode *, struct file *);
+ 497:./include/linux/fs.h **** 	int (*flush) (struct file *, fl_owner_t id);
+ 498:./include/linux/fs.h **** 	int (*release) (struct inode *, struct file *);
+ 499:./include/linux/fs.h **** 	int (*fsync) (struct file *, loff_t, loff_t, int datasync);
+ 500:./include/linux/fs.h **** 	int (*fasync) (int, struct file *, int);
+ 501:./include/linux/fs.h **** 	int (*lock) (struct file *, int, struct file_lock *);
+ 502:./include/linux/fs.h **** 	unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, uns
+ 503:./include/linux/fs.h **** 	int (*check_flags)(int);
+ 504:./include/linux/fs.h **** 	int (*flock) (struct file *, int, struct file_lock *);
+ 505:./include/linux/fs.h **** ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+ 506:./include/linux/fs.h **** ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
+ 507:./include/linux/fs.h **** 	void (*splice_eof)(struct file *file);
+ 508:./include/linux/fs.h **** 	int (*setlease)(struct file *, int, struct file_lease **, void **);
+ 509:./include/linux/fs.h **** 	long (*fallocate)(struct file *file, int mode, loff_t offset,loff_t len);
+ 510:./include/linux/fs.h **** 	void (*show_fdinfo)(struct seq_file *m, struct file *f);
+ 511:./include/linux/fs.h **** #ifndef CONFIG_MMU
+ARM GAS  /tmp/ccccSwDa.s 			page 38
+
+
+ 512:./include/linux/fs.h **** 	unsigned (*mmap_capabilities)(struct file *);
+ 513:./include/linux/fs.h **** #endif
+ 514:./include/linux/fs.h **** 	ssize_t (*copy_file_range)(struct file *, loff_t, struct file *,loff_t, size_t, unsigned int);
+ 515:./include/linux/fs.h **** 	loff_t (*remap_file_range)(struct file *file_in, loff_t pos_in,struct file *file_out, loff_t pos_o
+ 516:./include/linux/fs.h **** 	int (*fadvise)(struct file *, loff_t, loff_t, int);
+ 517:./include/linux/fs.h **** 	int (*uring_cmd)(struct io_uring_cmd *ioucmd, unsigned int issue_flags);
+ 518:./include/linux/fs.h **** 	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,unsigned int poll_flags);
+ 519:./include/linux/fs.h **** };
+ 520:./include/linux/fs.h **** 
+ 521:./include/linux/fs.h **** 
+ 522:./include/linux/fs.h **** /********************************************************
+ 523:./include/linux/fs.h ****  * 														*
+ 524:./include/linux/fs.h ****  * 			       super_block							*
+ 525:./include/linux/fs.h ****  *														* 
+ 526:./include/linux/fs.h **** *********************************************************/
+ 527:./include/linux/fs.h **** 
+ 528:./include/linux/fs.h **** struct rcu_sync {
+ 529:./include/linux/fs.h **** 	int			gp_state;
+ 530:./include/linux/fs.h **** 	int			gp_count;
+ 531:./include/linux/fs.h **** 	wait_queue_head_t	gp_wait;
+ 532:./include/linux/fs.h **** 
+ 533:./include/linux/fs.h **** 	struct rcu_head		cb_head;
+ 534:./include/linux/fs.h **** };
+ 535:./include/linux/fs.h **** 
+ 536:./include/linux/fs.h **** struct rcuwait {
+ 537:./include/linux/fs.h **** 	//struct task_struct __rcu *task;
+ 538:./include/linux/fs.h **** };
+ 539:./include/linux/fs.h **** 
+ 540:./include/linux/fs.h **** struct percpu_rw_semaphore {
+ 541:./include/linux/fs.h **** 	struct rcu_sync		rss;
+ 542:./include/linux/fs.h **** 	unsigned int __percpu	*read_count;
+ 543:./include/linux/fs.h **** 	struct rcuwait		writer;
+ 544:./include/linux/fs.h **** 	wait_queue_head_t	waiters;
+ 545:./include/linux/fs.h **** 	atomic_t		block;
+ 546:./include/linux/fs.h **** #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 547:./include/linux/fs.h **** 	struct lockdep_map	dep_map;
+ 548:./include/linux/fs.h **** #endif
+ 549:./include/linux/fs.h **** };
+ 550:./include/linux/fs.h **** 
+ 551:./include/linux/fs.h **** /*
+ 552:./include/linux/fs.h ****  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
+ 553:./include/linux/fs.h ****  * represented in both.
+ 554:./include/linux/fs.h ****  */
+ 555:./include/linux/fs.h **** #define SB_RDONLY       BIT(0)	/* Mount read-only */
+ 556:./include/linux/fs.h **** #define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
+ 557:./include/linux/fs.h **** #define SB_NODEV        BIT(2)	/* Disallow access to device special files */
+ 558:./include/linux/fs.h **** #define SB_NOEXEC       BIT(3)	/* Disallow program execution */
+ 559:./include/linux/fs.h **** #define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
+ 560:./include/linux/fs.h **** #define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
+ 561:./include/linux/fs.h **** #define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
+ 562:./include/linux/fs.h **** #define SB_NOATIME      BIT(10)	/* Do not update access times. */
+ 563:./include/linux/fs.h **** #define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
+ 564:./include/linux/fs.h **** #define SB_SILENT       BIT(15)
+ 565:./include/linux/fs.h **** #define SB_POSIXACL     BIT(16)	/* Supports POSIX ACLs */
+ 566:./include/linux/fs.h **** #define SB_INLINECRYPT  BIT(17)	/* Use blk-crypto for encrypted files */
+ 567:./include/linux/fs.h **** #define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
+ 568:./include/linux/fs.h **** #define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
+ARM GAS  /tmp/ccccSwDa.s 			page 39
+
+
+ 569:./include/linux/fs.h **** #define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
+ 570:./include/linux/fs.h **** 
+ 571:./include/linux/fs.h **** /* These sb flags are internal to the kernel */
+ 572:./include/linux/fs.h **** #define SB_DEAD         BIT(21)
+ 573:./include/linux/fs.h **** #define SB_DYING        BIT(24)
+ 574:./include/linux/fs.h **** #define SB_SUBMOUNT     BIT(26)
+ 575:./include/linux/fs.h **** #define SB_FORCE        BIT(27)
+ 576:./include/linux/fs.h **** #define SB_NOSEC        BIT(28)
+ 577:./include/linux/fs.h **** #define SB_BORN         BIT(29)
+ 578:./include/linux/fs.h **** #define SB_ACTIVE       BIT(30)
+ 579:./include/linux/fs.h **** #define SB_NOUSER       BIT(31)
+ 580:./include/linux/fs.h **** 
+ 581:./include/linux/fs.h **** /* These flags relate to encoding and casefolding */
+ 582:./include/linux/fs.h **** #define SB_ENC_STRICT_MODE_FL	(1 << 0)
+ 583:./include/linux/fs.h **** 
+ 584:./include/linux/fs.h **** #define sb_has_strict_encoding(sb) \
+ 585:./include/linux/fs.h **** 	(sb->s_encoding_flags & SB_ENC_STRICT_MODE_FL)
+ 586:./include/linux/fs.h **** 
+ 587:./include/linux/fs.h **** /*
+ 588:./include/linux/fs.h ****  *	Umount options
+ 589:./include/linux/fs.h ****  */
+ 590:./include/linux/fs.h **** 
+ 591:./include/linux/fs.h **** #define MNT_FORCE	0x00000001	/* Attempt to forcibily umount */
+ 592:./include/linux/fs.h **** #define MNT_DETACH	0x00000002	/* Just detach from the tree */
+ 593:./include/linux/fs.h **** #define MNT_EXPIRE	0x00000004	/* Mark for expiry */
+ 594:./include/linux/fs.h **** #define UMOUNT_NOFOLLOW	0x00000008	/* Don't follow symlink on umount */
+ 595:./include/linux/fs.h **** #define UMOUNT_UNUSED	0x80000000	/* Flag guaranteed to be unused */
+ 596:./include/linux/fs.h **** 
+ 597:./include/linux/fs.h **** /* sb->s_iflags */
+ 598:./include/linux/fs.h **** #define SB_I_CGROUPWB	0x00000001	/* cgroup-aware writeback enabled */
+ 599:./include/linux/fs.h **** #define SB_I_NOEXEC	0x00000002	/* Ignore executables on this fs */
+ 600:./include/linux/fs.h **** #define SB_I_NODEV	0x00000004	/* Ignore devices on this fs */
+ 601:./include/linux/fs.h **** #define SB_I_STABLE_WRITES 0x00000008	/* don't modify blks until WB is done */
+ 602:./include/linux/fs.h **** 
+ 603:./include/linux/fs.h **** /* sb->s_iflags to limit user namespace mounts */
+ 604:./include/linux/fs.h **** #define SB_I_USERNS_VISIBLE		0x00000010 /* fstype already mounted */
+ 605:./include/linux/fs.h **** #define SB_I_IMA_UNVERIFIABLE_SIGNATURE	0x00000020
+ 606:./include/linux/fs.h **** #define SB_I_UNTRUSTED_MOUNTER		0x00000040
+ 607:./include/linux/fs.h **** #define SB_I_EVM_HMAC_UNSUPPORTED	0x00000080
+ 608:./include/linux/fs.h **** 
+ 609:./include/linux/fs.h **** #define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
+ 610:./include/linux/fs.h **** #define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
+ 611:./include/linux/fs.h **** #define SB_I_TS_EXPIRY_WARNED 0x00000400 /* warned about timestamp range expiry */
+ 612:./include/linux/fs.h **** #define SB_I_RETIRED	0x00000800	/* superblock shouldn't be reused */
+ 613:./include/linux/fs.h **** #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
+ 614:./include/linux/fs.h **** #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
+ 615:./include/linux/fs.h **** 
+ 616:./include/linux/fs.h **** 
+ 617:./include/linux/fs.h **** enum {
+ 618:./include/linux/fs.h **** 	SB_UNFROZEN = 0,		/* FS is unfrozen */
+ 619:./include/linux/fs.h **** 	SB_FREEZE_WRITE	= 1,		/* Writes, dir ops, ioctls frozen */
+ 620:./include/linux/fs.h **** 	SB_FREEZE_PAGEFAULT = 2,	/* Page faults stopped as well */
+ 621:./include/linux/fs.h **** 	SB_FREEZE_FS = 3,		/* For internal FS use (e.g. to stop
+ 622:./include/linux/fs.h **** 					 	* internal threads if needed) */
+ 623:./include/linux/fs.h **** 	SB_FREEZE_COMPLETE = 4,		/* ->freeze_fs finished successfully */
+ 624:./include/linux/fs.h **** };
+ 625:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 40
+
+
+ 626:./include/linux/fs.h **** #define SB_FREEZE_LEVELS (SB_FREEZE_COMPLETE - 1)
+ 627:./include/linux/fs.h **** 
+ 628:./include/linux/fs.h **** struct sb_writers {
+ 629:./include/linux/fs.h **** 	unsigned short			frozen;		/* Is sb frozen? */
+ 630:./include/linux/fs.h **** 	int				freeze_kcount;	/* How many kernel freeze requests? */
+ 631:./include/linux/fs.h **** 	int				freeze_ucount;	/* How many userspace freeze requests? */
+ 632:./include/linux/fs.h **** 	struct percpu_rw_semaphore	rw_sem[SB_FREEZE_LEVELS];
+ 633:./include/linux/fs.h **** };
+ 634:./include/linux/fs.h **** 
+ 635:./include/linux/fs.h **** #define	UUID_STRING_LEN		36
+ 636:./include/linux/fs.h **** 
+ 637:./include/linux/fs.h **** 
+ 638:./include/linux/fs.h **** 
+ 639:./include/linux/fs.h **** struct super_block 
+ 640:./include/linux/fs.h **** {
+ 641:./include/linux/fs.h **** 	struct list_head				s_list;		/* Keep this first */
+ 642:./include/linux/fs.h ****     dev_t							s_dev;		/* search index; _not_ kdev_t */
+ 643:./include/linux/fs.h ****     const struct super_operations	*s_op;
+ 644:./include/linux/fs.h **** 	const struct dquot_operations	*dq_op;
+ 645:./include/linux/fs.h **** 	struct dentry		*s_root;      //superblock的根目录结点
+ 646:./include/linux/fs.h **** 	struct block_device	*s_bdev; 
+ 647:./include/linux/fs.h **** 	struct hlist_node	s_instances;
+ 648:./include/linux/fs.h **** 	struct list_head	s_mounts;
+ 649:./include/linux/fs.h **** 	void			   *s_fs_info;	/* Filesystem private info */
+ 650:./include/linux/fs.h **** 	char			    s_sysfs_name[UUID_STRING_LEN + 1];
+ 651:./include/linux/fs.h **** 	unsigned int		s_max_links;
+ 652:./include/linux/fs.h **** 	struct mutex            		s_vfs_rename_mutex;	/* Kludge */
+ 653:./include/linux/fs.h **** 	const struct dentry_operations *s_d_op; /* default d_op for dentries */
+ 654:./include/linux/fs.h **** 	struct hlist_head s_pins;
+ 655:./include/linux/fs.h **** };
+ 656:./include/linux/fs.h **** 
+ 657:./include/linux/fs.h **** 
+ 658:./include/linux/fs.h **** /********************************************************
+ 659:./include/linux/fs.h ****  * 														*
+ 660:./include/linux/fs.h ****  * 			       super_operations						*
+ 661:./include/linux/fs.h ****  *														* 
+ 662:./include/linux/fs.h **** *********************************************************/
+ 663:./include/linux/fs.h **** 
+ 664:./include/linux/fs.h **** struct seq_operations ;
+ 665:./include/linux/fs.h **** struct seq_file {
+ 666:./include/linux/fs.h **** 	char *buf;
+ 667:./include/linux/fs.h **** 	size_t size;
+ 668:./include/linux/fs.h **** 	size_t from;
+ 669:./include/linux/fs.h **** 	size_t count;
+ 670:./include/linux/fs.h **** 	size_t pad_until;
+ 671:./include/linux/fs.h **** 	loff_t index;
+ 672:./include/linux/fs.h **** 	loff_t read_pos;
+ 673:./include/linux/fs.h **** 	struct mutex lock;
+ 674:./include/linux/fs.h **** 	const struct seq_operations *op;
+ 675:./include/linux/fs.h **** 	int poll_event;
+ 676:./include/linux/fs.h **** 	const struct file *file;
+ 677:./include/linux/fs.h **** 	void *private;
+ 678:./include/linux/fs.h **** };
+ 679:./include/linux/fs.h **** 
+ 680:./include/linux/fs.h **** struct seq_operations {
+ 681:./include/linux/fs.h **** 	void * (*start) (struct seq_file *m, loff_t *pos);
+ 682:./include/linux/fs.h **** 	void (*stop) (struct seq_file *m, void *v);
+ARM GAS  /tmp/ccccSwDa.s 			page 41
+
+
+ 683:./include/linux/fs.h **** 	void * (*next) (struct seq_file *m, void *v, loff_t *pos);
+ 684:./include/linux/fs.h **** 	int (*show) (struct seq_file *m, void *v);
+ 685:./include/linux/fs.h **** };
+ 686:./include/linux/fs.h **** 
+ 687:./include/linux/fs.h **** enum freeze_holder {
+ 688:./include/linux/fs.h **** 	FREEZE_HOLDER_KERNEL	= (1U << 0),
+ 689:./include/linux/fs.h **** 	FREEZE_HOLDER_USERSPACE	= (1U << 1),
+ 690:./include/linux/fs.h **** 	FREEZE_MAY_NEST		= (1U << 2),
+ 691:./include/linux/fs.h **** };
+ 692:./include/linux/fs.h **** 
+ 693:./include/linux/fs.h **** struct writeback_control {
+ 694:./include/linux/fs.h **** 	unsigned long nr_to_write;
+ 695:./include/linux/fs.h **** };
+ 696:./include/linux/fs.h **** 
+ 697:./include/linux/fs.h **** 
+ 698:./include/linux/fs.h **** struct shrink_control {
+ 699:./include/linux/fs.h **** 	gfp_t gfp_mask;
+ 700:./include/linux/fs.h **** 	int nid;
+ 701:./include/linux/fs.h **** 	unsigned long nr_to_scan;
+ 702:./include/linux/fs.h **** 	unsigned long nr_scanned;
+ 703:./include/linux/fs.h ****     //struct mem_cgroup *memcg;
+ 704:./include/linux/fs.h **** };
+ 705:./include/linux/fs.h **** 
+ 706:./include/linux/fs.h **** struct super_operations {
+ 707:./include/linux/fs.h ****    	struct inode *(*alloc_inode)(struct super_block *sb);
+ 708:./include/linux/fs.h **** 	void (*destroy_inode)       (struct inode *);
+ 709:./include/linux/fs.h **** 	void (*free_inode)          (struct inode *);
+ 710:./include/linux/fs.h ****    	void (*dirty_inode)         (struct inode *, int flags);
+ 711:./include/linux/fs.h **** 	int  (*write_inode)         (struct inode *, struct writeback_control *wbc);
+ 712:./include/linux/fs.h **** 	int  (*drop_inode)          (struct inode *);
+ 713:./include/linux/fs.h **** 	void (*evict_inode)         (struct inode *);
+ 714:./include/linux/fs.h **** 	void (*put_super)           (struct super_block *);
+ 715:./include/linux/fs.h **** 	int  (*sync_fs)             (struct super_block *sb, int wait);
+ 716:./include/linux/fs.h **** 	int  (*freeze_super)        (struct super_block *, enum freeze_holder who);
+ 717:./include/linux/fs.h **** 	int  (*freeze_fs)           (struct super_block *);
+ 718:./include/linux/fs.h **** 	int  (*thaw_super)          (struct super_block *, enum freeze_holder who);
+ 719:./include/linux/fs.h **** 	int  (*unfreeze_fs)         (struct super_block *);
+ 720:./include/linux/fs.h **** 	int  (*statfs)              (struct dentry *, struct kstatfs *);
+ 721:./include/linux/fs.h **** 	int  (*remount_fs)          (struct super_block *, int *, char *);
+ 722:./include/linux/fs.h **** 	void (*umount_begin)        (struct super_block *);
+ 723:./include/linux/fs.h **** 	int  (*show_options)        (struct seq_file *, struct dentry *);
+ 724:./include/linux/fs.h **** 	int  (*show_devname)        (struct seq_file *, struct dentry *);
+ 725:./include/linux/fs.h **** 	int  (*show_path)           (struct seq_file *, struct dentry *);
+ 726:./include/linux/fs.h **** 	int  (*show_stats)          (struct seq_file *, struct dentry *);
+ 727:./include/linux/fs.h **** 
+ 728:./include/linux/fs.h **** #ifdef CONFIG_QUOTA
+ 729:./include/linux/fs.h **** 	ssize_t (*quota_read)(struct super_block *, int, char *, size_t, loff_t);
+ 730:./include/linux/fs.h **** 	ssize_t (*quota_write)(struct super_block *, int, const char *, size_t, loff_t);
+ 731:./include/linux/fs.h **** 	struct dquot __rcu **(*get_dquots)(struct inode *);
+ 732:./include/linux/fs.h **** #endif
+ 733:./include/linux/fs.h **** 
+ 734:./include/linux/fs.h **** 	long (*nr_cached_objects)(struct super_block *,struct shrink_control *);
+ 735:./include/linux/fs.h **** 	long (*free_cached_objects)(struct super_block *,struct shrink_control *);
+ 736:./include/linux/fs.h **** 	void (*shutdown)(struct super_block *sb);
+ 737:./include/linux/fs.h **** };
+ 738:./include/linux/fs.h **** 
+ 739:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 42
+
+
+ 740:./include/linux/fs.h **** 
+ 741:./include/linux/fs.h **** /********************************************************
+ 742:./include/linux/fs.h ****  * 														*
+ 743:./include/linux/fs.h ****  * 			       dquot_operations						*
+ 744:./include/linux/fs.h ****  *														* 
+ 745:./include/linux/fs.h **** *********************************************************/
+ 746:./include/linux/fs.h **** 
+ 747:./include/linux/fs.h **** typedef __kernel_uid32_t 	qid_t; /* Type in which we store ids in memory */
+ 748:./include/linux/fs.h **** typedef long long 			qsize_t;	/* Type in which we store sizes */
+ 749:./include/linux/fs.h **** 
+ 750:./include/linux/fs.h **** #undef USRQUOTA
+ 751:./include/linux/fs.h **** #undef GRPQUOTA
+ 752:./include/linux/fs.h **** #undef PRJQUOTA
+ 753:./include/linux/fs.h **** enum quota_type {
+ 754:./include/linux/fs.h **** 	USRQUOTA = 0,		/* element used for user quotas */
+ 755:./include/linux/fs.h **** 	GRPQUOTA = 1,		/* element used for group quotas */
+ 756:./include/linux/fs.h **** 	PRJQUOTA = 2,		/* element used for project quotas */
+ 757:./include/linux/fs.h **** };
+ 758:./include/linux/fs.h **** 
+ 759:./include/linux/fs.h **** struct kqid {			/* Type in which we store the quota identifier */
+ 760:./include/linux/fs.h **** 	union {
+ 761:./include/linux/fs.h **** 		kuid_t uid;
+ 762:./include/linux/fs.h **** 		kgid_t gid;
+ 763:./include/linux/fs.h **** 		kprojid_t projid;
+ 764:./include/linux/fs.h **** 	};
+ 765:./include/linux/fs.h **** 	enum quota_type type;  /* USRQUOTA (uid) or GRPQUOTA (gid) or PRJQUOTA (projid) */
+ 766:./include/linux/fs.h **** };
+ 767:./include/linux/fs.h **** 
+ 768:./include/linux/fs.h **** struct mem_dqblk {
+ 769:./include/linux/fs.h **** 	qsize_t dqb_bhardlimit;	/* absolute limit on disk blks alloc */
+ 770:./include/linux/fs.h **** 	qsize_t dqb_bsoftlimit;	/* preferred limit on disk blks */
+ 771:./include/linux/fs.h **** 	qsize_t dqb_curspace;	/* current used space */
+ 772:./include/linux/fs.h **** 	qsize_t dqb_rsvspace;   /* current reserved space for delalloc*/
+ 773:./include/linux/fs.h **** 	qsize_t dqb_ihardlimit;	/* absolute limit on allocated inodes */
+ 774:./include/linux/fs.h **** 	qsize_t dqb_isoftlimit;	/* preferred inode limit */
+ 775:./include/linux/fs.h **** 	qsize_t dqb_curinodes;	/* current # allocated inodes */
+ 776:./include/linux/fs.h **** 	time64_t dqb_btime;	/* time limit for excessive disk use */
+ 777:./include/linux/fs.h **** 	time64_t dqb_itime;	/* time limit for excessive inode use */
+ 778:./include/linux/fs.h **** };
+ 779:./include/linux/fs.h **** 
+ 780:./include/linux/fs.h **** struct dquot {
+ 781:./include/linux/fs.h **** 	struct hlist_node dq_hash;	/* Hash list in memory [dq_list_lock] */
+ 782:./include/linux/fs.h **** 	struct list_head dq_inuse;	/* List of all quotas [dq_list_lock] */
+ 783:./include/linux/fs.h **** 	struct list_head dq_free;	/* Free list element [dq_list_lock] */
+ 784:./include/linux/fs.h **** 	struct list_head dq_dirty;	/* List of dirty dquots [dq_list_lock] */
+ 785:./include/linux/fs.h **** 	struct mutex dq_lock;		/* dquot IO lock */
+ 786:./include/linux/fs.h **** //	spinlock_t dq_dqb_lock;		/* Lock protecting dq_dqb changes */
+ 787:./include/linux/fs.h **** 	atomic_t dq_count;		/* Use count */
+ 788:./include/linux/fs.h **** 	struct super_block *dq_sb;	/* superblock this applies to */
+ 789:./include/linux/fs.h **** 	struct kqid dq_id;		/* ID this applies to (uid, gid, projid) */
+ 790:./include/linux/fs.h **** 	loff_t dq_off;			/* Offset of dquot on disk [dq_lock, stable once set] */
+ 791:./include/linux/fs.h **** 	unsigned long dq_flags;		/* See DQ_* */
+ 792:./include/linux/fs.h **** 	struct mem_dqblk dq_dqb;	/* Diskquota usage [dq_dqb_lock] */
+ 793:./include/linux/fs.h **** };
+ 794:./include/linux/fs.h **** 
+ 795:./include/linux/fs.h **** /* Operations which must be implemented by each quota format */
+ 796:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 43
+
+
+ 797:./include/linux/fs.h **** struct quota_format_ops {
+ 798:./include/linux/fs.h **** 	int (*check_quota_file)(struct super_block *sb, int type);	/* Detect whether file is in our format
+ 799:./include/linux/fs.h **** 	int (*read_file_info)(struct super_block *sb, int type);	/* Read main info about file - called on 
+ 800:./include/linux/fs.h **** 	int (*write_file_info)(struct super_block *sb, int type);	/* Write main info about file */
+ 801:./include/linux/fs.h **** 	int (*free_file_info)(struct super_block *sb, int type);	/* Called on quotaoff() */
+ 802:./include/linux/fs.h **** 	int (*read_dqblk)(struct dquot *dquot);		/* Read structure for one user */
+ 803:./include/linux/fs.h **** 	int (*commit_dqblk)(struct dquot *dquot);	/* Write structure for one user */
+ 804:./include/linux/fs.h **** 	int (*release_dqblk)(struct dquot *dquot);	/* Called when last reference to dquot is being dropped
+ 805:./include/linux/fs.h **** 	int (*get_next_id)(struct super_block *sb, struct kqid *qid);	/* Get next ID with existing structu
+ 806:./include/linux/fs.h **** };
+ 807:./include/linux/fs.h **** 
+ 808:./include/linux/fs.h **** struct dquot_operations {
+ 809:./include/linux/fs.h **** 	int (*write_dquot) (struct dquot *);		/* Ordinary dquot write */
+ 810:./include/linux/fs.h **** 	struct dquot *(*alloc_dquot)(struct super_block *, int);	/* Allocate memory for new dquot */
+ 811:./include/linux/fs.h **** 	void (*destroy_dquot)(struct dquot *);		/* Free memory for dquot */
+ 812:./include/linux/fs.h **** 	int (*acquire_dquot) (struct dquot *);		/* Quota is going to be created on disk */
+ 813:./include/linux/fs.h **** 	int (*release_dquot) (struct dquot *);		/* Quota is going to be deleted from disk */
+ 814:./include/linux/fs.h **** 	int (*mark_dirty) (struct dquot *);		/* Dquot is marked dirty */
+ 815:./include/linux/fs.h **** 	int (*write_info) (struct super_block *, int);	/* Write of quota "superblock" */
+ 816:./include/linux/fs.h **** 	/* get reserved quota for delayed alloc, value returned is managed by
+ 817:./include/linux/fs.h **** 	 * quota code only */
+ 818:./include/linux/fs.h **** 	qsize_t *(*get_reserved_space) (struct inode *);
+ 819:./include/linux/fs.h **** 	int (*get_projid) (struct inode *, kprojid_t *);/* Get project ID */
+ 820:./include/linux/fs.h **** 	/* Get number of inodes that were charged for a given inode */
+ 821:./include/linux/fs.h **** 	int (*get_inode_usage) (struct inode *, qsize_t *);
+ 822:./include/linux/fs.h **** 	/* Get next ID with active quota structure */
+ 823:./include/linux/fs.h **** 	int (*get_next_id) (struct super_block *sb, struct kqid *qid);
+ 824:./include/linux/fs.h **** };
+ 825:./include/linux/fs.h **** 
+ 826:./include/linux/fs.h **** /********************************************************
+ 827:./include/linux/fs.h ****  * 														*
+ 828:./include/linux/fs.h ****  * 			       file_system_type						*
+ 829:./include/linux/fs.h ****  *														* 
+ 830:./include/linux/fs.h **** *********************************************************/
+ 831:./include/linux/fs.h **** 
+ 832:./include/linux/fs.h **** struct fs_parameter_spec {
+ 833:./include/linux/fs.h **** 	const char		*name;
+ 834:./include/linux/fs.h **** //	fs_param_type		*type;	/* The desired parameter type */
+ 835:./include/linux/fs.h **** 	u8			opt;	/* Option number (returned by fs_parse()) */
+ 836:./include/linux/fs.h **** 	unsigned short		flags;
+ 837:./include/linux/fs.h **** #define fs_param_neg_with_no	0x0002	/* "noxxx" is negative param */
+ 838:./include/linux/fs.h **** #define fs_param_can_be_empty	0x0004	/* "xxx=" is allowed */
+ 839:./include/linux/fs.h **** #define fs_param_deprecated	0x0008	/* The param is deprecated */
+ 840:./include/linux/fs.h **** 	const void		*data;
+ 841:./include/linux/fs.h **** };
+ 842:./include/linux/fs.h **** 
+ 843:./include/linux/fs.h **** 
+ 844:./include/linux/fs.h **** struct file_system_type {
+ 845:./include/linux/fs.h **** 	const char *name;
+ 846:./include/linux/fs.h **** 	int fs_flags;
+ 847:./include/linux/fs.h **** #define FS_REQUIRES_DEV		1 
+ 848:./include/linux/fs.h **** #define FS_BINARY_MOUNTDATA	2
+ 849:./include/linux/fs.h **** #define FS_HAS_SUBTYPE		4
+ 850:./include/linux/fs.h **** #define FS_USERNS_MOUNT		8	/* Can be mounted by userns root */
+ 851:./include/linux/fs.h **** #define FS_DISALLOW_NOTIFY_PERM	16	/* Disable fanotify permission events */
+ 852:./include/linux/fs.h **** #define FS_ALLOW_IDMAP         32      /* FS has been updated to handle vfs idmappings. */
+ 853:./include/linux/fs.h **** #define FS_MGTIME		64	/* FS uses multigrain timestamps */
+ARM GAS  /tmp/ccccSwDa.s 			page 44
+
+
+ 854:./include/linux/fs.h **** #define FS_RENAME_DOES_D_MOVE	32768	/* FS will handle d_move() during rename() internally. */
+ 855:./include/linux/fs.h **** 	int (*init_fs_context)(struct fs_context *);
+ 856:./include/linux/fs.h **** 	const struct fs_parameter_spec *parameters;
+ 857:./include/linux/fs.h **** 	struct dentry *(*mount) (struct file_system_type *, int,
+ 858:./include/linux/fs.h **** 		       const char *, void *);
+ 859:./include/linux/fs.h **** 	void (*kill_sb) (struct super_block *);
+ 860:./include/linux/fs.h **** 	void *owner;
+ 861:./include/linux/fs.h **** 	struct file_system_type * next;
+ 862:./include/linux/fs.h **** 	struct hlist_head fs_supers;
+ 863:./include/linux/fs.h **** 
+ 864:./include/linux/fs.h **** 	struct lock_class_key s_lock_key;
+ 865:./include/linux/fs.h **** 	struct lock_class_key s_umount_key;
+ 866:./include/linux/fs.h **** 	struct lock_class_key s_vfs_rename_key;
+ 867:./include/linux/fs.h **** 	struct lock_class_key s_writers_key[SB_FREEZE_LEVELS];
+ 868:./include/linux/fs.h **** 	struct lock_class_key i_lock_key;
+ 869:./include/linux/fs.h **** 	struct lock_class_key i_mutex_key;
+ 870:./include/linux/fs.h **** 	struct lock_class_key invalidate_lock_key;
+ 871:./include/linux/fs.h **** 	struct lock_class_key i_mutex_dir_key;
+ 872:./include/linux/fs.h **** };
+ 873:./include/linux/fs.h **** 
+ 874:./include/linux/fs.h **** 
+ 875:./include/linux/fs.h **** 
+ 876:./include/linux/fs.h **** extern int register_filesystem(struct file_system_type *);
+ 877:./include/linux/fs.h **** extern int unregister_filesystem(struct file_system_type *);
+ 878:./include/linux/fs.h **** extern struct file_system_type *lookup_fs_type(const char *name);
+ 879:./include/linux/fs.h **** 
+ 880:./include/linux/fs.h **** /*--------------------------------------------------------------------------*/
+ 881:./include/linux/fs.h **** static inline bool is_sync_kiocb(struct kiocb *kiocb)
+ 882:./include/linux/fs.h **** {
+ 883:./include/linux/fs.h **** 	return kiocb->ki_complete == NULL;
+ 884:./include/linux/fs.h **** }
+ 885:./include/linux/fs.h **** static inline struct inode *file_inode(const struct file *f)
+ 886:./include/linux/fs.h **** {
+ 887:./include/linux/fs.h **** 	return f->f_inode;
+ 888:./include/linux/fs.h **** }
+ 889:./include/linux/fs.h **** /*--------------------------------------------------------------------------*/
+ 890:./include/linux/fs.h **** 
+ 891:./include/linux/fs.h **** 
+ 892:./include/linux/fs.h **** 
+ 893:./include/linux/fs.h **** 
+ 894:./include/linux/fs.h **** extern struct file *filp_open(const char * path, int flags, umode_t mode);
+ 895:./include/linux/fs.h **** extern ssize_t kernel_read(struct file *file, void * buf, size_t count, loff_t *ppos);
+ 896:./include/linux/fs.h **** extern ssize_t kernel_write(struct file *file,const void * buf, size_t count, loff_t *ppos);
+ 897:./include/linux/fs.h **** extern long vfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+ 898:./include/linux/fs.h **** extern int file_close(struct file *file, fl_owner_t id);
+ 899:./include/linux/fs.h **** 
+ 900:./include/linux/fs.h **** 
+ 901:./include/linux/fs.h **** 
+ 902:./include/linux/fs.h **** /* fs/char_dev.c */
+ 903:./include/linux/fs.h **** #define CHRDEV_MAJOR_MAX 512
+ 904:./include/linux/fs.h **** /* Marks the bottom of the first segment of free char majors */
+ 905:./include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_END 234
+ 906:./include/linux/fs.h **** /* Marks the top and bottom of the second segment of free char majors */
+ 907:./include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_EXT_START 511
+ 908:./include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_EXT_END 384
+ 909:./include/linux/fs.h **** 
+ 910:./include/linux/fs.h **** 
+ARM GAS  /tmp/ccccSwDa.s 			page 45
+
+
+ 911:./include/linux/fs.h **** 
+ 912:./include/linux/fs.h **** extern int alloc_chrdev_region(dev_t *, unsigned, unsigned, const char *);
+ 913:./include/linux/fs.h **** extern int register_chrdev_region(dev_t, unsigned, const char *);
+ 914:./include/linux/fs.h **** extern int __register_chrdev(unsigned int major, unsigned int baseminor,
+ 915:./include/linux/fs.h ****     unsigned int count, const char *name,
+ 916:./include/linux/fs.h ****     const struct file_operations *fops);
+ 917:./include/linux/fs.h **** extern void __unregister_chrdev(unsigned int major, unsigned int baseminor,
+ 918:./include/linux/fs.h **** 		unsigned int count, const char *name);
+ 919:./include/linux/fs.h **** extern void unregister_chrdev_region(dev_t, unsigned);
+ 920:./include/linux/fs.h **** 
+ 921:./include/linux/fs.h **** static inline int register_chrdev(unsigned int major, const char *name,
+ 1064              		.loc 4 921 19 is_stmt 1 view .LVU277
+ 1065              	.LBB21:
+ 922:./include/linux/fs.h **** 	const struct file_operations *fops)
+ 923:./include/linux/fs.h **** {
+ 924:./include/linux/fs.h **** return __register_chrdev(major, 0, 256, name, fops);
+ 1066              		.loc 4 924 1 view .LVU278
+ 1067              		.loc 4 924 8 is_stmt 0 view .LVU279
+ 1068 0006 184C     		ldr	r4, .L76+4
+ 1069 0008 184B     		ldr	r3, .L76+8
+ 1070 000a 0093     		str	r3, [sp]
+ 1071 000c 2346     		mov	r3, r4
+ 1072 000e 4FF48072 		mov	r2, #256
+ 1073 0012 0021     		movs	r1, #0
+ 1074 0014 2868     		ldr	r0, [r5]
+ 1075 0016 FFF7FEFF 		bl	__register_chrdev
+ 1076              	.LVL88:
+ 1077              		.loc 4 924 8 view .LVU280
+ 1078 001a 0146     		mov	r1, r0
+ 1079              	.LVL89:
+ 1080              		.loc 4 924 8 view .LVU281
+ 1081              	.LBE21:
+ 1082              	.LBE20:
+ 1083              		.loc 1 153 11 discriminator 1 view .LVU282
+ 1084 001c 2860     		str	r0, [r5]
+ 154:./drivers/tty/stm32f4_tty0.c ****     if(major < 0){
+ 1085              		.loc 1 154 5 is_stmt 1 view .LVU283
+ 155:./drivers/tty/stm32f4_tty0.c ****         pr_info("can not get major:(%d)\n",major);
+ 156:./drivers/tty/stm32f4_tty0.c ****     }
+ 157:./drivers/tty/stm32f4_tty0.c ****     pr_info("register ttyS0 (%d)\n",major);
+ 1086              		.loc 1 157 5 view .LVU284
+ 1087 001e 1448     		ldr	r0, .L76+12
+ 1088 0020 FFF7FEFF 		bl	printk
+ 1089              	.LVL90:
+ 158:./drivers/tty/stm32f4_tty0.c **** 
+ 159:./drivers/tty/stm32f4_tty0.c ****     struct class * tty_dev = class_create(THIS_MODULE,"ttyS0");
+ 1090              		.loc 1 159 5 view .LVU285
+ 1091              		.loc 1 159 30 is_stmt 0 view .LVU286
+ 1092 0024 2146     		mov	r1, r4
+ 1093 0026 0020     		movs	r0, #0
+ 1094 0028 FFF7FEFF 		bl	class_create
+ 1095              	.LVL91:
+ 1096 002c 0446     		mov	r4, r0
+ 1097              	.LVL92:
+ 160:./drivers/tty/stm32f4_tty0.c ****     if(IS_ERR(tty_dev)){
+ 1098              		.loc 1 160 5 is_stmt 1 view .LVU287
+ 1099              	.LBB22:
+ARM GAS  /tmp/ccccSwDa.s 			page 46
+
+
+ 1100              	.LBI22:
+ 1101              		.file 5 "./include/linux/err.h"
+   1:./include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:./include/linux/err.h **** #define _LINUX_ERR_H
+   4:./include/linux/err.h **** 
+   5:./include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:./include/linux/err.h **** #include <linux/compiler.h>
+   7:./include/linux/err.h **** #include <linux/types.h>
+   8:./include/linux/err.h **** 
+   9:./include/linux/err.h **** #include <asm/errno.h>
+  10:./include/linux/err.h **** 
+  11:./include/linux/err.h **** /*
+  12:./include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:./include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:./include/linux/err.h ****  * pointer with the same return value.
+  15:./include/linux/err.h ****  *
+  16:./include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:./include/linux/err.h ****  * error and pointer decisions.
+  18:./include/linux/err.h ****  */
+  19:./include/linux/err.h **** #define MAX_ERRNO	4095
+  20:./include/linux/err.h **** 
+  21:./include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:./include/linux/err.h **** 
+  23:./include/linux/err.h **** /**
+  24:./include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:./include/linux/err.h ****  * @x: The pointer to check.
+  26:./include/linux/err.h ****  *
+  27:./include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:./include/linux/err.h ****  */
+  29:./include/linux/err.h **** 
+  30:./include/linux/err.h **** #ifndef unlikely
+  31:./include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:./include/linux/err.h **** #endif
+  33:./include/linux/err.h **** 
+  34:./include/linux/err.h **** #ifndef likely
+  35:./include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:./include/linux/err.h **** #endif
+  37:./include/linux/err.h **** 
+  38:./include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:./include/linux/err.h **** 
+  40:./include/linux/err.h **** /**
+  41:./include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:./include/linux/err.h ****  * @error: A negative error code.
+  43:./include/linux/err.h ****  *
+  44:./include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:./include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:./include/linux/err.h ****  *
+  47:./include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:./include/linux/err.h ****  */
+  49:./include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:./include/linux/err.h **** {
+  51:./include/linux/err.h **** 	return (void *) error;
+  52:./include/linux/err.h **** }
+  53:./include/linux/err.h **** 
+  54:./include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:./include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+ARM GAS  /tmp/ccccSwDa.s 			page 47
+
+
+  56:./include/linux/err.h **** 
+  57:./include/linux/err.h **** /**
+  58:./include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:./include/linux/err.h ****  * @ptr: An error pointer.
+  60:./include/linux/err.h ****  * Return: The error code within @ptr.
+  61:./include/linux/err.h ****  */
+  62:./include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:./include/linux/err.h **** {
+  64:./include/linux/err.h **** 	return (long) ptr;
+  65:./include/linux/err.h **** }
+  66:./include/linux/err.h **** 
+  67:./include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:./include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:./include/linux/err.h **** 
+  70:./include/linux/err.h **** /**
+  71:./include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:./include/linux/err.h ****  * @ptr: The pointer to check.
+  73:./include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:./include/linux/err.h ****  */
+  75:./include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 1102              		.loc 5 75 33 view .LVU288
+ 1103              	.LBB23:
+  76:./include/linux/err.h **** {
+  77:./include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 1104              		.loc 5 77 2 view .LVU289
+ 1105              		.loc 5 77 9 is_stmt 0 view .LVU290
+ 1106 002e 10F5805F 		cmn	r0, #4096
+ 1107 0032 94BF     		ite	ls
+ 1108 0034 0025     		movls	r5, #0
+ 1109 0036 0125     		movhi	r5, #1
+ 1110              	.LVL93:
+ 1111              		.loc 5 77 9 view .LVU291
+ 1112              	.LBE23:
+ 1113              	.LBE22:
+ 1114              		.loc 1 160 7 discriminator 1 view .LVU292
+ 1115 0038 65B9     		cbnz	r5, .L74
+ 1116              	.LVL94:
+ 1117              	.L71:
+ 161:./drivers/tty/stm32f4_tty0.c ****         pr_info("can not create tty class\n");
+ 162:./drivers/tty/stm32f4_tty0.c ****     }
+ 163:./drivers/tty/stm32f4_tty0.c ****     struct device * dev = device_create(tty_dev,NULL,major,NULL,"ttyS%d",0);
+ 1118              		.loc 1 163 5 is_stmt 1 view .LVU293
+ 1119              		.loc 1 163 27 is_stmt 0 view .LVU294
+ 1120 003a 0021     		movs	r1, #0
+ 1121 003c 0191     		str	r1, [sp, #4]
+ 1122 003e 0D4B     		ldr	r3, .L76+16
+ 1123 0040 0093     		str	r3, [sp]
+ 1124 0042 0B46     		mov	r3, r1
+ 1125 0044 074A     		ldr	r2, .L76
+ 1126 0046 1268     		ldr	r2, [r2]
+ 1127 0048 2046     		mov	r0, r4
+ 1128 004a FFF7FEFF 		bl	device_create
+ 1129              	.LVL95:
+ 164:./drivers/tty/stm32f4_tty0.c ****     if(IS_ERR(tty_dev)){
+ 1130              		.loc 1 164 5 is_stmt 1 view .LVU295
+ 1131              		.loc 1 164 7 is_stmt 0 discriminator 1 view .LVU296
+ 1132 004e 2DB9     		cbnz	r5, .L75
+ARM GAS  /tmp/ccccSwDa.s 			page 48
+
+
+ 1133              	.L72:
+ 165:./drivers/tty/stm32f4_tty0.c ****         pr_info("can not create tty device\n");
+ 166:./drivers/tty/stm32f4_tty0.c ****     }
+ 167:./drivers/tty/stm32f4_tty0.c **** }
+ 1134              		.loc 1 167 1 view .LVU297
+ 1135 0050 03B0     		add	sp, sp, #12
+ 1136              	.LCFI26:
+ 1137              		.cfi_remember_state
+ 1138              		.cfi_def_cfa_offset 12
+ 1139              		@ sp needed
+ 1140 0052 30BD     		pop	{r4, r5, pc}
+ 1141              	.LVL96:
+ 1142              	.L74:
+ 1143              	.LCFI27:
+ 1144              		.cfi_restore_state
+ 161:./drivers/tty/stm32f4_tty0.c ****     }
+ 1145              		.loc 1 161 9 is_stmt 1 view .LVU298
+ 1146 0054 0848     		ldr	r0, .L76+20
+ 1147              	.LVL97:
+ 161:./drivers/tty/stm32f4_tty0.c ****     }
+ 1148              		.loc 1 161 9 is_stmt 0 view .LVU299
+ 1149 0056 FFF7FEFF 		bl	printk
+ 1150              	.LVL98:
+ 1151 005a EEE7     		b	.L71
+ 1152              	.L75:
+ 165:./drivers/tty/stm32f4_tty0.c ****         pr_info("can not create tty device\n");
+ 1153              		.loc 1 165 9 is_stmt 1 view .LVU300
+ 1154 005c 0748     		ldr	r0, .L76+24
+ 1155 005e FFF7FEFF 		bl	printk
+ 1156              	.LVL99:
+ 1157 0062 F5E7     		b	.L72
+ 1158              	.L77:
+ 1159              		.align	2
+ 1160              	.L76:
+ 1161 0064 00000000 		.word	major
+ 1162 0068 00000000 		.word	.LC6
+ 1163 006c 00000000 		.word	tty_fop
+ 1164 0070 08000000 		.word	.LC7
+ 1165 0074 3C000000 		.word	.LC9
+ 1166 0078 20000000 		.word	.LC8
+ 1167 007c 44000000 		.word	.LC10
+ 1168              		.cfi_endproc
+ 1169              	.LFE1092:
+ 1171              		.section	.bss.node.0,"aw",%nobits
+ 1172              		.align	2
+ 1175              	node.0:
+ 1176 0000 00000000 		.space	8
+ 1176      00000000 
+ 1177              		.section	.bss.node.1,"aw",%nobits
+ 1178              		.align	2
+ 1181              	node.1:
+ 1182 0000 00000000 		.space	8
+ 1182      00000000 
+ 1183              		.section	.data.tty_fop,"aw"
+ 1184              		.align	2
+ 1187              	tty_fop:
+ 1188 0000 00000000 		.space	16
+ARM GAS  /tmp/ccccSwDa.s 			page 49
+
+
+ 1188      00000000 
+ 1188      00000000 
+ 1188      00000000 
+ 1189 0010 00000000 		.word	tty_write
+ 1190 0014 00000000 		.space	32
+ 1190      00000000 
+ 1190      00000000 
+ 1190      00000000 
+ 1190      00000000 
+ 1191 0034 00000000 		.word	tty_open
+ 1192 0038 00000000 		.space	4
+ 1193 003c 00000000 		.word	tty_close
+ 1194 0040 00000000 		.space	72
+ 1194      00000000 
+ 1194      00000000 
+ 1194      00000000 
+ 1194      00000000 
+ 1195              		.global	major
+ 1196              		.section	.bss.major,"aw",%nobits
+ 1197              		.align	2
+ 1200              	major:
+ 1201 0000 00000000 		.space	4
+ 1202              		.text
+ 1203              	.Letext0:
+ 1204              		.file 6 "./include/linux/stdarg.h"
+ 1205              		.file 7 "./include/asm-generic/int-l64.h"
+ 1206              		.file 8 "./include/asm-generic/posix_types.h"
+ 1207              		.file 9 "./include/uapi/linux/types.h"
+ 1208              		.file 10 "./include/linux/types.h"
+ 1209              		.file 11 "./include/linux/errseq.h"
+ 1210              		.file 12 "./include/linux/time64.h"
+ 1211              		.file 13 "./arch/arm_m/include/asm/spinlock.h"
+ 1212              		.file 14 "./include/linux/spinlock_types_raw.h"
+ 1213              		.file 15 "./include/linux/spinlock_types.h"
+ 1214              		.file 16 "./include/linux/rbtree_types.h"
+ 1215              		.file 17 "./include/linux/uidgid_types.h"
+ 1216              		.file 18 "./include/linux/projid.h"
+ 1217              		.file 19 "./include/linux/mnt_idmapping.h"
+ 1218              		.file 20 "./include/linux/mutex.h"
+ 1219              		.file 21 "./include/linux/uio.h"
+ 1220              		.file 22 "./include/linux/wait.h"
+ 1221              		.file 23 "./include/linux/xarray.h"
+ 1222              		.file 24 "./include/linux/migrate_mode.h"
+ 1223              		.file 25 "./include/linux/rw_hint.h"
+ 1224              		.file 26 "./include/linux/reciprocal_div.h"
+ 1225              		.file 27 "./include/linux/slab.h"
+ 1226              		.file 28 "./include/linux/mm_type.h"
+ 1227              		.file 29 "./include/linux/bvec.h"
+ 1228              		.file 30 "./include/linux/blk_types.h"
+ 1229              		.file 31 "./include/linux/blkdev.h"
+ 1230              		.file 32 "./include/linux/bio.h"
+ 1231              		.file 33 "./include/linux/mempool_super_haper.h"
+ 1232              		.file 34 "./include/linux/mempool.h"
+ 1233              		.file 35 "./include/linux/lockdep_types.h"
+ 1234              		.file 36 "./include/linux/workqueue_types.h"
+ 1235              		.file 37 "./include/linux/blk-mq.h"
+ 1236              		.file 38 "./include/linux/dcache.h"
+ARM GAS  /tmp/ccccSwDa.s 			page 50
+
+
+ 1237              		.file 39 "./include/uapi/linux/pr.h"
+ 1238              		.file 40 "./include/linux/pr.h"
+ 1239              		.file 41 "./include/linux/hdreg.h"
+ 1240              		.file 42 "./include/linux/lockref.h"
+ 1241              		.file 43 "./include/linux/path.h"
+ 1242              		.file 44 "./include/linux/statfs.h"
+ 1243              		.file 45 "./include/linux/stat.h"
+ 1244              		.file 46 "./include/linux/device.h"
+ 1245              		.file 47 "./include/linux/libfdt.h"
+ 1246              		.file 48 "./include/linux/sprintf.h"
+ 1247              		.file 49 "./arch/arm_m/include/asm/string.h"
+ 1248              		.file 50 "<built-in>"
+ 1249              		.file 51 "./include/linux/printk.h"
+ARM GAS  /tmp/ccccSwDa.s 			page 51
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f4_tty0.c
+     /tmp/ccccSwDa.s:21     .text.USART_1_SendByte:00000000 $t
+     /tmp/ccccSwDa.s:26     .text.USART_1_SendByte:00000000 USART_1_SendByte
+     /tmp/ccccSwDa.s:51     .text.USART_1_SendByte:00000010 $d
+     /tmp/ccccSwDa.s:56     .text.tty_open:00000000 $t
+     /tmp/ccccSwDa.s:61     .text.tty_open:00000000 tty_open
+     /tmp/ccccSwDa.s:79     .text.tty_write:00000000 $t
+     /tmp/ccccSwDa.s:84     .text.tty_write:00000000 tty_write
+     /tmp/ccccSwDa.s:145    .text.tty_close:00000000 $t
+     /tmp/ccccSwDa.s:150    .text.tty_close:00000000 tty_close
+     /tmp/ccccSwDa.s:168    .text.of_property_read_u32_array:00000000 $t
+     /tmp/ccccSwDa.s:173    .text.of_property_read_u32_array:00000000 of_property_read_u32_array
+     /tmp/ccccSwDa.s:325    .text.of_property_read_u32:00000000 $t
+     /tmp/ccccSwDa.s:330    .text.of_property_read_u32:00000000 of_property_read_u32
+     /tmp/ccccSwDa.s:450    .rodata.of_find_compatible_node.str1.4:00000000 $d
+     /tmp/ccccSwDa.s:454    .text.of_find_compatible_node:00000000 $t
+     /tmp/ccccSwDa.s:459    .text.of_find_compatible_node:00000000 of_find_compatible_node
+     /tmp/ccccSwDa.s:556    .text.of_find_compatible_node:00000044 $d
+     /tmp/ccccSwDa.s:1181   .bss.node.1:00000000 node.1
+     /tmp/ccccSwDa.s:563    .text.of_find_node_by_path:00000000 $t
+     /tmp/ccccSwDa.s:568    .text.of_find_node_by_path:00000000 of_find_node_by_path
+     /tmp/ccccSwDa.s:622    .text.of_find_node_by_path:0000001c $d
+     /tmp/ccccSwDa.s:1175   .bss.node.0:00000000 node.0
+     /tmp/ccccSwDa.s:628    .rodata.uart1_device_init_function_from_dtb.str1.4:00000000 $d
+     /tmp/ccccSwDa.s:644    .text.uart1_device_init_function_from_dtb:00000000 $t
+     /tmp/ccccSwDa.s:649    .text.uart1_device_init_function_from_dtb:00000000 uart1_device_init_function_from_dtb
+     /tmp/ccccSwDa.s:881    .text.uart1_device_init_function_from_dtb:00000120 $d
+     /tmp/ccccSwDa.s:893    .text.base_out_opt_device_init:00000000 $t
+     /tmp/ccccSwDa.s:899    .text.base_out_opt_device_init:00000000 base_out_opt_device_init
+     /tmp/ccccSwDa.s:919    .text.early_printk:00000000 $t
+     /tmp/ccccSwDa.s:925    .text.early_printk:00000000 early_printk
+     /tmp/ccccSwDa.s:1020   .rodata.str1.4:00000000 $d
+     /tmp/ccccSwDa.s:1036   .init.text:00000000 $t
+     /tmp/ccccSwDa.s:1042   .init.text:00000000 main_tty_dev_init
+     /tmp/ccccSwDa.s:1161   .init.text:00000064 $d
+     /tmp/ccccSwDa.s:1200   .bss.major:00000000 major
+     /tmp/ccccSwDa.s:1187   .data.tty_fop:00000000 tty_fop
+     /tmp/ccccSwDa.s:1172   .bss.node.0:00000000 $d
+     /tmp/ccccSwDa.s:1178   .bss.node.1:00000000 $d
+     /tmp/ccccSwDa.s:1184   .data.tty_fop:00000000 $d
+     /tmp/ccccSwDa.s:1197   .bss.major:00000000 $d
+
+UNDEFINED SYMBOLS
+fdt_getprop
+fdt_next_node
+strcmp
+__dtb_file_start_address
+fdt_path_offset
+vsnprintf
+__register_chrdev
+printk
+class_create
+device_create
