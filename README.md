@@ -1,15 +1,14 @@
-this RTOS kernel just create extreme compatibility of linux kernel.
-I's just for personal test.
-I'm not recommend any one use it for any project.
+this RTOS kernel just for make compatibility of linux kernel.
+It's just for personal test.
 
+I'm not recommend any one use it on any project.
 
 no libc no MDK support.
 
-and now it's only have stm32f407 support.
-
 you need instell make tools。
-and use cmd: "make installtools"
-then install arm-none-eabi-gcc
+and use cmd:"make installtools"
+
+then install gcc for your platforme
 
 use make menuconfig to config kernel.
 then link script and boot script will be create 
