@@ -5,7 +5,8 @@ I'm not recommend any one use it on any project.
 
 no libc no MDK support.
 
-you need instell make tools。
+you need install make tools。
+
 and use cmd:"make installtools"
 
 then install gcc for your platforme
@@ -18,3 +19,4 @@ use make dtbs to create device tree
 use make 
 
 you will find file at./build/out/
+
