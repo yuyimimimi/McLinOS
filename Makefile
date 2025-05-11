@@ -37,7 +37,7 @@ START_UP = arch/$(STRUCT)/boot/startup.s
 ASM_SOURCES += $(START_UP)
 LDSCRIPT = arch/$(STRUCT)/boot/link.ld
 DTS_FILE = arch/$(STRUCT)/boot/dts/$(PLATFORM).dts
-DTB_SOURCES = ./$(BUILD_DIR)/out/$(PLATFORM)-bord-out.dtb
+DTB_SOURCES = $(BUILD_DIR)/out/$(PLATFORM)-bord-out.dtb
 
 
 DTB_OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(DTB_SOURCES:.dtb=.dtb.o)))
