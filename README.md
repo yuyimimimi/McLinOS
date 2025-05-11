@@ -42,10 +42,10 @@ Additional build capabilities:
    make installtools
 
 
-
+===
 
 中文说明 (Chinese Version)
-本项目仍在积极开发测试中，仅供学习研究使用。
+本项目仍在开发测试中，仅供学习研究使用。
 
 项目特点
 完全跨平台微内核操作系统实验项目
