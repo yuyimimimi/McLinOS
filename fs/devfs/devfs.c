@@ -421,15 +421,15 @@ static int devfs_unlink(struct inode *dir, struct dentry *dentry);
 static int devfs_mkdir(struct mnt_idmap *mnt, struct inode *dir, struct dentry *dentry, umode_t mode);
 static int devfs_setattr(struct mnt_idmap *map, struct dentry *dentry, struct iattr *iattr);
 static int  devfs_getattr (struct mnt_idmap *dmp, const struct path * path,struct kstat *stat, u32 u, unsigned int i);
-static int devfs_rmdir(struct inode *	inode  ,struct dentry *dentry);
+static int devfs_rmdir(struct inode *inode  ,struct dentry *dentry);
 
 static struct inode_operations devfs_inode_operation = {
-    .create = devfs_create,
-    .lookup = devfs_vfs_lookup,
-    .link   = devfs_link,
-    .unlink = devfs_unlink,
-    .mkdir  = devfs_mkdir,
-    .rmdir  = devfs_rmdir,
+    .create  = devfs_create,
+    .lookup  = devfs_vfs_lookup,
+    .link    = devfs_link,
+    .unlink  = devfs_unlink,
+    .mkdir   = devfs_mkdir,
+    .rmdir   = devfs_rmdir,
     .setattr = devfs_setattr,
     .getattr = devfs_getattr
 };
@@ -458,7 +458,7 @@ static int devfs_create(struct mnt_idmap * map, struct inode * dir,struct dentry
      return -1;
     }  
 
-    struct inode * new_file_inode = devfs_get_inode(dinode,dir->i_sb);
+    struct inode * new_file_inode = devfs_get_inode(file->target_inode,dir->i_sb);
     if(new_file_inode == NULL)
         return -1;
 

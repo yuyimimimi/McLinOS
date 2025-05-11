@@ -135,7 +135,13 @@ static struct pipefs_inode *pipefs_create_empty_inode(struct pipefs_superblock *
     return pipe_inode;
 }
 static void pipefs_inode_put(struct pipefs_inode *node){
-    if(node != NULL)kfree(node);
+    if(node != NULL)
+    {
+        if(node->buf){
+            kfree(node->buf);
+        }
+        kfree(node);
+    }
 }
 static struct pipefs_dentry* pipefs_create_dentry(struct pipefs_inode* parent_dentry_inode,struct pipefs_inode* target_inode,char *name) //创建硬连接
 {
@@ -346,7 +352,6 @@ static struct dentry *pipefs_mount(struct file_system_type *fs_type,
     }
     sb->s_root = root;
     root->d_sb = sb;
-
     return root;
 }
 
@@ -477,7 +482,7 @@ static int pipefs_create(struct mnt_idmap * map, struct inode * dir,struct dentr
      return -1;
     }  
 
-    struct inode * new_file_inode = pipefs_get_inode(dinode,dir->i_sb);
+    struct inode * new_file_inode = pipefs_get_inode(file->target_inode,dir->i_sb);
     if(new_file_inode == NULL)
         return -1;
 

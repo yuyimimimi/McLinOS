@@ -12,7 +12,7 @@ static inline int copy_from_user(void *to, const void __user *from, size_t n) //
 }
 static inline int copy_to_user(void __user *to, const void *from, size_t n) //用于裸机环境中的代替品
 {
-    return  memcpy((void *)to, from, n);
+    memcpy((void *)to, from, n);
     return 0;
 }
 

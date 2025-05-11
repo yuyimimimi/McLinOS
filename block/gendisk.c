@@ -33,7 +33,9 @@ struct gendisk *__gendisk_alloc(int major,int minors)
     disk->open_mode = BLK_OPEN_READ;
     return disk;
 }
+EXPORT_SYMBOL(__gendisk_alloc);
 
 void __put_disk(struct gendisk *disk){
     kfree(disk);   
 }
+EXPORT_SYMBOL(__put_disk);

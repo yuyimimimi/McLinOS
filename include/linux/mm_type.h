@@ -192,7 +192,7 @@ static inline struct page *__page_create(gfp_t flags ){
         return NULL;
     page->flags = 0;
     atomic_set(&page->_mapcount, 0);
-    atomic_set(&page->_refcount, 0); // 初始引用计数为1
+    atomic_set(&page->_refcount, 0); 
     page->zone_device_data = NULL;
     return page;
 }
@@ -227,12 +227,15 @@ static inline struct page *__alloc_pages( gfp_t flags , unsigned int order ){
 		__page_destroy(page);
 		return -ENOMEM ;
 	}
+	page->page_type = 1234;
 	page->zone_device_data = data;
 	return page;
 }
 
 static inline void __free_pages(struct page *page, unsigned int order){
     if (page) {
+		if(page->page_type == 1234)
+		kfree(page->zone_device_data);
         __page_destroy(page);
     }
 }
@@ -253,21 +256,24 @@ static inline void __get_page(struct page *page){
 
 
 static inline void __put_page(struct page *page){
-    if (page && atomic_dec_and_test(&page->_refcount)) {
+    if (page && atomic_dec_and_test(&page->_refcount) ) {
         __free_pages(page, 0);
     }
+	else if(page->_refcount.counter < 0) {
+		__free_pages(page, 0);
+	}
 }
 
 static void* __kmap(struct page *page){
 	if (!page)
 		return NULL;
-	__get_page(page);
+	//__get_page(page);
 	return page->zone_device_data;
 }
 
 static void __kunmap(struct page *page){
-	if (page)
-	__put_page(page);
+	//if (page)
+	//__put_page(page);
 }
 
 

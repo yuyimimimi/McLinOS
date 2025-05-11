@@ -27,7 +27,7 @@ extern unsigned long __sw_hweight64(__u64 w);
  */
 
 #include <asm-generic/bitops/generic-non-atomic.h>
-#include <asm-generic/bitops/const_hweight.h>
+
 
 /*
  * Many architecture-specific non-atomic bitops contain inline asm code and due

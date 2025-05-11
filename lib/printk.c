@@ -58,5 +58,3 @@ void __weak minimal_printk(const char *fmt, va_list args) {
 void __weak early_putchar(char c) {
     early_printk("%c", c);
 }
-void __weak early_printk(const char *fmt, ...){}  //系统早期启动时打印信息(需要实现)
-void __weak printk(const char *fmt, ...){}

@@ -78,7 +78,7 @@ static void w25qxx_request(struct request *req )
                     }
                 }
             }
-            kunmap(bvec->bv_page);
+            put_page(bvec->bv_page);
         }
     }
     if (ret < 0)

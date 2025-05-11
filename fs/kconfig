@@ -9,7 +9,7 @@ menu "File System Configuration"
 
   source "./fs/devfs/kconfig"
   source "./fs/pipefs/kconfig"
-  source "./fs/ramfs/kconfig"
+  source "./fs/initramfs/kconfig"
 
 
 

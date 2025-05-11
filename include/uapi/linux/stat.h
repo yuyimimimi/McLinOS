@@ -13,7 +13,7 @@
 #define S_IFBLK  0060000 // 块设备文件
 #define S_IFDIR  0040000 // 目录文件
 #define S_IFCHR  0020000 // 字符设备文件
-#define S_IFIFO  0010000  // 管道（FIFO）文件
+#define S_IFIFO  0010000 // 管道（FIFO）文件
 #define S_ISUID  0004000
 #define S_ISGID  0002000
 #define S_ISVTX  0001000

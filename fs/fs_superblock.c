@@ -20,12 +20,12 @@ struct super_block *alloc_super(struct block_device *bdev)
     if(sb == NULL) 
     return -ENOMEM;
 	memset(sb,0,sizeof(struct super_block));
-
 	INIT_LIST_HEAD(&sb->s_list);
 	sb->s_bdev = bdev;
     INIT_HLIST_NODE(&sb->s_instances);
     INIT_LIST_HEAD(&sb->s_mounts);
 	mutex_init(&sb->s_vfs_rename_mutex);
+	sb->s_blocksize = 512;
 	INIT_HLIST_HEAD(&sb->s_pins);
 }
 EXPORT_SYMBOL(alloc_super);

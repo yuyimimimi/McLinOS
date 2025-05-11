@@ -12,7 +12,6 @@ struct request_queue *request_queue_init(int id, struct gendisk *gd,gfp_t flags)
     q = kmalloc(sizeof(*q), GFP_KERNEL);  // 分配内存
     if (!q)
         return NULL;
-    
     q->queuedata = NULL;               // 初始化为 NULL，后期可分配数据
     q->last_merge = NULL;              // 无合并请求
     spin_lock_init(&q->queue_lock);    // 初始化自旋锁
@@ -24,9 +23,9 @@ struct request_queue *request_queue_init(int id, struct gendisk *gd,gfp_t flags)
     q->nr_requests = 1000;             // 队列支持的最大请求数
     INIT_LIST_HEAD(&q->icq_list);      // 初始化链表头
     q->node = 0;                       // 默认 NUMA 节点为 0
-
     return q;
 }
+EXPORT_SYMBOL(request_queue_init);
 
 void __blk_cleanup_queue(struct request_queue *q){
     if(q) kfree(q);
@@ -36,7 +35,7 @@ void request_queue_add(struct request_queue *q, struct request *req)
 {
     list_add_tail(&req->queuelist, &q->icq_list);  // 将请求添加到队列末尾
 }
-
+EXPORT_SYMBOL(request_queue_add);
 
 void request_queue_remove(struct request_queue *q, struct request *req)
 {
@@ -47,6 +46,7 @@ void request_queue_remove(struct request_queue *q, struct request *req)
     } 
     spin_unlock(&q->queue_lock);
 }
+EXPORT_SYMBOL(request_queue_remove);
 
 
 void process_requests_in_queue(struct request_queue *q)
@@ -68,28 +68,23 @@ void process_requests_in_queue(struct request_queue *q)
 
     spin_unlock(&q->queue_lock);
 }
-
+EXPORT_SYMBOL(process_requests_in_queue);
 
 
 struct request *blk_fetch_request(struct request_queue *q)
 {
     struct request *req = NULL;
-
-    // 获取队列的自旋锁，防止并发修改
     spin_lock(&q->queue_lock);
 
     if (!list_empty(&q->icq_list)) {
-        // 获取队列头部的请求
         req = list_first_entry(&q->icq_list, struct request, queuelist);
-        // 从队列中删除这个请求
         list_del(&req->queuelist);
     }
-
-    // 释放自旋锁
     spin_unlock(&q->queue_lock);
-
-    return req;  // 返回找到的请求
+    return req; 
 }
+EXPORT_SYMBOL(blk_fetch_request);
+
 
 int __blk_end_request_cur(struct request *req, int error)
 {

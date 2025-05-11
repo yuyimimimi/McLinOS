@@ -10,17 +10,19 @@
 struct dentry *root_dentry = NULL;
 
 
+
+
 extern struct super_block * sget(struct file_system_type *type,
     int (*test)(struct super_block *,void *),
     int (*set)(struct super_block *,void *),
     int flags, void *data);
 
 extern int mount_root_fs(char *file_system_type);
+
+
 extern int sys_mount(const char __user *dev_name, const char __user *dir_name,
     const char __user *type, unsigned long flags,
     const void __user *data);
-
-
 
 static struct inode* get_dentry_inode(struct  dentry * dir){
     if(dir == NULL) return NULL;
@@ -31,17 +33,18 @@ static struct inode* get_dentry_inode(struct  dentry * dir){
 
 static struct dentry* find_dentry(struct dentry* dir,char *dentry_name, unsigned int flags)
 {
-    struct dentry* son_dentry = d_lookup_dentry(dir,dentry_name); //现在缓存中查询dentry
+    struct dentry* son_dentry = d_lookup_dentry(dir,dentry_name);
     if(son_dentry != NULL) {
+        //pr_info("find from chache\n");
         return son_dentry;
     }
     son_dentry = d_alloc(dir,dentry_name); 
     if(son_dentry == NULL)
     return ERR_PTR(-ENOMEM);
     struct dentry* son_dentry_ = NULL;
-    son_dentry_ =  dir->d_inode->i_op->lookup(dir->d_inode,son_dentry,0); //因为lookup是一定存在的所以不用检测。(不符合规定的会在挂载时被拒绝所以不用在意错误检测)
-
-    if(son_dentry_ == NULL){
+    son_dentry_ =  dir->d_inode->i_op->lookup(dir->d_inode,son_dentry,0); 
+    if(son_dentry_ == NULL || IS_ERR(son_dentry_)){
+       
         __d_drop(son_dentry); 
         return -ENOENT; 
     }
@@ -55,20 +58,24 @@ static struct dentry* create_dentry(struct dentry* dir,char *name,umode_t i_mode
      pr_info("file already exists: %s\n", name);
      return ERR_PTR(-EEXIST);
     }
-
     next_dentry = d_alloc(dir,name); //先创建子dentry模板，此时它并没有被真实添加到缓存中
     if(next_dentry == NULL)
     return ERR_PTR(-ENOMEM);
-
     if(dir->d_inode->i_op->create == NULL){
         __d_drop(next_dentry); //撤销分配没有使用的dentry
      return ERR_PTR(-EROFS);
     }
     int err;
-    if((i_mode &  S_IFMT) == S_IFREG)
-    err = dir->d_inode->i_op->create(NULL,dir->d_inode,next_dentry,i_mode,0);
+    if((i_mode & S_IFMT) == S_IFREG)
+    {
+       // pr_info("create file \n");
+        err = dir->d_inode->i_op->create(NULL,dir->d_inode,next_dentry,i_mode,0);
+    }
     else if((i_mode &  S_IFMT) == S_IFDIR)
-    err = dir->d_inode->i_op->mkdir(NULL,dir->d_inode,next_dentry,i_mode);
+    {
+       // pr_info("create dir \n");
+        err = dir->d_inode->i_op->mkdir(NULL,dir->d_inode,next_dentry,i_mode);
+    }
     else 
     err = -1;
 
@@ -78,6 +85,32 @@ static struct dentry* create_dentry(struct dentry* dir,char *name,umode_t i_mode
     }
     return next_dentry;
 }
+
+
+static int __remove_dentry(struct dentry* dentry)    
+{
+    if(dentry == NULL){                            
+        return -1;                                    
+    }
+    if(dentry->d_sb->s_root == dentry){
+        pr_warn("can not remove mount point\n");
+        return -1;
+    }
+    umode_t i_mode = dentry->d_inode->i_mode;      
+    if((i_mode &  S_IFMT) == S_IFCHR || (i_mode &  S_IFMT) == S_IFBLK  ){
+        return -1;
+    }
+    else if((i_mode &  S_IFDIR) == S_IFCHR)
+    {
+        dentry->d_inode->i_op->rmdir(dentry->d_parent->d_inode,dentry);
+    }
+    else{
+        dentry->d_inode->i_op->unlink(dentry->d_parent->d_inode,dentry);
+        simple_unlink(dentry->d_parent->d_inode,dentry);
+    }
+    return 0;
+}
+
 
 struct  dentry * select_file(char * path , int offset)
 {   
@@ -99,22 +132,24 @@ struct  dentry * select_file(char * path , int offset)
     return esarch_dentry;
 }
 
+
+
+
 struct  dentry * create_new_dentry(char * path,umode_t i_mode)
 {
     struct  dentry * p_dentry;
 
     p_dentry = select_file(path, 1); //查询子目录
     if(IS_ERR(p_dentry)){
-        pr_info("can not find parent dentry%d\n",(int)p_dentry);
+        //pr_info("can not find parent dentry%d\n",(int)p_dentry);
         return ERR_PTR(-ENOENT);
     }
     mode_t p_denrty_mode = p_dentry->d_inode->i_mode;
     if((p_denrty_mode & S_IFMT) != S_IFDIR)
     {
-        pr_info("parent dentry : %s is not a dir\n",p_dentry->d_name.name);
+        //pr_info("parent dentry : %s is not a dir\n",p_dentry->d_name.name);
         return ERR_PTR(-ENOTDIR);
     } 
-
     char file_name[128];  
     get_dir_name(path,file_name,get_dir_number(path));     
     p_dentry = create_dentry(p_dentry,file_name,i_mode);
@@ -124,27 +159,82 @@ struct  dentry * create_new_dentry(char * path,umode_t i_mode)
 
 
 
+
+
+
+
+int remove_dentry(char* path)
+{
+    struct  dentry * dentry = select_file(path,0);
+    if(!IS_ERR(dentry)){
+        __remove_dentry(dentry);
+        return 0;
+    }
+    return -1;
+}
+EXPORT_SYMBOL(remove_dentry);
+
 struct block_device *blkdev_get_by_path(char *path, int flag,void* priv)
 {
     struct dentry* dentry = select_file(path,0);
     return devfs_get_blk_dev(dentry->d_inode);
 }
-
+EXPORT_SYMBOL(blkdev_get_by_path);
 
 struct dentry* mkdir(char *path,umode_t mode){
    if(mode == NULL) mode = 0755;
    return create_new_dentry(path, S_IFDIR | (mode & 0777));
 }
+EXPORT_SYMBOL(mkdir);
+
+
+umode_t get_file_mode(char *path){
+    struct dentry*file_dentry = select_file(path,0);
+    if(IS_ERR(file_dentry)){
+        return 0;
+    }
+    return file_dentry->d_inode->i_mode;
+}
+void *print_mode(char *path)
+{
+    umode_t mode = get_file_mode(path);
+    char data[10];
+    data[0] = (S_ISDIR(mode)) ? 'd' : 
+    (S_ISCHR(mode)) ? 'c' : 
+    (S_ISBLK(mode)) ? 'b' : 
+    (S_ISFIFO(mode)) ? 'p' : 
+    (S_ISLNK(mode)) ? 'l' : 
+    (S_ISSOCK(mode)) ? 's' : '-';
+    data[1] = (mode & S_IRUSR) ? 'r' : '-';
+    data[2] = (mode & S_IWUSR) ? 'w' : '-';
+    data[3] = (mode & S_IXUSR) ? 'x' : '-';
+    data[4] = (mode & S_IRGRP) ? 'r' : '-';
+    data[5] = (mode & S_IWGRP) ? 'w' : '-';
+    data[6] = (mode & S_IXGRP) ? 'x' : '-';
+    data[7] = (mode & S_IROTH) ? 'r' : '-';
+    data[8] = (mode & S_IWOTH) ? 'w' : '-';
+    data[9] = (mode & S_IXOTH) ? 'x' : '-';
+    printk(KERN_INFO "File mode: %s\n", data);
+    return NULL;
+}
+
+
+
+
+
+
+
 
 struct file *filp_open(const char * path, int flags, umode_t mode)
 {
-    pr_info("open device %s\n",path);
+    pr_info("open file %s\n",path);
     struct dentry*file_dentry = select_file(path,0);
     if(IS_ERR(file_dentry))
     {
+        pr_info("file not found\n");
         if (PTR_ERR(file_dentry) == -ENOENT && (flags & O_CREAT)) 
         {
-            pr_info("file not found, try create: %s\n", path);
+            pr_info("try create: %s\n", path);
             file_dentry = create_new_dentry((char *)path, S_IFREG | mode);
             if (IS_ERR(file_dentry)){
                 pr_info("can not create file: %s\n", path);
@@ -152,7 +242,7 @@ struct file *filp_open(const char * path, int flags, umode_t mode)
             }
         }
         else {
-            return (struct file *)file_dentry;
+            return -ENOENT;
         }      
     }
     struct file *file = f_get(file_dentry);
@@ -177,6 +267,9 @@ struct file *filp_open(const char * path, int flags, umode_t mode)
     if(file->f_op->write != NULL)
     file->f_flags |= O_RDONLY;
 
+    file->f_inode->i_atime_nsec  = jiffies/HZ;
+    file->f_inode->i_atime_nsec  = jiffies%HZ;
+
     return file;
 }
 EXPORT_SYMBOL(filp_open);
@@ -196,9 +289,6 @@ ssize_t kernel_read(struct file *file, void * buf, size_t count, loff_t *ppos)
         size = file->f_op->read(file,buf,count,ppos);
         spin_unlock(&file->f_inode->i_lock);
     }
-
-
-
     spin_unlock(&file->f_slock);
     return size;
 }
@@ -215,7 +305,9 @@ ssize_t kernel_write(struct file *file,const void * buf, size_t count, loff_t *p
     spin_lock(&file->f_slock);
     if(file->f_op != NULL){
         spin_lock(&file->f_inode->i_lock);
-        ssize_t size = file->f_op->write(file,buf,count,ppos);    
+        size = file->f_op->write(file,buf,count,ppos);   
+        file->f_inode->i_mtime_sec   = jiffies/HZ;
+        file->f_inode->i_mtime_nsec  = jiffies%HZ; 
         spin_unlock(&file->f_inode->i_lock);
     }
     spin_unlock(&file->f_slock);
@@ -260,6 +352,7 @@ int file_close(struct file *file, fl_owner_t id)
 EXPORT_SYMBOL(file_close);
 
 
+
 static int root_fs_init()
 {
     int err;
@@ -268,11 +361,14 @@ static int root_fs_init()
         pr_info("can not get root fs: devfs\n");
         return -1;
     }
-    mkdir("/dev",NULL);
-    mkdir("/tmp",NULL);
-    mkdir("/mnt",NULL);
+    mkdir("/dev",0755);
+    mkdir("/tmp",0755);
+    mkdir("/mnt",0755);
+    mkdir("/sys",0755);
     mkdir("/tmp/pipe",NULL);
     sys_mount(NULL,"/dev","devfs",0,NULL);
     sys_mount(NULL,"/tmp/pipe","pipefs",0,NULL);
+    sys_mount(NULL,"/sys","sysfs",0,NULL);
 }
+
 rootfs_initcall(root_fs_init);

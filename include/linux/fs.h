@@ -41,7 +41,7 @@ struct address_space;
 struct seq_file ;
 struct shrink_control;
 struct file_system_type;
-
+struct buffer_head;
 
 #define MAY_EXEC		0x00000001
 #define MAY_WRITE		0x00000002
@@ -165,20 +165,7 @@ struct file_system_type;
 #define WHITEOUT_MODE 0
 #define WHITEOUT_DEV 0
 
-struct buffer_head {
-	char * b_data;			/* pointer to data block (1024 bytes) 数据块 */
-	unsigned long b_blocknr;	/* block number 块号 */
-	unsigned short b_dev;		/* device (0 = free) 数据源的设备号 */
-	unsigned char b_uptodate;   // 更新标志，表示数据是否已经更新
-	unsigned char b_dirt;		/* 0-clean,1-dirty */
-	unsigned char b_count;		/* users using this block */  //使用的用户数, reference count? 
-	unsigned char b_lock;		/* 0 - ok, 1 -locked */
-	struct mutex b_wait;
-	struct buffer_head * b_prev;		// 前一块（这四个指针用于缓冲区的管理）
-	struct buffer_head * b_next;		// 下一块
-	struct buffer_head * b_prev_free;	// 前一空闲块
-	struct buffer_head * b_next_free;	// 下一空闲块
-};
+
 
 /********************************************************
  * 														*
@@ -372,34 +359,35 @@ struct file {
  */
 
 struct inode {
-	umode_t            i_mode;        /* 文件模式（如：文件类型、权限） */
-	unsigned int       i_flags;       /* 文件标志（如：不可变、同步） */
+	umode_t            i_mode;   
 
-	const struct inode_operations *i_op;         /* inode 操作函数指针 */
-	struct super_block            *i_sb;        /* 所属文件系统的超级块 */	
-	struct address_space	      *i_mapping;   /* 指向文件数据所在的块设备的映射 */
+	unsigned short     		i_opflags;     /* inode 操作标志对应IOP宏 */
+	kuid_t             i_uid;         /* 文件所有者用户ID */
+	kgid_t             i_gid;         /* 文件所有者组ID */
 
-	dev_t             i_rdev;         /* 设备号（如：字符设备、块设备） */
-
+	unsigned int       i_flags;    
+	const struct inode_operations *i_op;     
+	struct super_block            *i_sb;       
+	struct address_space	      *i_mapping;   
+	dev_t             i_rdev;       
+	loff_t            i_size;        
+	time64_t          i_atime_sec;   
+	time64_t          i_mtime_sec;   
+	time64_t          i_ctime_sec;    
+	u32               i_atime_nsec;   
+	u32               i_mtime_nsec;   
+	u32               i_ctime_nsec;  
+	unsigned short    i_bytes;
 	u32			i_state;
-
 	struct hlist_node	i_hash;
 	struct list_head	i_io_list;	/* backing dev IO list */
-
 	spinlock_t	        i_lock;	/* i_blocks, i_bytes, maybe i_size */
-		
-
 	struct list_head	i_sb_list;
-
 	struct list_head	i_dentry;
-
 	atomic_t		i_count;
-
 	const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
 	void (*free_inode)(struct inode *);
-
 	void			*i_private; /* fs or device private pointer */
-
 }__attribute__((aligned(sizeof(long)))) __randomize_layout;
 
 /********************************************************
@@ -637,11 +625,13 @@ struct sb_writers {
 
 
 struct super_block 
-{
+{ 
 	struct list_head				s_list;		/* Keep this first */
     dev_t							s_dev;		/* search index; _not_ kdev_t */
+	unsigned long					s_blocksize;
     const struct super_operations	*s_op;
 	const struct dquot_operations	*dq_op;
+
 	struct dentry		*s_root;      //superblock的根目录结点
 	struct block_device	*s_bdev; 
 	struct hlist_node	s_instances;
@@ -878,19 +868,15 @@ extern int unregister_filesystem(struct file_system_type *);
 extern struct file_system_type *lookup_fs_type(const char *name);
 
 /*--------------------------------------------------------------------------*/
-static inline bool is_sync_kiocb(struct kiocb *kiocb)
-{
+static inline bool is_sync_kiocb(struct kiocb *kiocb){
 	return kiocb->ki_complete == NULL;
 }
-static inline struct inode *file_inode(const struct file *f)
-{
+static inline struct inode *file_inode(const struct file *f){
 	return f->f_inode;
 }
 /*--------------------------------------------------------------------------*/
 
-
-
-
+extern int remove_dentry(char* path);
 extern struct file *filp_open(const char * path, int flags, umode_t mode);
 extern ssize_t kernel_read(struct file *file, void * buf, size_t count, loff_t *ppos);
 extern ssize_t kernel_write(struct file *file,const void * buf, size_t count, loff_t *ppos);
@@ -924,7 +910,8 @@ static inline int register_chrdev(unsigned int major, const char *name,
 return __register_chrdev(major, 0, 256, name, fops);
 }
 
-static inline void unregister_chrdev(unsigned int major, const char *name)
+static inline void unregister_chrdev(
+	unsigned int major, const char *name)
 {
 	__unregister_chrdev(major, 0, 256, name);
 }

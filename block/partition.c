@@ -29,6 +29,40 @@ static char * trans_data_to_blk_dev(struct block_device *bdev, sector_t block, u
 
 static uint8_t gpt_head[8] = {0x45, 0x46, 0x49, 0x20, 0x50, 0x41, 0x52, 0x54};
 
+/**
+ * detect_partition_table - Detect the partition table of the block device
+ * @device: pointer to the block device to check
+ * @block_buffer: buffer to hold the data read from the block device
+ * @flags: pointer to a variable to store the partition table type flags
+ *
+ * This function attempts to detect the partition table type of a block device
+ * by reading the first two Logical Block Addresses (LBA) and checking for 
+ * signatures that indicate the partitioning scheme.
+ *
+ * Steps:
+ * 1. Initially, the device is marked as uninitialized (`BLOCK_DEVICE_FLAG_NOT_INITIALIZED`).
+ * 2. The first 512 bytes of LBA 0 are read to check for the MBR (Master Boot Record) signature.
+ *    If the signature (`0x55AA` at the end of the sector) is found, the device is flagged as MBR.
+ * 3. The first 512 bytes of LBA 1 are read to check for the GPT (GUID Partition Table) header.
+ *    If the GPT header is found, the partition table type is set to GPT, or if an MBR was detected,
+ *    it is marked as a protective MBR.
+ *
+ * 中文说明：
+ * detect_partition_table - 检测块设备的分区表类型
+ * @device: 指向要检测的块设备的指针
+ * @block_buffer: 用于存储从块设备读取的数据的缓冲区
+ * @flags: 指向用于存储分区表类型标志的变量的指针
+ *
+ * 本函数通过读取块设备的前两个逻辑块地址（LBA）并检查是否存在分区表签名，
+ * 来尝试检测块设备的分区表类型。
+ *
+ * 步骤：
+ * 1. 初始时，将设备标记为未初始化（`BLOCK_DEVICE_FLAG_NOT_INITIALIZED`）。
+ * 2. 读取 LBA 0 的前 512 字节，检查是否存在 MBR（主引导记录）签名。
+ *    如果发现签名（LBA 末尾的 `0x55AA`），则将设备标记为 MBR。
+ * 3. 读取 LBA 1 的前 512 字节，检查是否存在 GPT（GUID 分区表）头。
+ *    如果发现 GPT 头，则将分区表类型设置为 GPT，若之前检测到 MBR，则标记为保护性 MBR。
+ */
 static int detect_partition_table(struct block_device *device,char *block_buffer, enum block_device_flags_t* flags)     //读取分区表
 {
     *flags = BLOCK_DEVICE_FLAG_NOT_INITIALIZED;                           //设置块设备标志位默认为未初始化
@@ -45,6 +79,11 @@ static int detect_partition_table(struct block_device *device,char *block_buffer
     }
     return 0;
 }
+EXPORT_SYMBOL(detect_partition_table);
+
+
+
+
 
 #define INVALID_PARTITION 0xFFFFFFFF
 
@@ -55,6 +94,7 @@ static void MBR_partition_table_fix_endian(struct mbr_partition *mbr_header)
       mbr_header->nr_sectors = le32_to_cpu(mbr_header->nr_sectors);
      #endif
 }
+
 
 int check_empty_MBR_Table(struct partition *partition,int number)
 {
@@ -229,6 +269,32 @@ static int mbr_partition_table_update(struct block_device *device,struct partiti
     }
 }
 
+/**
+ * mbr_table_delete - 删除 MBR 分区表中的指定分区
+ * @device: 指向块设备的指针
+ * @partition: 指向分区结构的指针
+ * @number: 要删除的分区号（0-3）
+ * @flags: 当前设备的分区表标志，需为 MBR 或 PROTECTIVE_MBR
+ *
+ * 该函数删除指定的 MBR 分区表中的分区。如果该分区号有效且设备支持 MBR 格式，
+ * 将清空对应的分区数据，并更新分区表。
+ *
+ * 返回值：
+ * - 0 表示成功，-1 表示失败。
+ *
+ * 中文说明：
+ * mbr_table_delete - 删除 MBR 分区表中的指定分区
+ * @device: 指向块设备的指针
+ * @partition: 指向分区结构的指针
+ * @number: 要删除的分区号（0 到 3）
+ * @flags: 当前设备的分区表标志，必须为 MBR 或 PROTECTIVE_MBR
+ *
+ * 该函数删除指定 MBR 分区表中的分区。如果分区号有效且设备支持 MBR 格式，
+ * 将清空对应的分区，并更新分区表。
+ *
+ * 返回值：
+ * - 成功时返回 0，失败时返回 -1。
+ */
 static int mbr_table_delete(struct block_device *device,struct partition *partition,int number,enum block_device_flags_t flags)
 {
     if(device == NULL || partition == NULL) {
@@ -255,9 +321,37 @@ static int mbr_table_delete(struct block_device *device,struct partition *partit
     mbr_partition_table_update(device,partition);
     return 0;
 }
+EXPORT_SYMBOL(mbr_table_delete);
 
 
-
+/**
+ * mbr_partition_table_format - Format the partition table on the block device using MBR scheme
+ * @device: pointer to the block device
+ * @partition: pointer to the partition data structure
+ * @size: the size of the partition to create (in sectors)
+ * @type: the type of the partition (e.g., primary, logical, etc.)
+ *
+ * This function attempts to format a partition table on a block device using the MBR (Master Boot Record)
+ * partitioning scheme. It first loads the existing MBR partition table, determines the available space for 
+ * the new partition, and then creates a new partition entry in the MBR partition table. The partition's start 
+ * and end addresses are calculated, and the partition is aligned to 4K boundaries.
+ * 
+ * The partition size is adjusted to fit within the available space on the disk. If the size provided is too 
+ * large, it will be reduced to fit. The partition table is then updated and written back to the device.
+ *
+ * 中文说明：
+ * mbr_partition_table_format - 使用 MBR 方案格式化块设备的分区表
+ * @device: 指向块设备的指针
+ * @partition: 指向分区数据结构的指针
+ * @size: 要创建的分区大小（以扇区为单位）
+ * @type: 分区类型（如主分区、逻辑分区等）
+ *
+ * 本函数尝试使用 MBR（主引导记录）分区方案格式化块设备上的分区表。首先，它加载现有的 MBR 
+ * 分区表，确定新分区可用的空间，然后在 MBR 分区表中创建一个新的分区条目。分区的起始地址和 
+ * 结束地址将根据磁盘的可用空间来计算，并且分区会对齐到 4K 边界。
+ * 
+ * 如果提供的分区大小过大，函数会自动调整为适合磁盘的大小。最后，分区表会更新并写回到设备。
+ */
 static int mbr_partition_table_format(struct block_device *device,struct partition *partition,uint32_t size,uint8_t type) 
 {
     if(device == NULL || partition == NULL) {
@@ -307,8 +401,6 @@ static int mbr_partition_table_format(struct block_device *device,struct partiti
 
     if(start_address%8 > 0) //4k对其并向上对其
     start_address = start_address - (start_address%8) + 8;
-
-
     //计算分区结束地址
     uint32_t end_address;
     if(partition_number + 1 < 4)
@@ -336,7 +428,38 @@ static int mbr_partition_table_format(struct block_device *device,struct partiti
     mbr_partition_table_update(device,partition);                                                      //更新MBR分区表到磁盘
     return 0;
 }
+EXPORT_SYMBOL(mbr_partition_table_format);
 
+
+/**
+ * show_mbr_partition_table_info - Display information about a given MBR partition
+ * @mbr_partition: pointer to the MBR partition structure
+ *
+ * This function prints information about an MBR (Master Boot Record) partition. It displays whether the partition 
+ * is bootable, its starting address, size in sectors, size in kilobytes and megabytes, as well as the type of the 
+ * partition based on its system identifier.
+ * 
+ * If the partition is bootable (boot_ind == 0x80), it will print "bootable". If it is not, it will print "not bootable".
+ * The partition's type is determined by the system identifier (sys_ind), with common values being:
+ * - 0x0B: FAT type partition
+ * - 0x83: EXT type partition
+ * - 0x07: NTFS type partition
+ * If the partition's system identifier does not match these values, it will be labeled as "unknown".
+ *
+ * 中文说明：
+ * show_mbr_partition_table_info - 显示 MBR 分区的相关信息
+ * @mbr_partition: 指向 MBR 分区结构的指针
+ *
+ * 本函数打印给定 MBR（主引导记录）分区的信息。包括分区是否可引导，起始地址，大小（以扇区为单位），
+ * 大小（以千字节和兆字节为单位），以及根据系统标识符确定的分区类型。
+ * 
+ * 如果分区是可引导的（boot_ind == 0x80），则打印“bootable”。如果不可引导，则打印“not bootable”。
+ * 分区类型由系统标识符（sys_ind）决定，常见的值如下：
+ * - 0x0B：FAT 类型分区
+ * - 0x83：EXT 类型分区
+ * - 0x07：NTFS 类型分区
+ * 如果分区的系统标识符与这些值不匹配，则标记为“unknown”。
+ */
 static void  show_mbr_partition_table_info(struct mbr_partition *mbr_partition)
 {
     if(mbr_partition == NULL) return;
@@ -360,17 +483,31 @@ static void  show_mbr_partition_table_info(struct mbr_partition *mbr_partition)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * get_partition_from_device - Retrieve the partition information from a block device
+ * @bdev: pointer to the block device structure
+ *
+ * This function attempts to load the partition table of the specified block device 
+ * and returns a pointer to the partition structure. If the block device is invalid 
+ * or if the partition table cannot be loaded, the function will return an error code.
+ *
+ * Steps:
+ * 1. Allocates memory for a partition structure.
+ * 2. Loads the MBR (Master Boot Record) partition table for the specified block device.
+ * 3. Returns a pointer to the partition structure if successful, otherwise returns an error code.
+ *
+ * 中文说明：
+ * get_partition_from_device - 从块设备获取分区信息
+ * @bdev: 指向块设备结构的指针
+ *
+ * 本函数尝试加载指定块设备的分区表，并返回指向分区结构的指针。如果块设备无效或无法加载分区表，
+ * 则函数会返回错误代码。
+ *
+ * 步骤：
+ * 1. 为分区结构分配内存。
+ * 2. 加载指定块设备的 MBR（主引导记录）分区表。
+ * 3. 如果成功，返回分区结构的指针；如果失败，返回错误代码。
+ */
 struct partition* get_partition_from_device(struct block_device *bdev){
     if(bdev == NULL) return NULL;
     struct partition *device_partition = kmalloc(sizeof(struct partition),GFP_KERNEL);
@@ -381,11 +518,51 @@ struct partition* get_partition_from_device(struct block_device *bdev){
     }
     return device_partition;
 }
+EXPORT_SYMBOL(get_partition_from_device);
 
 #define mbr_partiton_startaddress 0x01
 #define mbr_partiton_size         0x02
 #define mbr_partiton_magic        0x03
 
+
+/**
+ * get_partiton_data - Retrieve specific partition data based on the flag
+ * @partition: pointer to the partition structure
+ * @number: partition number to get data for
+ * @flag: flag to specify what partition data to retrieve
+ *
+ * This function retrieves specific partition data based on the given flag.
+ * Depending on the flag value, it returns different pieces of information 
+ * related to the specified partition. 
+ * The flags used in this function correspond to partition start address, 
+ * size, and type as per the MBR (Master Boot Record) partition table.
+ *
+ * Steps:
+ * 1. Checks if the partition pointer is valid.
+ * 2. Based on the flag, retrieves the corresponding partition data.
+ *    - `mbr_partiton_startaddress`: Retrieves the partition's start address.
+ *    - `mbr_partiton_size`: Retrieves the partition's size.
+ *    - `mbr_partiton_magic`: Retrieves the partition's type.
+ * 3. Returns the corresponding partition data or 0 if the partition is NULL or flag is unrecognized.
+ *
+ * 中文说明：
+ * get_partiton_data - 获取特定分区数据，依据给定的标志
+ * @partition: 指向分区结构的指针
+ * @number: 要获取数据的分区号
+ * @flag: 指定获取哪个分区数据的标志
+ *
+ * 本函数根据给定的标志检索特定的分区数据。
+ * 根据标志的值，返回与指定分区相关的不同信息。
+ * 这些标志对应 MBR（主引导记录）分区表中的分区起始地址、大小和类型。
+ *
+ * 步骤：
+ * 1. 检查分区指针是否有效。
+ * 2. 根据标志，检索相应的分区数据：
+ *    - `mbr_partiton_startaddress`：获取分区的起始地址。
+ *    - `mbr_partiton_size`：获取分区的大小。
+ *    - `mbr_partiton_magic`：获取分区的类型。
+ * 3. 返回对应的分区数据，或者在分区为 NULL 或标志无法识别的情况下返回 0。
+ */
 uint32_t get_partiton_data(struct partition* partition,int number,uint32_t flag)
 {
     if(partition == NULL) return 0;
@@ -396,17 +573,59 @@ uint32_t get_partiton_data(struct partition* partition,int number,uint32_t flag)
     if(flag == mbr_partiton_magic)
         return get_mbr_partition_type(partition,number);
 }
+EXPORT_SYMBOL(get_partiton_data);
+
 
 #define  FAT32 0x0B
 #define  EXT   0x83
 #define  NTFS  0x07
 
+/**
+ * create_mbr_artiton - 创建 MBR 分区
+ * @bdev: 指向块设备的指针
+ * @size: 分区大小（单位为字节）
+ * @type: 分区类型
+ *
+ * 该函数调用 mbr_partition_table_format 函数来格式化并创建 MBR 分区。
+ * 它首先初始化分区数据结构，并传递到 mbr_partition_table_format 函数进行实际的分区创建。
+ * 
+ * 中文说明：
+ * create_mbr_artiton - 创建 MBR 分区
+ * @bdev: 指向块设备的指针
+ * @size: 分区大小（字节）
+ * @type: 分区类型
+ *
+ * 该函数调用 mbr_partition_table_format 函数格式化并创建 MBR 分区。
+ * 它会初始化一个分区结构并将其传递给 mbr_partition_table_format 进行实际的分区创建。
+ */
 int create_mbr_artiton(struct block_device *bdev,size_t size,uint8_t type)
 {
     struct partition device_partition;
     return mbr_partition_table_format(bdev,&device_partition,size,type); 
 }
+EXPORT_SYMBOL(create_mbr_artiton);
 
+
+/**
+ * get_partition_type - 获取块设备的分区类型
+ * @bdev: 指向块设备的指针
+ *
+ * 该函数检测给定的块设备的分区表类型，支持 MBR 和 GPT 格式的检测。
+ * 它使用 detect_partition_table 函数读取设备的分区表并返回分区类型。
+ *
+ * 返回值：
+ * - 返回块设备的分区表标志，值为 BLOCK_DEVICE_FLAG_MBR, BLOCK_DEVICE_FLAG_GPT 等。
+ *
+ * 中文说明：
+ * get_partition_type - 获取块设备的分区类型
+ * @bdev: 指向块设备的指针
+ *
+ * 本函数检测给定块设备的分区表类型，支持 MBR 和 GPT 格式的分区表。
+ * 它通过调用 detect_partition_table 函数来读取设备的分区表并返回对应的分区类型。
+ *
+ * 返回值：
+ * - 返回块设备的分区标志，如 BLOCK_DEVICE_FLAG_MBR 或 BLOCK_DEVICE_FLAG_GPT。
+ */
 int get_partition_type(struct block_device *bdev)
 {
     enum block_device_flags_t flags;
@@ -417,6 +636,28 @@ int get_partition_type(struct block_device *bdev)
     return flags;
 }
 
+/**
+ * disk_show_mbr_info - 显示磁盘的 MBR 分区信息
+ * @bdev: 指向块设备的指针
+ *
+ * 该函数从指定的块设备中获取分区数据，并显示每个分区的 MBR 信息。
+ * 它遍历最多 4 个分区，使用 check_empty_MBR_Table 检查每个分区是否为空，
+ * 如果不为空，调用 show_mbr_partition_table_info 显示分区信息。
+ *
+ * 返回值：
+ * - 返回 0 表示成功，-1 表示失败。
+ *
+ * 中文说明：
+ * disk_show_mbr_info - 显示磁盘的 MBR 分区信息
+ * @bdev: 指向块设备的指针
+ *
+ * 本函数从指定的块设备获取分区数据并显示每个分区的 MBR 信息。
+ * 它遍历最多 4 个分区，使用 check_empty_MBR_Table 判断分区是否为空，
+ * 如果分区不为空，则调用 show_mbr_partition_table_info 显示该分区的信息。
+ *
+ * 返回值：
+ * - 成功返回 0，失败返回 -1。
+ */
 static int disk_show_mbr_info(struct block_device *bdev)
 {
     struct partition *partition = get_partition_from_device(bdev);

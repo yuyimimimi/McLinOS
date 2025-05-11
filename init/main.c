@@ -148,7 +148,7 @@ int Kernel_Init(void)
     do_lateinitcall();
     do_late_initcall_sync();
 
-    gpio_test(); 
+   // gpio_test(); 
 
     pr_info("system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
 }
