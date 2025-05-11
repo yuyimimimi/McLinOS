@@ -1,0 +1,323 @@
+ARM GAS  /tmp/ccd6cliR.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4_start_init.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./drivers/clock/stm32f4_start_init.c"
+  20              		.section	.text.SystemClock_Config,"ax",%progbits
+  21              		.align	1
+  22              		.global	SystemClock_Config
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	SystemClock_Config:
+  28              	.LFB119:
+   1:./drivers/clock/stm32f4_start_init.c **** #include <linux/types.h>
+   2:./drivers/clock/stm32f4_start_init.c **** #include "core_cm4.h"
+   3:./drivers/clock/stm32f4_start_init.c **** 
+   4:./drivers/clock/stm32f4_start_init.c **** uint32_t SystemCoreClock = 160000000;
+   5:./drivers/clock/stm32f4_start_init.c **** 
+   6:./drivers/clock/stm32f4_start_init.c **** #define RCC_BASE        0x40023800
+   7:./drivers/clock/stm32f4_start_init.c **** #define FLASH_BASE      0x40023C00
+   8:./drivers/clock/stm32f4_start_init.c **** 
+   9:./drivers/clock/stm32f4_start_init.c **** #define RCC             ((RCC_TypeDef *)RCC_BASE)
+  10:./drivers/clock/stm32f4_start_init.c **** #define FLASH           ((FLASH_TypeDef *)FLASH_BASE)
+  11:./drivers/clock/stm32f4_start_init.c **** 
+  12:./drivers/clock/stm32f4_start_init.c **** typedef struct {
+  13:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t CR;
+  14:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t PLLCFGR;
+  15:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t CFGR;
+  16:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t CIR;
+  17:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB1RSTR;
+  18:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB2RSTR;
+  19:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB3RSTR;
+  20:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED0;
+  21:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB1RSTR;
+  22:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB2RSTR;
+  23:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED1[2];
+  24:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB1ENR;
+  25:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB2ENR;
+  26:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB3ENR;
+  27:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED2;
+  28:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB1ENR;
+  29:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB2ENR;
+  30:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED3[2];
+ARM GAS  /tmp/ccd6cliR.s 			page 2
+
+
+  31:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB1LPENR;
+  32:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB2LPENR;
+  33:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t AHB3LPENR;
+  34:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED4;
+  35:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB1LPENR;
+  36:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t APB2LPENR;
+  37:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED5[2];
+  38:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t BDCR;
+  39:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t CSR;
+  40:./drivers/clock/stm32f4_start_init.c ****     uint32_t RESERVED6[2];
+  41:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t SSCGR;
+  42:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t PLLI2SCFGR;
+  43:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t PLLSAICFGR;
+  44:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t DCKCFGR;
+  45:./drivers/clock/stm32f4_start_init.c **** } RCC_TypeDef;
+  46:./drivers/clock/stm32f4_start_init.c **** 
+  47:./drivers/clock/stm32f4_start_init.c **** typedef struct {
+  48:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t ACR;
+  49:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t KEYR;
+  50:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t OPTKEYR;
+  51:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t SR;
+  52:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t CR;
+  53:./drivers/clock/stm32f4_start_init.c ****     volatile uint32_t OPTCR;
+  54:./drivers/clock/stm32f4_start_init.c **** } FLASH_TypeDef;
+  55:./drivers/clock/stm32f4_start_init.c **** 
+  56:./drivers/clock/stm32f4_start_init.c **** 
+  57:./drivers/clock/stm32f4_start_init.c **** 
+  58:./drivers/clock/stm32f4_start_init.c **** 
+  59:./drivers/clock/stm32f4_start_init.c **** 
+  60:./drivers/clock/stm32f4_start_init.c **** void SystemClock_Config(void)
+  61:./drivers/clock/stm32f4_start_init.c **** {
+  29              		.loc 1 61 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  62:./drivers/clock/stm32f4_start_init.c ****     // 1. 使能 HSI
+  63:./drivers/clock/stm32f4_start_init.c ****     RCC->CR |= (1 << 0); // HSION
+  34              		.loc 1 63 5 view .LVU1
+  35              		.loc 1 63 8 is_stmt 0 view .LVU2
+  36 0000 2A4A     		ldr	r2, .L6
+  37 0002 1368     		ldr	r3, [r2]
+  38              		.loc 1 63 13 view .LVU3
+  39 0004 43F00103 		orr	r3, r3, #1
+  40 0008 1360     		str	r3, [r2]
+  64:./drivers/clock/stm32f4_start_init.c ****     while (!(RCC->CR & (1 << 1))); // HSIRDY
+  41              		.loc 1 64 5 is_stmt 1 view .LVU4
+  42              	.L2:
+  43              		.loc 1 64 12 discriminator 1 view .LVU5
+  44              		.loc 1 64 17 is_stmt 0 discriminator 1 view .LVU6
+  45 000a 284B     		ldr	r3, .L6
+  46 000c 1B68     		ldr	r3, [r3]
+  47              		.loc 1 64 12 discriminator 1 view .LVU7
+  48 000e 13F0020F 		tst	r3, #2
+  49 0012 FAD0     		beq	.L2
+  65:./drivers/clock/stm32f4_start_init.c **** 
+  66:./drivers/clock/stm32f4_start_init.c ****     // 2. 配置 Flash 等待周期，必须在切换系统频率前设置好
+ARM GAS  /tmp/ccd6cliR.s 			page 3
+
+
+  67:./drivers/clock/stm32f4_start_init.c ****     FLASH->ACR |= (5 << 0); // 5 个 wait state，168 MHz 推荐值
+  50              		.loc 1 67 5 is_stmt 1 view .LVU8
+  51              		.loc 1 67 10 is_stmt 0 view .LVU9
+  52 0014 264B     		ldr	r3, .L6+4
+  53 0016 1A68     		ldr	r2, [r3]
+  54              		.loc 1 67 16 view .LVU10
+  55 0018 42F00502 		orr	r2, r2, #5
+  56 001c 1A60     		str	r2, [r3]
+  68:./drivers/clock/stm32f4_start_init.c ****     FLASH->ACR |= (1 << 8); // DCache enable
+  57              		.loc 1 68 5 is_stmt 1 view .LVU11
+  58              		.loc 1 68 10 is_stmt 0 view .LVU12
+  59 001e 1A68     		ldr	r2, [r3]
+  60              		.loc 1 68 16 view .LVU13
+  61 0020 42F48072 		orr	r2, r2, #256
+  62 0024 1A60     		str	r2, [r3]
+  69:./drivers/clock/stm32f4_start_init.c ****     FLASH->ACR |= (1 << 9); // ICache enable
+  63              		.loc 1 69 5 is_stmt 1 view .LVU14
+  64              		.loc 1 69 10 is_stmt 0 view .LVU15
+  65 0026 1A68     		ldr	r2, [r3]
+  66              		.loc 1 69 16 view .LVU16
+  67 0028 42F40072 		orr	r2, r2, #512
+  68 002c 1A60     		str	r2, [r3]
+  70:./drivers/clock/stm32f4_start_init.c ****     FLASH->ACR |= (1 << 10); // Prefetch enable
+  69              		.loc 1 70 5 is_stmt 1 view .LVU17
+  70              		.loc 1 70 10 is_stmt 0 view .LVU18
+  71 002e 1A68     		ldr	r2, [r3]
+  72              		.loc 1 70 16 view .LVU19
+  73 0030 42F48062 		orr	r2, r2, #1024
+  74 0034 1A60     		str	r2, [r3]
+  71:./drivers/clock/stm32f4_start_init.c **** 
+  72:./drivers/clock/stm32f4_start_init.c ****     // 3. 关闭 PLL
+  73:./drivers/clock/stm32f4_start_init.c ****     RCC->CR &= ~(1 << 24); // PLL OFF
+  75              		.loc 1 73 5 is_stmt 1 view .LVU20
+  76              		.loc 1 73 8 is_stmt 0 view .LVU21
+  77 0036 1D4A     		ldr	r2, .L6
+  78 0038 1368     		ldr	r3, [r2]
+  79              		.loc 1 73 13 view .LVU22
+  80 003a 23F08073 		bic	r3, r3, #16777216
+  81 003e 1360     		str	r3, [r2]
+  74:./drivers/clock/stm32f4_start_init.c ****     while (RCC->CR & (1 << 25)); // 等待 PLLRDY 置 0
+  82              		.loc 1 74 5 is_stmt 1 view .LVU23
+  83              	.L3:
+  84              		.loc 1 74 12 discriminator 1 view .LVU24
+  85              		.loc 1 74 15 is_stmt 0 discriminator 1 view .LVU25
+  86 0040 1A4B     		ldr	r3, .L6
+  87 0042 1B68     		ldr	r3, [r3]
+  88              		.loc 1 74 12 discriminator 1 view .LVU26
+  89 0044 13F0007F 		tst	r3, #33554432
+  90 0048 FAD1     		bne	.L3
+  75:./drivers/clock/stm32f4_start_init.c **** 
+  76:./drivers/clock/stm32f4_start_init.c ****     // 4. 配置 PLL
+  77:./drivers/clock/stm32f4_start_init.c ****     /*
+  78:./drivers/clock/stm32f4_start_init.c ****         PLLCFGR = 
+  79:./drivers/clock/stm32f4_start_init.c ****         [5:0]   PLLM = 16
+  80:./drivers/clock/stm32f4_start_init.c ****         [14:6]  PLLN = 336
+  81:./drivers/clock/stm32f4_start_init.c ****         [17:16] PLLP = 2 (00)
+  82:./drivers/clock/stm32f4_start_init.c ****         [22]    PLLSRC = 0 (HSI)
+ARM GAS  /tmp/ccd6cliR.s 			page 4
+
+
+  83:./drivers/clock/stm32f4_start_init.c ****         [27:24] PLLQ = 7 (USB OTG 48MHz)
+  84:./drivers/clock/stm32f4_start_init.c ****     */
+  85:./drivers/clock/stm32f4_start_init.c ****     RCC->PLLCFGR = (16 << 0) | (336 << 6) | (0 << 16) | (0 << 22) | (7 << 24);
+  91              		.loc 1 85 5 is_stmt 1 view .LVU27
+  92              		.loc 1 85 18 is_stmt 0 view .LVU28
+  93 004a 184B     		ldr	r3, .L6
+  94 004c 194A     		ldr	r2, .L6+8
+  95 004e 5A60     		str	r2, [r3, #4]
+  86:./drivers/clock/stm32f4_start_init.c **** 
+  87:./drivers/clock/stm32f4_start_init.c ****     // 5. 打开 PLL
+  88:./drivers/clock/stm32f4_start_init.c ****     RCC->CR |= (1 << 24); // PLLON
+  96              		.loc 1 88 5 is_stmt 1 view .LVU29
+  97              		.loc 1 88 8 is_stmt 0 view .LVU30
+  98 0050 1A68     		ldr	r2, [r3]
+  99              		.loc 1 88 13 view .LVU31
+ 100 0052 42F08072 		orr	r2, r2, #16777216
+ 101 0056 1A60     		str	r2, [r3]
+  89:./drivers/clock/stm32f4_start_init.c ****     while (!(RCC->CR & (1 << 25))); // 等待 PLLRDY
+ 102              		.loc 1 89 5 is_stmt 1 view .LVU32
+ 103              	.L4:
+ 104              		.loc 1 89 12 discriminator 1 view .LVU33
+ 105              		.loc 1 89 17 is_stmt 0 discriminator 1 view .LVU34
+ 106 0058 144B     		ldr	r3, .L6
+ 107 005a 1B68     		ldr	r3, [r3]
+ 108              		.loc 1 89 12 discriminator 1 view .LVU35
+ 109 005c 13F0007F 		tst	r3, #33554432
+ 110 0060 FAD0     		beq	.L4
+  90:./drivers/clock/stm32f4_start_init.c **** 
+  91:./drivers/clock/stm32f4_start_init.c ****     // 6. 配置 AHB, APB 分频
+  92:./drivers/clock/stm32f4_start_init.c ****     /*
+  93:./drivers/clock/stm32f4_start_init.c ****         HPRE[7:4]  = 0b0000 (不分频)
+  94:./drivers/clock/stm32f4_start_init.c ****         PPRE1[12:10]= 0b101 (168MHz / 4 = 42MHz)
+  95:./drivers/clock/stm32f4_start_init.c ****         PPRE2[15:13]= 0b100 (168MHz / 2 = 84MHz)
+  96:./drivers/clock/stm32f4_start_init.c ****     */
+  97:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR &= ~(0xF << 4);    // AHB prescaler 清零
+ 111              		.loc 1 97 5 is_stmt 1 view .LVU36
+ 112              		.loc 1 97 8 is_stmt 0 view .LVU37
+ 113 0062 124B     		ldr	r3, .L6
+ 114 0064 9A68     		ldr	r2, [r3, #8]
+ 115              		.loc 1 97 15 view .LVU38
+ 116 0066 22F0F002 		bic	r2, r2, #240
+ 117 006a 9A60     		str	r2, [r3, #8]
+  98:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR &= ~(0x7 << 10);   // APB1 prescaler 清零
+ 118              		.loc 1 98 5 is_stmt 1 view .LVU39
+ 119              		.loc 1 98 8 is_stmt 0 view .LVU40
+ 120 006c 9A68     		ldr	r2, [r3, #8]
+ 121              		.loc 1 98 15 view .LVU41
+ 122 006e 22F4E052 		bic	r2, r2, #7168
+ 123 0072 9A60     		str	r2, [r3, #8]
+  99:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR |= (0x5 << 10);    // APB1 = /4
+ 124              		.loc 1 99 5 is_stmt 1 view .LVU42
+ 125              		.loc 1 99 8 is_stmt 0 view .LVU43
+ 126 0074 9A68     		ldr	r2, [r3, #8]
+ 127              		.loc 1 99 15 view .LVU44
+ 128 0076 42F4A052 		orr	r2, r2, #5120
+ 129 007a 9A60     		str	r2, [r3, #8]
+ 100:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR &= ~(0x7 << 13);   // APB2 prescaler 清零
+ARM GAS  /tmp/ccd6cliR.s 			page 5
+
+
+ 130              		.loc 1 100 5 is_stmt 1 view .LVU45
+ 131              		.loc 1 100 8 is_stmt 0 view .LVU46
+ 132 007c 9A68     		ldr	r2, [r3, #8]
+ 133              		.loc 1 100 15 view .LVU47
+ 134 007e 22F46042 		bic	r2, r2, #57344
+ 135 0082 9A60     		str	r2, [r3, #8]
+ 101:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR |= (0x4 << 13);    // APB2 = /2
+ 136              		.loc 1 101 5 is_stmt 1 view .LVU48
+ 137              		.loc 1 101 8 is_stmt 0 view .LVU49
+ 138 0084 9A68     		ldr	r2, [r3, #8]
+ 139              		.loc 1 101 15 view .LVU50
+ 140 0086 42F40042 		orr	r2, r2, #32768
+ 141 008a 9A60     		str	r2, [r3, #8]
+ 102:./drivers/clock/stm32f4_start_init.c **** 
+ 103:./drivers/clock/stm32f4_start_init.c ****     // 7. 切换系统时钟到 PLL
+ 104:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR &= ~(0x3 << 0); // 清除 SW
+ 142              		.loc 1 104 5 is_stmt 1 view .LVU51
+ 143              		.loc 1 104 8 is_stmt 0 view .LVU52
+ 144 008c 9A68     		ldr	r2, [r3, #8]
+ 145              		.loc 1 104 15 view .LVU53
+ 146 008e 22F00302 		bic	r2, r2, #3
+ 147 0092 9A60     		str	r2, [r3, #8]
+ 105:./drivers/clock/stm32f4_start_init.c ****     RCC->CFGR |= (0x2 << 0);  // 选择 PLL 作为系统时钟
+ 148              		.loc 1 105 5 is_stmt 1 view .LVU54
+ 149              		.loc 1 105 8 is_stmt 0 view .LVU55
+ 150 0094 9A68     		ldr	r2, [r3, #8]
+ 151              		.loc 1 105 15 view .LVU56
+ 152 0096 42F00202 		orr	r2, r2, #2
+ 153 009a 9A60     		str	r2, [r3, #8]
+ 106:./drivers/clock/stm32f4_start_init.c **** 
+ 107:./drivers/clock/stm32f4_start_init.c ****     while ((RCC->CFGR & (0x3 << 2)) != (0x2 << 2)); // 等待切换完成
+ 154              		.loc 1 107 5 is_stmt 1 view .LVU57
+ 155              	.L5:
+ 156              		.loc 1 107 37 discriminator 1 view .LVU58
+ 157              		.loc 1 107 16 is_stmt 0 discriminator 1 view .LVU59
+ 158 009c 034B     		ldr	r3, .L6
+ 159 009e 9B68     		ldr	r3, [r3, #8]
+ 160              		.loc 1 107 23 discriminator 1 view .LVU60
+ 161 00a0 03F00C03 		and	r3, r3, #12
+ 162              		.loc 1 107 37 discriminator 1 view .LVU61
+ 163 00a4 082B     		cmp	r3, #8
+ 164 00a6 F9D1     		bne	.L5
+ 108:./drivers/clock/stm32f4_start_init.c **** 
+ 109:./drivers/clock/stm32f4_start_init.c **** 
+ 110:./drivers/clock/stm32f4_start_init.c **** 
+ 111:./drivers/clock/stm32f4_start_init.c **** }
+ 165              		.loc 1 111 1 view .LVU62
+ 166 00a8 7047     		bx	lr
+ 167              	.L7:
+ 168 00aa 00BF     		.align	2
+ 169              	.L6:
+ 170 00ac 00380240 		.word	1073887232
+ 171 00b0 003C0240 		.word	1073888256
+ 172 00b4 10540007 		.word	117462032
+ 173              		.cfi_endproc
+ 174              	.LFE119:
+ 176              		.global	SystemCoreClock
+ARM GAS  /tmp/ccd6cliR.s 			page 6
+
+
+ 177              		.section	.data.SystemCoreClock,"aw"
+ 178              		.align	2
+ 181              	SystemCoreClock:
+ 182 0000 00688909 		.word	160000000
+ 183              		.text
+ 184              	.Letext0:
+ 185              		.file 2 "./include/linux/types.h"
+ 186              		.file 3 "./include/asm-generic/int-l64.h"
+ARM GAS  /tmp/ccd6cliR.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f4_start_init.c
+     /tmp/ccd6cliR.s:21     .text.SystemClock_Config:00000000 $t
+     /tmp/ccd6cliR.s:27     .text.SystemClock_Config:00000000 SystemClock_Config
+     /tmp/ccd6cliR.s:170    .text.SystemClock_Config:000000ac $d
+     /tmp/ccd6cliR.s:181    .data.SystemCoreClock:00000000 SystemCoreClock
+     /tmp/ccd6cliR.s:178    .data.SystemCoreClock:00000000 $d
+
+NO UNDEFINED SYMBOLS

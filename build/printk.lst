@@ -1,0 +1,1035 @@
+ARM GAS  /tmp/ccwA47Ys.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"printk.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./lib/printk.c"
+  20              		.section	.text.__spin_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__spin_init:
+  27              	.LVL0:
+  28              	.LFB226:
+  29              		.file 2 "./arch/arm_m/include/asm/spinlock.h"
+   1:./arch/arm_m/include/asm/spinlock.h **** #ifndef __SPIN_LOCK_H_
+   2:./arch/arm_m/include/asm/spinlock.h **** #define __SPIN_LOCK_H_
+   3:./arch/arm_m/include/asm/spinlock.h **** 
+   4:./arch/arm_m/include/asm/spinlock.h **** #include <linux/sched.h>
+   5:./arch/arm_m/include/asm/spinlock.h **** 
+   6:./arch/arm_m/include/asm/spinlock.h **** typedef struct { 
+   7:./arch/arm_m/include/asm/spinlock.h ****      int flag; 
+   8:./arch/arm_m/include/asm/spinlock.h **** } arch_spinlock_t;
+   9:./arch/arm_m/include/asm/spinlock.h **** 
+  10:./arch/arm_m/include/asm/spinlock.h **** static int __spin_init(arch_spinlock_t *lock) 
+  11:./arch/arm_m/include/asm/spinlock.h **** {
+  30              		.loc 2 11 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  35              		.loc 2 12 5 view .LVU1
+  36              		.loc 2 12 16 is_stmt 0 view .LVU2
+  37 0000 0023     		movs	r3, #0
+  38 0002 0360     		str	r3, [r0]
+  39              	.LVL1:
+  13:./arch/arm_m/include/asm/spinlock.h **** }
+  40              		.loc 2 13 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE226:
+  45              		.section	.text.__spin_unlock,"ax",%progbits
+  46              		.align	1
+ARM GAS  /tmp/ccwA47Ys.s 			page 2
+
+
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	__spin_unlock:
+  52              	.LVL2:
+  53              	.LFB228:
+  14:./arch/arm_m/include/asm/spinlock.h **** 
+  15:./arch/arm_m/include/asm/spinlock.h **** static int __spin_lock(arch_spinlock_t *lock) {
+  16:./arch/arm_m/include/asm/spinlock.h **** 
+  17:./arch/arm_m/include/asm/spinlock.h ****     stop_all_scheduler();
+  18:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  19:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  20:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+  21:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+  22:./arch/arm_m/include/asm/spinlock.h ****     }
+  23:./arch/arm_m/include/asm/spinlock.h ****     else
+  24:./arch/arm_m/include/asm/spinlock.h ****     {
+  25:./arch/arm_m/include/asm/spinlock.h ****         start_all_scheduler();
+  26:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+  27:./arch/arm_m/include/asm/spinlock.h ****     }
+  28:./arch/arm_m/include/asm/spinlock.h **** }
+  29:./arch/arm_m/include/asm/spinlock.h **** 
+  30:./arch/arm_m/include/asm/spinlock.h **** static void  __spin_unlock( arch_spinlock_t *lock ){
+  54              		.loc 2 30 52 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  31:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  59              		.loc 2 31 5 view .LVU5
+  60              		.loc 2 31 16 is_stmt 0 view .LVU6
+  61 0000 0023     		movs	r3, #0
+  62 0002 0360     		str	r3, [r0]
+  32:./arch/arm_m/include/asm/spinlock.h **** }
+  63              		.loc 2 32 1 view .LVU7
+  64 0004 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE228:
+  68              		.section	.text.spin_lock_init,"ax",%progbits
+  69              		.align	1
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	spin_lock_init:
+  75              	.LVL3:
+  76              	.LFB229:
+  77              		.file 3 "./include/linux/spinlock.h"
+   1:./include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:./include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:./include/linux/spinlock.h **** 
+   4:./include/linux/spinlock.h **** #include <linux/types.h>
+   5:./include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:./include/linux/spinlock.h **** #include <linux/sched.h>
+   7:./include/linux/spinlock.h **** 
+   8:./include/linux/spinlock.h **** 
+   9:./include/linux/spinlock.h **** 
+  10:./include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+ARM GAS  /tmp/ccwA47Ys.s 			page 3
+
+
+  78              		.loc 3 10 45 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		.loc 3 10 45 is_stmt 0 view .LVU9
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI0:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  11:./include/linux/spinlock.h ****     __spin_init(&lock->rlock.raw_lock);
+  88              		.loc 3 11 5 is_stmt 1 view .LVU10
+  89 0002 FFF7FEFF 		bl	__spin_init
+  90              	.LVL4:
+  12:./include/linux/spinlock.h **** }
+  91              		.loc 3 12 1 is_stmt 0 view .LVU11
+  92 0006 08BD     		pop	{r3, pc}
+  93              		.cfi_endproc
+  94              	.LFE229:
+  96              		.section	.text.spin_unlock,"ax",%progbits
+  97              		.align	1
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	spin_unlock:
+ 103              	.LVL5:
+ 104              	.LFB231:
+  13:./include/linux/spinlock.h **** 
+  14:./include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  15:./include/linux/spinlock.h **** {  
+  16:./include/linux/spinlock.h ****     while (1)
+  17:./include/linux/spinlock.h ****     {
+  18:./include/linux/spinlock.h ****         if(__spin_lock(&lock->rlock.raw_lock) == 1){
+  19:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+  20:./include/linux/spinlock.h ****             break;
+  21:./include/linux/spinlock.h ****         }
+  22:./include/linux/spinlock.h ****         else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  23:./include/linux/spinlock.h ****             return;   
+  24:./include/linux/spinlock.h ****         }
+  25:./include/linux/spinlock.h ****         else{
+  26:./include/linux/spinlock.h ****             __delay(5); //主动让出时间片
+  27:./include/linux/spinlock.h ****         }
+  28:./include/linux/spinlock.h ****     }
+  29:./include/linux/spinlock.h **** }
+  30:./include/linux/spinlock.h **** 
+  31:./include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  32:./include/linux/spinlock.h **** {
+ 105              		.loc 3 32 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 3 32 1 is_stmt 0 view .LVU13
+ 110 0000 08B5     		push	{r3, lr}
+ 111              	.LCFI1:
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 3, -8
+ 114              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccwA47Ys.s 			page 4
+
+
+  33:./include/linux/spinlock.h ****     __spin_unlock(&lock->rlock.raw_lock);
+ 115              		.loc 3 33 5 is_stmt 1 view .LVU14
+ 116 0002 FFF7FEFF 		bl	__spin_unlock
+ 117              	.LVL6:
+  34:./include/linux/spinlock.h **** }
+ 118              		.loc 3 34 1 is_stmt 0 view .LVU15
+ 119 0006 08BD     		pop	{r3, pc}
+ 120              		.cfi_endproc
+ 121              	.LFE231:
+ 123              		.section	.text.__spin_lock,"ax",%progbits
+ 124              		.align	1
+ 125              		.syntax unified
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	__spin_lock:
+ 130              	.LVL7:
+ 131              	.LFB227:
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 132              		.loc 2 15 47 is_stmt 1 view -0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 136              		.loc 2 15 47 is_stmt 0 view .LVU17
+ 137 0000 38B5     		push	{r3, r4, r5, lr}
+ 138              	.LCFI2:
+ 139              		.cfi_def_cfa_offset 16
+ 140              		.cfi_offset 3, -16
+ 141              		.cfi_offset 4, -12
+ 142              		.cfi_offset 5, -8
+ 143              		.cfi_offset 14, -4
+ 144 0002 0446     		mov	r4, r0
+  17:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+ 145              		.loc 2 17 5 is_stmt 1 view .LVU18
+ 146 0004 FFF7FEFF 		bl	stop_all_scheduler
+ 147              	.LVL8:
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 148              		.loc 2 18 5 view .LVU19
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 149              		.loc 2 18 12 is_stmt 0 view .LVU20
+ 150 0008 2368     		ldr	r3, [r4]
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 151              		.loc 2 18 7 view .LVU21
+ 152 000a 2BB9     		cbnz	r3, .L8
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 153              		.loc 2 19 11 is_stmt 1 view .LVU22
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 154              		.loc 2 19 22 is_stmt 0 view .LVU23
+ 155 000c 0125     		movs	r5, #1
+ 156 000e 2560     		str	r5, [r4]
+  20:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+ 157              		.loc 2 20 11 is_stmt 1 view .LVU24
+ 158 0010 FFF7FEFF 		bl	start_all_scheduler
+ 159              	.LVL9:
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 160              		.loc 2 21 9 view .LVU25
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ARM GAS  /tmp/ccwA47Ys.s 			page 5
+
+
+ 161              		.loc 2 21 16 is_stmt 0 view .LVU26
+ 162 0014 2846     		mov	r0, r5
+ 163              	.L7:
+  28:./arch/arm_m/include/asm/spinlock.h **** 
+ 164              		.loc 2 28 1 view .LVU27
+ 165 0016 38BD     		pop	{r3, r4, r5, pc}
+ 166              	.LVL10:
+ 167              	.L8:
+  25:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+ 168              		.loc 2 25 9 is_stmt 1 view .LVU28
+ 169 0018 FFF7FEFF 		bl	start_all_scheduler
+ 170              	.LVL11:
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 171              		.loc 2 26 9 view .LVU29
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 172              		.loc 2 26 16 is_stmt 0 view .LVU30
+ 173 001c 0020     		movs	r0, #0
+ 174 001e FAE7     		b	.L7
+ 175              		.cfi_endproc
+ 176              	.LFE227:
+ 178              		.section	.text.spin_lock,"ax",%progbits
+ 179              		.align	1
+ 180              		.syntax unified
+ 181              		.thumb
+ 182              		.thumb_func
+ 184              	spin_lock:
+ 185              	.LVL12:
+ 186              	.LFB230:
+  15:./include/linux/spinlock.h ****     while (1)
+ 187              		.loc 3 15 1 is_stmt 1 view -0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./include/linux/spinlock.h ****     while (1)
+ 191              		.loc 3 15 1 is_stmt 0 view .LVU32
+ 192 0000 38B5     		push	{r3, r4, r5, lr}
+ 193              	.LCFI3:
+ 194              		.cfi_def_cfa_offset 16
+ 195              		.cfi_offset 3, -16
+ 196              		.cfi_offset 4, -12
+ 197              		.cfi_offset 5, -8
+ 198              		.cfi_offset 14, -4
+ 199 0002 0446     		mov	r4, r0
+ 200 0004 06E0     		b	.L14
+ 201              	.LVL13:
+ 202              	.L16:
+  19:./include/linux/spinlock.h ****             break;
+ 203              		.loc 3 19 13 is_stmt 1 view .LVU33
+  19:./include/linux/spinlock.h ****             break;
+ 204              		.loc 3 19 27 is_stmt 0 view .LVU34
+ 205 0006 FFF7FEFF 		bl	get_current_task
+ 206              	.LVL14:
+  19:./include/linux/spinlock.h ****             break;
+ 207              		.loc 3 19 25 discriminator 1 view .LVU35
+ 208 000a 2060     		str	r0, [r4]
+  20:./include/linux/spinlock.h ****         }
+ 209              		.loc 3 20 13 is_stmt 1 view .LVU36
+ARM GAS  /tmp/ccwA47Ys.s 			page 6
+
+
+ 210              	.L11:
+  29:./include/linux/spinlock.h **** 
+ 211              		.loc 3 29 1 is_stmt 0 view .LVU37
+ 212 000c 38BD     		pop	{r3, r4, r5, pc}
+ 213              	.LVL15:
+ 214              	.L17:
+  26:./include/linux/spinlock.h ****         }
+ 215              		.loc 3 26 13 is_stmt 1 view .LVU38
+ 216 000e 0520     		movs	r0, #5
+ 217 0010 FFF7FEFF 		bl	__delay
+ 218              	.LVL16:
+  16:./include/linux/spinlock.h ****     {
+ 219              		.loc 3 16 11 view .LVU39
+ 220              	.L14:
+  16:./include/linux/spinlock.h ****     {
+ 221              		.loc 3 16 5 view .LVU40
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 222              		.loc 3 18 9 view .LVU41
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 223              		.loc 3 18 12 is_stmt 0 view .LVU42
+ 224 0014 2046     		mov	r0, r4
+ 225 0016 FFF7FEFF 		bl	__spin_lock
+ 226              	.LVL17:
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 227              		.loc 3 18 11 discriminator 1 view .LVU43
+ 228 001a 0128     		cmp	r0, #1
+ 229 001c F3D0     		beq	.L16
+  22:./include/linux/spinlock.h ****             return;   
+ 230              		.loc 3 22 15 is_stmt 1 view .LVU44
+  22:./include/linux/spinlock.h ****             return;   
+ 231              		.loc 3 22 22 is_stmt 0 view .LVU45
+ 232 001e 2568     		ldr	r5, [r4]
+  22:./include/linux/spinlock.h ****             return;   
+ 233              		.loc 3 22 33 view .LVU46
+ 234 0020 FFF7FEFF 		bl	get_current_task
+ 235              	.LVL18:
+  22:./include/linux/spinlock.h ****             return;   
+ 236              		.loc 3 22 17 discriminator 1 view .LVU47
+ 237 0024 8542     		cmp	r5, r0
+ 238 0026 F2D1     		bne	.L17
+ 239 0028 F0E7     		b	.L11
+ 240              		.cfi_endproc
+ 241              	.LFE230:
+ 243              		.section	.text.tty_write,"ax",%progbits
+ 244              		.align	1
+ 245              		.syntax unified
+ 246              		.thumb
+ 247              		.thumb_func
+ 249              	tty_write:
+ 250              	.LVL19:
+ 251              	.LFB1034:
+   1:./lib/printk.c **** #include <linux/kernel.h>
+   2:./lib/printk.c **** #include <linux/init.h>
+   3:./lib/printk.c **** #include <linux/fs.h>
+   4:./lib/printk.c **** #include <linux/stdarg.h>
+   5:./lib/printk.c **** #include <linux/string.h>
+   6:./lib/printk.c **** #include <linux/stddef.h>
+ARM GAS  /tmp/ccwA47Ys.s 			page 7
+
+
+   7:./lib/printk.c **** #include <linux/init.h>
+   8:./lib/printk.c **** #include <linux/time.h>
+   9:./lib/printk.c **** #include <linux/spinlock.h>
+  10:./lib/printk.c **** #include <generated/autoconf.h>
+  11:./lib/printk.c **** 
+  12:./lib/printk.c **** struct file* tty_device = NULL;
+  13:./lib/printk.c **** struct spinlock printk_spinlock;
+  14:./lib/printk.c **** 
+  15:./lib/printk.c **** int printk_service_init(void) {
+  16:./lib/printk.c ****     tty_device = filp_open(CONFIG_PRINTTK_USE_TTY_DEVICE, O_RDWR, 0);
+  17:./lib/printk.c ****     if (IS_ERR(tty_device)) {
+  18:./lib/printk.c ****         early_printk("tty device:%s open failed\n",CONFIG_PRINTTK_USE_TTY_DEVICE);
+  19:./lib/printk.c ****         return -1;
+  20:./lib/printk.c ****     }
+  21:./lib/printk.c ****     spin_lock_init(&printk_spinlock);
+  22:./lib/printk.c ****     return 0;
+  23:./lib/printk.c **** }
+  24:./lib/printk.c **** 
+  25:./lib/printk.c **** static void tty_write(const char *buf) {
+ 252              		.loc 1 25 40 is_stmt 1 view -0
+ 253              		.cfi_startproc
+ 254              		@ args = 0, pretend = 0, frame = 0
+ 255              		@ frame_needed = 0, uses_anonymous_args = 0
+ 256              		.loc 1 25 40 is_stmt 0 view .LVU49
+ 257 0000 38B5     		push	{r3, r4, r5, lr}
+ 258              	.LCFI4:
+ 259              		.cfi_def_cfa_offset 16
+ 260              		.cfi_offset 3, -16
+ 261              		.cfi_offset 4, -12
+ 262              		.cfi_offset 5, -8
+ 263              		.cfi_offset 14, -4
+ 264 0002 0446     		mov	r4, r0
+  26:./lib/printk.c ****     if (tty_device != NULL)
+ 265              		.loc 1 26 5 is_stmt 1 view .LVU50
+ 266              		.loc 1 26 20 is_stmt 0 view .LVU51
+ 267 0004 074B     		ldr	r3, .L22
+ 268 0006 1D68     		ldr	r5, [r3]
+ 269              		.loc 1 26 8 view .LVU52
+ 270 0008 4DB1     		cbz	r5, .L19
+  27:./lib/printk.c ****         kernel_write(tty_device, buf, strlen(buf), &tty_device->f_pos);
+ 271              		.loc 1 27 9 is_stmt 1 view .LVU53
+ 272 000a FFF7FEFF 		bl	strlen
+ 273              	.LVL20:
+ 274              		.loc 1 27 9 is_stmt 0 view .LVU54
+ 275 000e 0246     		mov	r2, r0
+ 276              		.loc 1 27 9 discriminator 1 view .LVU55
+ 277 0010 05F15003 		add	r3, r5, #80
+ 278 0014 2146     		mov	r1, r4
+ 279 0016 2846     		mov	r0, r5
+ 280 0018 FFF7FEFF 		bl	kernel_write
+ 281              	.LVL21:
+ 282              	.L18:
+  28:./lib/printk.c ****     else 
+  29:./lib/printk.c ****         early_printk(buf);     
+  30:./lib/printk.c **** }
+ 283              		.loc 1 30 1 view .LVU56
+ 284 001c 38BD     		pop	{r3, r4, r5, pc}
+ARM GAS  /tmp/ccwA47Ys.s 			page 8
+
+
+ 285              	.LVL22:
+ 286              	.L19:
+  29:./lib/printk.c **** }
+ 287              		.loc 1 29 9 is_stmt 1 view .LVU57
+ 288 001e FFF7FEFF 		bl	early_printk
+ 289              	.LVL23:
+ 290              		.loc 1 30 1 is_stmt 0 view .LVU58
+ 291 0022 FBE7     		b	.L18
+ 292              	.L23:
+ 293              		.align	2
+ 294              	.L22:
+ 295 0024 00000000 		.word	tty_device
+ 296              		.cfi_endproc
+ 297              	.LFE1034:
+ 299              		.section	.rodata.printk_service_init.str1.4,"aMS",%progbits,1
+ 300              		.align	2
+ 301              	.LC0:
+ 302 0000 2F646576 		.ascii	"/dev/ttyS0\000"
+ 302      2F747479 
+ 302      533000
+ 303 000b 00       		.align	2
+ 304              	.LC1:
+ 305 000c 74747920 		.ascii	"tty device:%s open failed\012\000"
+ 305      64657669 
+ 305      63653A25 
+ 305      73206F70 
+ 305      656E2066 
+ 306              		.section	.text.printk_service_init,"ax",%progbits
+ 307              		.align	1
+ 308              		.global	printk_service_init
+ 309              		.syntax unified
+ 310              		.thumb
+ 311              		.thumb_func
+ 313              	printk_service_init:
+ 314              	.LFB1033:
+  15:./lib/printk.c ****     tty_device = filp_open(CONFIG_PRINTTK_USE_TTY_DEVICE, O_RDWR, 0);
+ 315              		.loc 1 15 31 is_stmt 1 view -0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 0
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319 0000 10B5     		push	{r4, lr}
+ 320              	.LCFI5:
+ 321              		.cfi_def_cfa_offset 8
+ 322              		.cfi_offset 4, -8
+ 323              		.cfi_offset 14, -4
+  16:./lib/printk.c ****     if (IS_ERR(tty_device)) {
+ 324              		.loc 1 16 5 view .LVU60
+  16:./lib/printk.c ****     if (IS_ERR(tty_device)) {
+ 325              		.loc 1 16 18 is_stmt 0 view .LVU61
+ 326 0002 0022     		movs	r2, #0
+ 327 0004 0221     		movs	r1, #2
+ 328 0006 0B48     		ldr	r0, .L29
+ 329 0008 FFF7FEFF 		bl	filp_open
+ 330              	.LVL24:
+  16:./lib/printk.c ****     if (IS_ERR(tty_device)) {
+ 331              		.loc 1 16 16 discriminator 1 view .LVU62
+ 332 000c 0A4B     		ldr	r3, .L29+4
+ARM GAS  /tmp/ccwA47Ys.s 			page 9
+
+
+ 333 000e 1860     		str	r0, [r3]
+  17:./lib/printk.c ****         early_printk("tty device:%s open failed\n",CONFIG_PRINTTK_USE_TTY_DEVICE);
+ 334              		.loc 1 17 5 is_stmt 1 view .LVU63
+ 335              	.LVL25:
+ 336              	.LBB4:
+ 337              	.LBI4:
+ 338              		.file 4 "./include/linux/err.h"
+   1:./include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:./include/linux/err.h **** #define _LINUX_ERR_H
+   4:./include/linux/err.h **** 
+   5:./include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:./include/linux/err.h **** #include <linux/compiler.h>
+   7:./include/linux/err.h **** #include <linux/types.h>
+   8:./include/linux/err.h **** 
+   9:./include/linux/err.h **** #include <asm/errno.h>
+  10:./include/linux/err.h **** 
+  11:./include/linux/err.h **** /*
+  12:./include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:./include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:./include/linux/err.h ****  * pointer with the same return value.
+  15:./include/linux/err.h ****  *
+  16:./include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:./include/linux/err.h ****  * error and pointer decisions.
+  18:./include/linux/err.h ****  */
+  19:./include/linux/err.h **** #define MAX_ERRNO	4095
+  20:./include/linux/err.h **** 
+  21:./include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:./include/linux/err.h **** 
+  23:./include/linux/err.h **** /**
+  24:./include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:./include/linux/err.h ****  * @x: The pointer to check.
+  26:./include/linux/err.h ****  *
+  27:./include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:./include/linux/err.h ****  */
+  29:./include/linux/err.h **** 
+  30:./include/linux/err.h **** #ifndef unlikely
+  31:./include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:./include/linux/err.h **** #endif
+  33:./include/linux/err.h **** 
+  34:./include/linux/err.h **** #ifndef likely
+  35:./include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:./include/linux/err.h **** #endif
+  37:./include/linux/err.h **** 
+  38:./include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:./include/linux/err.h **** 
+  40:./include/linux/err.h **** /**
+  41:./include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:./include/linux/err.h ****  * @error: A negative error code.
+  43:./include/linux/err.h ****  *
+  44:./include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:./include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:./include/linux/err.h ****  *
+  47:./include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:./include/linux/err.h ****  */
+  49:./include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:./include/linux/err.h **** {
+ARM GAS  /tmp/ccwA47Ys.s 			page 10
+
+
+  51:./include/linux/err.h **** 	return (void *) error;
+  52:./include/linux/err.h **** }
+  53:./include/linux/err.h **** 
+  54:./include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:./include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:./include/linux/err.h **** 
+  57:./include/linux/err.h **** /**
+  58:./include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:./include/linux/err.h ****  * @ptr: An error pointer.
+  60:./include/linux/err.h ****  * Return: The error code within @ptr.
+  61:./include/linux/err.h ****  */
+  62:./include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:./include/linux/err.h **** {
+  64:./include/linux/err.h **** 	return (long) ptr;
+  65:./include/linux/err.h **** }
+  66:./include/linux/err.h **** 
+  67:./include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:./include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:./include/linux/err.h **** 
+  70:./include/linux/err.h **** /**
+  71:./include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:./include/linux/err.h ****  * @ptr: The pointer to check.
+  73:./include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:./include/linux/err.h ****  */
+  75:./include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 339              		.loc 4 75 33 view .LVU64
+ 340              	.LBB5:
+  76:./include/linux/err.h **** {
+  77:./include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 341              		.loc 4 77 2 view .LVU65
+ 342              		.loc 4 77 9 is_stmt 0 view .LVU66
+ 343 0010 10F5805F 		cmn	r0, #4096
+ 344 0014 94BF     		ite	ls
+ 345 0016 0024     		movls	r4, #0
+ 346 0018 0124     		movhi	r4, #1
+ 347              	.LVL26:
+ 348              		.loc 4 77 9 view .LVU67
+ 349              	.LBE5:
+ 350              	.LBE4:
+  17:./lib/printk.c ****         early_printk("tty device:%s open failed\n",CONFIG_PRINTTK_USE_TTY_DEVICE);
+ 351              		.loc 1 17 8 discriminator 1 view .LVU68
+ 352 001a 24B9     		cbnz	r4, .L28
+  21:./lib/printk.c ****     return 0;
+ 353              		.loc 1 21 5 is_stmt 1 view .LVU69
+ 354 001c 0748     		ldr	r0, .L29+8
+ 355 001e FFF7FEFF 		bl	spin_lock_init
+ 356              	.LVL27:
+  22:./lib/printk.c **** }
+ 357              		.loc 1 22 5 view .LVU70
+ 358              	.L24:
+  23:./lib/printk.c **** 
+ 359              		.loc 1 23 1 is_stmt 0 view .LVU71
+ 360 0022 2046     		mov	r0, r4
+ 361 0024 10BD     		pop	{r4, pc}
+ 362              	.L28:
+  18:./lib/printk.c ****         return -1;
+ 363              		.loc 1 18 9 is_stmt 1 view .LVU72
+ARM GAS  /tmp/ccwA47Ys.s 			page 11
+
+
+ 364 0026 0349     		ldr	r1, .L29
+ 365 0028 0548     		ldr	r0, .L29+12
+ 366 002a FFF7FEFF 		bl	early_printk
+ 367              	.LVL28:
+  19:./lib/printk.c ****     }
+ 368              		.loc 1 19 9 view .LVU73
+  19:./lib/printk.c ****     }
+ 369              		.loc 1 19 16 is_stmt 0 view .LVU74
+ 370 002e 4FF0FF34 		mov	r4, #-1
+ 371 0032 F6E7     		b	.L24
+ 372              	.L30:
+ 373              		.align	2
+ 374              	.L29:
+ 375 0034 00000000 		.word	.LC0
+ 376 0038 00000000 		.word	tty_device
+ 377 003c 00000000 		.word	printk_spinlock
+ 378 0040 0C000000 		.word	.LC1
+ 379              		.cfi_endproc
+ 380              	.LFE1033:
+ 382              		.section	.rodata.printk.str1.4,"aMS",%progbits,1
+ 383              		.align	2
+ 384              	.LC2:
+ 385 0000 0D5B2020 		.ascii	"\015[   %u.%06u] \000"
+ 385      2025752E 
+ 385      25303675 
+ 385      5D2000
+ 386              		.section	.text.printk,"ax",%progbits
+ 387              		.align	1
+ 388              		.global	printk
+ 389              		.syntax unified
+ 390              		.thumb
+ 391              		.thumb_func
+ 393              	printk:
+ 394              	.LVL29:
+ 395              	.LFB1035:
+  31:./lib/printk.c **** 
+  32:./lib/printk.c **** static char printk_buf[512];
+  33:./lib/printk.c **** 
+  34:./lib/printk.c **** void printk(const char *fmt, ...){
+ 396              		.loc 1 34 34 is_stmt 1 view -0
+ 397              		.cfi_startproc
+ 398              		@ args = 4, pretend = 16, frame = 8
+ 399              		@ frame_needed = 0, uses_anonymous_args = 1
+ 400              		.loc 1 34 34 is_stmt 0 view .LVU76
+ 401 0000 0FB4     		push	{r0, r1, r2, r3}
+ 402              	.LCFI6:
+ 403              		.cfi_def_cfa_offset 16
+ 404              		.cfi_offset 0, -16
+ 405              		.cfi_offset 1, -12
+ 406              		.cfi_offset 2, -8
+ 407              		.cfi_offset 3, -4
+ 408 0002 30B5     		push	{r4, r5, lr}
+ 409              	.LCFI7:
+ 410              		.cfi_def_cfa_offset 28
+ 411              		.cfi_offset 4, -28
+ 412              		.cfi_offset 5, -24
+ 413              		.cfi_offset 14, -20
+ARM GAS  /tmp/ccwA47Ys.s 			page 12
+
+
+ 414 0004 85B0     		sub	sp, sp, #20
+ 415              	.LCFI8:
+ 416              		.cfi_def_cfa_offset 48
+  35:./lib/printk.c ****     spin_lock(&printk_spinlock);
+ 417              		.loc 1 35 5 is_stmt 1 view .LVU77
+ 418 0006 1848     		ldr	r0, .L35
+ 419 0008 FFF7FEFF 		bl	spin_lock
+ 420              	.LVL30:
+  36:./lib/printk.c ****     va_list args;
+ 421              		.loc 1 36 5 view .LVU78
+  37:./lib/printk.c ****     time64_t now = jiffies;
+ 422              		.loc 1 37 5 view .LVU79
+ 423              		.loc 1 37 20 is_stmt 0 view .LVU80
+ 424 000c FFF7FEFF 		bl	ktime_get
+ 425              	.LVL31:
+  38:./lib/printk.c ****     uint32_t sec = now / HZ;
+ 426              		.loc 1 38 5 is_stmt 1 view .LVU81
+ 427              		.loc 1 38 24 is_stmt 0 view .LVU82
+ 428 0010 164B     		ldr	r3, .L35+4
+ 429 0012 1A68     		ldr	r2, [r3]
+ 430              		.loc 1 38 14 view .LVU83
+ 431 0014 B0FBF2F3 		udiv	r3, r0, r2
+ 432              	.LVL32:
+  39:./lib/printk.c ****     uint32_t nsec = now % HZ ;
+ 433              		.loc 1 39 5 is_stmt 1 view .LVU84
+ 434              		.loc 1 39 14 is_stmt 0 view .LVU85
+ 435 0018 02FB1304 		mls	r4, r2, r3, r0
+ 436              	.LVL33:
+  40:./lib/printk.c ****     if (now != 0){
+ 437              		.loc 1 40 5 is_stmt 1 view .LVU86
+ 438              		.loc 1 40 8 is_stmt 0 view .LVU87
+ 439 001c 98B9     		cbnz	r0, .L34
+ 440              	.LVL34:
+ 441              	.L32:
+  41:./lib/printk.c ****         snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u] ", sec, nsec * (1000000/HZ));
+  42:./lib/printk.c ****         tty_write(printk_buf);        
+  43:./lib/printk.c ****     }
+  44:./lib/printk.c ****     va_start(args, fmt);
+ 442              		.loc 1 44 5 is_stmt 1 view .LVU88
+ 443 001e 09AB     		add	r3, sp, #36
+ 444 0020 0393     		str	r3, [sp, #12]
+  45:./lib/printk.c ****     vsnprintf(printk_buf, sizeof(printk_buf), fmt, args);
+ 445              		.loc 1 45 5 view .LVU89
+ 446 0022 134C     		ldr	r4, .L35+8
+ 447              	.LVL35:
+ 448              		.loc 1 45 5 is_stmt 0 view .LVU90
+ 449 0024 089A     		ldr	r2, [sp, #32]
+ 450 0026 4FF40071 		mov	r1, #512
+ 451 002a 2046     		mov	r0, r4
+ 452 002c FFF7FEFF 		bl	vsnprintf
+ 453              	.LVL36:
+  46:./lib/printk.c ****     va_end(args);
+ 454              		.loc 1 46 5 is_stmt 1 view .LVU91
+  47:./lib/printk.c ****     tty_write(printk_buf);
+ 455              		.loc 1 47 5 view .LVU92
+ 456 0030 2046     		mov	r0, r4
+ 457 0032 FFF7FEFF 		bl	tty_write
+ARM GAS  /tmp/ccwA47Ys.s 			page 13
+
+
+ 458              	.LVL37:
+  48:./lib/printk.c ****     spin_unlock(&printk_spinlock);
+ 459              		.loc 1 48 5 view .LVU93
+ 460 0036 0C48     		ldr	r0, .L35
+ 461 0038 FFF7FEFF 		bl	spin_unlock
+ 462              	.LVL38:
+  49:./lib/printk.c **** }
+ 463              		.loc 1 49 1 is_stmt 0 view .LVU94
+ 464 003c 05B0     		add	sp, sp, #20
+ 465              	.LCFI9:
+ 466              		.cfi_remember_state
+ 467              		.cfi_def_cfa_offset 28
+ 468              		@ sp needed
+ 469 003e BDE83040 		pop	{r4, r5, lr}
+ 470              	.LCFI10:
+ 471              		.cfi_restore 14
+ 472              		.cfi_restore 5
+ 473              		.cfi_restore 4
+ 474              		.cfi_def_cfa_offset 16
+ 475 0042 04B0     		add	sp, sp, #16
+ 476              	.LCFI11:
+ 477              		.cfi_restore 3
+ 478              		.cfi_restore 2
+ 479              		.cfi_restore 1
+ 480              		.cfi_restore 0
+ 481              		.cfi_def_cfa_offset 0
+ 482 0044 7047     		bx	lr
+ 483              	.LVL39:
+ 484              	.L34:
+ 485              	.LCFI12:
+ 486              		.cfi_restore_state
+  41:./lib/printk.c ****         tty_write(printk_buf);        
+ 487              		.loc 1 41 9 is_stmt 1 view .LVU95
+  41:./lib/printk.c ****         tty_write(printk_buf);        
+ 488              		.loc 1 41 89 is_stmt 0 view .LVU96
+ 489 0046 0B49     		ldr	r1, .L35+12
+ 490 0048 B1FBF2F2 		udiv	r2, r1, r2
+  41:./lib/printk.c ****         tty_write(printk_buf);        
+ 491              		.loc 1 41 9 view .LVU97
+ 492 004c 084D     		ldr	r5, .L35+8
+ 493 004e 04FB02F2 		mul	r2, r4, r2
+ 494 0052 0092     		str	r2, [sp]
+ 495 0054 084A     		ldr	r2, .L35+16
+ 496 0056 4FF40071 		mov	r1, #512
+ 497 005a 2846     		mov	r0, r5
+ 498              	.LVL40:
+  41:./lib/printk.c ****         tty_write(printk_buf);        
+ 499              		.loc 1 41 9 view .LVU98
+ 500 005c FFF7FEFF 		bl	snprintf
+ 501              	.LVL41:
+  42:./lib/printk.c ****     }
+ 502              		.loc 1 42 9 is_stmt 1 view .LVU99
+ 503 0060 2846     		mov	r0, r5
+ 504 0062 FFF7FEFF 		bl	tty_write
+ 505              	.LVL42:
+ 506 0066 DAE7     		b	.L32
+ 507              	.L36:
+ARM GAS  /tmp/ccwA47Ys.s 			page 14
+
+
+ 508              		.align	2
+ 509              	.L35:
+ 510 0068 00000000 		.word	printk_spinlock
+ 511 006c 00000000 		.word	HZ
+ 512 0070 00000000 		.word	printk_buf
+ 513 0074 40420F00 		.word	1000000
+ 514 0078 00000000 		.word	.LC2
+ 515              		.cfi_endproc
+ 516              	.LFE1035:
+ 518              		.section	.rodata.minimal_printk.str1.4,"aMS",%progbits,1
+ 519              		.align	2
+ 520              	.LC3:
+ 521 0000 257300   		.ascii	"%s\000"
+ 522              		.section	.text.minimal_printk,"ax",%progbits
+ 523              		.align	1
+ 524              		.weak	minimal_printk
+ 525              		.syntax unified
+ 526              		.thumb
+ 527              		.thumb_func
+ 529              	minimal_printk:
+ 530              	.LVL43:
+ 531              	.LFB1036:
+  50:./lib/printk.c **** 
+  51:./lib/printk.c **** 
+  52:./lib/printk.c **** 
+  53:./lib/printk.c **** static char minimal_buf[1024];
+  54:./lib/printk.c **** void __weak minimal_printk(const char *fmt, va_list args) {
+ 532              		.loc 1 54 59 view -0
+ 533              		.cfi_startproc
+ 534              		@ args = 0, pretend = 0, frame = 0
+ 535              		@ frame_needed = 0, uses_anonymous_args = 0
+ 536              		.loc 1 54 59 is_stmt 0 view .LVU101
+ 537 0000 10B5     		push	{r4, lr}
+ 538              	.LCFI13:
+ 539              		.cfi_def_cfa_offset 8
+ 540              		.cfi_offset 4, -8
+ 541              		.cfi_offset 14, -4
+ 542 0002 0246     		mov	r2, r0
+ 543 0004 0B46     		mov	r3, r1
+  55:./lib/printk.c ****     vsnprintf(minimal_buf, sizeof(minimal_buf), fmt, args);
+ 544              		.loc 1 55 5 is_stmt 1 view .LVU102
+ 545 0006 054C     		ldr	r4, .L39
+ 546 0008 4FF48061 		mov	r1, #1024
+ 547              	.LVL44:
+ 548              		.loc 1 55 5 is_stmt 0 view .LVU103
+ 549 000c 2046     		mov	r0, r4
+ 550              	.LVL45:
+ 551              		.loc 1 55 5 view .LVU104
+ 552 000e FFF7FEFF 		bl	vsnprintf
+ 553              	.LVL46:
+  56:./lib/printk.c ****     early_printk("%s", minimal_buf);
+ 554              		.loc 1 56 5 is_stmt 1 view .LVU105
+ 555 0012 2146     		mov	r1, r4
+ 556 0014 0248     		ldr	r0, .L39+4
+ 557 0016 FFF7FEFF 		bl	early_printk
+ 558              	.LVL47:
+  57:./lib/printk.c **** }
+ARM GAS  /tmp/ccwA47Ys.s 			page 15
+
+
+ 559              		.loc 1 57 1 is_stmt 0 view .LVU106
+ 560 001a 10BD     		pop	{r4, pc}
+ 561              	.L40:
+ 562              		.align	2
+ 563              	.L39:
+ 564 001c 00000000 		.word	minimal_buf
+ 565 0020 00000000 		.word	.LC3
+ 566              		.cfi_endproc
+ 567              	.LFE1036:
+ 569              		.section	.rodata.early_putchar.str1.4,"aMS",%progbits,1
+ 570              		.align	2
+ 571              	.LC4:
+ 572 0000 256300   		.ascii	"%c\000"
+ 573              		.section	.text.early_putchar,"ax",%progbits
+ 574              		.align	1
+ 575              		.weak	early_putchar
+ 576              		.syntax unified
+ 577              		.thumb
+ 578              		.thumb_func
+ 580              	early_putchar:
+ 581              	.LVL48:
+ 582              	.LFB1037:
+  58:./lib/printk.c **** void __weak early_putchar(char c) {
+ 583              		.loc 1 58 35 is_stmt 1 view -0
+ 584              		.cfi_startproc
+ 585              		@ args = 0, pretend = 0, frame = 0
+ 586              		@ frame_needed = 0, uses_anonymous_args = 0
+ 587              		.loc 1 58 35 is_stmt 0 view .LVU108
+ 588 0000 08B5     		push	{r3, lr}
+ 589              	.LCFI14:
+ 590              		.cfi_def_cfa_offset 8
+ 591              		.cfi_offset 3, -8
+ 592              		.cfi_offset 14, -4
+ 593 0002 0146     		mov	r1, r0
+  59:./lib/printk.c ****     early_printk("%c", c);
+ 594              		.loc 1 59 5 is_stmt 1 view .LVU109
+ 595 0004 0148     		ldr	r0, .L43
+ 596              	.LVL49:
+ 597              		.loc 1 59 5 is_stmt 0 view .LVU110
+ 598 0006 FFF7FEFF 		bl	early_printk
+ 599              	.LVL50:
+  60:./lib/printk.c **** }...
+ 600              		.loc 1 60 1 view .LVU111
+ 601 000a 08BD     		pop	{r3, pc}
+ 602              	.L44:
+ 603              		.align	2
+ 604              	.L43:
+ 605 000c 00000000 		.word	.LC4
+ 606              		.cfi_endproc
+ 607              	.LFE1037:
+ 609              		.section	.bss.minimal_buf,"aw",%nobits
+ 610              		.align	2
+ 613              	minimal_buf:
+ 614 0000 00000000 		.space	1024
+ 614      00000000 
+ 614      00000000 
+ 614      00000000 
+ARM GAS  /tmp/ccwA47Ys.s 			page 16
+
+
+ 614      00000000 
+ 615              		.section	.bss.printk_buf,"aw",%nobits
+ 616              		.align	2
+ 619              	printk_buf:
+ 620 0000 00000000 		.space	512
+ 620      00000000 
+ 620      00000000 
+ 620      00000000 
+ 620      00000000 
+ 621              		.global	printk_spinlock
+ 622              		.section	.bss.printk_spinlock,"aw",%nobits
+ 623              		.align	2
+ 626              	printk_spinlock:
+ 627 0000 00000000 		.space	16
+ 627      00000000 
+ 627      00000000 
+ 627      00000000 
+ 628              		.global	tty_device
+ 629              		.section	.bss.tty_device,"aw",%nobits
+ 630              		.align	2
+ 633              	tty_device:
+ 634 0000 00000000 		.space	4
+ 635              		.text
+ 636              	.Letext0:
+ 637              		.file 5 "./include/linux/stdarg.h"
+ 638              		.file 6 "./include/asm-generic/int-l64.h"
+ 639              		.file 7 "./include/asm-generic/posix_types.h"
+ 640              		.file 8 "./include/uapi/linux/types.h"
+ 641              		.file 9 "./include/linux/types.h"
+ 642              		.file 10 "./include/linux/errseq.h"
+ 643              		.file 11 "./include/linux/time64.h"
+ 644              		.file 12 "./arch/arm_m/include/asm/sched.h"
+ 645              		.file 13 "./include/linux/sched.h"
+ 646              		.file 14 "./include/linux/spinlock_types_raw.h"
+ 647              		.file 15 "./include/linux/spinlock_types.h"
+ 648              		.file 16 "./include/linux/rbtree_types.h"
+ 649              		.file 17 "./include/linux/uidgid_types.h"
+ 650              		.file 18 "./include/linux/projid.h"
+ 651              		.file 19 "./include/linux/fs.h"
+ 652              		.file 20 "./include/linux/mnt_idmapping.h"
+ 653              		.file 21 "./include/linux/mutex.h"
+ 654              		.file 22 "./include/linux/uio.h"
+ 655              		.file 23 "./include/linux/migrate_mode.h"
+ 656              		.file 24 "./include/linux/wait.h"
+ 657              		.file 25 "./include/linux/xarray.h"
+ 658              		.file 26 "./include/linux/rw_hint.h"
+ 659              		.file 27 "./include/linux/reciprocal_div.h"
+ 660              		.file 28 "./include/linux/slab.h"
+ 661              		.file 29 "./include/linux/mm_type.h"
+ 662              		.file 30 "./include/linux/bvec.h"
+ 663              		.file 31 "./include/linux/blk_types.h"
+ 664              		.file 32 "./include/linux/blkdev.h"
+ 665              		.file 33 "./include/linux/bio.h"
+ 666              		.file 34 "./include/linux/mempool_super_haper.h"
+ 667              		.file 35 "./include/linux/mempool.h"
+ 668              		.file 36 "./include/linux/lockdep_types.h"
+ 669              		.file 37 "./include/linux/workqueue_types.h"
+ARM GAS  /tmp/ccwA47Ys.s 			page 17
+
+
+ 670              		.file 38 "./include/linux/blk-mq.h"
+ 671              		.file 39 "./include/linux/dcache.h"
+ 672              		.file 40 "./include/uapi/linux/pr.h"
+ 673              		.file 41 "./include/linux/pr.h"
+ 674              		.file 42 "./include/linux/hdreg.h"
+ 675              		.file 43 "./include/linux/lockref.h"
+ 676              		.file 44 "./include/linux/path.h"
+ 677              		.file 45 "./include/linux/statfs.h"
+ 678              		.file 46 "./include/linux/stat.h"
+ 679              		.file 47 "./arch/arm_m/include/asm/string.h"
+ 680              		.file 48 "./include/linux/sprintf.h"
+ 681              		.file 49 "./include/linux/time.h"
+ 682              		.file 50 "./include/linux/printk.h"
+ 683              		.file 51 "<built-in>"
+ARM GAS  /tmp/ccwA47Ys.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 printk.c
+     /tmp/ccwA47Ys.s:21     .text.__spin_init:00000000 $t
+     /tmp/ccwA47Ys.s:26     .text.__spin_init:00000000 __spin_init
+     /tmp/ccwA47Ys.s:46     .text.__spin_unlock:00000000 $t
+     /tmp/ccwA47Ys.s:51     .text.__spin_unlock:00000000 __spin_unlock
+     /tmp/ccwA47Ys.s:69     .text.spin_lock_init:00000000 $t
+     /tmp/ccwA47Ys.s:74     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccwA47Ys.s:97     .text.spin_unlock:00000000 $t
+     /tmp/ccwA47Ys.s:102    .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccwA47Ys.s:124    .text.__spin_lock:00000000 $t
+     /tmp/ccwA47Ys.s:129    .text.__spin_lock:00000000 __spin_lock
+     /tmp/ccwA47Ys.s:179    .text.spin_lock:00000000 $t
+     /tmp/ccwA47Ys.s:184    .text.spin_lock:00000000 spin_lock
+     /tmp/ccwA47Ys.s:244    .text.tty_write:00000000 $t
+     /tmp/ccwA47Ys.s:249    .text.tty_write:00000000 tty_write
+     /tmp/ccwA47Ys.s:295    .text.tty_write:00000024 $d
+     /tmp/ccwA47Ys.s:633    .bss.tty_device:00000000 tty_device
+     /tmp/ccwA47Ys.s:300    .rodata.printk_service_init.str1.4:00000000 $d
+     /tmp/ccwA47Ys.s:307    .text.printk_service_init:00000000 $t
+     /tmp/ccwA47Ys.s:313    .text.printk_service_init:00000000 printk_service_init
+     /tmp/ccwA47Ys.s:375    .text.printk_service_init:00000034 $d
+     /tmp/ccwA47Ys.s:626    .bss.printk_spinlock:00000000 printk_spinlock
+     /tmp/ccwA47Ys.s:383    .rodata.printk.str1.4:00000000 $d
+     /tmp/ccwA47Ys.s:387    .text.printk:00000000 $t
+     /tmp/ccwA47Ys.s:393    .text.printk:00000000 printk
+     /tmp/ccwA47Ys.s:510    .text.printk:00000068 $d
+     /tmp/ccwA47Ys.s:619    .bss.printk_buf:00000000 printk_buf
+     /tmp/ccwA47Ys.s:519    .rodata.minimal_printk.str1.4:00000000 $d
+     /tmp/ccwA47Ys.s:523    .text.minimal_printk:00000000 $t
+     /tmp/ccwA47Ys.s:529    .text.minimal_printk:00000000 minimal_printk
+     /tmp/ccwA47Ys.s:564    .text.minimal_printk:0000001c $d
+     /tmp/ccwA47Ys.s:613    .bss.minimal_buf:00000000 minimal_buf
+     /tmp/ccwA47Ys.s:570    .rodata.early_putchar.str1.4:00000000 $d
+     /tmp/ccwA47Ys.s:574    .text.early_putchar:00000000 $t
+     /tmp/ccwA47Ys.s:580    .text.early_putchar:00000000 early_putchar
+     /tmp/ccwA47Ys.s:605    .text.early_putchar:0000000c $d
+     /tmp/ccwA47Ys.s:610    .bss.minimal_buf:00000000 $d
+     /tmp/ccwA47Ys.s:616    .bss.printk_buf:00000000 $d
+     /tmp/ccwA47Ys.s:623    .bss.printk_spinlock:00000000 $d
+     /tmp/ccwA47Ys.s:630    .bss.tty_device:00000000 $d
+
+UNDEFINED SYMBOLS
+stop_all_scheduler
+start_all_scheduler
+get_current_task
+__delay
+strlen
+kernel_write
+early_printk
+filp_open
+ktime_get
+vsnprintf
+snprintf
+HZ

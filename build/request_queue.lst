@@ -1,0 +1,2601 @@
+ARM GAS  /tmp/ccXPZLMi.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"request_queue.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./block/request_queue.c"
+  20              		.section	.text.__spin_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__spin_init:
+  27              	.LVL0:
+  28              	.LFB226:
+  29              		.file 2 "./arch/arm_m/include/asm/spinlock.h"
+   1:./arch/arm_m/include/asm/spinlock.h **** #ifndef __SPIN_LOCK_H_
+   2:./arch/arm_m/include/asm/spinlock.h **** #define __SPIN_LOCK_H_
+   3:./arch/arm_m/include/asm/spinlock.h **** 
+   4:./arch/arm_m/include/asm/spinlock.h **** #include <linux/sched.h>
+   5:./arch/arm_m/include/asm/spinlock.h **** 
+   6:./arch/arm_m/include/asm/spinlock.h **** typedef struct { 
+   7:./arch/arm_m/include/asm/spinlock.h ****      int flag; 
+   8:./arch/arm_m/include/asm/spinlock.h **** } arch_spinlock_t;
+   9:./arch/arm_m/include/asm/spinlock.h **** 
+  10:./arch/arm_m/include/asm/spinlock.h **** static int __spin_init(arch_spinlock_t *lock) 
+  11:./arch/arm_m/include/asm/spinlock.h **** {
+  30              		.loc 2 11 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  35              		.loc 2 12 5 view .LVU1
+  36              		.loc 2 12 16 is_stmt 0 view .LVU2
+  37 0000 0023     		movs	r3, #0
+  38 0002 0360     		str	r3, [r0]
+  39              	.LVL1:
+  13:./arch/arm_m/include/asm/spinlock.h **** }
+  40              		.loc 2 13 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE226:
+  45              		.section	.text.__spin_unlock,"ax",%progbits
+  46              		.align	1
+ARM GAS  /tmp/ccXPZLMi.s 			page 2
+
+
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	__spin_unlock:
+  52              	.LVL2:
+  53              	.LFB228:
+  14:./arch/arm_m/include/asm/spinlock.h **** 
+  15:./arch/arm_m/include/asm/spinlock.h **** static int __spin_lock(arch_spinlock_t *lock) {
+  16:./arch/arm_m/include/asm/spinlock.h **** 
+  17:./arch/arm_m/include/asm/spinlock.h ****     stop_all_scheduler();
+  18:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  19:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  20:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+  21:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+  22:./arch/arm_m/include/asm/spinlock.h ****     }
+  23:./arch/arm_m/include/asm/spinlock.h ****     else
+  24:./arch/arm_m/include/asm/spinlock.h ****     {
+  25:./arch/arm_m/include/asm/spinlock.h ****         start_all_scheduler();
+  26:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+  27:./arch/arm_m/include/asm/spinlock.h ****     }
+  28:./arch/arm_m/include/asm/spinlock.h **** }
+  29:./arch/arm_m/include/asm/spinlock.h **** 
+  30:./arch/arm_m/include/asm/spinlock.h **** static void  __spin_unlock( arch_spinlock_t *lock ){
+  54              		.loc 2 30 52 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  31:./arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  59              		.loc 2 31 5 view .LVU5
+  60              		.loc 2 31 16 is_stmt 0 view .LVU6
+  61 0000 0023     		movs	r3, #0
+  62 0002 0360     		str	r3, [r0]
+  32:./arch/arm_m/include/asm/spinlock.h **** }
+  63              		.loc 2 32 1 view .LVU7
+  64 0004 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE228:
+  68              		.section	.text.spin_lock_init,"ax",%progbits
+  69              		.align	1
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	spin_lock_init:
+  75              	.LVL3:
+  76              	.LFB229:
+  77              		.file 3 "./include/linux/spinlock.h"
+   1:./include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:./include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:./include/linux/spinlock.h **** 
+   4:./include/linux/spinlock.h **** #include <linux/types.h>
+   5:./include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:./include/linux/spinlock.h **** #include <linux/sched.h>
+   7:./include/linux/spinlock.h **** 
+   8:./include/linux/spinlock.h **** 
+   9:./include/linux/spinlock.h **** 
+  10:./include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+ARM GAS  /tmp/ccXPZLMi.s 			page 3
+
+
+  78              		.loc 3 10 45 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		.loc 3 10 45 is_stmt 0 view .LVU9
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI0:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  11:./include/linux/spinlock.h ****     __spin_init(&lock->rlock.raw_lock);
+  88              		.loc 3 11 5 is_stmt 1 view .LVU10
+  89 0002 FFF7FEFF 		bl	__spin_init
+  90              	.LVL4:
+  12:./include/linux/spinlock.h **** }
+  91              		.loc 3 12 1 is_stmt 0 view .LVU11
+  92 0006 08BD     		pop	{r3, pc}
+  93              		.cfi_endproc
+  94              	.LFE229:
+  96              		.section	.text.spin_unlock,"ax",%progbits
+  97              		.align	1
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	spin_unlock:
+ 103              	.LVL5:
+ 104              	.LFB231:
+  13:./include/linux/spinlock.h **** 
+  14:./include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  15:./include/linux/spinlock.h **** {  
+  16:./include/linux/spinlock.h ****     while (1)
+  17:./include/linux/spinlock.h ****     {
+  18:./include/linux/spinlock.h ****         if(__spin_lock(&lock->rlock.raw_lock) == 1){
+  19:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+  20:./include/linux/spinlock.h ****             break;
+  21:./include/linux/spinlock.h ****         }
+  22:./include/linux/spinlock.h ****         else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  23:./include/linux/spinlock.h ****             return;   
+  24:./include/linux/spinlock.h ****         }
+  25:./include/linux/spinlock.h ****         else{
+  26:./include/linux/spinlock.h ****             __delay(5); //主动让出时间片
+  27:./include/linux/spinlock.h ****         }
+  28:./include/linux/spinlock.h ****     }
+  29:./include/linux/spinlock.h **** }
+  30:./include/linux/spinlock.h **** 
+  31:./include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  32:./include/linux/spinlock.h **** {
+ 105              		.loc 3 32 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 3 32 1 is_stmt 0 view .LVU13
+ 110 0000 08B5     		push	{r3, lr}
+ 111              	.LCFI1:
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 3, -8
+ 114              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccXPZLMi.s 			page 4
+
+
+  33:./include/linux/spinlock.h ****     __spin_unlock(&lock->rlock.raw_lock);
+ 115              		.loc 3 33 5 is_stmt 1 view .LVU14
+ 116 0002 FFF7FEFF 		bl	__spin_unlock
+ 117              	.LVL6:
+  34:./include/linux/spinlock.h **** }
+ 118              		.loc 3 34 1 is_stmt 0 view .LVU15
+ 119 0006 08BD     		pop	{r3, pc}
+ 120              		.cfi_endproc
+ 121              	.LFE231:
+ 123              		.section	.text.request_queue_add,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	request_queue_add
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	request_queue_add:
+ 131              	.LVL7:
+ 132              	.LFB1035:
+   1:./block/request_queue.c **** #include <linux/kernel.h>
+   2:./block/request_queue.c **** #include <linux/types.h>
+   3:./block/request_queue.c **** #include <linux/blkdev.h>
+   4:./block/request_queue.c **** #include <linux/list.h>
+   5:./block/request_queue.c **** 
+   6:./block/request_queue.c **** 
+   7:./block/request_queue.c **** 
+   8:./block/request_queue.c **** struct request_queue *request_queue_init(int id, struct gendisk *gd,gfp_t flags)
+   9:./block/request_queue.c **** {
+  10:./block/request_queue.c ****     struct request_queue *q;
+  11:./block/request_queue.c **** 
+  12:./block/request_queue.c ****     q = kmalloc(sizeof(*q), GFP_KERNEL);  // 分配内存
+  13:./block/request_queue.c ****     if (!q)
+  14:./block/request_queue.c ****         return NULL;
+  15:./block/request_queue.c ****     q->queuedata = NULL;               // 初始化为 NULL，后期可分配数据
+  16:./block/request_queue.c ****     q->last_merge = NULL;              // 无合并请求
+  17:./block/request_queue.c ****     spin_lock_init(&q->queue_lock);    // 初始化自旋锁
+  18:./block/request_queue.c ****     q->quiesce_depth = 0;              // 初始静止深度为 0
+  19:./block/request_queue.c ****     q->disk = gd;                      // 关联的磁盘设备
+  20:./block/request_queue.c ****     q->limits.max_sectors = 128;       // 假设队列的最大扇区数为 128
+  21:./block/request_queue.c ****     q->limits.max_segment_size = 32;   // 假设最大段数为 32
+  22:./block/request_queue.c ****     q->id = id;                        // 队列的唯一标识符
+  23:./block/request_queue.c ****     q->nr_requests = 1000;             // 队列支持的最大请求数
+  24:./block/request_queue.c ****     INIT_LIST_HEAD(&q->icq_list);      // 初始化链表头
+  25:./block/request_queue.c ****     q->node = 0;                       // 默认 NUMA 节点为 0
+  26:./block/request_queue.c ****     return q;
+  27:./block/request_queue.c **** }
+  28:./block/request_queue.c **** EXPORT_SYMBOL(request_queue_init);
+  29:./block/request_queue.c **** 
+  30:./block/request_queue.c **** void __blk_cleanup_queue(struct request_queue *q){
+  31:./block/request_queue.c ****     if(q) kfree(q);
+  32:./block/request_queue.c **** }
+  33:./block/request_queue.c ****  
+  34:./block/request_queue.c **** void request_queue_add(struct request_queue *q, struct request *req)
+  35:./block/request_queue.c **** {
+ 133              		.loc 1 35 1 is_stmt 1 view -0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccXPZLMi.s 			page 5
+
+
+ 137              		@ link register save eliminated.
+ 138              		.loc 1 35 1 is_stmt 0 view .LVU17
+ 139 0000 10B4     		push	{r4}
+ 140              	.LCFI2:
+ 141              		.cfi_def_cfa_offset 4
+ 142              		.cfi_offset 4, -4
+  36:./block/request_queue.c ****     list_add_tail(&req->queuelist, &q->icq_list);  // 将请求添加到队列末尾
+ 143              		.loc 1 36 5 is_stmt 1 view .LVU18
+ 144 0002 01F12802 		add	r2, r1, #40
+ 145 0006 00F1CC04 		add	r4, r0, #204
+ 146              	.LVL8:
+ 147              	.LBB96:
+ 148              	.LBI96:
+ 149              		.file 4 "./include/linux/list.h"
+   1:./include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:./include/linux/list.h **** #define _LINUX_LIST_H
+   4:./include/linux/list.h **** 
+   5:./include/linux/list.h **** #include <linux/container_of.h>
+   6:./include/linux/list.h **** #include <linux/types.h>
+   7:./include/linux/list.h **** #include <linux/stddef.h>
+   8:./include/linux/list.h **** #include <linux/poison.h>
+   9:./include/linux/list.h **** #include <linux/const.h>
+  10:./include/linux/list.h **** 
+  11:./include/linux/list.h **** #include <asm/barrier.h>
+  12:./include/linux/list.h **** #include <linux/rwonce.h>
+  13:./include/linux/list.h **** /*
+  14:./include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:./include/linux/list.h ****  *
+  16:./include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:./include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:./include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:./include/linux/list.h ****  * generate better code by using them directly rather than
+  20:./include/linux/list.h ****  * using the generic single-entry routines.
+  21:./include/linux/list.h ****  */
+  22:./include/linux/list.h **** 
+  23:./include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:./include/linux/list.h **** 
+  25:./include/linux/list.h **** #define LIST_HEAD(name) \
+  26:./include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:./include/linux/list.h **** 
+  28:./include/linux/list.h **** /**
+  29:./include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:./include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:./include/linux/list.h ****  *
+  32:./include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:./include/linux/list.h ****  * the result is an empty list.
+  34:./include/linux/list.h ****  */
+  35:./include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+  36:./include/linux/list.h **** {
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+  38:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+  39:./include/linux/list.h **** }
+  40:./include/linux/list.h **** 
+  41:./include/linux/list.h **** #ifdef CONFIG_LIST_HARDENED
+  42:./include/linux/list.h **** 
+  43:./include/linux/list.h **** #ifdef CONFIG_DEBUG_LIST
+ARM GAS  /tmp/ccXPZLMi.s 			page 6
+
+
+  44:./include/linux/list.h **** # define __list_valid_slowpath
+  45:./include/linux/list.h **** #else
+  46:./include/linux/list.h **** # define __list_valid_slowpath __cold __preserve_most
+  47:./include/linux/list.h **** #endif
+  48:./include/linux/list.h **** 
+  49:./include/linux/list.h **** /*
+  50:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_add().
+  51:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  52:./include/linux/list.h ****  */
+  53:./include/linux/list.h **** extern bool __list_valid_slowpath __list_add_valid_or_report(struct list_head *new,
+  54:./include/linux/list.h **** 							     struct list_head *prev,
+  55:./include/linux/list.h **** 							     struct list_head *next);
+  56:./include/linux/list.h **** 
+  57:./include/linux/list.h **** /*
+  58:./include/linux/list.h ****  * Performs list corruption checks before __list_add(). Returns false if a
+  59:./include/linux/list.h ****  * corruption is detected, true otherwise.
+  60:./include/linux/list.h ****  *
+  61:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+  62:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+  63:./include/linux/list.h ****  * detected calls the reporting function __list_add_valid_or_report().
+  64:./include/linux/list.h ****  */
+  65:./include/linux/list.h **** static __always_inline bool __list_add_valid(struct list_head *new,
+  66:./include/linux/list.h **** 					     struct list_head *prev,
+  67:./include/linux/list.h **** 					     struct list_head *next)
+  68:./include/linux/list.h **** {
+  69:./include/linux/list.h **** 	bool ret = true;
+  70:./include/linux/list.h **** 
+  71:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+  72:./include/linux/list.h **** 		/*
+  73:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+  74:./include/linux/list.h **** 		 * are NULL, since the immediate dereference of them below would
+  75:./include/linux/list.h **** 		 * result in a fault if NULL.
+  76:./include/linux/list.h **** 		 *
+  77:./include/linux/list.h **** 		 * With the reduced set of checks, we can afford to inline the
+  78:./include/linux/list.h **** 		 * checks, which also gives the compiler a chance to elide some
+  79:./include/linux/list.h **** 		 * of them completely if they can be proven at compile-time. If
+  80:./include/linux/list.h **** 		 * one of the pre-conditions does not hold, the slow-path will
+  81:./include/linux/list.h **** 		 * show a report which pre-condition failed.
+  82:./include/linux/list.h **** 		 */
+  83:./include/linux/list.h **** 		if (likely(next->prev == prev && prev->next == next && new != prev && new != next))
+  84:./include/linux/list.h **** 			return true;
+  85:./include/linux/list.h **** 		ret = false;
+  86:./include/linux/list.h **** 	}
+  87:./include/linux/list.h **** 
+  88:./include/linux/list.h **** 	ret &= __list_add_valid_or_report(new, prev, next);
+  89:./include/linux/list.h **** 	return ret;
+  90:./include/linux/list.h **** }
+  91:./include/linux/list.h **** 
+  92:./include/linux/list.h **** /*
+  93:./include/linux/list.h ****  * Performs the full set of list corruption checks before __list_del_entry().
+  94:./include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  95:./include/linux/list.h ****  */
+  96:./include/linux/list.h **** extern bool __list_valid_slowpath __list_del_entry_valid_or_report(struct list_head *entry);
+  97:./include/linux/list.h **** 
+  98:./include/linux/list.h **** /*
+  99:./include/linux/list.h ****  * Performs list corruption checks before __list_del_entry(). Returns false if a
+ 100:./include/linux/list.h ****  * corruption is detected, true otherwise.
+ARM GAS  /tmp/ccXPZLMi.s 			page 7
+
+
+ 101:./include/linux/list.h ****  *
+ 102:./include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+ 103:./include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ 104:./include/linux/list.h ****  * detected calls the reporting function __list_del_entry_valid_or_report().
+ 105:./include/linux/list.h ****  */
+ 106:./include/linux/list.h **** static __always_inline bool __list_del_entry_valid(struct list_head *entry)
+ 107:./include/linux/list.h **** {
+ 108:./include/linux/list.h **** 	bool ret = true;
+ 109:./include/linux/list.h **** 
+ 110:./include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+ 111:./include/linux/list.h **** 		struct list_head *prev = entry->prev;
+ 112:./include/linux/list.h **** 		struct list_head *next = entry->next;
+ 113:./include/linux/list.h **** 
+ 114:./include/linux/list.h **** 		/*
+ 115:./include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+ 116:./include/linux/list.h **** 		 * are NULL, LIST_POISON1 or LIST_POISON2, since the immediate
+ 117:./include/linux/list.h **** 		 * dereference of them below would result in a fault.
+ 118:./include/linux/list.h **** 		 */
+ 119:./include/linux/list.h **** 		if (likely(prev->next == entry && next->prev == entry))
+ 120:./include/linux/list.h **** 			return true;
+ 121:./include/linux/list.h **** 		ret = false;
+ 122:./include/linux/list.h **** 	}
+ 123:./include/linux/list.h **** 
+ 124:./include/linux/list.h **** 	ret &= __list_del_entry_valid_or_report(entry);
+ 125:./include/linux/list.h **** 	return ret;
+ 126:./include/linux/list.h **** }
+ 127:./include/linux/list.h **** #else
+ 128:./include/linux/list.h **** static inline bool __list_add_valid(struct list_head *new,
+ 129:./include/linux/list.h **** 				struct list_head *prev,
+ 130:./include/linux/list.h **** 				struct list_head *next)
+ 131:./include/linux/list.h **** {
+ 132:./include/linux/list.h **** 	return true;
+ 133:./include/linux/list.h **** }
+ 134:./include/linux/list.h **** static inline bool __list_del_entry_valid(struct list_head *entry)
+ 135:./include/linux/list.h **** {
+ 136:./include/linux/list.h **** 	return true;
+ 137:./include/linux/list.h **** }
+ 138:./include/linux/list.h **** #endif
+ 139:./include/linux/list.h **** 
+ 140:./include/linux/list.h **** /*
+ 141:./include/linux/list.h ****  * Insert a new entry between two known consecutive entries.
+ 142:./include/linux/list.h ****  *
+ 143:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 144:./include/linux/list.h ****  * the prev/next entries already!
+ 145:./include/linux/list.h ****  */
+ 146:./include/linux/list.h **** static inline void __list_add(struct list_head *new,
+ 147:./include/linux/list.h **** 			      struct list_head *prev,
+ 148:./include/linux/list.h **** 			      struct list_head *next)
+ 149:./include/linux/list.h **** {
+ 150:./include/linux/list.h **** 	if (!__list_add_valid(new, prev, next))
+ 151:./include/linux/list.h **** 		return;
+ 152:./include/linux/list.h **** 
+ 153:./include/linux/list.h **** 	next->prev = new;
+ 154:./include/linux/list.h **** 	new->next = next;
+ 155:./include/linux/list.h **** 	new->prev = prev;
+ 156:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 157:./include/linux/list.h **** }
+ARM GAS  /tmp/ccXPZLMi.s 			page 8
+
+
+ 158:./include/linux/list.h **** 
+ 159:./include/linux/list.h **** /**
+ 160:./include/linux/list.h ****  * list_add - add a new entry
+ 161:./include/linux/list.h ****  * @new: new entry to be added
+ 162:./include/linux/list.h ****  * @head: list head to add it after
+ 163:./include/linux/list.h ****  *
+ 164:./include/linux/list.h ****  * Insert a new entry after the specified head.
+ 165:./include/linux/list.h ****  * This is good for implementing stacks.
+ 166:./include/linux/list.h ****  */
+ 167:./include/linux/list.h **** static inline void list_add(struct list_head *new, struct list_head *head)
+ 168:./include/linux/list.h **** {
+ 169:./include/linux/list.h **** 	__list_add(new, head, head->next);
+ 170:./include/linux/list.h **** }
+ 171:./include/linux/list.h **** 
+ 172:./include/linux/list.h **** 
+ 173:./include/linux/list.h **** /**
+ 174:./include/linux/list.h ****  * list_add_tail - add a new entry
+ 175:./include/linux/list.h ****  * @new: new entry to be added
+ 176:./include/linux/list.h ****  * @head: list head to add it before
+ 177:./include/linux/list.h ****  *
+ 178:./include/linux/list.h ****  * Insert a new entry before the specified head.
+ 179:./include/linux/list.h ****  * This is useful for implementing queues.
+ 180:./include/linux/list.h ****  */
+ 181:./include/linux/list.h **** static inline void list_add_tail(struct list_head *new, struct list_head *head)
+ 150              		.loc 4 181 20 view .LVU19
+ 151              	.LBB97:
+ 182:./include/linux/list.h **** {
+ 183:./include/linux/list.h **** 	__list_add(new, head->prev, head);
+ 152              		.loc 4 183 2 view .LVU20
+ 153 000a D0F8D030 		ldr	r3, [r0, #208]
+ 154              	.LVL9:
+ 155              	.LBB98:
+ 156              	.LBI98:
+ 146:./include/linux/list.h **** 			      struct list_head *prev,
+ 157              		.loc 4 146 20 view .LVU21
+ 158              	.LBB99:
+ 150:./include/linux/list.h **** 		return;
+ 159              		.loc 4 150 2 view .LVU22
+ 153:./include/linux/list.h **** 	new->next = next;
+ 160              		.loc 4 153 2 view .LVU23
+ 153:./include/linux/list.h **** 	new->next = next;
+ 161              		.loc 4 153 13 is_stmt 0 view .LVU24
+ 162 000e C0F8D020 		str	r2, [r0, #208]
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 163              		.loc 4 154 2 is_stmt 1 view .LVU25
+ 154:./include/linux/list.h **** 	new->prev = prev;
+ 164              		.loc 4 154 12 is_stmt 0 view .LVU26
+ 165 0012 8C62     		str	r4, [r1, #40]
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 166              		.loc 4 155 2 is_stmt 1 view .LVU27
+ 155:./include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 167              		.loc 4 155 12 is_stmt 0 view .LVU28
+ 168 0014 CB62     		str	r3, [r1, #44]
+ 156:./include/linux/list.h **** }
+ 169              		.loc 4 156 2 is_stmt 1 view .LVU29
+ 156:./include/linux/list.h **** }
+ 170              		.loc 4 156 2 view .LVU30
+ARM GAS  /tmp/ccXPZLMi.s 			page 9
+
+
+ 171              	.LBB100:
+ 156:./include/linux/list.h **** }
+ 172              		.loc 4 156 2 view .LVU31
+ 156:./include/linux/list.h **** }
+ 173              		.loc 4 156 2 view .LVU32
+ 174              	.LBE100:
+ 156:./include/linux/list.h **** }
+ 175              		.loc 4 156 2 discriminator 2 view .LVU33
+ 156:./include/linux/list.h **** }
+ 176              		.loc 4 156 2 discriminator 2 view .LVU34
+ 156:./include/linux/list.h **** }
+ 177              		.loc 4 156 2 discriminator 2 view .LVU35
+ 178 0016 1A60     		str	r2, [r3]
+ 156:./include/linux/list.h **** }
+ 179              		.loc 4 156 2 discriminator 3 view .LVU36
+ 156:./include/linux/list.h **** }
+ 180              		.loc 4 156 2 discriminator 3 view .LVU37
+ 181              	.LVL10:
+ 156:./include/linux/list.h **** }
+ 182              		.loc 4 156 2 is_stmt 0 discriminator 3 view .LVU38
+ 183              	.LBE99:
+ 184              	.LBE98:
+ 185              	.LBE97:
+ 186              	.LBE96:
+  37:./block/request_queue.c **** }
+ 187              		.loc 1 37 1 view .LVU39
+ 188 0018 5DF8044B 		ldr	r4, [sp], #4
+ 189              	.LCFI3:
+ 190              		.cfi_restore 4
+ 191              		.cfi_def_cfa_offset 0
+ 192 001c 7047     		bx	lr
+ 193              		.cfi_endproc
+ 194              	.LFE1035:
+ 196              		.section	.text.request_queue_init,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	request_queue_init
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	request_queue_init:
+ 204              	.LVL11:
+ 205              	.LFB1033:
+   9:./block/request_queue.c ****     struct request_queue *q;
+ 206              		.loc 1 9 1 is_stmt 1 view -0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+   9:./block/request_queue.c ****     struct request_queue *q;
+ 210              		.loc 1 9 1 is_stmt 0 view .LVU41
+ 211 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 212              	.LCFI4:
+ 213              		.cfi_def_cfa_offset 24
+ 214              		.cfi_offset 3, -24
+ 215              		.cfi_offset 4, -20
+ 216              		.cfi_offset 5, -16
+ 217              		.cfi_offset 6, -12
+ 218              		.cfi_offset 7, -8
+ARM GAS  /tmp/ccXPZLMi.s 			page 10
+
+
+ 219              		.cfi_offset 14, -4
+ 220 0002 0546     		mov	r5, r0
+ 221 0004 0E46     		mov	r6, r1
+  10:./block/request_queue.c **** 
+ 222              		.loc 1 10 5 is_stmt 1 view .LVU42
+  12:./block/request_queue.c ****     if (!q)
+ 223              		.loc 1 12 5 view .LVU43
+ 224              	.LVL12:
+ 225              	.LBB101:
+ 226              	.LBI101:
+ 227              		.file 5 "./include/linux/slab.h"
+   1:./include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:./include/linux/slab.h **** /*
+   3:./include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:./include/linux/slab.h ****  *
+   5:./include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:./include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:./include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:./include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:./include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:./include/linux/slab.h ****  */
+  11:./include/linux/slab.h **** 
+  12:./include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:./include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:./include/linux/slab.h **** 
+  15:./include/linux/slab.h **** #include <linux/cache.h>
+  16:./include/linux/slab.h **** #include <linux/overflow.h>
+  17:./include/linux/slab.h **** #include <linux/types.h>
+  18:./include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:./include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:./include/linux/slab.h **** #include <linux/numa.h>
+  21:./include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:./include/linux/slab.h **** #include <linux/spinlock.h>
+  23:./include/linux/slab.h **** 
+  24:./include/linux/slab.h **** enum _slab_flag_bits {
+  25:./include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:./include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:./include/linux/slab.h **** 	_SLAB_POISON,
+  28:./include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:./include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:./include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:./include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:./include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:./include/linux/slab.h **** 	_SLAB_PANIC,
+  34:./include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:./include/linux/slab.h **** 	_SLAB_TRACE,
+  36:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:./include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:./include/linux/slab.h **** #endif
+  39:./include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:./include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:./include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:./include/linux/slab.h **** #endif
+  44:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:./include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:./include/linux/slab.h **** #endif
+ARM GAS  /tmp/ccXPZLMi.s 			page 11
+
+
+  47:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:./include/linux/slab.h **** 	_SLAB_KASAN,
+  49:./include/linux/slab.h **** #endif
+  50:./include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:./include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:./include/linux/slab.h **** #endif
+  54:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:./include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:./include/linux/slab.h **** #endif
+  57:./include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:./include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:./include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:./include/linux/slab.h **** #endif
+  62:./include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:./include/linux/slab.h **** };
+  64:./include/linux/slab.h **** 
+  65:./include/linux/slab.h **** 
+  66:./include/linux/slab.h **** 
+  67:./include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:./include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:./include/linux/slab.h **** 
+  70:./include/linux/slab.h **** /*
+  71:./include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:./include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:./include/linux/slab.h ****  */
+  74:./include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:./include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:./include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:./include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:./include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:./include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:./include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:./include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:./include/linux/slab.h **** /**
+  83:./include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:./include/linux/slab.h ****  *
+  85:./include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:./include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:./include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:./include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:./include/linux/slab.h ****  *
+  90:./include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:./include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:./include/linux/slab.h ****  */
+  93:./include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:./include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:./include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:./include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:./include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:./include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:./include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:./include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:./include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:./include/linux/slab.h **** /**
+ 103:./include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ARM GAS  /tmp/ccXPZLMi.s 			page 12
+
+
+ 104:./include/linux/slab.h ****  *
+ 105:./include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:./include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:./include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:./include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:./include/linux/slab.h ****  *
+ 110:./include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:./include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:./include/linux/slab.h ****  * object validation pass. Something like:
+ 113:./include/linux/slab.h ****  *
+ 114:./include/linux/slab.h ****  * ::
+ 115:./include/linux/slab.h ****  *
+ 116:./include/linux/slab.h ****  *  begin:
+ 117:./include/linux/slab.h ****  *   rcu_read_lock();
+ 118:./include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:./include/linux/slab.h ****  *   if (obj) {
+ 120:./include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:./include/linux/slab.h ****  *       goto begin;
+ 123:./include/linux/slab.h ****  *
+ 124:./include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:./include/linux/slab.h ****  *       put_ref(obj);
+ 126:./include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:./include/linux/slab.h ****  *       goto begin;
+ 128:./include/linux/slab.h ****  *     }
+ 129:./include/linux/slab.h ****  *   }
+ 130:./include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:./include/linux/slab.h ****  *
+ 132:./include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:./include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:./include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:./include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:./include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:./include/linux/slab.h ****  *
+ 138:./include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:./include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:./include/linux/slab.h ****  *
+ 141:./include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:./include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:./include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:./include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:./include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:./include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:./include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:./include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:./include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:./include/linux/slab.h ****  * protection.
+ 151:./include/linux/slab.h ****  *
+ 152:./include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:./include/linux/slab.h ****  */
+ 154:./include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:./include/linux/slab.h **** /* Trace allocations and frees */
+ 156:./include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:./include/linux/slab.h **** 
+ 158:./include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:./include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ARM GAS  /tmp/ccXPZLMi.s 			page 13
+
+
+ 161:./include/linux/slab.h **** #else
+ 162:./include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:./include/linux/slab.h **** #endif
+ 164:./include/linux/slab.h **** 
+ 165:./include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:./include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:./include/linux/slab.h **** 
+ 168:./include/linux/slab.h **** /*
+ 169:./include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:./include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:./include/linux/slab.h ****  *
+ 172:./include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:./include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:./include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:./include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:./include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:./include/linux/slab.h ****  */
+ 178:./include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:./include/linux/slab.h **** 
+ 180:./include/linux/slab.h **** /* Fault injection mark */
+ 181:./include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:./include/linux/slab.h **** #else
+ 184:./include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:./include/linux/slab.h **** #endif
+ 186:./include/linux/slab.h **** /**
+ 187:./include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:./include/linux/slab.h ****  *
+ 189:./include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:./include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:./include/linux/slab.h ****  */
+ 192:./include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:./include/linux/slab.h **** #else
+ 195:./include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:./include/linux/slab.h **** #endif
+ 197:./include/linux/slab.h **** 
+ 198:./include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:./include/linux/slab.h **** #else
+ 201:./include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:./include/linux/slab.h **** #endif
+ 203:./include/linux/slab.h **** 
+ 204:./include/linux/slab.h **** /*
+ 205:./include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:./include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:./include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:./include/linux/slab.h ****  */
+ 209:./include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:./include/linux/slab.h **** 
+ 211:./include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:./include/linux/slab.h **** #else
+ 214:./include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:./include/linux/slab.h **** #endif
+ 216:./include/linux/slab.h **** 
+ 217:./include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ARM GAS  /tmp/ccXPZLMi.s 			page 14
+
+
+ 218:./include/linux/slab.h **** /**
+ 219:./include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:./include/linux/slab.h ****  *
+ 221:./include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:./include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:./include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:./include/linux/slab.h ****  */
+ 225:./include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:./include/linux/slab.h **** #else
+ 228:./include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:./include/linux/slab.h **** #endif
+ 230:./include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:./include/linux/slab.h **** 
+ 232:./include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:./include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:./include/linux/slab.h **** #else
+ 236:./include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:./include/linux/slab.h **** #endif
+ 238:./include/linux/slab.h **** 
+ 239:./include/linux/slab.h **** /*
+ 240:./include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:./include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:./include/linux/slab.h ****  */
+ 243:./include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:./include/linux/slab.h **** 
+ 245:./include/linux/slab.h **** /*
+ 246:./include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:./include/linux/slab.h ****  *
+ 248:./include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:./include/linux/slab.h ****  *
+ 250:./include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:./include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:./include/linux/slab.h ****  */
+ 253:./include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:./include/linux/slab.h **** 
+ 255:./include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:./include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:./include/linux/slab.h **** 
+ 258:./include/linux/slab.h **** 
+ 259:./include/linux/slab.h **** 
+ 260:./include/linux/slab.h **** 
+ 261:./include/linux/slab.h **** 
+ 262:./include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:./include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:./include/linux/slab.h **** 
+ 265:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:./include/linux/slab.h **** ({						\
+ 267:./include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:./include/linux/slab.h **** })
+ 269:./include/linux/slab.h **** 
+ 270:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:./include/linux/slab.h **** #else
+ 272:./include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:./include/linux/slab.h **** 
+ 274:./include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ARM GAS  /tmp/ccXPZLMi.s 			page 15
+
+
+ 275:./include/linux/slab.h **** 
+ 276:./include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:./include/linux/slab.h **** 
+ 278:./include/linux/slab.h **** 
+ 279:./include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:./include/linux/slab.h **** 
+ 281:./include/linux/slab.h **** /*
+ 282:./include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:./include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:./include/linux/slab.h **** 	* given order would contain.
+ 285:./include/linux/slab.h **** 	*/				
+ 286:./include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:./include/linux/slab.h **** 	unsigned int x;
+ 288:./include/linux/slab.h **** };
+ 289:./include/linux/slab.h **** 
+ 290:./include/linux/slab.h **** struct kmem_cache_node {
+ 291:./include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:./include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:./include/linux/slab.h **** 	struct list_head partial;
+ 294:./include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:./include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:./include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:./include/linux/slab.h **** 	struct list_head full;
+ 298:./include/linux/slab.h **** #endif
+ 299:./include/linux/slab.h **** };
+ 300:./include/linux/slab.h **** 
+ 301:./include/linux/slab.h **** struct kmem_cache {
+ 302:./include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:./include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:./include/linux/slab.h **** 	#endif
+ 305:./include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:./include/linux/slab.h **** 		slab_flags_t flags;
+ 307:./include/linux/slab.h **** 		unsigned long min_partial;
+ 308:./include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:./include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:./include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:./include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:./include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:./include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:./include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:./include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:./include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:./include/linux/slab.h **** 	#endif
+ 318:./include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:./include/linux/slab.h **** 	
+ 320:./include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:./include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:./include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:./include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:./include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:./include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:./include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:./include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:./include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:./include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:./include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:./include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ARM GAS  /tmp/ccXPZLMi.s 			page 16
+
+
+ 332:./include/linux/slab.h **** 	#endif
+ 333:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:./include/linux/slab.h **** 		unsigned long random;
+ 335:./include/linux/slab.h **** 	#endif
+ 336:./include/linux/slab.h **** 	
+ 337:./include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:./include/linux/slab.h **** 		/*
+ 339:./include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:./include/linux/slab.h **** 			*/
+ 341:./include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:./include/linux/slab.h **** 	#endif
+ 343:./include/linux/slab.h **** 	
+ 344:./include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:./include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:./include/linux/slab.h **** 	#endif
+ 347:./include/linux/slab.h **** 	
+ 348:./include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:./include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:./include/linux/slab.h **** 	#endif
+ 351:./include/linux/slab.h **** 	
+ 352:./include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:./include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:./include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:./include/linux/slab.h **** 	#endif
+ 356:./include/linux/slab.h **** 	
+ 357:./include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:./include/linux/slab.h **** 	};
+ 359:./include/linux/slab.h **** 					
+ 360:./include/linux/slab.h **** 
+ 361:./include/linux/slab.h **** 
+ 362:./include/linux/slab.h **** 
+ 363:./include/linux/slab.h **** 
+ 364:./include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:./include/linux/slab.h **** 
+ 366:./include/linux/slab.h **** 
+ 367:./include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:./include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:./include/linux/slab.h **** 
+ 370:./include/linux/slab.h **** 
+ 371:./include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:./include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:./include/linux/slab.h **** }
+ 374:./include/linux/slab.h **** 
+ 375:./include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:./include/linux/slab.h **** 	__sfree__(addr);
+ 377:./include/linux/slab.h **** }
+ 378:./include/linux/slab.h **** 
+ 379:./include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 228              		.loc 5 379 21 view .LVU44
+ 229              	.LBB102:
+ 380:./include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 230              		.loc 5 380 2 view .LVU45
+ 231              		.loc 5 380 9 is_stmt 0 view .LVU46
+ 232 0006 4FF44C61 		mov	r1, #3264
+ 233              	.LVL13:
+ 234              		.loc 5 380 9 view .LVU47
+ 235 000a E020     		movs	r0, #224
+ARM GAS  /tmp/ccXPZLMi.s 			page 17
+
+
+ 236              	.LVL14:
+ 237              		.loc 5 380 9 view .LVU48
+ 238 000c FFF7FEFF 		bl	__smalloc__
+ 239              	.LVL15:
+ 240              		.loc 5 380 9 view .LVU49
+ 241              	.LBE102:
+ 242              	.LBE101:
+  13:./block/request_queue.c ****         return NULL;
+ 243              		.loc 1 13 5 is_stmt 1 view .LVU50
+  13:./block/request_queue.c ****         return NULL;
+ 244              		.loc 1 13 8 is_stmt 0 view .LVU51
+ 245 0010 0446     		mov	r4, r0
+ 246 0012 C8B1     		cbz	r0, .L9
+  15:./block/request_queue.c ****     q->last_merge = NULL;              // 无合并请求
+ 247              		.loc 1 15 5 is_stmt 1 view .LVU52
+  15:./block/request_queue.c ****     q->last_merge = NULL;              // 无合并请求
+ 248              		.loc 1 15 18 is_stmt 0 view .LVU53
+ 249 0014 0027     		movs	r7, #0
+ 250 0016 0760     		str	r7, [r0]
+  16:./block/request_queue.c ****     spin_lock_init(&q->queue_lock);    // 初始化自旋锁
+ 251              		.loc 1 16 5 is_stmt 1 view .LVU54
+  16:./block/request_queue.c ****     spin_lock_init(&q->queue_lock);    // 初始化自旋锁
+ 252              		.loc 1 16 19 is_stmt 0 view .LVU55
+ 253 0018 4760     		str	r7, [r0, #4]
+  17:./block/request_queue.c ****     q->quiesce_depth = 0;              // 初始静止深度为 0
+ 254              		.loc 1 17 5 is_stmt 1 view .LVU56
+ 255 001a 0830     		adds	r0, r0, #8
+ 256              	.LVL16:
+  17:./block/request_queue.c ****     q->quiesce_depth = 0;              // 初始静止深度为 0
+ 257              		.loc 1 17 5 is_stmt 0 view .LVU57
+ 258 001c FFF7FEFF 		bl	spin_lock_init
+ 259              	.LVL17:
+  18:./block/request_queue.c ****     q->disk = gd;                      // 关联的磁盘设备
+ 260              		.loc 1 18 5 is_stmt 1 view .LVU58
+  18:./block/request_queue.c ****     q->disk = gd;                      // 关联的磁盘设备
+ 261              		.loc 1 18 22 is_stmt 0 view .LVU59
+ 262 0020 A761     		str	r7, [r4, #24]
+  19:./block/request_queue.c ****     q->limits.max_sectors = 128;       // 假设队列的最大扇区数为 128
+ 263              		.loc 1 19 5 is_stmt 1 view .LVU60
+  19:./block/request_queue.c ****     q->limits.max_sectors = 128;       // 假设队列的最大扇区数为 128
+ 264              		.loc 1 19 13 is_stmt 0 view .LVU61
+ 265 0022 E661     		str	r6, [r4, #28]
+  20:./block/request_queue.c ****     q->limits.max_segment_size = 32;   // 假设最大段数为 32
+ 266              		.loc 1 20 5 is_stmt 1 view .LVU62
+  20:./block/request_queue.c ****     q->limits.max_segment_size = 32;   // 假设最大段数为 32
+ 267              		.loc 1 20 27 is_stmt 0 view .LVU63
+ 268 0024 8023     		movs	r3, #128
+ 269 0026 E363     		str	r3, [r4, #60]
+  21:./block/request_queue.c ****     q->id = id;                        // 队列的唯一标识符
+ 270              		.loc 1 21 5 is_stmt 1 view .LVU64
+  21:./block/request_queue.c ****     q->id = id;                        // 队列的唯一标识符
+ 271              		.loc 1 21 32 is_stmt 0 view .LVU65
+ 272 0028 2023     		movs	r3, #32
+ 273 002a 6364     		str	r3, [r4, #68]
+  22:./block/request_queue.c ****     q->nr_requests = 1000;             // 队列支持的最大请求数
+ 274              		.loc 1 22 5 is_stmt 1 view .LVU66
+  22:./block/request_queue.c ****     q->nr_requests = 1000;             // 队列支持的最大请求数
+ARM GAS  /tmp/ccXPZLMi.s 			page 18
+
+
+ 275              		.loc 1 22 11 is_stmt 0 view .LVU67
+ 276 002c C4F8C450 		str	r5, [r4, #196]
+  23:./block/request_queue.c ****     INIT_LIST_HEAD(&q->icq_list);      // 初始化链表头
+ 277              		.loc 1 23 5 is_stmt 1 view .LVU68
+  23:./block/request_queue.c ****     INIT_LIST_HEAD(&q->icq_list);      // 初始化链表头
+ 278              		.loc 1 23 20 is_stmt 0 view .LVU69
+ 279 0030 4FF47A73 		mov	r3, #1000
+ 280 0034 C4F8C830 		str	r3, [r4, #200]
+  24:./block/request_queue.c ****     q->node = 0;                       // 默认 NUMA 节点为 0
+ 281              		.loc 1 24 5 is_stmt 1 view .LVU70
+ 282 0038 04F1CC03 		add	r3, r4, #204
+ 283              	.LVL18:
+ 284              	.LBB103:
+ 285              	.LBI103:
+  35:./include/linux/list.h **** {
+ 286              		.loc 4 35 20 view .LVU71
+ 287              	.LBB104:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 288              		.loc 4 37 2 view .LVU72
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 289              		.loc 4 37 2 view .LVU73
+ 290              	.LBB105:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 291              		.loc 4 37 2 view .LVU74
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 292              		.loc 4 37 2 view .LVU75
+ 293              	.LBE105:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 294              		.loc 4 37 2 discriminator 2 view .LVU76
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 295              		.loc 4 37 2 discriminator 2 view .LVU77
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 296              		.loc 4 37 2 discriminator 2 view .LVU78
+ 297 003c C4F8CC30 		str	r3, [r4, #204]
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 298              		.loc 4 37 2 discriminator 2 view .LVU79
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 299              		.loc 4 37 2 discriminator 2 view .LVU80
+  38:./include/linux/list.h **** }
+ 300              		.loc 4 38 2 view .LVU81
+  38:./include/linux/list.h **** }
+ 301              		.loc 4 38 2 view .LVU82
+ 302              	.LBB106:
+  38:./include/linux/list.h **** }
+ 303              		.loc 4 38 2 view .LVU83
+  38:./include/linux/list.h **** }
+ 304              		.loc 4 38 2 view .LVU84
+ 305              	.LBE106:
+  38:./include/linux/list.h **** }
+ 306              		.loc 4 38 2 discriminator 2 view .LVU85
+  38:./include/linux/list.h **** }
+ 307              		.loc 4 38 2 discriminator 2 view .LVU86
+  38:./include/linux/list.h **** }
+ 308              		.loc 4 38 2 discriminator 2 view .LVU87
+ 309 0040 C4F8D030 		str	r3, [r4, #208]
+  38:./include/linux/list.h **** }
+ 310              		.loc 4 38 2 discriminator 2 view .LVU88
+ARM GAS  /tmp/ccXPZLMi.s 			page 19
+
+
+  38:./include/linux/list.h **** }
+ 311              		.loc 4 38 2 discriminator 2 view .LVU89
+ 312              	.LVL19:
+  38:./include/linux/list.h **** }
+ 313              		.loc 4 38 2 is_stmt 0 discriminator 2 view .LVU90
+ 314              	.LBE104:
+ 315              	.LBE103:
+  25:./block/request_queue.c ****     return q;
+ 316              		.loc 1 25 5 is_stmt 1 view .LVU91
+  25:./block/request_queue.c ****     return q;
+ 317              		.loc 1 25 13 is_stmt 0 view .LVU92
+ 318 0044 C4F8D470 		str	r7, [r4, #212]
+  26:./block/request_queue.c **** }
+ 319              		.loc 1 26 5 is_stmt 1 view .LVU93
+ 320              	.L9:
+  27:./block/request_queue.c **** EXPORT_SYMBOL(request_queue_init);
+ 321              		.loc 1 27 1 is_stmt 0 view .LVU94
+ 322 0048 2046     		mov	r0, r4
+ 323 004a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+  27:./block/request_queue.c **** EXPORT_SYMBOL(request_queue_init);
+ 324              		.loc 1 27 1 view .LVU95
+ 325              		.cfi_endproc
+ 326              	.LFE1033:
+ 328              		.section	.text.__spin_lock,"ax",%progbits
+ 329              		.align	1
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 334              	__spin_lock:
+ 335              	.LVL20:
+ 336              	.LFB227:
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 337              		.loc 2 15 47 is_stmt 1 view -0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./arch/arm_m/include/asm/spinlock.h **** 
+ 341              		.loc 2 15 47 is_stmt 0 view .LVU97
+ 342 0000 38B5     		push	{r3, r4, r5, lr}
+ 343              	.LCFI5:
+ 344              		.cfi_def_cfa_offset 16
+ 345              		.cfi_offset 3, -16
+ 346              		.cfi_offset 4, -12
+ 347              		.cfi_offset 5, -8
+ 348              		.cfi_offset 14, -4
+ 349 0002 0446     		mov	r4, r0
+  17:./arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+ 350              		.loc 2 17 5 is_stmt 1 view .LVU98
+ 351 0004 FFF7FEFF 		bl	stop_all_scheduler
+ 352              	.LVL21:
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 353              		.loc 2 18 5 view .LVU99
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 354              		.loc 2 18 12 is_stmt 0 view .LVU100
+ 355 0008 2368     		ldr	r3, [r4]
+  18:./arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 356              		.loc 2 18 7 view .LVU101
+ARM GAS  /tmp/ccXPZLMi.s 			page 20
+
+
+ 357 000a 2BB9     		cbnz	r3, .L13
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 358              		.loc 2 19 11 is_stmt 1 view .LVU102
+  19:./arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 359              		.loc 2 19 22 is_stmt 0 view .LVU103
+ 360 000c 0125     		movs	r5, #1
+ 361 000e 2560     		str	r5, [r4]
+  20:./arch/arm_m/include/asm/spinlock.h ****         return 1;
+ 362              		.loc 2 20 11 is_stmt 1 view .LVU104
+ 363 0010 FFF7FEFF 		bl	start_all_scheduler
+ 364              	.LVL22:
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 365              		.loc 2 21 9 view .LVU105
+  21:./arch/arm_m/include/asm/spinlock.h ****     }
+ 366              		.loc 2 21 16 is_stmt 0 view .LVU106
+ 367 0014 2846     		mov	r0, r5
+ 368              	.L12:
+  28:./arch/arm_m/include/asm/spinlock.h **** 
+ 369              		.loc 2 28 1 view .LVU107
+ 370 0016 38BD     		pop	{r3, r4, r5, pc}
+ 371              	.LVL23:
+ 372              	.L13:
+  25:./arch/arm_m/include/asm/spinlock.h ****         return 0;
+ 373              		.loc 2 25 9 is_stmt 1 view .LVU108
+ 374 0018 FFF7FEFF 		bl	start_all_scheduler
+ 375              	.LVL24:
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 376              		.loc 2 26 9 view .LVU109
+  26:./arch/arm_m/include/asm/spinlock.h ****     }
+ 377              		.loc 2 26 16 is_stmt 0 view .LVU110
+ 378 001c 0020     		movs	r0, #0
+ 379 001e FAE7     		b	.L12
+ 380              		.cfi_endproc
+ 381              	.LFE227:
+ 383              		.section	.text.spin_lock,"ax",%progbits
+ 384              		.align	1
+ 385              		.syntax unified
+ 386              		.thumb
+ 387              		.thumb_func
+ 389              	spin_lock:
+ 390              	.LVL25:
+ 391              	.LFB230:
+  15:./include/linux/spinlock.h ****     while (1)
+ 392              		.loc 3 15 1 is_stmt 1 view -0
+ 393              		.cfi_startproc
+ 394              		@ args = 0, pretend = 0, frame = 0
+ 395              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:./include/linux/spinlock.h ****     while (1)
+ 396              		.loc 3 15 1 is_stmt 0 view .LVU112
+ 397 0000 38B5     		push	{r3, r4, r5, lr}
+ 398              	.LCFI6:
+ 399              		.cfi_def_cfa_offset 16
+ 400              		.cfi_offset 3, -16
+ 401              		.cfi_offset 4, -12
+ 402              		.cfi_offset 5, -8
+ 403              		.cfi_offset 14, -4
+ 404 0002 0446     		mov	r4, r0
+ARM GAS  /tmp/ccXPZLMi.s 			page 21
+
+
+ 405 0004 06E0     		b	.L19
+ 406              	.LVL26:
+ 407              	.L21:
+  19:./include/linux/spinlock.h ****             break;
+ 408              		.loc 3 19 13 is_stmt 1 view .LVU113
+  19:./include/linux/spinlock.h ****             break;
+ 409              		.loc 3 19 27 is_stmt 0 view .LVU114
+ 410 0006 FFF7FEFF 		bl	get_current_task
+ 411              	.LVL27:
+  19:./include/linux/spinlock.h ****             break;
+ 412              		.loc 3 19 25 discriminator 1 view .LVU115
+ 413 000a 2060     		str	r0, [r4]
+  20:./include/linux/spinlock.h ****         }
+ 414              		.loc 3 20 13 is_stmt 1 view .LVU116
+ 415              	.L16:
+  29:./include/linux/spinlock.h **** 
+ 416              		.loc 3 29 1 is_stmt 0 view .LVU117
+ 417 000c 38BD     		pop	{r3, r4, r5, pc}
+ 418              	.LVL28:
+ 419              	.L22:
+  26:./include/linux/spinlock.h ****         }
+ 420              		.loc 3 26 13 is_stmt 1 view .LVU118
+ 421 000e 0520     		movs	r0, #5
+ 422 0010 FFF7FEFF 		bl	__delay
+ 423              	.LVL29:
+  16:./include/linux/spinlock.h ****     {
+ 424              		.loc 3 16 11 view .LVU119
+ 425              	.L19:
+  16:./include/linux/spinlock.h ****     {
+ 426              		.loc 3 16 5 view .LVU120
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 427              		.loc 3 18 9 view .LVU121
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 428              		.loc 3 18 12 is_stmt 0 view .LVU122
+ 429 0014 2046     		mov	r0, r4
+ 430 0016 FFF7FEFF 		bl	__spin_lock
+ 431              	.LVL30:
+  18:./include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 432              		.loc 3 18 11 discriminator 1 view .LVU123
+ 433 001a 0128     		cmp	r0, #1
+ 434 001c F3D0     		beq	.L21
+  22:./include/linux/spinlock.h ****             return;   
+ 435              		.loc 3 22 15 is_stmt 1 view .LVU124
+  22:./include/linux/spinlock.h ****             return;   
+ 436              		.loc 3 22 22 is_stmt 0 view .LVU125
+ 437 001e 2568     		ldr	r5, [r4]
+  22:./include/linux/spinlock.h ****             return;   
+ 438              		.loc 3 22 33 view .LVU126
+ 439 0020 FFF7FEFF 		bl	get_current_task
+ 440              	.LVL31:
+  22:./include/linux/spinlock.h ****             return;   
+ 441              		.loc 3 22 17 discriminator 1 view .LVU127
+ 442 0024 8542     		cmp	r5, r0
+ 443 0026 F2D1     		bne	.L22
+ 444 0028 F0E7     		b	.L16
+ 445              		.cfi_endproc
+ 446              	.LFE230:
+ARM GAS  /tmp/ccXPZLMi.s 			page 22
+
+
+ 448              		.section	.text.request_queue_remove,"ax",%progbits
+ 449              		.align	1
+ 450              		.global	request_queue_remove
+ 451              		.syntax unified
+ 452              		.thumb
+ 453              		.thumb_func
+ 455              	request_queue_remove:
+ 456              	.LVL32:
+ 457              	.LFB1036:
+  38:./block/request_queue.c **** EXPORT_SYMBOL(request_queue_add);
+  39:./block/request_queue.c **** 
+  40:./block/request_queue.c **** void request_queue_remove(struct request_queue *q, struct request *req)
+  41:./block/request_queue.c **** {
+ 458              		.loc 1 41 1 is_stmt 1 view -0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              		.loc 1 41 1 is_stmt 0 view .LVU129
+ 463 0000 38B5     		push	{r3, r4, r5, lr}
+ 464              	.LCFI7:
+ 465              		.cfi_def_cfa_offset 16
+ 466              		.cfi_offset 3, -16
+ 467              		.cfi_offset 4, -12
+ 468              		.cfi_offset 5, -8
+ 469              		.cfi_offset 14, -4
+ 470 0002 0C46     		mov	r4, r1
+  42:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+ 471              		.loc 1 42 5 is_stmt 1 view .LVU130
+ 472 0004 00F10805 		add	r5, r0, #8
+ 473 0008 2846     		mov	r0, r5
+ 474              	.LVL33:
+ 475              		.loc 1 42 5 is_stmt 0 view .LVU131
+ 476 000a FFF7FEFF 		bl	spin_lock
+ 477              	.LVL34:
+  43:./block/request_queue.c ****     if (!list_empty(&req->queuelist)) {
+ 478              		.loc 1 43 5 is_stmt 1 view .LVU132
+ 479              		.loc 1 43 21 is_stmt 0 view .LVU133
+ 480 000e 04F12803 		add	r3, r4, #40
+ 481              	.LVL35:
+ 482              	.LBB107:
+ 483              	.LBI107:
+ 184:./include/linux/list.h **** }
+ 185:./include/linux/list.h **** 
+ 186:./include/linux/list.h **** /*
+ 187:./include/linux/list.h ****  * Delete a list entry by making the prev/next entries
+ 188:./include/linux/list.h ****  * point to each other.
+ 189:./include/linux/list.h ****  *
+ 190:./include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 191:./include/linux/list.h ****  * the prev/next entries already!
+ 192:./include/linux/list.h ****  */
+ 193:./include/linux/list.h **** static inline void __list_del(struct list_head * prev, struct list_head * next)
+ 194:./include/linux/list.h **** {
+ 195:./include/linux/list.h **** 	next->prev = prev;
+ 196:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 197:./include/linux/list.h **** }
+ 198:./include/linux/list.h **** 
+ 199:./include/linux/list.h **** /*
+ARM GAS  /tmp/ccXPZLMi.s 			page 23
+
+
+ 200:./include/linux/list.h ****  * Delete a list entry and clear the 'prev' pointer.
+ 201:./include/linux/list.h ****  *
+ 202:./include/linux/list.h ****  * This is a special-purpose list clearing method used in the networking code
+ 203:./include/linux/list.h ****  * for lists allocated as per-cpu, where we don't want to incur the extra
+ 204:./include/linux/list.h ****  * WRITE_ONCE() overhead of a regular list_del_init(). The code that uses this
+ 205:./include/linux/list.h ****  * needs to check the node 'prev' pointer instead of calling list_empty().
+ 206:./include/linux/list.h ****  */
+ 207:./include/linux/list.h **** static inline void __list_del_clearprev(struct list_head *entry)
+ 208:./include/linux/list.h **** {
+ 209:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 210:./include/linux/list.h **** 	entry->prev = NULL;
+ 211:./include/linux/list.h **** }
+ 212:./include/linux/list.h **** 
+ 213:./include/linux/list.h **** static inline void __list_del_entry(struct list_head *entry)
+ 214:./include/linux/list.h **** {
+ 215:./include/linux/list.h **** 	if (!__list_del_entry_valid(entry))
+ 216:./include/linux/list.h **** 		return;
+ 217:./include/linux/list.h **** 
+ 218:./include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 219:./include/linux/list.h **** }
+ 220:./include/linux/list.h **** 
+ 221:./include/linux/list.h **** /**
+ 222:./include/linux/list.h ****  * list_del - deletes entry from list.
+ 223:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 224:./include/linux/list.h ****  * Note: list_empty() on entry does not return true after this, the entry is
+ 225:./include/linux/list.h ****  * in an undefined state.
+ 226:./include/linux/list.h ****  */
+ 227:./include/linux/list.h **** static inline void list_del(struct list_head *entry)
+ 228:./include/linux/list.h **** {
+ 229:./include/linux/list.h **** 	__list_del_entry(entry);
+ 230:./include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 231:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 232:./include/linux/list.h **** }
+ 233:./include/linux/list.h **** 
+ 234:./include/linux/list.h **** /**
+ 235:./include/linux/list.h ****  * list_replace - replace old entry by new one
+ 236:./include/linux/list.h ****  * @old : the element to be replaced
+ 237:./include/linux/list.h ****  * @new : the new element to insert
+ 238:./include/linux/list.h ****  *
+ 239:./include/linux/list.h ****  * If @old was empty, it will be overwritten.
+ 240:./include/linux/list.h ****  */
+ 241:./include/linux/list.h **** static inline void list_replace(struct list_head *old,
+ 242:./include/linux/list.h **** 				struct list_head *new)
+ 243:./include/linux/list.h **** {
+ 244:./include/linux/list.h **** 	new->next = old->next;
+ 245:./include/linux/list.h **** 	new->next->prev = new;
+ 246:./include/linux/list.h **** 	new->prev = old->prev;
+ 247:./include/linux/list.h **** 	new->prev->next = new;
+ 248:./include/linux/list.h **** }
+ 249:./include/linux/list.h **** 
+ 250:./include/linux/list.h **** /**
+ 251:./include/linux/list.h ****  * list_replace_init - replace old entry by new one and initialize the old one
+ 252:./include/linux/list.h ****  * @old : the element to be replaced
+ 253:./include/linux/list.h ****  * @new : the new element to insert
+ 254:./include/linux/list.h ****  *
+ 255:./include/linux/list.h ****  * If @old was empty, it will be overwritten.
+ 256:./include/linux/list.h ****  */
+ARM GAS  /tmp/ccXPZLMi.s 			page 24
+
+
+ 257:./include/linux/list.h **** static inline void list_replace_init(struct list_head *old,
+ 258:./include/linux/list.h **** 				     struct list_head *new)
+ 259:./include/linux/list.h **** {
+ 260:./include/linux/list.h **** 	list_replace(old, new);
+ 261:./include/linux/list.h **** 	INIT_LIST_HEAD(old);
+ 262:./include/linux/list.h **** }
+ 263:./include/linux/list.h **** 
+ 264:./include/linux/list.h **** /**
+ 265:./include/linux/list.h ****  * list_swap - replace entry1 with entry2 and re-add entry1 at entry2's position
+ 266:./include/linux/list.h ****  * @entry1: the location to place entry2
+ 267:./include/linux/list.h ****  * @entry2: the location to place entry1
+ 268:./include/linux/list.h ****  */
+ 269:./include/linux/list.h **** static inline void list_swap(struct list_head *entry1,
+ 270:./include/linux/list.h **** 			     struct list_head *entry2)
+ 271:./include/linux/list.h **** {
+ 272:./include/linux/list.h **** 	struct list_head *pos = entry2->prev;
+ 273:./include/linux/list.h **** 
+ 274:./include/linux/list.h **** 	list_del(entry2);
+ 275:./include/linux/list.h **** 	list_replace(entry1, entry2);
+ 276:./include/linux/list.h **** 	if (pos == entry1)
+ 277:./include/linux/list.h **** 		pos = entry2;
+ 278:./include/linux/list.h **** 	list_add(entry1, pos);
+ 279:./include/linux/list.h **** }
+ 280:./include/linux/list.h **** 
+ 281:./include/linux/list.h **** /**
+ 282:./include/linux/list.h ****  * list_del_init - deletes entry from list and reinitialize it.
+ 283:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 284:./include/linux/list.h ****  */
+ 285:./include/linux/list.h **** static inline void list_del_init(struct list_head *entry)
+ 286:./include/linux/list.h **** {
+ 287:./include/linux/list.h **** 	__list_del_entry(entry);
+ 288:./include/linux/list.h **** 	INIT_LIST_HEAD(entry);
+ 289:./include/linux/list.h **** }
+ 290:./include/linux/list.h **** 
+ 291:./include/linux/list.h **** /**
+ 292:./include/linux/list.h ****  * list_move - delete from one list and add as another's head
+ 293:./include/linux/list.h ****  * @list: the entry to move
+ 294:./include/linux/list.h ****  * @head: the head that will precede our entry
+ 295:./include/linux/list.h ****  */
+ 296:./include/linux/list.h **** static inline void list_move(struct list_head *list, struct list_head *head)
+ 297:./include/linux/list.h **** {
+ 298:./include/linux/list.h **** 	__list_del_entry(list);
+ 299:./include/linux/list.h **** 	list_add(list, head);
+ 300:./include/linux/list.h **** }
+ 301:./include/linux/list.h **** 
+ 302:./include/linux/list.h **** /**
+ 303:./include/linux/list.h ****  * list_move_tail - delete from one list and add as another's tail
+ 304:./include/linux/list.h ****  * @list: the entry to move
+ 305:./include/linux/list.h ****  * @head: the head that will follow our entry
+ 306:./include/linux/list.h ****  */
+ 307:./include/linux/list.h **** static inline void list_move_tail(struct list_head *list,
+ 308:./include/linux/list.h **** 				  struct list_head *head)
+ 309:./include/linux/list.h **** {
+ 310:./include/linux/list.h **** 	__list_del_entry(list);
+ 311:./include/linux/list.h **** 	list_add_tail(list, head);
+ 312:./include/linux/list.h **** }
+ 313:./include/linux/list.h **** 
+ARM GAS  /tmp/ccXPZLMi.s 			page 25
+
+
+ 314:./include/linux/list.h **** /**
+ 315:./include/linux/list.h ****  * list_bulk_move_tail - move a subsection of a list to its tail
+ 316:./include/linux/list.h ****  * @head: the head that will follow our entry
+ 317:./include/linux/list.h ****  * @first: first entry to move
+ 318:./include/linux/list.h ****  * @last: last entry to move, can be the same as first
+ 319:./include/linux/list.h ****  *
+ 320:./include/linux/list.h ****  * Move all entries between @first and including @last before @head.
+ 321:./include/linux/list.h ****  * All three entries must belong to the same linked list.
+ 322:./include/linux/list.h ****  */
+ 323:./include/linux/list.h **** static inline void list_bulk_move_tail(struct list_head *head,
+ 324:./include/linux/list.h **** 				       struct list_head *first,
+ 325:./include/linux/list.h **** 				       struct list_head *last)
+ 326:./include/linux/list.h **** {
+ 327:./include/linux/list.h **** 	first->prev->next = last->next;
+ 328:./include/linux/list.h **** 	last->next->prev = first->prev;
+ 329:./include/linux/list.h **** 
+ 330:./include/linux/list.h **** 	head->prev->next = first;
+ 331:./include/linux/list.h **** 	first->prev = head->prev;
+ 332:./include/linux/list.h **** 
+ 333:./include/linux/list.h **** 	last->next = head;
+ 334:./include/linux/list.h **** 	head->prev = last;
+ 335:./include/linux/list.h **** }
+ 336:./include/linux/list.h **** 
+ 337:./include/linux/list.h **** /**
+ 338:./include/linux/list.h ****  * list_is_first -- tests whether @list is the first entry in list @head
+ 339:./include/linux/list.h ****  * @list: the entry to test
+ 340:./include/linux/list.h ****  * @head: the head of the list
+ 341:./include/linux/list.h ****  */
+ 342:./include/linux/list.h **** static inline int list_is_first(const struct list_head *list, const struct list_head *head)
+ 343:./include/linux/list.h **** {
+ 344:./include/linux/list.h **** 	return list->prev == head;
+ 345:./include/linux/list.h **** }
+ 346:./include/linux/list.h **** 
+ 347:./include/linux/list.h **** /**
+ 348:./include/linux/list.h ****  * list_is_last - tests whether @list is the last entry in list @head
+ 349:./include/linux/list.h ****  * @list: the entry to test
+ 350:./include/linux/list.h ****  * @head: the head of the list
+ 351:./include/linux/list.h ****  */
+ 352:./include/linux/list.h **** static inline int list_is_last(const struct list_head *list, const struct list_head *head)
+ 353:./include/linux/list.h **** {
+ 354:./include/linux/list.h **** 	return list->next == head;
+ 355:./include/linux/list.h **** }
+ 356:./include/linux/list.h **** 
+ 357:./include/linux/list.h **** /**
+ 358:./include/linux/list.h ****  * list_is_head - tests whether @list is the list @head
+ 359:./include/linux/list.h ****  * @list: the entry to test
+ 360:./include/linux/list.h ****  * @head: the head of the list
+ 361:./include/linux/list.h ****  */
+ 362:./include/linux/list.h **** static inline int list_is_head(const struct list_head *list, const struct list_head *head)
+ 363:./include/linux/list.h **** {
+ 364:./include/linux/list.h **** 	return list == head;
+ 365:./include/linux/list.h **** }
+ 366:./include/linux/list.h **** 
+ 367:./include/linux/list.h **** /**
+ 368:./include/linux/list.h ****  * list_empty - tests whether a list is empty
+ 369:./include/linux/list.h ****  * @head: the list to test.
+ 370:./include/linux/list.h ****  */
+ARM GAS  /tmp/ccXPZLMi.s 			page 26
+
+
+ 371:./include/linux/list.h **** static inline int list_empty(const struct list_head *head)
+ 484              		.loc 4 371 19 is_stmt 1 view .LVU134
+ 372:./include/linux/list.h **** {
+ 373:./include/linux/list.h **** 	return READ_ONCE(head->next) == head;
+ 485              		.loc 4 373 2 view .LVU135
+ 486              	.LBB108:
+ 487              		.loc 4 373 9 view .LVU136
+ 488              	.LBB109:
+ 489              		.loc 4 373 9 view .LVU137
+ 490              		.loc 4 373 9 view .LVU138
+ 491              	.LBE109:
+ 492              		.loc 4 373 9 discriminator 2 view .LVU139
+ 493              		.loc 4 373 9 discriminator 2 view .LVU140
+ 494 0012 A26A     		ldr	r2, [r4, #40]
+ 495              	.LVL36:
+ 496              		.loc 4 373 9 is_stmt 0 discriminator 2 view .LVU141
+ 497              	.LBE108:
+ 498              	.LBE107:
+ 499              		.loc 1 43 8 discriminator 1 view .LVU142
+ 500 0014 9342     		cmp	r3, r2
+ 501 0016 08D0     		beq	.L24
+  44:./block/request_queue.c ****         list_del_init(&req->queuelist);  // 确保 `req->queuelist` 变为未使用状态
+ 502              		.loc 1 44 9 is_stmt 1 view .LVU143
+ 503              	.LVL37:
+ 504              	.LBB110:
+ 505              	.LBI110:
+ 285:./include/linux/list.h **** {
+ 506              		.loc 4 285 20 view .LVU144
+ 287:./include/linux/list.h **** 	INIT_LIST_HEAD(entry);
+ 507              		.loc 4 287 2 view .LVU145
+ 508              	.LBB111:
+ 509              	.LBI111:
+ 213:./include/linux/list.h **** {
+ 510              		.loc 4 213 20 view .LVU146
+ 511              	.LBB112:
+ 215:./include/linux/list.h **** 		return;
+ 512              		.loc 4 215 2 view .LVU147
+ 218:./include/linux/list.h **** }
+ 513              		.loc 4 218 2 view .LVU148
+ 514 0018 E26A     		ldr	r2, [r4, #44]
+ 515 001a A16A     		ldr	r1, [r4, #40]
+ 516              	.LVL38:
+ 517              	.LBB113:
+ 518              	.LBI113:
+ 193:./include/linux/list.h **** {
+ 519              		.loc 4 193 20 view .LVU149
+ 520              	.LBB114:
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 521              		.loc 4 195 2 view .LVU150
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 522              		.loc 4 195 13 is_stmt 0 view .LVU151
+ 523 001c 4A60     		str	r2, [r1, #4]
+ 196:./include/linux/list.h **** }
+ 524              		.loc 4 196 2 is_stmt 1 view .LVU152
+ 196:./include/linux/list.h **** }
+ 525              		.loc 4 196 2 view .LVU153
+ 526              	.LBB115:
+ARM GAS  /tmp/ccXPZLMi.s 			page 27
+
+
+ 196:./include/linux/list.h **** }
+ 527              		.loc 4 196 2 view .LVU154
+ 196:./include/linux/list.h **** }
+ 528              		.loc 4 196 2 view .LVU155
+ 529              	.LBE115:
+ 196:./include/linux/list.h **** }
+ 530              		.loc 4 196 2 discriminator 2 view .LVU156
+ 196:./include/linux/list.h **** }
+ 531              		.loc 4 196 2 discriminator 2 view .LVU157
+ 196:./include/linux/list.h **** }
+ 532              		.loc 4 196 2 discriminator 2 view .LVU158
+ 533 001e 1160     		str	r1, [r2]
+ 196:./include/linux/list.h **** }
+ 534              		.loc 4 196 2 discriminator 2 view .LVU159
+ 196:./include/linux/list.h **** }
+ 535              		.loc 4 196 2 discriminator 2 view .LVU160
+ 536              	.LVL39:
+ 196:./include/linux/list.h **** }
+ 537              		.loc 4 196 2 is_stmt 0 discriminator 2 view .LVU161
+ 538              	.LBE114:
+ 539              	.LBE113:
+ 540              	.LBE112:
+ 541              	.LBE111:
+ 288:./include/linux/list.h **** }
+ 542              		.loc 4 288 2 is_stmt 1 view .LVU162
+ 543              	.LBB116:
+ 544              	.LBI116:
+  35:./include/linux/list.h **** {
+ 545              		.loc 4 35 20 view .LVU163
+ 546              	.LBB117:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 547              		.loc 4 37 2 view .LVU164
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 548              		.loc 4 37 2 view .LVU165
+ 549              	.LBB118:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 550              		.loc 4 37 2 view .LVU166
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 551              		.loc 4 37 2 view .LVU167
+ 552              	.LBE118:
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 553              		.loc 4 37 2 discriminator 2 view .LVU168
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 554              		.loc 4 37 2 discriminator 2 view .LVU169
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 555              		.loc 4 37 2 discriminator 2 view .LVU170
+ 556 0020 A362     		str	r3, [r4, #40]
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 557              		.loc 4 37 2 discriminator 2 view .LVU171
+  37:./include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 558              		.loc 4 37 2 discriminator 2 view .LVU172
+  38:./include/linux/list.h **** }
+ 559              		.loc 4 38 2 view .LVU173
+  38:./include/linux/list.h **** }
+ 560              		.loc 4 38 2 view .LVU174
+ 561              	.LBB119:
+  38:./include/linux/list.h **** }
+ARM GAS  /tmp/ccXPZLMi.s 			page 28
+
+
+ 562              		.loc 4 38 2 view .LVU175
+  38:./include/linux/list.h **** }
+ 563              		.loc 4 38 2 view .LVU176
+ 564              	.LBE119:
+  38:./include/linux/list.h **** }
+ 565              		.loc 4 38 2 discriminator 2 view .LVU177
+  38:./include/linux/list.h **** }
+ 566              		.loc 4 38 2 discriminator 2 view .LVU178
+  38:./include/linux/list.h **** }
+ 567              		.loc 4 38 2 discriminator 2 view .LVU179
+ 568 0022 E362     		str	r3, [r4, #44]
+  38:./include/linux/list.h **** }
+ 569              		.loc 4 38 2 discriminator 2 view .LVU180
+  38:./include/linux/list.h **** }
+ 570              		.loc 4 38 2 discriminator 2 view .LVU181
+ 571              	.LVL40:
+  38:./include/linux/list.h **** }
+ 572              		.loc 4 38 2 is_stmt 0 discriminator 2 view .LVU182
+ 573              	.LBE117:
+ 574              	.LBE116:
+ 575              	.LBE110:
+  45:./block/request_queue.c ****         vfree(req);
+ 576              		.loc 1 45 9 is_stmt 1 view .LVU183
+ 577              	.LBB120:
+ 578              	.LBI120:
+ 375:./include/linux/slab.h **** 	__sfree__(addr);
+ 579              		.loc 5 375 20 view .LVU184
+ 580              	.LBB121:
+ 376:./include/linux/slab.h **** }
+ 581              		.loc 5 376 2 view .LVU185
+ 582 0024 2046     		mov	r0, r4
+ 583 0026 FFF7FEFF 		bl	__sfree__
+ 584              	.LVL41:
+ 585              	.L24:
+ 376:./include/linux/slab.h **** }
+ 586              		.loc 5 376 2 is_stmt 0 view .LVU186
+ 587              	.LBE121:
+ 588              	.LBE120:
+  46:./block/request_queue.c ****     } 
+  47:./block/request_queue.c ****     spin_unlock(&q->queue_lock);
+ 589              		.loc 1 47 5 is_stmt 1 view .LVU187
+ 590 002a 2846     		mov	r0, r5
+ 591 002c FFF7FEFF 		bl	spin_unlock
+ 592              	.LVL42:
+  48:./block/request_queue.c **** }
+ 593              		.loc 1 48 1 is_stmt 0 view .LVU188
+ 594 0030 38BD     		pop	{r3, r4, r5, pc}
+ 595              		.loc 1 48 1 view .LVU189
+ 596              		.cfi_endproc
+ 597              	.LFE1036:
+ 599              		.section	.text.blk_fetch_request,"ax",%progbits
+ 600              		.align	1
+ 601              		.global	blk_fetch_request
+ 602              		.syntax unified
+ 603              		.thumb
+ 604              		.thumb_func
+ 606              	blk_fetch_request:
+ARM GAS  /tmp/ccXPZLMi.s 			page 29
+
+
+ 607              	.LVL43:
+ 608              	.LFB1038:
+  49:./block/request_queue.c **** EXPORT_SYMBOL(request_queue_remove);
+  50:./block/request_queue.c **** 
+  51:./block/request_queue.c **** 
+  52:./block/request_queue.c **** void process_requests_in_queue(struct request_queue *q)
+  53:./block/request_queue.c **** {
+  54:./block/request_queue.c ****     struct request *req, *tmp;
+  55:./block/request_queue.c **** 
+  56:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+  57:./block/request_queue.c **** 
+  58:./block/request_queue.c ****     list_for_each_entry_safe(req, tmp, &q->icq_list, queuelist) {
+  59:./block/request_queue.c ****         list_del(&req->queuelist);
+  60:./block/request_queue.c ****         spin_unlock(&q->queue_lock);
+  61:./block/request_queue.c **** 
+  62:./block/request_queue.c ****         // 处理请求
+  63:./block/request_queue.c ****         printk(KERN_INFO "Processing request: %p\n", req);
+  64:./block/request_queue.c ****         kfree(req);  // 释放请求
+  65:./block/request_queue.c **** 
+  66:./block/request_queue.c ****         spin_lock(&q->queue_lock);
+  67:./block/request_queue.c ****     }
+  68:./block/request_queue.c **** 
+  69:./block/request_queue.c ****     spin_unlock(&q->queue_lock);
+  70:./block/request_queue.c **** }
+  71:./block/request_queue.c **** EXPORT_SYMBOL(process_requests_in_queue);
+  72:./block/request_queue.c **** 
+  73:./block/request_queue.c **** 
+  74:./block/request_queue.c **** struct request *blk_fetch_request(struct request_queue *q)
+  75:./block/request_queue.c **** {
+ 609              		.loc 1 75 1 is_stmt 1 view -0
+ 610              		.cfi_startproc
+ 611              		@ args = 0, pretend = 0, frame = 0
+ 612              		@ frame_needed = 0, uses_anonymous_args = 0
+ 613              		.loc 1 75 1 is_stmt 0 view .LVU191
+ 614 0000 38B5     		push	{r3, r4, r5, lr}
+ 615              	.LCFI8:
+ 616              		.cfi_def_cfa_offset 16
+ 617              		.cfi_offset 3, -16
+ 618              		.cfi_offset 4, -12
+ 619              		.cfi_offset 5, -8
+ 620              		.cfi_offset 14, -4
+ 621 0002 0446     		mov	r4, r0
+  76:./block/request_queue.c ****     struct request *req = NULL;
+ 622              		.loc 1 76 5 is_stmt 1 view .LVU192
+ 623              	.LVL44:
+  77:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+ 624              		.loc 1 77 5 view .LVU193
+ 625 0004 00F10805 		add	r5, r0, #8
+ 626 0008 2846     		mov	r0, r5
+ 627              	.LVL45:
+ 628              		.loc 1 77 5 is_stmt 0 view .LVU194
+ 629 000a FFF7FEFF 		bl	spin_lock
+ 630              	.LVL46:
+  78:./block/request_queue.c **** 
+  79:./block/request_queue.c ****     if (!list_empty(&q->icq_list)) {
+ 631              		.loc 1 79 5 is_stmt 1 view .LVU195
+ 632              		.loc 1 79 21 is_stmt 0 view .LVU196
+ARM GAS  /tmp/ccXPZLMi.s 			page 30
+
+
+ 633 000e 04F1CC02 		add	r2, r4, #204
+ 634              	.LVL47:
+ 635              	.LBB122:
+ 636              	.LBI122:
+ 371:./include/linux/list.h **** {
+ 637              		.loc 4 371 19 is_stmt 1 view .LVU197
+ 638              		.loc 4 373 2 view .LVU198
+ 639              	.LBB123:
+ 640              		.loc 4 373 9 view .LVU199
+ 641              	.LBB124:
+ 642              		.loc 4 373 9 view .LVU200
+ 643              		.loc 4 373 9 view .LVU201
+ 644              	.LBE124:
+ 645              		.loc 4 373 9 discriminator 2 view .LVU202
+ 646              		.loc 4 373 9 discriminator 2 view .LVU203
+ 647 0012 D4F8CC30 		ldr	r3, [r4, #204]
+ 648              	.LVL48:
+ 649              		.loc 4 373 9 is_stmt 0 discriminator 2 view .LVU204
+ 650              	.LBE123:
+ 651              	.LBE122:
+ 652              		.loc 1 79 8 discriminator 1 view .LVU205
+ 653 0016 9A42     		cmp	r2, r3
+ 654 0018 12D0     		beq	.L28
+  80:./block/request_queue.c ****         req = list_first_entry(&q->icq_list, struct request, queuelist);
+ 655              		.loc 1 80 9 is_stmt 1 view .LVU206
+ 656              	.LBB125:
+ 657              		.loc 1 80 15 view .LVU207
+ 658 001a D4F8CC30 		ldr	r3, [r4, #204]
+ 659              	.LVL49:
+ 660              		.loc 1 80 15 view .LVU208
+ 661              		.loc 1 80 15 view .LVU209
+ 662 001e A3F12804 		sub	r4, r3, #40
+ 663              	.LVL50:
+ 664              		.loc 1 80 15 is_stmt 0 view .LVU210
+ 665              	.LBE125:
+  81:./block/request_queue.c ****         list_del(&req->queuelist);
+ 666              		.loc 1 81 9 is_stmt 1 view .LVU211
+ 667              	.LBB126:
+ 668              	.LBI126:
+ 227:./include/linux/list.h **** {
+ 669              		.loc 4 227 20 view .LVU212
+ 670              	.LBB127:
+ 229:./include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 671              		.loc 4 229 2 view .LVU213
+ 672              	.LBB128:
+ 673              	.LBI128:
+ 213:./include/linux/list.h **** {
+ 674              		.loc 4 213 20 view .LVU214
+ 675              	.LBB129:
+ 215:./include/linux/list.h **** 		return;
+ 676              		.loc 4 215 2 view .LVU215
+ 218:./include/linux/list.h **** }
+ 677              		.loc 4 218 2 view .LVU216
+ 678 0022 5A68     		ldr	r2, [r3, #4]
+ 679              	.LVL51:
+ 218:./include/linux/list.h **** }
+ 680              		.loc 4 218 2 is_stmt 0 view .LVU217
+ARM GAS  /tmp/ccXPZLMi.s 			page 31
+
+
+ 681 0024 1968     		ldr	r1, [r3]
+ 682              	.LVL52:
+ 683              	.LBB130:
+ 684              	.LBI130:
+ 193:./include/linux/list.h **** {
+ 685              		.loc 4 193 20 is_stmt 1 view .LVU218
+ 686              	.LBB131:
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 687              		.loc 4 195 2 view .LVU219
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 688              		.loc 4 195 13 is_stmt 0 view .LVU220
+ 689 0026 4A60     		str	r2, [r1, #4]
+ 196:./include/linux/list.h **** }
+ 690              		.loc 4 196 2 is_stmt 1 view .LVU221
+ 196:./include/linux/list.h **** }
+ 691              		.loc 4 196 2 view .LVU222
+ 692              	.LBB132:
+ 196:./include/linux/list.h **** }
+ 693              		.loc 4 196 2 view .LVU223
+ 196:./include/linux/list.h **** }
+ 694              		.loc 4 196 2 view .LVU224
+ 695              	.LBE132:
+ 196:./include/linux/list.h **** }
+ 696              		.loc 4 196 2 discriminator 2 view .LVU225
+ 196:./include/linux/list.h **** }
+ 697              		.loc 4 196 2 discriminator 2 view .LVU226
+ 196:./include/linux/list.h **** }
+ 698              		.loc 4 196 2 discriminator 2 view .LVU227
+ 699 0028 1160     		str	r1, [r2]
+ 196:./include/linux/list.h **** }
+ 700              		.loc 4 196 2 discriminator 2 view .LVU228
+ 196:./include/linux/list.h **** }
+ 701              		.loc 4 196 2 discriminator 2 view .LVU229
+ 702              	.LVL53:
+ 196:./include/linux/list.h **** }
+ 703              		.loc 4 196 2 is_stmt 0 discriminator 2 view .LVU230
+ 704              	.LBE131:
+ 705              	.LBE130:
+ 706              	.LBE129:
+ 707              	.LBE128:
+ 230:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 708              		.loc 4 230 2 is_stmt 1 view .LVU231
+ 230:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 709              		.loc 4 230 14 is_stmt 0 view .LVU232
+ 710 002a 4FF48072 		mov	r2, #256
+ 711 002e 1A60     		str	r2, [r3]
+ 231:./include/linux/list.h **** }
+ 712              		.loc 4 231 2 is_stmt 1 view .LVU233
+ 231:./include/linux/list.h **** }
+ 713              		.loc 4 231 14 is_stmt 0 view .LVU234
+ 714 0030 4FF49172 		mov	r2, #290
+ 715 0034 5A60     		str	r2, [r3, #4]
+ 716              	.LVL54:
+ 717              	.L27:
+ 231:./include/linux/list.h **** }
+ 718              		.loc 4 231 14 view .LVU235
+ 719              	.LBE127:
+ARM GAS  /tmp/ccXPZLMi.s 			page 32
+
+
+ 720              	.LBE126:
+  82:./block/request_queue.c ****     }
+  83:./block/request_queue.c ****     spin_unlock(&q->queue_lock);
+ 721              		.loc 1 83 5 is_stmt 1 view .LVU236
+ 722 0036 2846     		mov	r0, r5
+ 723 0038 FFF7FEFF 		bl	spin_unlock
+ 724              	.LVL55:
+  84:./block/request_queue.c ****     return req; 
+ 725              		.loc 1 84 5 view .LVU237
+  85:./block/request_queue.c **** }
+ 726              		.loc 1 85 1 is_stmt 0 view .LVU238
+ 727 003c 2046     		mov	r0, r4
+ 728 003e 38BD     		pop	{r3, r4, r5, pc}
+ 729              	.LVL56:
+ 730              	.L28:
+  76:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+ 731              		.loc 1 76 21 view .LVU239
+ 732 0040 0024     		movs	r4, #0
+ 733              	.LVL57:
+  76:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+ 734              		.loc 1 76 21 view .LVU240
+ 735 0042 F8E7     		b	.L27
+ 736              		.cfi_endproc
+ 737              	.LFE1038:
+ 739              		.section	.rodata.process_requests_in_queue.str1.4,"aMS",%progbits,1
+ 740              		.align	2
+ 741              	.LC0:
+ 742 0000 50726F63 		.ascii	"Processing request: %p\012\000"
+ 742      65737369 
+ 742      6E672072 
+ 742      65717565 
+ 742      73743A20 
+ 743              		.section	.text.process_requests_in_queue,"ax",%progbits
+ 744              		.align	1
+ 745              		.global	process_requests_in_queue
+ 746              		.syntax unified
+ 747              		.thumb
+ 748              		.thumb_func
+ 750              	process_requests_in_queue:
+ 751              	.LVL58:
+ 752              	.LFB1037:
+  53:./block/request_queue.c ****     struct request *req, *tmp;
+ 753              		.loc 1 53 1 is_stmt 1 view -0
+ 754              		.cfi_startproc
+ 755              		@ args = 0, pretend = 0, frame = 0
+ 756              		@ frame_needed = 0, uses_anonymous_args = 0
+  53:./block/request_queue.c ****     struct request *req, *tmp;
+ 757              		.loc 1 53 1 is_stmt 0 view .LVU242
+ 758 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 759              	.LCFI9:
+ 760              		.cfi_def_cfa_offset 24
+ 761              		.cfi_offset 3, -24
+ 762              		.cfi_offset 4, -20
+ 763              		.cfi_offset 5, -16
+ 764              		.cfi_offset 6, -12
+ 765              		.cfi_offset 7, -8
+ 766              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccXPZLMi.s 			page 33
+
+
+ 767 0002 0746     		mov	r7, r0
+  54:./block/request_queue.c **** 
+ 768              		.loc 1 54 5 is_stmt 1 view .LVU243
+  56:./block/request_queue.c **** 
+ 769              		.loc 1 56 5 view .LVU244
+ 770 0004 00F10806 		add	r6, r0, #8
+ 771 0008 3046     		mov	r0, r6
+ 772              	.LVL59:
+  56:./block/request_queue.c **** 
+ 773              		.loc 1 56 5 is_stmt 0 view .LVU245
+ 774 000a FFF7FEFF 		bl	spin_lock
+ 775              	.LVL60:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 776              		.loc 1 58 5 is_stmt 1 view .LVU246
+ 777              	.LBB133:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 778              		.loc 1 58 5 view .LVU247
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 779              		.loc 1 58 5 view .LVU248
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 780              		.loc 1 58 5 view .LVU249
+ 781 000e D7F8CC40 		ldr	r4, [r7, #204]
+ 782              	.LVL61:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 783              		.loc 1 58 5 is_stmt 0 view .LVU250
+ 784              	.LBE133:
+ 785              	.LBB134:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 786              		.loc 1 58 5 is_stmt 1 view .LVU251
+ 787 0012 54F82859 		ldr	r5, [r4], #-40
+ 788              	.LVL62:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 789              		.loc 1 58 5 view .LVU252
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 790              		.loc 1 58 5 view .LVU253
+ 791 0016 283D     		subs	r5, r5, #40
+ 792              	.LVL63:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 793              		.loc 1 58 5 is_stmt 0 view .LVU254
+ 794              	.LBE134:
+ 795 0018 1AE0     		b	.L31
+ 796              	.LVL64:
+ 797              	.L32:
+  59:./block/request_queue.c ****         spin_unlock(&q->queue_lock);
+ 798              		.loc 1 59 9 is_stmt 1 view .LVU255
+ 799              	.LBB135:
+ 800              	.LBI135:
+ 227:./include/linux/list.h **** {
+ 801              		.loc 4 227 20 view .LVU256
+ 802              	.LBB136:
+ 229:./include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 803              		.loc 4 229 2 view .LVU257
+ 804              	.LBB137:
+ 805              	.LBI137:
+ 213:./include/linux/list.h **** {
+ 806              		.loc 4 213 20 view .LVU258
+ 807              	.LBB138:
+ARM GAS  /tmp/ccXPZLMi.s 			page 34
+
+
+ 215:./include/linux/list.h **** 		return;
+ 808              		.loc 4 215 2 view .LVU259
+ 218:./include/linux/list.h **** }
+ 809              		.loc 4 218 2 view .LVU260
+ 810 001a E36A     		ldr	r3, [r4, #44]
+ 811              	.LVL65:
+ 218:./include/linux/list.h **** }
+ 812              		.loc 4 218 2 is_stmt 0 view .LVU261
+ 813 001c A26A     		ldr	r2, [r4, #40]
+ 814              	.LVL66:
+ 815              	.LBB139:
+ 816              	.LBI139:
+ 193:./include/linux/list.h **** {
+ 817              		.loc 4 193 20 is_stmt 1 view .LVU262
+ 818              	.LBB140:
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 819              		.loc 4 195 2 view .LVU263
+ 195:./include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 820              		.loc 4 195 13 is_stmt 0 view .LVU264
+ 821 001e 5360     		str	r3, [r2, #4]
+ 196:./include/linux/list.h **** }
+ 822              		.loc 4 196 2 is_stmt 1 view .LVU265
+ 196:./include/linux/list.h **** }
+ 823              		.loc 4 196 2 view .LVU266
+ 824              	.LBB141:
+ 196:./include/linux/list.h **** }
+ 825              		.loc 4 196 2 view .LVU267
+ 196:./include/linux/list.h **** }
+ 826              		.loc 4 196 2 view .LVU268
+ 827              	.LBE141:
+ 196:./include/linux/list.h **** }
+ 828              		.loc 4 196 2 discriminator 2 view .LVU269
+ 196:./include/linux/list.h **** }
+ 829              		.loc 4 196 2 discriminator 2 view .LVU270
+ 196:./include/linux/list.h **** }
+ 830              		.loc 4 196 2 discriminator 2 view .LVU271
+ 831 0020 1A60     		str	r2, [r3]
+ 196:./include/linux/list.h **** }
+ 832              		.loc 4 196 2 discriminator 2 view .LVU272
+ 196:./include/linux/list.h **** }
+ 833              		.loc 4 196 2 discriminator 2 view .LVU273
+ 834              	.LVL67:
+ 196:./include/linux/list.h **** }
+ 835              		.loc 4 196 2 is_stmt 0 discriminator 2 view .LVU274
+ 836              	.LBE140:
+ 837              	.LBE139:
+ 838              	.LBE138:
+ 839              	.LBE137:
+ 230:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 840              		.loc 4 230 2 is_stmt 1 view .LVU275
+ 230:./include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 841              		.loc 4 230 14 is_stmt 0 view .LVU276
+ 842 0022 4FF48073 		mov	r3, #256
+ 843 0026 A362     		str	r3, [r4, #40]
+ 231:./include/linux/list.h **** }
+ 844              		.loc 4 231 2 is_stmt 1 view .LVU277
+ 231:./include/linux/list.h **** }
+ARM GAS  /tmp/ccXPZLMi.s 			page 35
+
+
+ 845              		.loc 4 231 14 is_stmt 0 view .LVU278
+ 846 0028 4FF49173 		mov	r3, #290
+ 847 002c E362     		str	r3, [r4, #44]
+ 848              	.LVL68:
+ 231:./include/linux/list.h **** }
+ 849              		.loc 4 231 14 view .LVU279
+ 850              	.LBE136:
+ 851              	.LBE135:
+  60:./block/request_queue.c **** 
+ 852              		.loc 1 60 9 is_stmt 1 view .LVU280
+ 853 002e 3046     		mov	r0, r6
+ 854 0030 FFF7FEFF 		bl	spin_unlock
+ 855              	.LVL69:
+  63:./block/request_queue.c ****         kfree(req);  // 释放请求
+ 856              		.loc 1 63 9 view .LVU281
+ 857 0034 2146     		mov	r1, r4
+ 858 0036 0B48     		ldr	r0, .L34
+ 859 0038 FFF7FEFF 		bl	printk
+ 860              	.LVL70:
+  64:./block/request_queue.c **** 
+ 861              		.loc 1 64 9 view .LVU282
+ 862              	.LBB142:
+ 863              	.LBI142:
+ 381:./include/linux/slab.h **** }
+ 382:./include/linux/slab.h **** 
+ 383:./include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 864              		.loc 5 383 20 view .LVU283
+ 865              	.LBB143:
+ 384:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 866              		.loc 5 384 2 view .LVU284
+ 867 003c 2046     		mov	r0, r4
+ 868 003e FFF7FEFF 		bl	__sfree__
+ 869              	.LVL71:
+ 870              		.loc 5 384 2 is_stmt 0 view .LVU285
+ 871              	.LBE143:
+ 872              	.LBE142:
+  66:./block/request_queue.c ****     }
+ 873              		.loc 1 66 9 is_stmt 1 view .LVU286
+ 874 0042 3046     		mov	r0, r6
+ 875 0044 FFF7FEFF 		bl	spin_lock
+ 876              	.LVL72:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 877              		.loc 1 58 5 discriminator 3 view .LVU287
+ 878              	.LBB144:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 879              		.loc 1 58 5 discriminator 3 view .LVU288
+ 880 0048 AB6A     		ldr	r3, [r5, #40]
+ 881              	.LVL73:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 882              		.loc 1 58 5 discriminator 3 view .LVU289
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 883              		.loc 1 58 5 discriminator 3 view .LVU290
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 884              		.loc 1 58 5 is_stmt 0 discriminator 3 view .LVU291
+ 885              	.LBE144:
+ 886 004a 2C46     		mov	r4, r5
+ 887 004c A3F12805 		sub	r5, r3, #40
+ARM GAS  /tmp/ccXPZLMi.s 			page 36
+
+
+ 888              	.LVL74:
+ 889              	.L31:
+  58:./block/request_queue.c ****         list_del(&req->queuelist);
+ 890              		.loc 1 58 5 is_stmt 1 discriminator 1 view .LVU292
+ 891 0050 04F12803 		add	r3, r4, #40
+ 892 0054 07F1CC02 		add	r2, r7, #204
+ 893 0058 9342     		cmp	r3, r2
+ 894 005a DED1     		bne	.L32
+  69:./block/request_queue.c **** }
+ 895              		.loc 1 69 5 view .LVU293
+ 896 005c 3046     		mov	r0, r6
+ 897 005e FFF7FEFF 		bl	spin_unlock
+ 898              	.LVL75:
+  70:./block/request_queue.c **** EXPORT_SYMBOL(process_requests_in_queue);
+ 899              		.loc 1 70 1 is_stmt 0 view .LVU294
+ 900 0062 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 901              	.LVL76:
+ 902              	.L35:
+  70:./block/request_queue.c **** EXPORT_SYMBOL(process_requests_in_queue);
+ 903              		.loc 1 70 1 view .LVU295
+ 904              		.align	2
+ 905              	.L34:
+ 906 0064 00000000 		.word	.LC0
+ 907              		.cfi_endproc
+ 908              	.LFE1037:
+ 910              		.section	.text.__blk_cleanup_queue,"ax",%progbits
+ 911              		.align	1
+ 912              		.global	__blk_cleanup_queue
+ 913              		.syntax unified
+ 914              		.thumb
+ 915              		.thumb_func
+ 917              	__blk_cleanup_queue:
+ 918              	.LVL77:
+ 919              	.LFB1034:
+  30:./block/request_queue.c ****     if(q) kfree(q);
+ 920              		.loc 1 30 50 is_stmt 1 view -0
+ 921              		.cfi_startproc
+ 922              		@ args = 0, pretend = 0, frame = 0
+ 923              		@ frame_needed = 0, uses_anonymous_args = 0
+  31:./block/request_queue.c **** }
+ 924              		.loc 1 31 5 view .LVU297
+  31:./block/request_queue.c **** }
+ 925              		.loc 1 31 7 is_stmt 0 view .LVU298
+ 926 0000 18B1     		cbz	r0, .L39
+  30:./block/request_queue.c ****     if(q) kfree(q);
+ 927              		.loc 1 30 50 view .LVU299
+ 928 0002 08B5     		push	{r3, lr}
+ 929              	.LCFI10:
+ 930              		.cfi_def_cfa_offset 8
+ 931              		.cfi_offset 3, -8
+ 932              		.cfi_offset 14, -4
+  31:./block/request_queue.c **** }
+ 933              		.loc 1 31 11 is_stmt 1 discriminator 1 view .LVU300
+ 934              	.LVL78:
+ 935              	.LBB145:
+ 936              	.LBI145:
+ 383:./include/linux/slab.h **** 	__sfree__((void*)ptr);
+ARM GAS  /tmp/ccXPZLMi.s 			page 37
+
+
+ 937              		.loc 5 383 20 view .LVU301
+ 938              	.LBB146:
+ 939              		.loc 5 384 2 view .LVU302
+ 940 0004 FFF7FEFF 		bl	__sfree__
+ 941              	.LVL79:
+ 942              		.loc 5 384 2 is_stmt 0 view .LVU303
+ 943              	.LBE146:
+ 944              	.LBE145:
+  32:./block/request_queue.c ****  
+ 945              		.loc 1 32 1 view .LVU304
+ 946 0008 08BD     		pop	{r3, pc}
+ 947              	.LVL80:
+ 948              	.L39:
+ 949              	.LCFI11:
+ 950              		.cfi_def_cfa_offset 0
+ 951              		.cfi_restore 3
+ 952              		.cfi_restore 14
+  32:./block/request_queue.c ****  
+ 953              		.loc 1 32 1 view .LVU305
+ 954 000a 7047     		bx	lr
+ 955              		.cfi_endproc
+ 956              	.LFE1034:
+ 958              		.section	.text.__blk_end_request_cur,"ax",%progbits
+ 959              		.align	1
+ 960              		.global	__blk_end_request_cur
+ 961              		.syntax unified
+ 962              		.thumb
+ 963              		.thumb_func
+ 965              	__blk_end_request_cur:
+ 966              	.LVL81:
+ 967              	.LFB1039:
+  86:./block/request_queue.c **** EXPORT_SYMBOL(blk_fetch_request);
+  87:./block/request_queue.c **** 
+  88:./block/request_queue.c **** 
+  89:./block/request_queue.c **** int __blk_end_request_cur(struct request *req, int error)
+  90:./block/request_queue.c **** {
+ 968              		.loc 1 90 1 is_stmt 1 view -0
+ 969              		.cfi_startproc
+ 970              		@ args = 0, pretend = 0, frame = 0
+ 971              		@ frame_needed = 0, uses_anonymous_args = 0
+ 972              		.loc 1 90 1 is_stmt 0 view .LVU307
+ 973 0000 38B5     		push	{r3, r4, r5, lr}
+ 974              	.LCFI12:
+ 975              		.cfi_def_cfa_offset 16
+ 976              		.cfi_offset 3, -16
+ 977              		.cfi_offset 4, -12
+ 978              		.cfi_offset 5, -8
+ 979              		.cfi_offset 14, -4
+  91:./block/request_queue.c ****     struct request_queue *q = req->q;
+ 980              		.loc 1 91 5 is_stmt 1 view .LVU308
+ 981              		.loc 1 91 27 is_stmt 0 view .LVU309
+ 982 0002 0468     		ldr	r4, [r0]
+ 983              	.LVL82:
+  92:./block/request_queue.c ****     spin_lock(&q->queue_lock);
+ 984              		.loc 1 92 5 is_stmt 1 view .LVU310
+ 985 0004 04F10805 		add	r5, r4, #8
+ 986 0008 2846     		mov	r0, r5
+ARM GAS  /tmp/ccXPZLMi.s 			page 38
+
+
+ 987              	.LVL83:
+ 988              		.loc 1 92 5 is_stmt 0 view .LVU311
+ 989 000a FFF7FEFF 		bl	spin_lock
+ 990              	.LVL84:
+  93:./block/request_queue.c ****     int is_last = list_is_singular(&q->icq_list) || list_empty(&q->icq_list);
+ 991              		.loc 1 93 5 is_stmt 1 view .LVU312
+ 992              		.loc 1 93 36 is_stmt 0 view .LVU313
+ 993 000e 04F1CC03 		add	r3, r4, #204
+ 994              	.LVL85:
+ 995              	.LBB147:
+ 996              	.LBI147:
+ 374:./include/linux/list.h **** }
+ 375:./include/linux/list.h **** 
+ 376:./include/linux/list.h **** /**
+ 377:./include/linux/list.h ****  * list_del_init_careful - deletes entry from list and reinitialize it.
+ 378:./include/linux/list.h ****  * @entry: the element to delete from the list.
+ 379:./include/linux/list.h ****  *
+ 380:./include/linux/list.h ****  * This is the same as list_del_init(), except designed to be used
+ 381:./include/linux/list.h ****  * together with list_empty_careful() in a way to guarantee ordering
+ 382:./include/linux/list.h ****  * of other memory operations.
+ 383:./include/linux/list.h ****  *
+ 384:./include/linux/list.h ****  * Any memory operations done before a list_del_init_careful() are
+ 385:./include/linux/list.h ****  * guaranteed to be visible after a list_empty_careful() test.
+ 386:./include/linux/list.h ****  */
+ 387:./include/linux/list.h **** static inline void list_del_init_careful(struct list_head *entry)
+ 388:./include/linux/list.h **** {
+ 389:./include/linux/list.h **** 	__list_del_entry(entry);
+ 390:./include/linux/list.h **** 	WRITE_ONCE(entry->prev, entry);
+ 391:./include/linux/list.h **** 	smp_store_release(&entry->next, entry);
+ 392:./include/linux/list.h **** }
+ 393:./include/linux/list.h **** 
+ 394:./include/linux/list.h **** /**
+ 395:./include/linux/list.h ****  * list_empty_careful - tests whether a list is empty and not being modified
+ 396:./include/linux/list.h ****  * @head: the list to test
+ 397:./include/linux/list.h ****  *
+ 398:./include/linux/list.h ****  * Description:
+ 399:./include/linux/list.h ****  * tests whether a list is empty _and_ checks that no other CPU might be
+ 400:./include/linux/list.h ****  * in the process of modifying either member (next or prev)
+ 401:./include/linux/list.h ****  *
+ 402:./include/linux/list.h ****  * NOTE: using list_empty_careful() without synchronization
+ 403:./include/linux/list.h ****  * can only be safe if the only activity that can happen
+ 404:./include/linux/list.h ****  * to the list entry is list_del_init(). Eg. it cannot be used
+ 405:./include/linux/list.h ****  * if another CPU could re-list_add() it.
+ 406:./include/linux/list.h ****  */
+ 407:./include/linux/list.h **** static inline int list_empty_careful(const struct list_head *head)
+ 408:./include/linux/list.h **** {
+ 409:./include/linux/list.h **** 	struct list_head *next = smp_load_acquire(&head->next);
+ 410:./include/linux/list.h **** 	return list_is_head(next, head) && (next == READ_ONCE(head->prev));
+ 411:./include/linux/list.h **** }
+ 412:./include/linux/list.h **** 
+ 413:./include/linux/list.h **** /**
+ 414:./include/linux/list.h ****  * list_rotate_left - rotate the list to the left
+ 415:./include/linux/list.h ****  * @head: the head of the list
+ 416:./include/linux/list.h ****  */
+ 417:./include/linux/list.h **** static inline void list_rotate_left(struct list_head *head)
+ 418:./include/linux/list.h **** {
+ 419:./include/linux/list.h **** 	struct list_head *first;
+ARM GAS  /tmp/ccXPZLMi.s 			page 39
+
+
+ 420:./include/linux/list.h **** 
+ 421:./include/linux/list.h **** 	if (!list_empty(head)) {
+ 422:./include/linux/list.h **** 		first = head->next;
+ 423:./include/linux/list.h **** 		list_move_tail(first, head);
+ 424:./include/linux/list.h **** 	}
+ 425:./include/linux/list.h **** }
+ 426:./include/linux/list.h **** 
+ 427:./include/linux/list.h **** /**
+ 428:./include/linux/list.h ****  * list_rotate_to_front() - Rotate list to specific item.
+ 429:./include/linux/list.h ****  * @list: The desired new front of the list.
+ 430:./include/linux/list.h ****  * @head: The head of the list.
+ 431:./include/linux/list.h ****  *
+ 432:./include/linux/list.h ****  * Rotates list so that @list becomes the new front of the list.
+ 433:./include/linux/list.h ****  */
+ 434:./include/linux/list.h **** static inline void list_rotate_to_front(struct list_head *list,
+ 435:./include/linux/list.h **** 					struct list_head *head)
+ 436:./include/linux/list.h **** {
+ 437:./include/linux/list.h **** 	/*
+ 438:./include/linux/list.h **** 	 * Deletes the list head from the list denoted by @head and
+ 439:./include/linux/list.h **** 	 * places it as the tail of @list, this effectively rotates the
+ 440:./include/linux/list.h **** 	 * list so that @list is at the front.
+ 441:./include/linux/list.h **** 	 */
+ 442:./include/linux/list.h **** 	list_move_tail(head, list);
+ 443:./include/linux/list.h **** }
+ 444:./include/linux/list.h **** 
+ 445:./include/linux/list.h **** /**
+ 446:./include/linux/list.h ****  * list_is_singular - tests whether a list has just one entry.
+ 447:./include/linux/list.h ****  * @head: the list to test.
+ 448:./include/linux/list.h ****  */
+ 449:./include/linux/list.h **** static inline int list_is_singular(const struct list_head *head)
+ 997              		.loc 4 449 19 is_stmt 1 view .LVU314
+ 998              	.LBB148:
+ 450:./include/linux/list.h **** {
+ 451:./include/linux/list.h **** 	return !list_empty(head) && (head->next == head->prev);
+ 999              		.loc 4 451 2 view .LVU315
+ 1000              	.LBB149:
+ 1001              	.LBI149:
+ 371:./include/linux/list.h **** {
+ 1002              		.loc 4 371 19 view .LVU316
+ 373:./include/linux/list.h **** }
+ 1003              		.loc 4 373 2 view .LVU317
+ 1004              	.LBB150:
+ 373:./include/linux/list.h **** }
+ 1005              		.loc 4 373 9 view .LVU318
+ 1006              	.LBB151:
+ 373:./include/linux/list.h **** }
+ 1007              		.loc 4 373 9 view .LVU319
+ 373:./include/linux/list.h **** }
+ 1008              		.loc 4 373 9 view .LVU320
+ 1009              	.LBE151:
+ 373:./include/linux/list.h **** }
+ 1010              		.loc 4 373 9 discriminator 2 view .LVU321
+ 373:./include/linux/list.h **** }
+ 1011              		.loc 4 373 9 discriminator 2 view .LVU322
+ 1012 0012 D4F8CC20 		ldr	r2, [r4, #204]
+ 1013              	.LVL86:
+ 373:./include/linux/list.h **** }
+ARM GAS  /tmp/ccXPZLMi.s 			page 40
+
+
+ 1014              		.loc 4 373 9 is_stmt 0 discriminator 2 view .LVU323
+ 1015              	.LBE150:
+ 1016              	.LBE149:
+ 1017              		.loc 4 451 27 discriminator 1 view .LVU324
+ 1018 0016 9342     		cmp	r3, r2
+ 1019 0018 05D0     		beq	.L43
+ 1020              		.loc 4 451 35 discriminator 1 view .LVU325
+ 1021 001a D4F8CC10 		ldr	r1, [r4, #204]
+ 1022              		.loc 4 451 49 discriminator 1 view .LVU326
+ 1023 001e D4F8D020 		ldr	r2, [r4, #208]
+ 1024              		.loc 4 451 27 discriminator 1 view .LVU327
+ 1025 0022 9142     		cmp	r1, r2
+ 1026 0024 09D0     		beq	.L45
+ 1027              	.L43:
+ 1028              	.LVL87:
+ 1029              		.loc 4 451 27 discriminator 1 view .LVU328
+ 1030              	.LBE148:
+ 1031              	.LBE147:
+ 1032              	.LBB152:
+ 1033              	.LBI152:
+ 371:./include/linux/list.h **** {
+ 1034              		.loc 4 371 19 is_stmt 1 view .LVU329
+ 373:./include/linux/list.h **** }
+ 1035              		.loc 4 373 2 view .LVU330
+ 1036              	.LBB153:
+ 373:./include/linux/list.h **** }
+ 1037              		.loc 4 373 9 view .LVU331
+ 1038              	.LBB154:
+ 373:./include/linux/list.h **** }
+ 1039              		.loc 4 373 9 view .LVU332
+ 373:./include/linux/list.h **** }
+ 1040              		.loc 4 373 9 view .LVU333
+ 1041              	.LBE154:
+ 373:./include/linux/list.h **** }
+ 1042              		.loc 4 373 9 discriminator 2 view .LVU334
+ 373:./include/linux/list.h **** }
+ 1043              		.loc 4 373 9 discriminator 2 view .LVU335
+ 1044 0026 D4F8CC20 		ldr	r2, [r4, #204]
+ 1045              	.LVL88:
+ 373:./include/linux/list.h **** }
+ 1046              		.loc 4 373 9 is_stmt 0 discriminator 2 view .LVU336
+ 1047              	.LBE153:
+ 1048              	.LBE152:
+ 1049              		.loc 1 93 50 discriminator 1 view .LVU337
+ 1050 002a 9342     		cmp	r3, r2
+ 1051 002c 07D0     		beq	.L46
+ 1052              		.loc 1 93 50 discriminator 4 view .LVU338
+ 1053 002e 0024     		movs	r4, #0
+ 1054              	.LVL89:
+ 1055              	.L44:
+  94:./block/request_queue.c ****     spin_unlock(&q->queue_lock);
+ 1056              		.loc 1 94 5 is_stmt 1 view .LVU339
+ 1057 0030 2846     		mov	r0, r5
+ 1058 0032 FFF7FEFF 		bl	spin_unlock
+ 1059              	.LVL90:
+  95:./block/request_queue.c ****     return is_last;
+ 1060              		.loc 1 95 5 view .LVU340
+ARM GAS  /tmp/ccXPZLMi.s 			page 41
+
+
+  96:./block/request_queue.c **** }...
+ 1061              		.loc 1 96 1 is_stmt 0 view .LVU341
+ 1062 0036 2046     		mov	r0, r4
+ 1063 0038 38BD     		pop	{r3, r4, r5, pc}
+ 1064              	.LVL91:
+ 1065              	.L45:
+  93:./block/request_queue.c ****     int is_last = list_is_singular(&q->icq_list) || list_empty(&q->icq_list);
+ 1066              		.loc 1 93 50 discriminator 3 view .LVU342
+ 1067 003a 0124     		movs	r4, #1
+ 1068              	.LVL92:
+  93:./block/request_queue.c ****     int is_last = list_is_singular(&q->icq_list) || list_empty(&q->icq_list);
+ 1069              		.loc 1 93 50 discriminator 3 view .LVU343
+ 1070 003c F8E7     		b	.L44
+ 1071              	.LVL93:
+ 1072              	.L46:
+  93:./block/request_queue.c ****     int is_last = list_is_singular(&q->icq_list) || list_empty(&q->icq_list);
+ 1073              		.loc 1 93 50 discriminator 3 view .LVU344
+ 1074 003e 0124     		movs	r4, #1
+ 1075              	.LVL94:
+  93:./block/request_queue.c ****     int is_last = list_is_singular(&q->icq_list) || list_empty(&q->icq_list);
+ 1076              		.loc 1 93 50 discriminator 3 view .LVU345
+ 1077 0040 F6E7     		b	.L44
+ 1078              		.cfi_endproc
+ 1079              	.LFE1039:
+ 1081              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1082              		.align	2
+ 1083              	.LC1:
+ 1084 0000 626C6B5F 		.ascii	"blk_fetch_request\000"
+ 1084      66657463 
+ 1084      685F7265 
+ 1084      71756573 
+ 1084      7400
+ 1085 0012 0000     		.align	2
+ 1086              	.LC2:
+ 1087 0014 00       		.ascii	"\000"
+ 1088              		.section	.export_table,"aw"
+ 1089              		.align	2
+ 1092              	blk_fetch_request_export_struct:
+ 1093 0000 00000000 		.word	.LC1
+ 1094 0004 14000000 		.word	.LC2
+ 1095 0008 00000000 		.word	blk_fetch_request
+ 1096              		.section	.rodata.str1.4
+ 1097 0015 000000   		.align	2
+ 1098              	.LC3:
+ 1099 0018 70726F63 		.ascii	"process_requests_in_queue\000"
+ 1099      6573735F 
+ 1099      72657175 
+ 1099      65737473 
+ 1099      5F696E5F 
+ 1100              		.section	.export_table
+ 1101              		.align	2
+ 1104              	process_requests_in_queue_export_struct:
+ 1105 000c 18000000 		.word	.LC3
+ 1106 0010 14000000 		.word	.LC2
+ 1107 0014 00000000 		.word	process_requests_in_queue
+ 1108              		.section	.rodata.str1.4
+ 1109 0032 0000     		.align	2
+ARM GAS  /tmp/ccXPZLMi.s 			page 42
+
+
+ 1110              	.LC4:
+ 1111 0034 72657175 		.ascii	"request_queue_remove\000"
+ 1111      6573745F 
+ 1111      71756575 
+ 1111      655F7265 
+ 1111      6D6F7665 
+ 1112              		.section	.export_table
+ 1113              		.align	2
+ 1116              	request_queue_remove_export_struct:
+ 1117 0018 34000000 		.word	.LC4
+ 1118 001c 14000000 		.word	.LC2
+ 1119 0020 00000000 		.word	request_queue_remove
+ 1120              		.section	.rodata.str1.4
+ 1121 0049 000000   		.align	2
+ 1122              	.LC5:
+ 1123 004c 72657175 		.ascii	"request_queue_add\000"
+ 1123      6573745F 
+ 1123      71756575 
+ 1123      655F6164 
+ 1123      6400
+ 1124              		.section	.export_table
+ 1125              		.align	2
+ 1128              	request_queue_add_export_struct:
+ 1129 0024 4C000000 		.word	.LC5
+ 1130 0028 14000000 		.word	.LC2
+ 1131 002c 00000000 		.word	request_queue_add
+ 1132              		.section	.rodata.str1.4
+ 1133 005e 0000     		.align	2
+ 1134              	.LC6:
+ 1135 0060 72657175 		.ascii	"request_queue_init\000"
+ 1135      6573745F 
+ 1135      71756575 
+ 1135      655F696E 
+ 1135      697400
+ 1136              		.section	.export_table
+ 1137              		.align	2
+ 1140              	request_queue_init_export_struct:
+ 1141 0030 60000000 		.word	.LC6
+ 1142 0034 14000000 		.word	.LC2
+ 1143 0038 00000000 		.word	request_queue_init
+ 1144              		.text
+ 1145              	.Letext0:
+ 1146              		.file 6 "./include/asm-generic/int-l64.h"
+ 1147              		.file 7 "./include/asm-generic/posix_types.h"
+ 1148              		.file 8 "./include/uapi/linux/types.h"
+ 1149              		.file 9 "./include/linux/types.h"
+ 1150              		.file 10 "./include/linux/export.h"
+ 1151              		.file 11 "./include/linux/time64.h"
+ 1152              		.file 12 "./arch/arm_m/include/asm/sched.h"
+ 1153              		.file 13 "./include/linux/sched.h"
+ 1154              		.file 14 "./include/linux/spinlock_types_raw.h"
+ 1155              		.file 15 "./include/linux/spinlock_types.h"
+ 1156              		.file 16 "./include/linux/mutex.h"
+ 1157              		.file 17 "./include/linux/errseq.h"
+ 1158              		.file 18 "./include/linux/rbtree_types.h"
+ 1159              		.file 19 "./include/linux/uidgid_types.h"
+ 1160              		.file 20 "./include/linux/projid.h"
+ARM GAS  /tmp/ccXPZLMi.s 			page 43
+
+
+ 1161              		.file 21 "./include/linux/fs.h"
+ 1162              		.file 22 "./include/linux/mnt_idmapping.h"
+ 1163              		.file 23 "./include/linux/uio.h"
+ 1164              		.file 24 "./include/linux/migrate_mode.h"
+ 1165              		.file 25 "./include/linux/wait.h"
+ 1166              		.file 26 "./include/linux/xarray.h"
+ 1167              		.file 27 "./include/linux/lockref.h"
+ 1168              		.file 28 "./include/linux/dcache.h"
+ 1169              		.file 29 "./include/linux/path.h"
+ 1170              		.file 30 "./include/linux/stddef.h"
+ 1171              		.file 31 "./include/linux/gfp_types.h"
+ 1172              		.file 32 "./include/linux/reciprocal_div.h"
+ 1173              		.file 33 "./include/linux/mm_type.h"
+ 1174              		.file 34 "./include/linux/statfs.h"
+ 1175              		.file 35 "./include/linux/stat.h"
+ 1176              		.file 36 "./include/linux/bvec.h"
+ 1177              		.file 37 "./include/linux/blk_types.h"
+ 1178              		.file 38 "./include/linux/rw_hint.h"
+ 1179              		.file 39 "./include/linux/blkdev.h"
+ 1180              		.file 40 "./include/linux/bio.h"
+ 1181              		.file 41 "./include/linux/mempool_super_haper.h"
+ 1182              		.file 42 "./include/linux/mempool.h"
+ 1183              		.file 43 "./include/linux/lockdep_types.h"
+ 1184              		.file 44 "./include/linux/workqueue_types.h"
+ 1185              		.file 45 "./include/linux/blk-mq.h"
+ 1186              		.file 46 "./include/uapi/linux/pr.h"
+ 1187              		.file 47 "./include/linux/pr.h"
+ 1188              		.file 48 "./include/linux/hdreg.h"
+ 1189              		.file 49 "./include/linux/printk.h"
+ARM GAS  /tmp/ccXPZLMi.s 			page 44
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 request_queue.c
+     /tmp/ccXPZLMi.s:21     .text.__spin_init:00000000 $t
+     /tmp/ccXPZLMi.s:26     .text.__spin_init:00000000 __spin_init
+     /tmp/ccXPZLMi.s:46     .text.__spin_unlock:00000000 $t
+     /tmp/ccXPZLMi.s:51     .text.__spin_unlock:00000000 __spin_unlock
+     /tmp/ccXPZLMi.s:69     .text.spin_lock_init:00000000 $t
+     /tmp/ccXPZLMi.s:74     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccXPZLMi.s:97     .text.spin_unlock:00000000 $t
+     /tmp/ccXPZLMi.s:102    .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccXPZLMi.s:124    .text.request_queue_add:00000000 $t
+     /tmp/ccXPZLMi.s:130    .text.request_queue_add:00000000 request_queue_add
+     /tmp/ccXPZLMi.s:197    .text.request_queue_init:00000000 $t
+     /tmp/ccXPZLMi.s:203    .text.request_queue_init:00000000 request_queue_init
+     /tmp/ccXPZLMi.s:329    .text.__spin_lock:00000000 $t
+     /tmp/ccXPZLMi.s:334    .text.__spin_lock:00000000 __spin_lock
+     /tmp/ccXPZLMi.s:384    .text.spin_lock:00000000 $t
+     /tmp/ccXPZLMi.s:389    .text.spin_lock:00000000 spin_lock
+     /tmp/ccXPZLMi.s:449    .text.request_queue_remove:00000000 $t
+     /tmp/ccXPZLMi.s:455    .text.request_queue_remove:00000000 request_queue_remove
+     /tmp/ccXPZLMi.s:600    .text.blk_fetch_request:00000000 $t
+     /tmp/ccXPZLMi.s:606    .text.blk_fetch_request:00000000 blk_fetch_request
+     /tmp/ccXPZLMi.s:740    .rodata.process_requests_in_queue.str1.4:00000000 $d
+     /tmp/ccXPZLMi.s:744    .text.process_requests_in_queue:00000000 $t
+     /tmp/ccXPZLMi.s:750    .text.process_requests_in_queue:00000000 process_requests_in_queue
+     /tmp/ccXPZLMi.s:906    .text.process_requests_in_queue:00000064 $d
+     /tmp/ccXPZLMi.s:911    .text.__blk_cleanup_queue:00000000 $t
+     /tmp/ccXPZLMi.s:917    .text.__blk_cleanup_queue:00000000 __blk_cleanup_queue
+     /tmp/ccXPZLMi.s:959    .text.__blk_end_request_cur:00000000 $t
+     /tmp/ccXPZLMi.s:965    .text.__blk_end_request_cur:00000000 __blk_end_request_cur
+     /tmp/ccXPZLMi.s:1082   .rodata.str1.4:00000000 $d
+     /tmp/ccXPZLMi.s:1089   .export_table:00000000 $d
+     /tmp/ccXPZLMi.s:1092   .export_table:00000000 blk_fetch_request_export_struct
+     /tmp/ccXPZLMi.s:1104   .export_table:0000000c process_requests_in_queue_export_struct
+     /tmp/ccXPZLMi.s:1116   .export_table:00000018 request_queue_remove_export_struct
+     /tmp/ccXPZLMi.s:1128   .export_table:00000024 request_queue_add_export_struct
+     /tmp/ccXPZLMi.s:1140   .export_table:00000030 request_queue_init_export_struct
+
+UNDEFINED SYMBOLS
+__smalloc__
+stop_all_scheduler
+start_all_scheduler
+get_current_task
+__delay
+__sfree__
+printk

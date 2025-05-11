@@ -97,7 +97,7 @@ Discarded input sections
                 0x00000000       0x20 build/decompress.o
  .debug_ranges  0x00000000       0x10 build/decompress.o
  .debug_line    0x00000000       0x8d build/decompress.o
- .debug_str     0x00000000      0x1a5 build/decompress.o
+ .debug_str     0x00000000      0x1b2 build/decompress.o
  .comment       0x00000000       0x27 build/decompress.o
  .debug_frame   0x00000000       0x2c build/decompress.o
  .ARM.attributes
@@ -135,7 +135,7 @@ Discarded input sections
                 0x00000000       0x40 build/misc.o
  .debug_ranges  0x00000000       0x48 build/misc.o
  .debug_line    0x00000000      0x198 build/misc.o
- .debug_str     0x00000000      0x29b build/misc.o
+ .debug_str     0x00000000      0x2a8 build/misc.o
  .comment       0x00000000       0x27 build/misc.o
  .debug_frame   0x00000000       0x8c build/misc.o
  .ARM.attributes
@@ -189,7 +189,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/ext2_test.o
  .debug_line    0x00000000       0x36 build/ext2_test.o
- .debug_str     0x00000000      0x163 build/ext2_test.o
+ .debug_str     0x00000000      0x170 build/ext2_test.o
  .comment       0x00000000       0x27 build/ext2_test.o
  .ARM.attributes
                 0x00000000       0x34 build/ext2_test.o
@@ -334,7 +334,7 @@ Discarded input sections
                 0x00000000       0x40 build/fdt_addresses.o
  .debug_ranges  0x00000000       0x30 build/fdt_addresses.o
  .debug_line    0x00000000      0x2d9 build/fdt_addresses.o
- .debug_str     0x00000000      0x257 build/fdt_addresses.o
+ .debug_str     0x00000000      0x264 build/fdt_addresses.o
  .comment       0x00000000       0x27 build/fdt_addresses.o
  .debug_frame   0x00000000       0x98 build/fdt_addresses.o
  .ARM.attributes
@@ -351,7 +351,7 @@ Discarded input sections
                 0x00000000       0x20 build/fdt_check.o
  .debug_ranges  0x00000000       0x10 build/fdt_check.o
  .debug_line    0x00000000      0x22c build/fdt_check.o
- .debug_str     0x00000000      0x306 build/fdt_check.o
+ .debug_str     0x00000000      0x313 build/fdt_check.o
  .comment       0x00000000       0x27 build/fdt_check.o
  .debug_frame   0x00000000       0x38 build/fdt_check.o
  .ARM.attributes
@@ -370,7 +370,7 @@ Discarded input sections
                 0x00000000       0x20 build/fdt_empty_tree.o
  .debug_ranges  0x00000000       0x10 build/fdt_empty_tree.o
  .debug_line    0x00000000       0xce build/fdt_empty_tree.o
- .debug_str     0x00000000      0x1c5 build/fdt_empty_tree.o
+ .debug_str     0x00000000      0x1d2 build/fdt_empty_tree.o
  .comment       0x00000000       0x27 build/fdt_empty_tree.o
  .debug_frame   0x00000000       0x2c build/fdt_empty_tree.o
  .ARM.attributes
@@ -445,7 +445,7 @@ Discarded input sections
                 0x00000000       0xd0 build/fdt_overlay.o
  .debug_ranges  0x00000000      0x1b0 build/fdt_overlay.o
  .debug_line    0x00000000     0x1130 build/fdt_overlay.o
- .debug_str     0x00000000      0x945 build/fdt_overlay.o
+ .debug_str     0x00000000      0x952 build/fdt_overlay.o
  .comment       0x00000000       0x27 build/fdt_overlay.o
  .debug_frame   0x00000000      0x348 build/fdt_overlay.o
  .ARM.attributes
@@ -577,7 +577,7 @@ Discarded input sections
                 0x00000000       0xe0 build/fdt_rw.o
  .debug_ranges  0x00000000       0xd0 build/fdt_rw.o
  .debug_line    0x00000000     0x15f6 build/fdt_rw.o
- .debug_str     0x00000000      0x88f build/fdt_rw.o
+ .debug_str     0x00000000      0x89c build/fdt_rw.o
  .comment       0x00000000       0x27 build/fdt_rw.o
  .debug_frame   0x00000000      0x348 build/fdt_rw.o
  .ARM.attributes
@@ -600,7 +600,7 @@ Discarded input sections
                 0x00000000       0x20 build/fdt_strerror.o
  .debug_ranges  0x00000000       0x10 build/fdt_strerror.o
  .debug_line    0x00000000       0x87 build/fdt_strerror.o
- .debug_str     0x00000000      0x195 build/fdt_strerror.o
+ .debug_str     0x00000000      0x1a2 build/fdt_strerror.o
  .comment       0x00000000       0x27 build/fdt_strerror.o
  .debug_frame   0x00000000       0x20 build/fdt_strerror.o
  .ARM.attributes
@@ -651,7 +651,7 @@ Discarded input sections
                 0x00000000       0xa8 build/fdt_sw.o
  .debug_ranges  0x00000000       0x98 build/fdt_sw.o
  .debug_line    0x00000000      0xfea build/fdt_sw.o
- .debug_str     0x00000000      0x68f build/fdt_sw.o
+ .debug_str     0x00000000      0x69c build/fdt_sw.o
  .comment       0x00000000       0x27 build/fdt_sw.o
  .debug_frame   0x00000000      0x240 build/fdt_sw.o
  .ARM.attributes
@@ -678,7 +678,7 @@ Discarded input sections
                 0x00000000       0x48 build/fdt_wip.o
  .debug_ranges  0x00000000       0x38 build/fdt_wip.o
  .debug_line    0x00000000      0x2b1 build/fdt_wip.o
- .debug_str     0x00000000      0x34d build/fdt_wip.o
+ .debug_str     0x00000000      0x35a build/fdt_wip.o
  .comment       0x00000000       0x27 build/fdt_wip.o
  .debug_frame   0x00000000       0xc8 build/fdt_wip.o
  .ARM.attributes
@@ -732,7 +732,7 @@ Discarded input sections
                 0x00000000       0x98 build/atomic.o
  .debug_ranges  0x00000000       0x88 build/atomic.o
  .debug_line    0x00000000      0x15d build/atomic.o
- .debug_str     0x00000000      0x2f5 build/atomic.o
+ .debug_str     0x00000000      0x302 build/atomic.o
  .comment       0x00000000       0x27 build/atomic.o
  .debug_frame   0x00000000      0x110 build/atomic.o
  .ARM.attributes
@@ -745,7 +745,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/buffer_head.o
  .debug_line    0x00000000       0x34 build/buffer_head.o
- .debug_str     0x00000000      0x161 build/buffer_head.o
+ .debug_str     0x00000000      0x16e build/buffer_head.o
  .comment       0x00000000       0x27 build/buffer_head.o
  .ARM.attributes
                 0x00000000       0x34 build/buffer_head.o
@@ -757,7 +757,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/crc16.o
  .debug_line    0x00000000       0x2e build/crc16.o
- .debug_str     0x00000000      0x15b build/crc16.o
+ .debug_str     0x00000000      0x168 build/crc16.o
  .comment       0x00000000       0x27 build/crc16.o
  .ARM.attributes
                 0x00000000       0x34 build/crc16.o
@@ -769,7 +769,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/crc32.o
  .debug_line    0x00000000       0x2e build/crc32.o
- .debug_str     0x00000000      0x15b build/crc32.o
+ .debug_str     0x00000000      0x168 build/crc32.o
  .comment       0x00000000       0x27 build/crc32.o
  .ARM.attributes
                 0x00000000       0x34 build/crc32.o
@@ -781,7 +781,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/crc4.o
  .debug_line    0x00000000       0x2d build/crc4.o
- .debug_str     0x00000000      0x15a build/crc4.o
+ .debug_str     0x00000000      0x167 build/crc4.o
  .comment       0x00000000       0x27 build/crc4.o
  .ARM.attributes
                 0x00000000       0x34 build/crc4.o
@@ -793,7 +793,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/crc7.o
  .debug_line    0x00000000       0x2d build/crc7.o
- .debug_str     0x00000000      0x15a build/crc7.o
+ .debug_str     0x00000000      0x167 build/crc7.o
  .comment       0x00000000       0x27 build/crc7.o
  .ARM.attributes
                 0x00000000       0x34 build/crc7.o
@@ -805,7 +805,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/crc8.o
  .debug_line    0x00000000       0x2d build/crc8.o
- .debug_str     0x00000000      0x15a build/crc8.o
+ .debug_str     0x00000000      0x167 build/crc8.o
  .comment       0x00000000       0x27 build/crc8.o
  .ARM.attributes
                 0x00000000       0x34 build/crc8.o
@@ -835,7 +835,7 @@ Discarded input sections
                 0x00000000       0x40 build/error.o
  .debug_ranges  0x00000000       0x30 build/error.o
  .debug_line    0x00000000      0x543 build/error.o
- .debug_str     0x00000000      0x632 build/error.o
+ .debug_str     0x00000000      0x63f build/error.o
  .comment       0x00000000       0x27 build/error.o
  .debug_frame   0x00000000       0xe0 build/error.o
  .ARM.attributes
@@ -882,7 +882,7 @@ Discarded input sections
                 0x00000000       0x78 build/gpio_subsystem.o
  .debug_ranges  0x00000000       0x68 build/gpio_subsystem.o
  .debug_line    0x00000000      0x599 build/gpio_subsystem.o
- .debug_str     0x00000000     0x2514 build/gpio_subsystem.o
+ .debug_str     0x00000000     0x2521 build/gpio_subsystem.o
  .comment       0x00000000       0x27 build/gpio_subsystem.o
  .debug_frame   0x00000000      0x13c build/gpio_subsystem.o
  .ARM.attributes
@@ -919,7 +919,7 @@ Discarded input sections
                 0x00000000       0x70 build/lockref.o
  .debug_ranges  0x00000000       0x60 build/lockref.o
  .debug_line    0x00000000      0x340 build/lockref.o
- .debug_str     0x00000000      0x485 build/lockref.o
+ .debug_str     0x00000000      0x492 build/lockref.o
  .comment       0x00000000       0x27 build/lockref.o
  .debug_frame   0x00000000      0x128 build/lockref.o
  .ARM.attributes
@@ -980,7 +980,7 @@ Discarded input sections
                 0x00000000       0xd0 build/mempool.o
  .debug_ranges  0x00000000       0xd8 build/mempool.o
  .debug_line    0x00000000      0x91e build/mempool.o
- .debug_str     0x00000000      0x8b4 build/mempool.o
+ .debug_str     0x00000000      0x8c1 build/mempool.o
  .comment       0x00000000       0x27 build/mempool.o
  .debug_frame   0x00000000      0x248 build/mempool.o
  .ARM.attributes
@@ -1018,7 +1018,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 build/time_loop.o
  .debug_line    0x00000000       0xbc build/time_loop.o
- .debug_str     0x00000000      0x369 build/time_loop.o
+ .debug_str     0x00000000      0x376 build/time_loop.o
  .comment       0x00000000       0x27 build/time_loop.o
  .ARM.attributes
                 0x00000000       0x34 build/time_loop.o
@@ -3891,58 +3891,58 @@ LOAD linker stubs
  .debug_line    0x000162b4      0x27f /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__call_atexit.o)
  .debug_line    0x00016533      0x14f /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__atexit.o)
 
-.debug_str      0x00000000     0x7297
- .debug_str     0x00000000     0x7297 build/string.o
-                                0x20d (size before relaxing)
- .debug_str     0x00007297      0x388 build/csched-mcpu=cortex-m4.o
- .debug_str     0x00007297      0x215 build/syscall-mcpu=cortex-m4.o
- .debug_str     0x00007297      0x2b7 build/stm32f4_start_init.o
- .debug_str     0x00007297     0x2548 build/stm32f4_tty0.o
- .debug_str     0x00007297     0x27a8 build/stm32f4_gpio.o
- .debug_str     0x00007297     0x2442 build/stm32f4_spi.o
- .debug_str     0x00007297      0x2ac build/stm32f4_tick.o
- .debug_str     0x00007297     0x254e build/driver.o
- .debug_str     0x00007297     0x2b12 build/w25qxx.o
- .debug_str     0x00007297     0x2f1d build/devfs.o
- .debug_str     0x00007297     0x2f42 build/pipefs.o
- .debug_str     0x00007297     0x3059 build/initramfs.o
- .debug_str     0x00007297     0x2f44 build/sysfs.o
- .debug_str     0x00007297     0x27db build/char_device.o
- .debug_str     0x00007297     0x296b build/dcache.o
- .debug_str     0x00007297     0x245f build/file_system_type.o
- .debug_str     0x00007297     0x2762 build/fs_file.o
- .debug_str     0x00007297     0x26b6 build/fs_inode.o
- .debug_str     0x00007297     0x256d build/fs_superblock.o
- .debug_str     0x00007297     0x26a8 build/mount.o
- .debug_str     0x00007297     0x27fc build/vfs.o
- .debug_str     0x00007297     0x2794 build/add_disk.o
- .debug_str     0x00007297     0x2a08 build/bio.o
- .debug_str     0x00007297     0x24ac build/gendisk.o
- .debug_str     0x00007297     0x2dc0 build/partition.o
- .debug_str     0x00007297     0x242f build/request.o
- .debug_str     0x00007297     0x2975 build/request_queue.o
- .debug_str     0x00007297     0x29f3 build/main.o
- .debug_str     0x00007297      0xa13 build/haper.o
- .debug_str     0x00007297      0x494 build/ctrl.o
- .debug_str     0x00007297      0x6e1 build/sched.o
- .debug_str     0x00007297      0x7f2 build/task.o
- .debug_str     0x00007297      0x4a7 build/task_pools.o
- .debug_str     0x00007297      0x1c5 build/systemcall.o
- .debug_str     0x00007297       0xe9 build/irq.o
- .debug_str     0x00007297      0x479 build/fdt.o
- .debug_str     0x00007297      0x8e6 build/fdt_ro.o
- .debug_str     0x00007297      0x729 build/Preemptive.o
- .debug_str     0x00007297      0x4c2 build/_string.o
- .debug_str     0x00007297      0x177 build/ompiler.o
- .debug_str     0x00007297     0x2577 build/printk.o
- .debug_str     0x00007297      0x177 build/time.o
- .debug_str     0x00007297      0x2b9 build/vsprintf.o
- .debug_str     0x00007297       0x59 build/startup.o
- .debug_str     0x00007297       0x5f build/ssched-mcpu=cortex-m4.o
- .debug_str     0x00007297      0x1d1 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-atexit.o)
- .debug_str     0x00007297      0x1cb /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-fini.o)
- .debug_str     0x00007297      0x25e /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__call_atexit.o)
- .debug_str     0x00007297      0x23c /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__atexit.o)
+.debug_str      0x00000000     0x72a4
+ .debug_str     0x00000000     0x72a4 build/string.o
+                                0x21a (size before relaxing)
+ .debug_str     0x000072a4      0x395 build/csched-mcpu=cortex-m4.o
+ .debug_str     0x000072a4      0x222 build/syscall-mcpu=cortex-m4.o
+ .debug_str     0x000072a4      0x2c4 build/stm32f4_start_init.o
+ .debug_str     0x000072a4     0x2555 build/stm32f4_tty0.o
+ .debug_str     0x000072a4     0x27b5 build/stm32f4_gpio.o
+ .debug_str     0x000072a4     0x244f build/stm32f4_spi.o
+ .debug_str     0x000072a4      0x2b9 build/stm32f4_tick.o
+ .debug_str     0x000072a4     0x255b build/driver.o
+ .debug_str     0x000072a4     0x2b1f build/w25qxx.o
+ .debug_str     0x000072a4     0x2f2a build/devfs.o
+ .debug_str     0x000072a4     0x2f4f build/pipefs.o
+ .debug_str     0x000072a4     0x3066 build/initramfs.o
+ .debug_str     0x000072a4     0x2f51 build/sysfs.o
+ .debug_str     0x000072a4     0x27e8 build/char_device.o
+ .debug_str     0x000072a4     0x2978 build/dcache.o
+ .debug_str     0x000072a4     0x246c build/file_system_type.o
+ .debug_str     0x000072a4     0x276f build/fs_file.o
+ .debug_str     0x000072a4     0x26c3 build/fs_inode.o
+ .debug_str     0x000072a4     0x257a build/fs_superblock.o
+ .debug_str     0x000072a4     0x26b5 build/mount.o
+ .debug_str     0x000072a4     0x2809 build/vfs.o
+ .debug_str     0x000072a4     0x27a1 build/add_disk.o
+ .debug_str     0x000072a4     0x2a15 build/bio.o
+ .debug_str     0x000072a4     0x24b9 build/gendisk.o
+ .debug_str     0x000072a4     0x2dcd build/partition.o
+ .debug_str     0x000072a4     0x243c build/request.o
+ .debug_str     0x000072a4     0x2982 build/request_queue.o
+ .debug_str     0x000072a4     0x2a00 build/main.o
+ .debug_str     0x000072a4      0xa20 build/haper.o
+ .debug_str     0x000072a4      0x4a1 build/ctrl.o
+ .debug_str     0x000072a4      0x6ee build/sched.o
+ .debug_str     0x000072a4      0x7ff build/task.o
+ .debug_str     0x000072a4      0x4b4 build/task_pools.o
+ .debug_str     0x000072a4      0x1d2 build/systemcall.o
+ .debug_str     0x000072a4       0xf6 build/irq.o
+ .debug_str     0x000072a4      0x486 build/fdt.o
+ .debug_str     0x000072a4      0x8f3 build/fdt_ro.o
+ .debug_str     0x000072a4      0x736 build/Preemptive.o
+ .debug_str     0x000072a4      0x4cf build/_string.o
+ .debug_str     0x000072a4      0x184 build/ompiler.o
+ .debug_str     0x000072a4     0x2584 build/printk.o
+ .debug_str     0x000072a4      0x184 build/time.o
+ .debug_str     0x000072a4      0x2c6 build/vsprintf.o
+ .debug_str     0x000072a4       0x66 build/startup.o
+ .debug_str     0x000072a4       0x6c build/ssched-mcpu=cortex-m4.o
+ .debug_str     0x000072a4      0x1d1 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-atexit.o)
+ .debug_str     0x000072a4      0x1cb /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-fini.o)
+ .debug_str     0x000072a4      0x25e /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__call_atexit.o)
+ .debug_str     0x000072a4      0x23c /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-__atexit.o)
 
 .debug_frame    0x00000000     0x42f8
  .debug_frame   0x00000000       0xd0 build/string.o

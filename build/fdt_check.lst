@@ -1,0 +1,727 @@
+ARM GAS  /tmp/cc2tgXtL.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"fdt_check.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "./lib/fdt/fdt_check.c"
+  20              		.section	.text.fdt_check_full,"ax",%progbits
+  21              		.align	1
+  22              		.global	fdt_check_full
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	fdt_check_full:
+  28              	.LVL0:
+  29              	.LFB75:
+   1:./lib/fdt/fdt_check.c **** // SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+   2:./lib/fdt/fdt_check.c **** /*
+   3:./lib/fdt/fdt_check.c ****  * libfdt - Flat Device Tree manipulation
+   4:./lib/fdt/fdt_check.c ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   5:./lib/fdt/fdt_check.c ****  */
+   6:./lib/fdt/fdt_check.c **** #include <linux/libfdt_env.h>
+   7:./lib/fdt/fdt_check.c **** 
+   8:./lib/fdt/fdt_check.c **** #include <linux/fdt.h>
+   9:./lib/fdt/fdt_check.c **** #include <linux/libfdt.h>
+  10:./lib/fdt/fdt_check.c **** 
+  11:./lib/fdt/fdt_check.c **** 
+  12:./lib/fdt/fdt_check.c **** #include "libfdt_internal.h"
+  13:./lib/fdt/fdt_check.c **** 
+  14:./lib/fdt/fdt_check.c **** int fdt_check_full(const void *fdt, size_t bufsize)
+  15:./lib/fdt/fdt_check.c **** {
+  30              		.loc 1 15 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 16
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 15 1 is_stmt 0 view .LVU1
+  35 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 24
+  38              		.cfi_offset 4, -24
+  39              		.cfi_offset 5, -20
+  40              		.cfi_offset 6, -16
+  41              		.cfi_offset 7, -12
+  42              		.cfi_offset 8, -8
+  43              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc2tgXtL.s 			page 2
+
+
+  44 0004 84B0     		sub	sp, sp, #16
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 40
+  16:./lib/fdt/fdt_check.c **** 	int err;
+  47              		.loc 1 16 2 is_stmt 1 view .LVU2
+  17:./lib/fdt/fdt_check.c **** 	int num_memrsv;
+  48              		.loc 1 17 2 view .LVU3
+  18:./lib/fdt/fdt_check.c **** 	int offset, nextoffset = 0;
+  49              		.loc 1 18 2 view .LVU4
+  50              		.loc 1 18 14 is_stmt 0 view .LVU5
+  51 0006 0023     		movs	r3, #0
+  52 0008 0293     		str	r3, [sp, #8]
+  19:./lib/fdt/fdt_check.c **** 	uint32_t tag;
+  53              		.loc 1 19 2 is_stmt 1 view .LVU6
+  20:./lib/fdt/fdt_check.c **** 	unsigned int depth = 0;
+  54              		.loc 1 20 2 view .LVU7
+  55              	.LVL1:
+  21:./lib/fdt/fdt_check.c **** 	const void *prop;
+  56              		.loc 1 21 2 view .LVU8
+  22:./lib/fdt/fdt_check.c **** 	const char *propname;
+  57              		.loc 1 22 2 view .LVU9
+  23:./lib/fdt/fdt_check.c **** 	bool expect_end = false;
+  58              		.loc 1 23 2 view .LVU10
+  24:./lib/fdt/fdt_check.c **** 
+  25:./lib/fdt/fdt_check.c **** 	if (bufsize < FDT_V1_SIZE)
+  59              		.loc 1 25 2 view .LVU11
+  60              		.loc 1 25 5 is_stmt 0 view .LVU12
+  61 000a 1B29     		cmp	r1, #27
+  62 000c 75D9     		bls	.L13
+  63 000e 0446     		mov	r4, r0
+  64 0010 0D46     		mov	r5, r1
+  26:./lib/fdt/fdt_check.c **** 		return -FDT_ERR_TRUNCATED;
+  27:./lib/fdt/fdt_check.c **** 	if (bufsize < fdt_header_size(fdt))
+  65              		.loc 1 27 2 is_stmt 1 view .LVU13
+  66              		.loc 1 27 16 is_stmt 0 view .LVU14
+  67 0012 FFF7FEFF 		bl	fdt_header_size
+  68              	.LVL2:
+  69              		.loc 1 27 5 discriminator 1 view .LVU15
+  70 0016 A842     		cmp	r0, r5
+  71 0018 72D8     		bhi	.L14
+  28:./lib/fdt/fdt_check.c **** 		return -FDT_ERR_TRUNCATED;
+  29:./lib/fdt/fdt_check.c **** 	err = fdt_check_header(fdt);
+  72              		.loc 1 29 2 is_stmt 1 view .LVU16
+  73              		.loc 1 29 8 is_stmt 0 view .LVU17
+  74 001a 2046     		mov	r0, r4
+  75 001c FFF7FEFF 		bl	fdt_check_header
+  76              	.LVL3:
+  77 0020 0646     		mov	r6, r0
+  78              		.loc 1 29 6 discriminator 1 view .LVU18
+  79 0022 0390     		str	r0, [sp, #12]
+  30:./lib/fdt/fdt_check.c **** 	if (err != 0)
+  80              		.loc 1 30 2 is_stmt 1 view .LVU19
+  81              		.loc 1 30 5 is_stmt 0 view .LVU20
+  82 0024 80B9     		cbnz	r0, .L1
+  31:./lib/fdt/fdt_check.c **** 		return err;
+  32:./lib/fdt/fdt_check.c **** 	if (bufsize < fdt_totalsize(fdt))
+  83              		.loc 1 32 2 is_stmt 1 view .LVU21
+ARM GAS  /tmp/cc2tgXtL.s 			page 3
+
+
+  84              	.LVL4:
+  85              	.LBB5:
+  86              	.LBI5:
+  87              		.file 2 "./include/linux/libfdt.h"
+   1:./include/linux/libfdt.h **** /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+   2:./include/linux/libfdt.h **** #ifndef LIBFDT_H
+   3:./include/linux/libfdt.h **** #define LIBFDT_H
+   4:./include/linux/libfdt.h **** /*
+   5:./include/linux/libfdt.h ****  * libfdt - Flat Device Tree manipulation
+   6:./include/linux/libfdt.h ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   7:./include/linux/libfdt.h ****  */
+   8:./include/linux/libfdt.h **** 
+   9:./include/linux/libfdt.h **** #include <linux/libfdt_env.h>
+  10:./include/linux/libfdt.h **** #include <linux/fdt.h>
+  11:./include/linux/libfdt.h **** 
+  12:./include/linux/libfdt.h **** #ifdef __cplusplus
+  13:./include/linux/libfdt.h **** extern "C" {
+  14:./include/linux/libfdt.h **** #endif
+  15:./include/linux/libfdt.h **** 
+  16:./include/linux/libfdt.h **** 
+  17:./include/linux/libfdt.h **** extern const uint8_t __dtb_file_start_address[];
+  18:./include/linux/libfdt.h **** extern const uint8_t __dtb_file_end_address[];
+  19:./include/linux/libfdt.h **** 
+  20:./include/linux/libfdt.h **** #define FDT_FIRST_SUPPORTED_VERSION	0x02
+  21:./include/linux/libfdt.h **** #define FDT_LAST_COMPATIBLE_VERSION	0x10
+  22:./include/linux/libfdt.h **** #define FDT_LAST_SUPPORTED_VERSION	0x11
+  23:./include/linux/libfdt.h **** 
+  24:./include/linux/libfdt.h **** /* Error codes: informative error codes */
+  25:./include/linux/libfdt.h **** #define FDT_ERR_NOTFOUND	1
+  26:./include/linux/libfdt.h **** 	/* FDT_ERR_NOTFOUND: The requested node or property does not exist */
+  27:./include/linux/libfdt.h **** #define FDT_ERR_EXISTS		2
+  28:./include/linux/libfdt.h **** 	/* FDT_ERR_EXISTS: Attempted to create a node or property which
+  29:./include/linux/libfdt.h **** 	 * already exists */
+  30:./include/linux/libfdt.h **** #define FDT_ERR_NOSPACE		3
+  31:./include/linux/libfdt.h **** 	/* FDT_ERR_NOSPACE: Operation needed to expand the device
+  32:./include/linux/libfdt.h **** 	 * tree, but its buffer did not have sufficient space to
+  33:./include/linux/libfdt.h **** 	 * contain the expanded tree. Use fdt_open_into() to move the
+  34:./include/linux/libfdt.h **** 	 * device tree to a buffer with more space. */
+  35:./include/linux/libfdt.h **** 
+  36:./include/linux/libfdt.h **** /* Error codes: codes for bad parameters */
+  37:./include/linux/libfdt.h **** #define FDT_ERR_BADOFFSET	4
+  38:./include/linux/libfdt.h **** 	/* FDT_ERR_BADOFFSET: Function was passed a structure block
+  39:./include/linux/libfdt.h **** 	 * offset which is out-of-bounds, or which points to an
+  40:./include/linux/libfdt.h **** 	 * unsuitable part of the structure for the operation. */
+  41:./include/linux/libfdt.h **** #define FDT_ERR_BADPATH		5
+  42:./include/linux/libfdt.h **** 	/* FDT_ERR_BADPATH: Function was passed a badly formatted path
+  43:./include/linux/libfdt.h **** 	 * (e.g. missing a leading / for a function which requires an
+  44:./include/linux/libfdt.h **** 	 * absolute path) */
+  45:./include/linux/libfdt.h **** #define FDT_ERR_BADPHANDLE	6
+  46:./include/linux/libfdt.h **** 	/* FDT_ERR_BADPHANDLE: Function was passed an invalid phandle.
+  47:./include/linux/libfdt.h **** 	 * This can be caused either by an invalid phandle property
+  48:./include/linux/libfdt.h **** 	 * length, or the phandle value was either 0 or -1, which are
+  49:./include/linux/libfdt.h **** 	 * not permitted. */
+  50:./include/linux/libfdt.h **** #define FDT_ERR_BADSTATE	7
+  51:./include/linux/libfdt.h **** 	/* FDT_ERR_BADSTATE: Function was passed an incomplete device
+  52:./include/linux/libfdt.h **** 	 * tree created by the sequential-write functions, which is
+  53:./include/linux/libfdt.h **** 	 * not sufficiently complete for the requested operation. */
+ARM GAS  /tmp/cc2tgXtL.s 			page 4
+
+
+  54:./include/linux/libfdt.h **** 
+  55:./include/linux/libfdt.h **** /* Error codes: codes for bad device tree blobs */
+  56:./include/linux/libfdt.h **** #define FDT_ERR_TRUNCATED	8
+  57:./include/linux/libfdt.h **** 	/* FDT_ERR_TRUNCATED: FDT or a sub-block is improperly
+  58:./include/linux/libfdt.h **** 	 * terminated (overflows, goes outside allowed bounds, or
+  59:./include/linux/libfdt.h **** 	 * isn't properly terminated).  */
+  60:./include/linux/libfdt.h **** #define FDT_ERR_BADMAGIC	9
+  61:./include/linux/libfdt.h **** 	/* FDT_ERR_BADMAGIC: Given "device tree" appears not to be a
+  62:./include/linux/libfdt.h **** 	 * device tree at all - it is missing the flattened device
+  63:./include/linux/libfdt.h **** 	 * tree magic number. */
+  64:./include/linux/libfdt.h **** #define FDT_ERR_BADVERSION	10
+  65:./include/linux/libfdt.h **** 	/* FDT_ERR_BADVERSION: Given device tree has a version which
+  66:./include/linux/libfdt.h **** 	 * can't be handled by the requested operation.  For
+  67:./include/linux/libfdt.h **** 	 * read-write functions, this may mean that fdt_open_into() is
+  68:./include/linux/libfdt.h **** 	 * required to convert the tree to the expected version. */
+  69:./include/linux/libfdt.h **** #define FDT_ERR_BADSTRUCTURE	11
+  70:./include/linux/libfdt.h **** 	/* FDT_ERR_BADSTRUCTURE: Given device tree has a corrupt
+  71:./include/linux/libfdt.h **** 	 * structure block or other serious error (e.g. misnested
+  72:./include/linux/libfdt.h **** 	 * nodes, or subnodes preceding properties). */
+  73:./include/linux/libfdt.h **** #define FDT_ERR_BADLAYOUT	12
+  74:./include/linux/libfdt.h **** 	/* FDT_ERR_BADLAYOUT: For read-write functions, the given
+  75:./include/linux/libfdt.h **** 	 * device tree has it's sub-blocks in an order that the
+  76:./include/linux/libfdt.h **** 	 * function can't handle (memory reserve map, then structure,
+  77:./include/linux/libfdt.h **** 	 * then strings).  Use fdt_open_into() to reorganize the tree
+  78:./include/linux/libfdt.h **** 	 * into a form suitable for the read-write operations. */
+  79:./include/linux/libfdt.h **** 
+  80:./include/linux/libfdt.h **** /* "Can't happen" error indicating a bug in libfdt */
+  81:./include/linux/libfdt.h **** #define FDT_ERR_INTERNAL	13
+  82:./include/linux/libfdt.h **** 	/* FDT_ERR_INTERNAL: libfdt has failed an internal assertion.
+  83:./include/linux/libfdt.h **** 	 * Should never be returned, if it is, it indicates a bug in
+  84:./include/linux/libfdt.h **** 	 * libfdt itself. */
+  85:./include/linux/libfdt.h **** 
+  86:./include/linux/libfdt.h **** /* Errors in device tree content */
+  87:./include/linux/libfdt.h **** #define FDT_ERR_BADNCELLS	14
+  88:./include/linux/libfdt.h **** 	/* FDT_ERR_BADNCELLS: Device tree has a #address-cells, #size-cells
+  89:./include/linux/libfdt.h **** 	 * or similar property with a bad format or value */
+  90:./include/linux/libfdt.h **** 
+  91:./include/linux/libfdt.h **** #define FDT_ERR_BADVALUE	15
+  92:./include/linux/libfdt.h **** 	/* FDT_ERR_BADVALUE: Device tree has a property with an unexpected
+  93:./include/linux/libfdt.h **** 	 * value. For example: a property expected to contain a string list
+  94:./include/linux/libfdt.h **** 	 * is not NUL-terminated within the length of its value. */
+  95:./include/linux/libfdt.h **** 
+  96:./include/linux/libfdt.h **** #define FDT_ERR_BADOVERLAY	16
+  97:./include/linux/libfdt.h **** 	/* FDT_ERR_BADOVERLAY: The device tree overlay, while
+  98:./include/linux/libfdt.h **** 	 * correctly structured, cannot be applied due to some
+  99:./include/linux/libfdt.h **** 	 * unexpected or missing value, property or node. */
+ 100:./include/linux/libfdt.h **** 
+ 101:./include/linux/libfdt.h **** #define FDT_ERR_NOPHANDLES	17
+ 102:./include/linux/libfdt.h **** 	/* FDT_ERR_NOPHANDLES: The device tree doesn't have any
+ 103:./include/linux/libfdt.h **** 	 * phandle available anymore without causing an overflow */
+ 104:./include/linux/libfdt.h **** 
+ 105:./include/linux/libfdt.h **** #define FDT_ERR_BADFLAGS	18
+ 106:./include/linux/libfdt.h **** 	/* FDT_ERR_BADFLAGS: The function was passed a flags field that
+ 107:./include/linux/libfdt.h **** 	 * contains invalid flags or an invalid combination of flags. */
+ 108:./include/linux/libfdt.h **** 
+ 109:./include/linux/libfdt.h **** #define FDT_ERR_ALIGNMENT	19
+ 110:./include/linux/libfdt.h **** 	/* FDT_ERR_ALIGNMENT: The device tree base address is not 8-byte
+ARM GAS  /tmp/cc2tgXtL.s 			page 5
+
+
+ 111:./include/linux/libfdt.h **** 	 * aligned. */
+ 112:./include/linux/libfdt.h **** 
+ 113:./include/linux/libfdt.h **** #define FDT_ERR_MAX		19
+ 114:./include/linux/libfdt.h **** 
+ 115:./include/linux/libfdt.h **** /* constants */
+ 116:./include/linux/libfdt.h **** #define FDT_MAX_PHANDLE 0xfffffffe
+ 117:./include/linux/libfdt.h **** 	/* Valid values for phandles range from 1 to 2^32-2. */
+ 118:./include/linux/libfdt.h **** 
+ 119:./include/linux/libfdt.h **** /**********************************************************************/
+ 120:./include/linux/libfdt.h **** /* Low-level functions (you probably don't need these)                */
+ 121:./include/linux/libfdt.h **** /**********************************************************************/
+ 122:./include/linux/libfdt.h **** 
+ 123:./include/linux/libfdt.h **** #ifndef SWIG /* This function is not useful in Python */
+ 124:./include/linux/libfdt.h **** const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int checklen);
+ 125:./include/linux/libfdt.h **** #endif
+ 126:./include/linux/libfdt.h **** static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
+ 127:./include/linux/libfdt.h **** {
+ 128:./include/linux/libfdt.h **** 	return (void *)(uintptr_t)fdt_offset_ptr(fdt, offset, checklen);
+ 129:./include/linux/libfdt.h **** }
+ 130:./include/linux/libfdt.h **** 
+ 131:./include/linux/libfdt.h **** uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+ 132:./include/linux/libfdt.h **** 
+ 133:./include/linux/libfdt.h **** /*
+ 134:./include/linux/libfdt.h ****  * External helpers to access words from a device tree blob. They're built
+ 135:./include/linux/libfdt.h ****  * to work even with unaligned pointers on platforms (such as ARMv5) that don't
+ 136:./include/linux/libfdt.h ****  * like unaligned loads and stores.
+ 137:./include/linux/libfdt.h ****  */
+ 138:./include/linux/libfdt.h **** static inline uint16_t fdt16_ld(const fdt16_t *p)
+ 139:./include/linux/libfdt.h **** {
+ 140:./include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 141:./include/linux/libfdt.h **** 
+ 142:./include/linux/libfdt.h **** 	return ((uint16_t)bp[0] << 8) | bp[1];
+ 143:./include/linux/libfdt.h **** }
+ 144:./include/linux/libfdt.h **** 
+ 145:./include/linux/libfdt.h **** static inline uint32_t fdt32_ld(const fdt32_t *p)
+  88              		.loc 2 145 24 view .LVU22
+  89              	.LBB6:
+ 146:./include/linux/libfdt.h **** {
+ 147:./include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+  90              		.loc 2 147 2 view .LVU23
+ 148:./include/linux/libfdt.h **** 
+ 149:./include/linux/libfdt.h **** 	return ((uint32_t)bp[0] << 24)
+  91              		.loc 2 149 2 view .LVU24
+  92              		.loc 2 149 22 is_stmt 0 view .LVU25
+  93 0026 2279     		ldrb	r2, [r4, #4]	@ zero_extendqisi2
+ 150:./include/linux/libfdt.h **** 		| ((uint32_t)bp[1] << 16)
+  94              		.loc 2 150 18 view .LVU26
+  95 0028 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
+  96              		.loc 2 150 22 view .LVU27
+  97 002a 1B04     		lsls	r3, r3, #16
+  98              		.loc 2 150 3 view .LVU28
+  99 002c 43EA0263 		orr	r3, r3, r2, lsl #24
+ 151:./include/linux/libfdt.h **** 		| ((uint32_t)bp[2] << 8)
+ 100              		.loc 2 151 18 view .LVU29
+ 101 0030 A279     		ldrb	r2, [r4, #6]	@ zero_extendqisi2
+ 102              		.loc 2 151 3 view .LVU30
+ 103 0032 43EA0223 		orr	r3, r3, r2, lsl #8
+ARM GAS  /tmp/cc2tgXtL.s 			page 6
+
+
+ 152:./include/linux/libfdt.h **** 		| bp[3];
+ 104              		.loc 2 152 7 view .LVU31
+ 105 0036 E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
+ 106              		.loc 2 152 3 view .LVU32
+ 107 0038 1343     		orrs	r3, r3, r2
+ 108              	.LVL5:
+ 109              		.loc 2 152 3 view .LVU33
+ 110              	.LBE6:
+ 111              	.LBE5:
+ 112              		.loc 1 32 5 discriminator 1 view .LVU34
+ 113 003a 9D42     		cmp	r5, r3
+ 114 003c 63D3     		bcc	.L16
+  33:./lib/fdt/fdt_check.c **** 		return -FDT_ERR_TRUNCATED;
+  34:./lib/fdt/fdt_check.c **** 
+  35:./lib/fdt/fdt_check.c **** 	num_memrsv = fdt_num_mem_rsv(fdt);
+ 115              		.loc 1 35 2 is_stmt 1 view .LVU35
+ 116              		.loc 1 35 15 is_stmt 0 view .LVU36
+ 117 003e 2046     		mov	r0, r4
+ 118 0040 FFF7FEFF 		bl	fdt_num_mem_rsv
+ 119              	.LVL6:
+  36:./lib/fdt/fdt_check.c **** 	if (num_memrsv < 0)
+ 120              		.loc 1 36 2 is_stmt 1 view .LVU37
+ 121              		.loc 1 36 5 is_stmt 0 view .LVU38
+ 122 0044 0028     		cmp	r0, #0
+ 123              		.loc 1 36 5 view .LVU39
+ 124 0046 02DA     		bge	.L28
+ 125              	.LVL7:
+ 126              	.L1:
+  37:./lib/fdt/fdt_check.c **** 		return num_memrsv;
+  38:./lib/fdt/fdt_check.c **** 
+  39:./lib/fdt/fdt_check.c **** 	while (1) {
+  40:./lib/fdt/fdt_check.c **** 		offset = nextoffset;
+  41:./lib/fdt/fdt_check.c **** 		tag = fdt_next_tag(fdt, offset, &nextoffset);
+  42:./lib/fdt/fdt_check.c **** 
+  43:./lib/fdt/fdt_check.c **** 		if (nextoffset < 0)
+  44:./lib/fdt/fdt_check.c **** 			return nextoffset;
+  45:./lib/fdt/fdt_check.c **** 
+  46:./lib/fdt/fdt_check.c **** 		/* If we see two root nodes, something is wrong */
+  47:./lib/fdt/fdt_check.c **** 		if (expect_end && tag != FDT_END)
+  48:./lib/fdt/fdt_check.c **** 			return -FDT_ERR_BADSTRUCTURE;
+  49:./lib/fdt/fdt_check.c **** 
+  50:./lib/fdt/fdt_check.c **** 		switch (tag) {
+  51:./lib/fdt/fdt_check.c **** 		case FDT_NOP:
+  52:./lib/fdt/fdt_check.c **** 			break;
+  53:./lib/fdt/fdt_check.c **** 
+  54:./lib/fdt/fdt_check.c **** 		case FDT_END:
+  55:./lib/fdt/fdt_check.c **** 			if (depth != 0)
+  56:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+  57:./lib/fdt/fdt_check.c **** 			return 0;
+  58:./lib/fdt/fdt_check.c **** 
+  59:./lib/fdt/fdt_check.c **** 		case FDT_BEGIN_NODE:
+  60:./lib/fdt/fdt_check.c **** 			depth++;
+  61:./lib/fdt/fdt_check.c **** 			if (depth > INT_MAX)
+  62:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+  63:./lib/fdt/fdt_check.c **** 
+  64:./lib/fdt/fdt_check.c **** 			/* The root node must have an empty name */
+  65:./lib/fdt/fdt_check.c **** 			if (depth == 1) {
+ARM GAS  /tmp/cc2tgXtL.s 			page 7
+
+
+  66:./lib/fdt/fdt_check.c **** 				const char *name;
+  67:./lib/fdt/fdt_check.c **** 				int len;
+  68:./lib/fdt/fdt_check.c **** 
+  69:./lib/fdt/fdt_check.c **** 				name = fdt_get_name(fdt, offset, &len);
+  70:./lib/fdt/fdt_check.c **** 				if (!name)
+  71:./lib/fdt/fdt_check.c **** 					return len;
+  72:./lib/fdt/fdt_check.c **** 
+  73:./lib/fdt/fdt_check.c **** 				if (*name || len)
+  74:./lib/fdt/fdt_check.c **** 					return -FDT_ERR_BADSTRUCTURE;
+  75:./lib/fdt/fdt_check.c **** 			}
+  76:./lib/fdt/fdt_check.c **** 			break;
+  77:./lib/fdt/fdt_check.c **** 
+  78:./lib/fdt/fdt_check.c **** 		case FDT_END_NODE:
+  79:./lib/fdt/fdt_check.c **** 			if (depth == 0)
+  80:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+  81:./lib/fdt/fdt_check.c **** 			depth--;
+  82:./lib/fdt/fdt_check.c **** 			if (depth == 0)
+  83:./lib/fdt/fdt_check.c **** 				expect_end = true;
+  84:./lib/fdt/fdt_check.c **** 			break;
+  85:./lib/fdt/fdt_check.c **** 
+  86:./lib/fdt/fdt_check.c **** 		case FDT_PROP:
+  87:./lib/fdt/fdt_check.c **** 			prop = fdt_getprop_by_offset(fdt, offset, &propname,
+  88:./lib/fdt/fdt_check.c **** 						     &err);
+  89:./lib/fdt/fdt_check.c **** 			if (!prop)
+  90:./lib/fdt/fdt_check.c **** 				return err;
+  91:./lib/fdt/fdt_check.c **** 			break;
+  92:./lib/fdt/fdt_check.c **** 
+  93:./lib/fdt/fdt_check.c **** 		default:
+  94:./lib/fdt/fdt_check.c **** 			return -FDT_ERR_INTERNAL;
+  95:./lib/fdt/fdt_check.c **** 		}
+  96:./lib/fdt/fdt_check.c **** 	}
+  97:./lib/fdt/fdt_check.c **** }
+ 127              		.loc 1 97 1 view .LVU40
+ 128 0048 04B0     		add	sp, sp, #16
+ 129              	.LCFI2:
+ 130              		.cfi_remember_state
+ 131              		.cfi_def_cfa_offset 24
+ 132              		@ sp needed
+ 133 004a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 134              	.LVL8:
+ 135              	.L28:
+ 136              	.LCFI3:
+ 137              		.cfi_restore_state
+  23:./lib/fdt/fdt_check.c **** 
+ 138              		.loc 1 23 7 view .LVU41
+ 139 004e 4FF00008 		mov	r8, #0
+  20:./lib/fdt/fdt_check.c **** 	const void *prop;
+ 140              		.loc 1 20 15 view .LVU42
+ 141 0052 4746     		mov	r7, r8
+ 142              	.LVL9:
+ 143              	.L3:
+  39:./lib/fdt/fdt_check.c **** 		offset = nextoffset;
+ 144              		.loc 1 39 2 is_stmt 1 view .LVU43
+  40:./lib/fdt/fdt_check.c **** 		tag = fdt_next_tag(fdt, offset, &nextoffset);
+ 145              		.loc 1 40 3 view .LVU44
+  40:./lib/fdt/fdt_check.c **** 		tag = fdt_next_tag(fdt, offset, &nextoffset);
+ 146              		.loc 1 40 10 is_stmt 0 view .LVU45
+ARM GAS  /tmp/cc2tgXtL.s 			page 8
+
+
+ 147 0054 029D     		ldr	r5, [sp, #8]
+ 148              	.LVL10:
+  41:./lib/fdt/fdt_check.c **** 
+ 149              		.loc 1 41 3 is_stmt 1 view .LVU46
+  41:./lib/fdt/fdt_check.c **** 
+ 150              		.loc 1 41 9 is_stmt 0 view .LVU47
+ 151 0056 02AA     		add	r2, sp, #8
+ 152 0058 2946     		mov	r1, r5
+ 153 005a 2046     		mov	r0, r4
+ 154 005c FFF7FEFF 		bl	fdt_next_tag
+ 155              	.LVL11:
+ 156 0060 0346     		mov	r3, r0
+ 157              	.LVL12:
+  43:./lib/fdt/fdt_check.c **** 			return nextoffset;
+ 158              		.loc 1 43 3 is_stmt 1 view .LVU48
+  43:./lib/fdt/fdt_check.c **** 			return nextoffset;
+ 159              		.loc 1 43 18 is_stmt 0 view .LVU49
+ 160 0062 0298     		ldr	r0, [sp, #8]
+ 161              	.LVL13:
+  43:./lib/fdt/fdt_check.c **** 			return nextoffset;
+ 162              		.loc 1 43 6 view .LVU50
+ 163 0064 0028     		cmp	r0, #0
+ 164 0066 EFDB     		blt	.L1
+  47:./lib/fdt/fdt_check.c **** 			return -FDT_ERR_BADSTRUCTURE;
+ 165              		.loc 1 47 3 is_stmt 1 view .LVU51
+  47:./lib/fdt/fdt_check.c **** 			return -FDT_ERR_BADSTRUCTURE;
+ 166              		.loc 1 47 6 is_stmt 0 view .LVU52
+ 167 0068 B8F1000F 		cmp	r8, #0
+ 168 006c 18D1     		bne	.L29
+  50:./lib/fdt/fdt_check.c **** 		case FDT_NOP:
+ 169              		.loc 1 50 3 is_stmt 1 view .LVU53
+ 170 006e 581E     		subs	r0, r3, #1
+ 171 0070 0828     		cmp	r0, #8
+ 172 0072 4ED8     		bhi	.L18
+ 173 0074 01A3     		adr	r3, .L7
+ 174 0076 53F820F0 		ldr	pc, [r3, r0, lsl #2]
+ 175              	.LVL14:
+ 176 007a 00BF     		.p2align 2
+ 177              	.L7:
+ 178 007c AD000000 		.word	.L10+1
+ 179 0080 DB000000 		.word	.L9+1
+ 180 0084 E7000000 		.word	.L8+1
+ 181 0088 55000000 		.word	.L3+1
+ 182 008c 13010000 		.word	.L18+1
+ 183 0090 13010000 		.word	.L18+1
+ 184 0094 13010000 		.word	.L18+1
+ 185 0098 13010000 		.word	.L18+1
+ 186 009c A5000000 		.word	.L6+1
+ 187              		.p2align 1
+ 188              	.L29:
+  47:./lib/fdt/fdt_check.c **** 			return -FDT_ERR_BADSTRUCTURE;
+ 189              		.loc 1 47 18 is_stmt 0 discriminator 1 view .LVU54
+ 190 00a0 092B     		cmp	r3, #9
+ 191 00a2 33D1     		bne	.L30
+ 192              	.LVL15:
+ 193              	.L6:
+  55:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ARM GAS  /tmp/cc2tgXtL.s 			page 9
+
+
+ 194              		.loc 1 55 4 is_stmt 1 view .LVU55
+  55:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 195              		.loc 1 55 7 is_stmt 0 view .LVU56
+ 196 00a4 002F     		cmp	r7, #0
+ 197 00a6 37D1     		bne	.L19
+  57:./lib/fdt/fdt_check.c **** 
+ 198              		.loc 1 57 11 view .LVU57
+ 199 00a8 3046     		mov	r0, r6
+ 200 00aa CDE7     		b	.L1
+ 201              	.LVL16:
+ 202              	.L10:
+  60:./lib/fdt/fdt_check.c **** 			if (depth > INT_MAX)
+ 203              		.loc 1 60 4 is_stmt 1 view .LVU58
+  61:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 204              		.loc 1 61 4 view .LVU59
+  61:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 205              		.loc 1 61 7 is_stmt 0 view .LVU60
+ 206 00ac 0137     		adds	r7, r7, #1
+ 207              	.LVL17:
+  61:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 208              		.loc 1 61 7 view .LVU61
+ 209 00ae 36D4     		bmi	.L20
+  65:./lib/fdt/fdt_check.c **** 				const char *name;
+ 210              		.loc 1 65 4 is_stmt 1 view .LVU62
+  65:./lib/fdt/fdt_check.c **** 				const char *name;
+ 211              		.loc 1 65 7 is_stmt 0 view .LVU63
+ 212 00b0 012F     		cmp	r7, #1
+ 213 00b2 CFD1     		bne	.L3
+ 214              	.LBB7:
+  66:./lib/fdt/fdt_check.c **** 				int len;
+ 215              		.loc 1 66 5 is_stmt 1 view .LVU64
+  67:./lib/fdt/fdt_check.c **** 
+ 216              		.loc 1 67 5 view .LVU65
+  69:./lib/fdt/fdt_check.c **** 				if (!name)
+ 217              		.loc 1 69 5 view .LVU66
+  69:./lib/fdt/fdt_check.c **** 				if (!name)
+ 218              		.loc 1 69 12 is_stmt 0 view .LVU67
+ 219 00b4 6A46     		mov	r2, sp
+ 220 00b6 2946     		mov	r1, r5
+ 221 00b8 2046     		mov	r0, r4
+ 222              	.LVL18:
+  69:./lib/fdt/fdt_check.c **** 				if (!name)
+ 223              		.loc 1 69 12 view .LVU68
+ 224 00ba FFF7FEFF 		bl	fdt_get_name
+ 225              	.LVL19:
+  70:./lib/fdt/fdt_check.c **** 					return len;
+ 226              		.loc 1 70 5 is_stmt 1 view .LVU69
+  70:./lib/fdt/fdt_check.c **** 					return len;
+ 227              		.loc 1 70 8 is_stmt 0 view .LVU70
+ 228 00be 38B1     		cbz	r0, .L31
+  73:./lib/fdt/fdt_check.c **** 					return -FDT_ERR_BADSTRUCTURE;
+ 229              		.loc 1 73 5 is_stmt 1 view .LVU71
+  73:./lib/fdt/fdt_check.c **** 					return -FDT_ERR_BADSTRUCTURE;
+ 230              		.loc 1 73 9 is_stmt 0 view .LVU72
+ 231 00c0 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  73:./lib/fdt/fdt_check.c **** 					return -FDT_ERR_BADSTRUCTURE;
+ 232              		.loc 1 73 8 view .LVU73
+ARM GAS  /tmp/cc2tgXtL.s 			page 10
+
+
+ 233 00c2 3BB9     		cbnz	r3, .L21
+  73:./lib/fdt/fdt_check.c **** 					return -FDT_ERR_BADSTRUCTURE;
+ 234              		.loc 1 73 15 discriminator 1 view .LVU74
+ 235 00c4 009B     		ldr	r3, [sp]
+ 236 00c6 002B     		cmp	r3, #0
+ 237 00c8 C4D0     		beq	.L3
+  74:./lib/fdt/fdt_check.c **** 			}
+ 238              		.loc 1 74 13 view .LVU75
+ 239 00ca 6FF00A00 		mvn	r0, #10
+ 240              	.LVL20:
+  74:./lib/fdt/fdt_check.c **** 			}
+ 241              		.loc 1 74 13 view .LVU76
+ 242 00ce BBE7     		b	.L1
+ 243              	.LVL21:
+ 244              	.L31:
+  71:./lib/fdt/fdt_check.c **** 
+ 245              		.loc 1 71 6 is_stmt 1 view .LVU77
+  71:./lib/fdt/fdt_check.c **** 
+ 246              		.loc 1 71 13 is_stmt 0 view .LVU78
+ 247 00d0 0098     		ldr	r0, [sp]
+ 248              	.LVL22:
+  71:./lib/fdt/fdt_check.c **** 
+ 249              		.loc 1 71 13 view .LVU79
+ 250 00d2 B9E7     		b	.L1
+ 251              	.LVL23:
+ 252              	.L21:
+  74:./lib/fdt/fdt_check.c **** 			}
+ 253              		.loc 1 74 13 view .LVU80
+ 254 00d4 6FF00A00 		mvn	r0, #10
+ 255              	.LVL24:
+  74:./lib/fdt/fdt_check.c **** 			}
+ 256              		.loc 1 74 13 view .LVU81
+ 257 00d8 B6E7     		b	.L1
+ 258              	.LVL25:
+ 259              	.L9:
+  74:./lib/fdt/fdt_check.c **** 			}
+ 260              		.loc 1 74 13 view .LVU82
+ 261              	.LBE7:
+  79:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 262              		.loc 1 79 4 is_stmt 1 view .LVU83
+  79:./lib/fdt/fdt_check.c **** 				return -FDT_ERR_BADSTRUCTURE;
+ 263              		.loc 1 79 7 is_stmt 0 view .LVU84
+ 264 00da 1FB3     		cbz	r7, .L23
+  81:./lib/fdt/fdt_check.c **** 			if (depth == 0)
+ 265              		.loc 1 81 4 is_stmt 1 view .LVU85
+ 266              	.LVL26:
+  82:./lib/fdt/fdt_check.c **** 				expect_end = true;
+ 267              		.loc 1 82 4 view .LVU86
+  82:./lib/fdt/fdt_check.c **** 				expect_end = true;
+ 268              		.loc 1 82 7 is_stmt 0 view .LVU87
+ 269 00dc 013F     		subs	r7, r7, #1
+ 270              	.LVL27:
+  82:./lib/fdt/fdt_check.c **** 				expect_end = true;
+ 271              		.loc 1 82 7 view .LVU88
+ 272 00de B9D1     		bne	.L3
+  83:./lib/fdt/fdt_check.c **** 			break;
+ 273              		.loc 1 83 16 view .LVU89
+ARM GAS  /tmp/cc2tgXtL.s 			page 11
+
+
+ 274 00e0 4FF00108 		mov	r8, #1
+ 275              	.LVL28:
+  83:./lib/fdt/fdt_check.c **** 			break;
+ 276              		.loc 1 83 16 view .LVU90
+ 277 00e4 B6E7     		b	.L3
+ 278              	.LVL29:
+ 279              	.L8:
+  87:./lib/fdt/fdt_check.c **** 						     &err);
+ 280              		.loc 1 87 4 is_stmt 1 view .LVU91
+  87:./lib/fdt/fdt_check.c **** 						     &err);
+ 281              		.loc 1 87 11 is_stmt 0 view .LVU92
+ 282 00e6 03AB     		add	r3, sp, #12
+ 283 00e8 01AA     		add	r2, sp, #4
+ 284 00ea 2946     		mov	r1, r5
+ 285 00ec 2046     		mov	r0, r4
+ 286              	.LVL30:
+  87:./lib/fdt/fdt_check.c **** 						     &err);
+ 287              		.loc 1 87 11 view .LVU93
+ 288 00ee FFF7FEFF 		bl	fdt_getprop_by_offset
+ 289              	.LVL31:
+  89:./lib/fdt/fdt_check.c **** 				return err;
+ 290              		.loc 1 89 4 is_stmt 1 view .LVU94
+  89:./lib/fdt/fdt_check.c **** 				return err;
+ 291              		.loc 1 89 7 is_stmt 0 view .LVU95
+ 292 00f2 0028     		cmp	r0, #0
+ 293 00f4 AED1     		bne	.L3
+  90:./lib/fdt/fdt_check.c **** 			break;
+ 294              		.loc 1 90 5 is_stmt 1 view .LVU96
+  90:./lib/fdt/fdt_check.c **** 			break;
+ 295              		.loc 1 90 12 is_stmt 0 view .LVU97
+ 296 00f6 0398     		ldr	r0, [sp, #12]
+ 297              	.LVL32:
+  90:./lib/fdt/fdt_check.c **** 			break;
+ 298              		.loc 1 90 12 view .LVU98
+ 299 00f8 A6E7     		b	.L1
+ 300              	.LVL33:
+ 301              	.L13:
+  26:./lib/fdt/fdt_check.c **** 	if (bufsize < fdt_header_size(fdt))
+ 302              		.loc 1 26 10 view .LVU99
+ 303 00fa 6FF00700 		mvn	r0, #7
+ 304              	.LVL34:
+  26:./lib/fdt/fdt_check.c **** 	if (bufsize < fdt_header_size(fdt))
+ 305              		.loc 1 26 10 view .LVU100
+ 306 00fe A3E7     		b	.L1
+ 307              	.LVL35:
+ 308              	.L14:
+  28:./lib/fdt/fdt_check.c **** 	err = fdt_check_header(fdt);
+ 309              		.loc 1 28 10 view .LVU101
+ 310 0100 6FF00700 		mvn	r0, #7
+ 311 0104 A0E7     		b	.L1
+ 312              	.LVL36:
+ 313              	.L16:
+  33:./lib/fdt/fdt_check.c **** 
+ 314              		.loc 1 33 10 view .LVU102
+ 315 0106 6FF00700 		mvn	r0, #7
+ 316 010a 9DE7     		b	.L1
+ 317              	.LVL37:
+ARM GAS  /tmp/cc2tgXtL.s 			page 12
+
+
+ 318              	.L30:
+  48:./lib/fdt/fdt_check.c **** 
+ 319              		.loc 1 48 11 view .LVU103
+ 320 010c 6FF00A00 		mvn	r0, #10
+ 321 0110 9AE7     		b	.L1
+ 322              	.LVL38:
+ 323              	.L18:
+  50:./lib/fdt/fdt_check.c **** 		case FDT_NOP:
+ 324              		.loc 1 50 3 view .LVU104
+ 325 0112 6FF00C00 		mvn	r0, #12
+ 326              	.LVL39:
+  50:./lib/fdt/fdt_check.c **** 		case FDT_NOP:
+ 327              		.loc 1 50 3 view .LVU105
+ 328 0116 97E7     		b	.L1
+ 329              	.L19:
+  56:./lib/fdt/fdt_check.c **** 			return 0;
+ 330              		.loc 1 56 12 view .LVU106
+ 331 0118 6FF00A00 		mvn	r0, #10
+ 332 011c 94E7     		b	.L1
+ 333              	.LVL40:
+ 334              	.L20:
+  62:./lib/fdt/fdt_check.c **** 
+ 335              		.loc 1 62 12 view .LVU107
+ 336 011e 6FF00A00 		mvn	r0, #10
+ 337              	.LVL41:
+  62:./lib/fdt/fdt_check.c **** 
+ 338              		.loc 1 62 12 view .LVU108
+ 339 0122 91E7     		b	.L1
+ 340              	.LVL42:
+ 341              	.L23:
+  80:./lib/fdt/fdt_check.c **** 			depth--;
+ 342              		.loc 1 80 12 view .LVU109
+ 343 0124 6FF00A00 		mvn	r0, #10
+ 344              	.LVL43:
+  80:./lib/fdt/fdt_check.c **** 			depth--;
+ 345              		.loc 1 80 12 view .LVU110
+ 346 0128 8EE7     		b	.L1
+ 347              		.cfi_endproc
+ 348              	.LFE75:
+ 350 012a 00BF     		.text
+ 351              	.Letext0:
+ 352              		.file 3 "./include/asm-generic/int-l64.h"
+ 353              		.file 4 "./include/asm-generic/posix_types.h"
+ 354              		.file 5 "./include/linux/types.h"
+ 355              		.file 6 "./include/linux/libfdt_env.h"
+ 356              		.file 7 "./include/linux/fdt.h"
+ 357              		.file 8 "./include/linux/stddef.h"
+ARM GAS  /tmp/cc2tgXtL.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fdt_check.c
+     /tmp/cc2tgXtL.s:21     .text.fdt_check_full:00000000 $t
+     /tmp/cc2tgXtL.s:27     .text.fdt_check_full:00000000 fdt_check_full
+     /tmp/cc2tgXtL.s:178    .text.fdt_check_full:0000007c $d
+     /tmp/cc2tgXtL.s:187    .text.fdt_check_full:000000a0 $t
+
+UNDEFINED SYMBOLS
+fdt_header_size
+fdt_check_header
+fdt_num_mem_rsv
+fdt_next_tag
+fdt_get_name
+fdt_getprop_by_offset
