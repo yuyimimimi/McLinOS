@@ -10,13 +10,13 @@ The goal is to build a **portable, configurable, modular microkernel** that is *
 
 The project must be compiled in a **Linux terminal environment** using the standard `make` build system.
 
-- Supports graphical kernel configuration using `make menuconfig`
+- Supports graphical kernel configuration using 
+ ```bash
+ make menuconfig
+ 
 - Supports Device Tree — compile with:
   ```bash
   make dtbs
-
-
-
 
 
 本项目仍在开发与测试中，仅供学习、研究和爱好者尝试使用。
