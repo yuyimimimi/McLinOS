@@ -132,6 +132,65 @@ struct  dentry * select_file(char * path , int offset)
     return esarch_dentry;
 }
 
+/**
+ * 根据完整路径创建所有必要的目录和最终文件
+ * @param path 完整路径(如"/a/b/c/file.txt")
+ * @param mode 最终文件的模式
+ * @return 成功返回目标dentry，失败返回错误指针
+ */
+static struct dentry *create_path_and_file(const char *path, umode_t mode)
+{
+    struct dentry *parent = root_dentry;
+    struct dentry *child = NULL;
+    char component[NAME_MAX];
+    const char *start = path;
+    const char *end;
+    int err;
+    if (*start != '/') 
+    return NULL;
+
+    if (*start == '/') start++;
+    while ((end = strchr(start, '/'))) {
+        size_t len = end - start;
+        if (len >= sizeof(component)) {
+            return ERR_PTR(-ENAMETOOLONG);
+        }
+        strncpy(component, start, len);
+        component[len] = '\0';
+        child = find_dentry(parent, component, 0);
+        if (IS_ERR(child)) {
+            child = create_dentry(parent, component, S_IFDIR | 0755);
+            if (IS_ERR(child)) {
+                pr_err("Failed to create directory '%s': %ld\n",
+                      component, PTR_ERR(child));
+                return child;
+            }
+        }
+        if (!S_ISDIR(child->d_inode->i_mode)) {
+            return ERR_PTR(-ENOTDIR);
+        }
+        parent = child;
+        start = end + 1;
+    }
+    if (*start != '\0') {
+        child = create_dentry(parent, start, mode);
+        if (IS_ERR(child)) {
+            pr_err("Failed to create file '%s': %ld\n",
+                  start, PTR_ERR(child));
+            return child;
+        }
+        return child;
+    }
+    return parent;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -227,7 +286,7 @@ void *print_mode(char *path)
 
 struct file *filp_open(const char * path, int flags, umode_t mode)
 {
-    pr_info("open file %s\n",path);
+    printk(KERN_DEBUG "open file %s\n",path);
     struct dentry*file_dentry = select_file(path,0);
     if(IS_ERR(file_dentry))
     {
@@ -248,6 +307,11 @@ struct file *filp_open(const char * path, int flags, umode_t mode)
     struct file *file = f_get(file_dentry);
     if(IS_ERR(file))
         return ERR_PTR(-ENOMEM);
+
+    if ((file->f_inode->i_mode & S_IFMT) == S_IFDIR) {
+        file->f_pos = 0;
+    }
+
     file->f_flags = flags;
     file->f_mode = mode;
     int flag = 0;
@@ -263,13 +327,10 @@ struct file *filp_open(const char * path, int flags, umode_t mode)
         f_put(file);
         return NULL;
     }
-    
     if(file->f_op->write != NULL)
     file->f_flags |= O_RDONLY;
-
     file->f_inode->i_atime_nsec  = jiffies/HZ;
     file->f_inode->i_atime_nsec  = jiffies%HZ;
-
     return file;
 }
 EXPORT_SYMBOL(filp_open);
@@ -295,13 +356,13 @@ ssize_t kernel_read(struct file *file, void * buf, size_t count, loff_t *ppos)
 EXPORT_SYMBOL(kernel_read);
 
 ssize_t kernel_write(struct file *file,const void * buf, size_t count, loff_t *ppos)
-{    
+{   
+    ssize_t size = -EBADF;
     if(file == NULL) return -1;
     if ((file->f_flags & O_ACCMODE) == O_RDONLY) {
         print_read_only_message();
         return -EBADF;  
     }
-    ssize_t size;
     spin_lock(&file->f_slock);
     if(file->f_op != NULL){
         spin_lock(&file->f_inode->i_lock);
@@ -318,12 +379,12 @@ EXPORT_SYMBOL(kernel_write);
 
 long vfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
+    ssize_t size =  -EBADF;
     if(file == NULL) return -1;
     if ((file->f_flags & O_ACCMODE) == O_RDONLY) {
         print_read_only_message();
         return -EBADF;  // 只读打开，不允许写
     }
-    ssize_t size =  -EBADF;
     spin_lock(&file->f_slock);
     if(file->f_op != NULL){
         spin_lock(&file->f_inode->i_lock);
@@ -348,9 +409,28 @@ int file_close(struct file *file, fl_owner_t id)
     }
     spin_unlock(&file->f_slock);
     f_put(file);
+    return 0;
 }
 EXPORT_SYMBOL(file_close);
 
+
+
+
+#include <linux/initramfs.h>
+static int mountfile_to_initramfs(__file_data *file_data)
+{
+    struct dentry *file = create_path_and_file(file_data->path, S_IFREG | 0755);
+    if(file == NULL){
+        return -1;
+    }
+    initram_fs_mount_file(file->d_inode,file_data);
+    return 0;
+}
+static void mount_all_file(void){
+    for (__file_data *file_head = __export_file_start; file_head != __export_file_end; file_head++) {
+        mountfile_to_initramfs(file_head);
+    }
+}
 
 
 static int root_fs_init()
@@ -361,6 +441,9 @@ static int root_fs_init()
         pr_info("can not get root fs: devfs\n");
         return -1;
     }
+    
+    mount_all_file();
+    
     mkdir("/dev",0755);
     mkdir("/tmp",0755);
     mkdir("/mnt",0755);
@@ -369,6 +452,7 @@ static int root_fs_init()
     sys_mount(NULL,"/dev","devfs",0,NULL);
     sys_mount(NULL,"/tmp/pipe","pipefs",0,NULL);
     sys_mount(NULL,"/sys","sysfs",0,NULL);
+    return 0;
 }
 
 rootfs_initcall(root_fs_init);

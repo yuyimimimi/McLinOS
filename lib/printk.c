@@ -31,23 +31,38 @@ static void tty_write(const char *buf) {
 
 static char printk_buf[512];
 
-void printk(const char *fmt, ...){
+int printk_log_level_threshold = 7;  
+int printk_show_log_level      = 1;  
+
+
+static const char *log_level_str[] = {
+    "<0>", "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>"
+};
+
+void printk(int level, const char *fmt, ...){
+    if(level < 0 || level > printk_log_level_threshold){
+       return;
+    }
     spin_lock(&printk_spinlock);
     va_list args;
     time64_t now = jiffies;
     uint32_t sec = now / HZ;
     uint32_t nsec = now % HZ ;
-    if (now != 0){
-        snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u] ", sec, nsec * (1000000/HZ));
+    if (now != 0){ 
+        if(printk_show_log_level == 1)
+        snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u] %s ", sec, nsec * (1000000/HZ),log_level_str[level]);
+        else 
+        snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u]", sec, nsec * (1000000/HZ));       
         tty_write(printk_buf);        
     }
     va_start(args, fmt);
     vsnprintf(printk_buf, sizeof(printk_buf), fmt, args);
     va_end(args);
+
     tty_write(printk_buf);
     spin_unlock(&printk_spinlock);
 }
-
+EXPORT_SYMBOL(printk);
 
 
 static char minimal_buf[1024];
@@ -58,3 +73,4 @@ void __weak minimal_printk(const char *fmt, va_list args) {
 void __weak early_putchar(char c) {
     early_printk("%c", c);
 }
+EXPORT_SYMBOL(early_printk);

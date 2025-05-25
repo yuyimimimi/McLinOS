@@ -1,0 +1,1553 @@
+ARM GAS  /tmp/ccS3yGng.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"sys_fs.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c"
+  20              		.section	.text.install_fd,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	install_fd:
+  27              	.LVL0:
+  28              	.LFB962:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** #include <linux/fs.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** #include <linux/export.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** #include <linux/uaccess.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static struct file* fd_table[256];  // 支持最多 256 个文件描述符
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static int install_fd(struct file *file) {
+  29              		.loc 1 7 42 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 7 42 is_stmt 0 view .LVU1
+  35 0000 0246     		mov	r2, r0
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     for (int i = 0; i < 256; ++i) {
+  36              		.loc 1 8 5 is_stmt 1 view .LVU2
+  37              	.LBB20:
+  38              		.loc 1 8 10 view .LVU3
+  39              	.LVL1:
+  40              		.loc 1 8 14 is_stmt 0 view .LVU4
+  41 0002 0020     		movs	r0, #0
+  42              	.LVL2:
+  43              	.L2:
+  44              		.loc 1 8 23 is_stmt 1 discriminator 1 view .LVU5
+  45 0004 FF28     		cmp	r0, #255
+  46 0006 09DC     		bgt	.L6
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         if (!fd_table[i]) {
+  47              		.loc 1 9 9 view .LVU6
+  48              		.loc 1 9 22 is_stmt 0 view .LVU7
+  49 0008 064B     		ldr	r3, .L8
+ARM GAS  /tmp/ccS3yGng.s 			page 2
+
+
+  50 000a 53F82030 		ldr	r3, [r3, r0, lsl #2]
+  51              		.loc 1 9 12 view .LVU8
+  52 000e 0BB1     		cbz	r3, .L7
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     for (int i = 0; i < 256; ++i) {
+  53              		.loc 1 8 30 is_stmt 1 discriminator 2 view .LVU9
+  54 0010 0130     		adds	r0, r0, #1
+  55              	.LVL3:
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     for (int i = 0; i < 256; ++i) {
+  56              		.loc 1 8 30 is_stmt 0 discriminator 2 view .LVU10
+  57 0012 F7E7     		b	.L2
+  58              	.L7:
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****             fd_table[i] = file;
+  59              		.loc 1 10 13 is_stmt 1 view .LVU11
+  60              		.loc 1 10 25 is_stmt 0 view .LVU12
+  61 0014 034B     		ldr	r3, .L8
+  62 0016 43F82020 		str	r2, [r3, r0, lsl #2]
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****             return i;
+  63              		.loc 1 11 13 is_stmt 1 view .LVU13
+  64              		.loc 1 11 20 is_stmt 0 view .LVU14
+  65 001a 7047     		bx	lr
+  66              	.L6:
+  67              		.loc 1 11 20 view .LVU15
+  68              	.LBE20:
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         }
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return -EMFILE;  // Too many open files
+  69              		.loc 1 14 12 view .LVU16
+  70 001c 6FF01700 		mvn	r0, #23
+  71              	.LVL4:
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+  72              		.loc 1 15 1 view .LVU17
+  73 0020 7047     		bx	lr
+  74              	.L9:
+  75 0022 00BF     		.align	2
+  76              	.L8:
+  77 0024 00000000 		.word	fd_table
+  78              		.cfi_endproc
+  79              	.LFE962:
+  81              		.section	.text.get_file_from_fd,"ax",%progbits
+  82              		.align	1
+  83              		.syntax unified
+  84              		.thumb
+  85              		.thumb_func
+  87              	get_file_from_fd:
+  88              	.LVL5:
+  89              	.LFB963:
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static struct file* get_file_from_fd(int fd) {
+  90              		.loc 1 17 46 is_stmt 1 view -0
+  91              		.cfi_startproc
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94              		@ link register save eliminated.
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd < 0 || fd >= 256) return NULL;
+  95              		.loc 1 18 5 view .LVU19
+  96              		.loc 1 18 8 is_stmt 0 view .LVU20
+  97 0000 FF28     		cmp	r0, #255
+ARM GAS  /tmp/ccS3yGng.s 			page 3
+
+
+  98 0002 03D8     		bhi	.L12
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return fd_table[fd];
+  99              		.loc 1 19 5 is_stmt 1 view .LVU21
+ 100              		.loc 1 19 20 is_stmt 0 view .LVU22
+ 101 0004 024B     		ldr	r3, .L13
+ 102 0006 53F82000 		ldr	r0, [r3, r0, lsl #2]
+ 103              	.LVL6:
+ 104              		.loc 1 19 20 view .LVU23
+ 105 000a 7047     		bx	lr
+ 106              	.LVL7:
+ 107              	.L12:
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd < 0 || fd >= 256) return NULL;
+ 108              		.loc 1 18 37 discriminator 1 view .LVU24
+ 109 000c 0020     		movs	r0, #0
+ 110              	.LVL8:
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 111              		.loc 1 20 1 view .LVU25
+ 112 000e 7047     		bx	lr
+ 113              	.L14:
+ 114              		.align	2
+ 115              	.L13:
+ 116 0010 00000000 		.word	fd_table
+ 117              		.cfi_endproc
+ 118              	.LFE963:
+ 120              		.section	.text.release_fd,"ax",%progbits
+ 121              		.align	1
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	release_fd:
+ 127              	.LVL9:
+ 128              	.LFB964:
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static void release_fd(int fd) {
+ 129              		.loc 1 22 32 is_stmt 1 view -0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd >= 0 && fd < 256) {
+ 134              		.loc 1 23 5 view .LVU27
+ 135              		.loc 1 23 8 is_stmt 0 view .LVU28
+ 136 0000 FF28     		cmp	r0, #255
+ 137 0002 03D8     		bhi	.L15
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         fd_table[fd] = NULL;
+ 138              		.loc 1 24 9 is_stmt 1 view .LVU29
+ 139              		.loc 1 24 22 is_stmt 0 view .LVU30
+ 140 0004 024B     		ldr	r3, .L17
+ 141 0006 0022     		movs	r2, #0
+ 142 0008 43F82020 		str	r2, [r3, r0, lsl #2]
+ 143              	.L15:
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 144              		.loc 1 26 1 view .LVU31
+ 145 000c 7047     		bx	lr
+ 146              	.L18:
+ 147 000e 00BF     		.align	2
+ARM GAS  /tmp/ccS3yGng.s 			page 4
+
+
+ 148              	.L17:
+ 149 0010 00000000 		.word	fd_table
+ 150              		.cfi_endproc
+ 151              	.LFE964:
+ 153              		.section	.text.sys_close,"ax",%progbits
+ 154              		.align	1
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	sys_close:
+ 160              	.LVL10:
+ 161              	.LFB968:
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static long sys_open(const char *filename, int flags, umode_t mode) {
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *filp = filp_open(filename, flags, mode);
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (IS_ERR(filp))
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return PTR_ERR(filp);
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     int fd = install_fd(filp);
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd < 0) {
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         file_close(filp, NULL);
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return fd;
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return fd;
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_open);
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static long sys_read(unsigned int fd, char *buf, size_t count) {
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     void *kbuf = kmalloc(count, GFP_KERNEL);
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!kbuf)
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     loff_t pos = 0;
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_read(file, kbuf, count, &pos);
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (ret >= 0)
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         if (copy_to_user(buf, kbuf, ret))
+  59:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****             ret = -EFAULT;
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     kfree(kbuf);
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return ret;
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_read);
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static long sys_write(unsigned int fd, const char *buf, size_t count) {
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ARM GAS  /tmp/ccS3yGng.s 			page 5
+
+
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     void *kbuf = kmalloc(count, GFP_KERNEL);
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!kbuf)
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (copy_from_user(kbuf, buf, count)) {
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         kfree(kbuf);
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EFAULT;
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     loff_t pos = 0;
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_write(file, kbuf, count, &pos);
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     kfree(kbuf);
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return ret;
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_write);
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static long sys_close(unsigned int fd) {
+ 162              		.loc 1 91 40 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		.loc 1 91 40 is_stmt 0 view .LVU33
+ 167 0000 10B5     		push	{r4, lr}
+ 168              	.LCFI0:
+ 169              		.cfi_def_cfa_offset 8
+ 170              		.cfi_offset 4, -8
+ 171              		.cfi_offset 14, -4
+ 172 0002 0446     		mov	r4, r0
+  92:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 173              		.loc 1 92 5 is_stmt 1 view .LVU34
+ 174              		.loc 1 92 25 is_stmt 0 view .LVU35
+ 175 0004 FFF7FEFF 		bl	get_file_from_fd
+ 176              	.LVL11:
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 177              		.loc 1 93 5 is_stmt 1 view .LVU36
+ 178              		.loc 1 93 8 is_stmt 0 view .LVU37
+ 179 0008 38B1     		cbz	r0, .L21
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+  95:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+  96:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     file_close(file, NULL);
+ 180              		.loc 1 96 5 is_stmt 1 view .LVU38
+ 181 000a 0021     		movs	r1, #0
+ 182 000c FFF7FEFF 		bl	file_close
+ 183              	.LVL12:
+  97:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     release_fd(fd);
+ 184              		.loc 1 97 5 view .LVU39
+ 185 0010 2046     		mov	r0, r4
+ 186 0012 FFF7FEFF 		bl	release_fd
+ 187              	.LVL13:
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return 0;
+ 188              		.loc 1 98 5 view .LVU40
+ 189              		.loc 1 98 12 is_stmt 0 view .LVU41
+ 190 0016 0020     		movs	r0, #0
+ 191              	.L19:
+ARM GAS  /tmp/ccS3yGng.s 			page 6
+
+
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 192              		.loc 1 99 1 view .LVU42
+ 193 0018 10BD     		pop	{r4, pc}
+ 194              	.LVL14:
+ 195              	.L21:
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 196              		.loc 1 94 16 view .LVU43
+ 197 001a 6FF00800 		mvn	r0, #8
+ 198              	.LVL15:
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 199              		.loc 1 94 16 view .LVU44
+ 200 001e FBE7     		b	.L19
+ 201              		.cfi_endproc
+ 202              	.LFE968:
+ 204              		.section	.text.sys_open,"ax",%progbits
+ 205              		.align	1
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 210              	sys_open:
+ 211              	.LVL16:
+ 212              	.LFB965:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *filp = filp_open(filename, flags, mode);
+ 213              		.loc 1 30 69 is_stmt 1 view -0
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 0, uses_anonymous_args = 0
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *filp = filp_open(filename, flags, mode);
+ 217              		.loc 1 30 69 is_stmt 0 view .LVU46
+ 218 0000 38B5     		push	{r3, r4, r5, lr}
+ 219              	.LCFI1:
+ 220              		.cfi_def_cfa_offset 16
+ 221              		.cfi_offset 3, -16
+ 222              		.cfi_offset 4, -12
+ 223              		.cfi_offset 5, -8
+ 224              		.cfi_offset 14, -4
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (IS_ERR(filp))
+ 225              		.loc 1 31 5 is_stmt 1 view .LVU47
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (IS_ERR(filp))
+ 226              		.loc 1 31 25 is_stmt 0 view .LVU48
+ 227 0002 FFF7FEFF 		bl	filp_open
+ 228              	.LVL17:
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (IS_ERR(filp))
+ 229              		.loc 1 31 25 view .LVU49
+ 230 0006 0446     		mov	r4, r0
+ 231              	.LVL18:
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return PTR_ERR(filp);
+ 232              		.loc 1 32 5 is_stmt 1 view .LVU50
+ 233              	.LBB21:
+ 234              	.LBI21:
+ 235              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler.h>
+ARM GAS  /tmp/ccS3yGng.s 			page 7
+
+
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ARM GAS  /tmp/ccS3yGng.s 			page 8
+
+
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 236              		.loc 2 75 33 view .LVU51
+ 237              	.LBB22:
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 238              		.loc 2 77 2 view .LVU52
+ 239              		.loc 2 77 2 is_stmt 0 view .LVU53
+ 240              	.LBE22:
+ 241              	.LBE21:
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return PTR_ERR(filp);
+ 242              		.loc 1 32 8 discriminator 1 view .LVU54
+ 243 0008 10F5805F 		cmn	r0, #4096
+ 244 000c 05D8     		bhi	.L27
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd < 0) {
+ 245              		.loc 1 35 5 is_stmt 1 view .LVU55
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (fd < 0) {
+ 246              		.loc 1 35 14 is_stmt 0 view .LVU56
+ 247 000e FFF7FEFF 		bl	install_fd
+ 248              	.LVL19:
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         file_close(filp, NULL);
+ 249              		.loc 1 36 5 is_stmt 1 view .LVU57
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         file_close(filp, NULL);
+ 250              		.loc 1 36 8 is_stmt 0 view .LVU58
+ 251 0012 051E     		subs	r5, r0, #0
+ 252 0014 03DB     		blt	.L28
+ 253              	.LVL20:
+ 254              	.L23:
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_open);
+ 255              		.loc 1 42 1 view .LVU59
+ 256 0016 2846     		mov	r0, r5
+ 257 0018 38BD     		pop	{r3, r4, r5, pc}
+ 258              	.LVL21:
+ 259              	.L27:
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 260              		.loc 1 33 9 is_stmt 1 view .LVU60
+ 261              	.LBB23:
+ 262              	.LBI23:
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 263              		.loc 2 62 33 view .LVU61
+ 264              	.LBB24:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 265              		.loc 2 64 2 view .LVU62
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 266              		.loc 2 64 9 is_stmt 0 view .LVU63
+ 267 001a 0546     		mov	r5, r0
+ 268              	.LVL22:
+ARM GAS  /tmp/ccS3yGng.s 			page 9
+
+
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 269              		.loc 2 64 9 view .LVU64
+ 270              	.LBE24:
+ 271              	.LBE23:
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 272              		.loc 1 33 16 view .LVU65
+ 273 001c FBE7     		b	.L23
+ 274              	.LVL23:
+ 275              	.L28:
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return fd;
+ 276              		.loc 1 37 9 is_stmt 1 view .LVU66
+ 277 001e 0021     		movs	r1, #0
+ 278 0020 2046     		mov	r0, r4
+ 279              	.LVL24:
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return fd;
+ 280              		.loc 1 37 9 is_stmt 0 view .LVU67
+ 281 0022 FFF7FEFF 		bl	file_close
+ 282              	.LVL25:
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+ 283              		.loc 1 38 9 is_stmt 1 view .LVU68
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     }
+ 284              		.loc 1 38 16 is_stmt 0 view .LVU69
+ 285 0026 F6E7     		b	.L23
+ 286              		.cfi_endproc
+ 287              	.LFE965:
+ 289              		.section	.text.sys_read,"ax",%progbits
+ 290              		.align	1
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	sys_read:
+ 296              	.LVL26:
+ 297              	.LFB966:
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 298              		.loc 1 46 64 is_stmt 1 view -0
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 8
+ 301              		@ frame_needed = 0, uses_anonymous_args = 0
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 302              		.loc 1 46 64 is_stmt 0 view .LVU71
+ 303 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 304              	.LCFI2:
+ 305              		.cfi_def_cfa_offset 20
+ 306              		.cfi_offset 4, -20
+ 307              		.cfi_offset 5, -16
+ 308              		.cfi_offset 6, -12
+ 309              		.cfi_offset 7, -8
+ 310              		.cfi_offset 14, -4
+ 311 0002 83B0     		sub	sp, sp, #12
+ 312              	.LCFI3:
+ 313              		.cfi_def_cfa_offset 32
+ 314 0004 0E46     		mov	r6, r1
+ 315 0006 1446     		mov	r4, r2
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 316              		.loc 1 47 5 is_stmt 1 view .LVU72
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 317              		.loc 1 47 25 is_stmt 0 view .LVU73
+ARM GAS  /tmp/ccS3yGng.s 			page 10
+
+
+ 318 0008 FFF7FEFF 		bl	get_file_from_fd
+ 319              	.LVL27:
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 320              		.loc 1 48 5 is_stmt 1 view .LVU74
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 321              		.loc 1 48 8 is_stmt 0 view .LVU75
+ 322 000c F8B1     		cbz	r0, .L32
+ 323 000e 0746     		mov	r7, r0
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!kbuf)
+ 324              		.loc 1 51 5 is_stmt 1 view .LVU76
+ 325              	.LVL28:
+ 326              	.LBB25:
+ 327              	.LBI25:
+ 328              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ARM GAS  /tmp/ccS3yGng.s 			page 11
+
+
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ARM GAS  /tmp/ccS3yGng.s 			page 12
+
+
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/ccS3yGng.s 			page 13
+
+
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ARM GAS  /tmp/ccS3yGng.s 			page 14
+
+
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ARM GAS  /tmp/ccS3yGng.s 			page 15
+
+
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ARM GAS  /tmp/ccS3yGng.s 			page 16
+
+
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 329              		.loc 3 379 21 view .LVU77
+ 330              	.LBB26:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 331              		.loc 3 380 2 view .LVU78
+ 332              		.loc 3 380 9 is_stmt 0 view .LVU79
+ 333 0010 4FF44C61 		mov	r1, #3264
+ARM GAS  /tmp/ccS3yGng.s 			page 17
+
+
+ 334 0014 2046     		mov	r0, r4
+ 335              	.LVL29:
+ 336              		.loc 3 380 9 view .LVU80
+ 337 0016 FFF7FEFF 		bl	__smalloc__
+ 338              	.LVL30:
+ 339              		.loc 3 380 9 view .LVU81
+ 340              	.LBE26:
+ 341              	.LBE25:
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+ 342              		.loc 1 52 5 is_stmt 1 view .LVU82
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+ 343              		.loc 1 52 8 is_stmt 0 view .LVU83
+ 344 001a 0546     		mov	r5, r0
+ 345 001c D0B1     		cbz	r0, .L33
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_read(file, kbuf, count, &pos);
+ 346              		.loc 1 55 5 is_stmt 1 view .LVU84
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_read(file, kbuf, count, &pos);
+ 347              		.loc 1 55 12 is_stmt 0 view .LVU85
+ 348 001e 0022     		movs	r2, #0
+ 349 0020 0023     		movs	r3, #0
+ 350 0022 CDE90023 		strd	r2, [sp]
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (ret >= 0)
+ 351              		.loc 1 56 5 is_stmt 1 view .LVU86
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (ret >= 0)
+ 352              		.loc 1 56 19 is_stmt 0 view .LVU87
+ 353 0026 6B46     		mov	r3, sp
+ 354 0028 2246     		mov	r2, r4
+ 355 002a 0146     		mov	r1, r0
+ 356 002c 3846     		mov	r0, r7
+ 357              	.LVL31:
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (ret >= 0)
+ 358              		.loc 1 56 19 view .LVU88
+ 359 002e FFF7FEFF 		bl	kernel_read
+ 360              	.LVL32:
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         if (copy_to_user(buf, kbuf, ret))
+ 361              		.loc 1 57 5 is_stmt 1 view .LVU89
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         if (copy_to_user(buf, kbuf, ret))
+ 362              		.loc 1 57 8 is_stmt 0 view .LVU90
+ 363 0032 041E     		subs	r4, r0, #0
+ 364              	.LVL33:
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         if (copy_to_user(buf, kbuf, ret))
+ 365              		.loc 1 57 8 view .LVU91
+ 366 0034 05DA     		bge	.L35
+ 367              	.LVL34:
+ 368              	.L31:
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return ret;
+ 369              		.loc 1 61 5 is_stmt 1 view .LVU92
+ 370              	.LBB27:
+ 371              	.LBI27:
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 372              		.loc 3 383 20 view .LVU93
+ 373              	.LBB28:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 374              		.loc 3 384 2 view .LVU94
+ 375 0036 2846     		mov	r0, r5
+ARM GAS  /tmp/ccS3yGng.s 			page 18
+
+
+ 376 0038 FFF7FEFF 		bl	__sfree__
+ 377              	.LVL35:
+ 378              		.loc 3 384 2 is_stmt 0 view .LVU95
+ 379              	.LBE28:
+ 380              	.LBE27:
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 381              		.loc 1 62 5 is_stmt 1 view .LVU96
+ 382              	.L29:
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_read);
+ 383              		.loc 1 63 1 is_stmt 0 view .LVU97
+ 384 003c 2046     		mov	r0, r4
+ 385 003e 03B0     		add	sp, sp, #12
+ 386              	.LCFI4:
+ 387              		.cfi_remember_state
+ 388              		.cfi_def_cfa_offset 20
+ 389              		@ sp needed
+ 390 0040 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 391              	.LVL36:
+ 392              	.L35:
+ 393              	.LCFI5:
+ 394              		.cfi_restore_state
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****             ret = -EFAULT;
+ 395              		.loc 1 58 9 is_stmt 1 view .LVU98
+ 396              	.LBB29:
+ 397              	.LBI29:
+ 398              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** #ifndef _UACCESS_H
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** #define _UACCESS_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** 
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** #include <linux/compiler.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** #include <linux/types.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** #include <linux/string.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** 
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** static inline int copy_from_user(void *to, const void __user *from, size_t n) //用于裸机环境�
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** {
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h ****     memcpy(to, (void *)from, n);
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h ****     return 0;
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** }
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** static inline int copy_to_user(void __user *to, const void *from, size_t n) //用于裸机环境中
+ 399              		.loc 4 13 19 view .LVU99
+ 400              	.LBB30:
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** {
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h ****     memcpy((void *)to, from, n);
+ 401              		.loc 4 15 5 view .LVU100
+ 402 0042 2246     		mov	r2, r4
+ 403 0044 2946     		mov	r1, r5
+ 404 0046 3046     		mov	r0, r6
+ 405              	.LVL37:
+ 406              		.loc 4 15 5 is_stmt 0 view .LVU101
+ 407 0048 FFF7FEFF 		bl	memcpy
+ 408              	.LVL38:
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h ****     return 0;
+ 409              		.loc 4 16 5 is_stmt 1 view .LVU102
+ 410              		.loc 4 16 5 is_stmt 0 view .LVU103
+ 411              	.LBE30:
+ 412              	.LBE29:
+ 413 004c F3E7     		b	.L31
+ARM GAS  /tmp/ccS3yGng.s 			page 19
+
+
+ 414              	.LVL39:
+ 415              	.L32:
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 416              		.loc 1 49 16 view .LVU104
+ 417 004e 6FF00804 		mvn	r4, #8
+ 418              	.LVL40:
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 419              		.loc 1 49 16 view .LVU105
+ 420 0052 F3E7     		b	.L29
+ 421              	.LVL41:
+ 422              	.L33:
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 423              		.loc 1 53 16 view .LVU106
+ 424 0054 6FF00B04 		mvn	r4, #11
+ 425              	.LVL42:
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 426              		.loc 1 53 16 view .LVU107
+ 427 0058 F0E7     		b	.L29
+ 428              		.cfi_endproc
+ 429              	.LFE966:
+ 431              		.section	.text.sys_write,"ax",%progbits
+ 432              		.align	1
+ 433              		.syntax unified
+ 434              		.thumb
+ 435              		.thumb_func
+ 437              	sys_write:
+ 438              	.LVL43:
+ 439              	.LFB967:
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 440              		.loc 1 68 71 is_stmt 1 view -0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 8
+ 443              		@ frame_needed = 0, uses_anonymous_args = 0
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 444              		.loc 1 68 71 is_stmt 0 view .LVU109
+ 445 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 446              	.LCFI6:
+ 447              		.cfi_def_cfa_offset 20
+ 448              		.cfi_offset 4, -20
+ 449              		.cfi_offset 5, -16
+ 450              		.cfi_offset 6, -12
+ 451              		.cfi_offset 7, -8
+ 452              		.cfi_offset 14, -4
+ 453 0002 83B0     		sub	sp, sp, #12
+ 454              	.LCFI7:
+ 455              		.cfi_def_cfa_offset 32
+ 456 0004 0D46     		mov	r5, r1
+ 457 0006 1446     		mov	r4, r2
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 458              		.loc 1 69 5 is_stmt 1 view .LVU110
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 459              		.loc 1 69 25 is_stmt 0 view .LVU111
+ 460 0008 FFF7FEFF 		bl	get_file_from_fd
+ 461              	.LVL44:
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 462              		.loc 1 70 5 is_stmt 1 view .LVU112
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ARM GAS  /tmp/ccS3yGng.s 			page 20
+
+
+ 463              		.loc 1 70 8 is_stmt 0 view .LVU113
+ 464 000c E0B1     		cbz	r0, .L38
+ 465 000e 0746     		mov	r7, r0
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!kbuf)
+ 466              		.loc 1 73 5 is_stmt 1 view .LVU114
+ 467              	.LVL45:
+ 468              	.LBB31:
+ 469              	.LBI31:
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 470              		.loc 3 379 21 view .LVU115
+ 471              	.LBB32:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 472              		.loc 3 380 2 view .LVU116
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 473              		.loc 3 380 9 is_stmt 0 view .LVU117
+ 474 0010 4FF44C61 		mov	r1, #3264
+ 475 0014 2046     		mov	r0, r4
+ 476              	.LVL46:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 477              		.loc 3 380 9 view .LVU118
+ 478 0016 FFF7FEFF 		bl	__smalloc__
+ 479              	.LVL47:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 480              		.loc 3 380 9 view .LVU119
+ 481              	.LBE32:
+ 482              	.LBE31:
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+ 483              		.loc 1 74 5 is_stmt 1 view .LVU120
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -ENOMEM;
+ 484              		.loc 1 74 8 is_stmt 0 view .LVU121
+ 485 001a 0646     		mov	r6, r0
+ 486 001c B8B1     		cbz	r0, .L39
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         kfree(kbuf);
+ 487              		.loc 1 77 5 is_stmt 1 view .LVU122
+ 488              	.LVL48:
+ 489              	.LBB33:
+ 490              	.LBI33:
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** {
+ 491              		.loc 4 8 19 view .LVU123
+ 492              	.LBB34:
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h ****     return 0;
+ 493              		.loc 4 10 5 view .LVU124
+ 494 001e 2246     		mov	r2, r4
+ 495 0020 2946     		mov	r1, r5
+ 496 0022 FFF7FEFF 		bl	memcpy
+ 497              	.LVL49:
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** }
+ 498              		.loc 4 11 5 view .LVU125
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/uaccess.h **** }
+ 499              		.loc 4 11 5 is_stmt 0 view .LVU126
+ 500              	.LBE34:
+ 501              	.LBE33:
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_write(file, kbuf, count, &pos);
+ 502              		.loc 1 82 5 is_stmt 1 view .LVU127
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     ssize_t ret = kernel_write(file, kbuf, count, &pos);
+ 503              		.loc 1 82 12 is_stmt 0 view .LVU128
+ 504 0026 0022     		movs	r2, #0
+ARM GAS  /tmp/ccS3yGng.s 			page 21
+
+
+ 505 0028 0023     		movs	r3, #0
+ 506 002a CDE90023 		strd	r2, [sp]
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 507              		.loc 1 83 5 is_stmt 1 view .LVU129
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 508              		.loc 1 83 19 is_stmt 0 view .LVU130
+ 509 002e 6B46     		mov	r3, sp
+ 510 0030 2246     		mov	r2, r4
+ 511 0032 3146     		mov	r1, r6
+ 512 0034 3846     		mov	r0, r7
+ 513 0036 FFF7FEFF 		bl	kernel_write
+ 514              	.LVL50:
+ 515 003a 0446     		mov	r4, r0
+ 516              	.LVL51:
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return ret;
+ 517              		.loc 1 85 5 is_stmt 1 view .LVU131
+ 518              	.LBB35:
+ 519              	.LBI35:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 520              		.loc 3 383 20 view .LVU132
+ 521              	.LBB36:
+ 522              		.loc 3 384 2 view .LVU133
+ 523 003c 3046     		mov	r0, r6
+ 524              	.LVL52:
+ 525              		.loc 3 384 2 is_stmt 0 view .LVU134
+ 526 003e FFF7FEFF 		bl	__sfree__
+ 527              	.LVL53:
+ 528              		.loc 3 384 2 view .LVU135
+ 529              	.LBE36:
+ 530              	.LBE35:
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 531              		.loc 1 86 5 is_stmt 1 view .LVU136
+ 532              	.L36:
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_write);
+ 533              		.loc 1 87 1 is_stmt 0 view .LVU137
+ 534 0042 2046     		mov	r0, r4
+ 535 0044 03B0     		add	sp, sp, #12
+ 536              	.LCFI8:
+ 537              		.cfi_remember_state
+ 538              		.cfi_def_cfa_offset 20
+ 539              		@ sp needed
+ 540 0046 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 541              	.LVL54:
+ 542              	.L38:
+ 543              	.LCFI9:
+ 544              		.cfi_restore_state
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 545              		.loc 1 71 16 view .LVU138
+ 546 0048 6FF00804 		mvn	r4, #8
+ 547              	.LVL55:
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 548              		.loc 1 71 16 view .LVU139
+ 549 004c F9E7     		b	.L36
+ 550              	.LVL56:
+ 551              	.L39:
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 552              		.loc 1 75 16 view .LVU140
+ARM GAS  /tmp/ccS3yGng.s 			page 22
+
+
+ 553 004e 6FF00B04 		mvn	r4, #11
+ 554              	.LVL57:
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 555              		.loc 1 75 16 view .LVU141
+ 556 0052 F6E7     		b	.L36
+ 557              		.cfi_endproc
+ 558              	.LFE967:
+ 560              		.section	.text.sys_mkdir,"ax",%progbits
+ 561              		.align	1
+ 562              		.syntax unified
+ 563              		.thumb
+ 564              		.thumb_func
+ 566              	sys_mkdir:
+ 567              	.LVL58:
+ 568              	.LFB969:
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_close);
+ 101:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 102:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 103:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** struct dentry* mkdir(char *path,umode_t mode);
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static int sys_mkdir(char* __user path,umode_t mode)
+ 105:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** {
+ 569              		.loc 1 105 1 is_stmt 1 view -0
+ 570              		.cfi_startproc
+ 571              		@ args = 0, pretend = 0, frame = 0
+ 572              		@ frame_needed = 0, uses_anonymous_args = 0
+ 573              		.loc 1 105 1 is_stmt 0 view .LVU143
+ 574 0000 08B5     		push	{r3, lr}
+ 575              	.LCFI10:
+ 576              		.cfi_def_cfa_offset 8
+ 577              		.cfi_offset 3, -8
+ 578              		.cfi_offset 14, -4
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****    return mkdir(path,mode);
+ 579              		.loc 1 106 4 is_stmt 1 view .LVU144
+ 580              		.loc 1 106 11 is_stmt 0 view .LVU145
+ 581 0002 FFF7FEFF 		bl	mkdir
+ 582              	.LVL59:
+ 107:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 583              		.loc 1 107 1 view .LVU146
+ 584 0006 08BD     		pop	{r3, pc}
+ 585              		.cfi_endproc
+ 586              	.LFE969:
+ 588              		.section	.text.sys_ioctl,"ax",%progbits
+ 589              		.align	1
+ 590              		.syntax unified
+ 591              		.thumb
+ 592              		.thumb_func
+ 594              	sys_ioctl:
+ 595              	.LVL60:
+ 596              	.LFB970:
+ 108:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** EXPORT_SYMBOL(sys_mkdir);
+ 109:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 110:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 111:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** static long sys_ioctl(unsigned int fd, unsigned int cmd, unsigned long arg) {
+ 597              		.loc 1 111 77 is_stmt 1 view -0
+ 598              		.cfi_startproc
+ 599              		@ args = 0, pretend = 0, frame = 0
+ 600              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccS3yGng.s 			page 23
+
+
+ 601              		.loc 1 111 77 is_stmt 0 view .LVU148
+ 602 0000 38B5     		push	{r3, r4, r5, lr}
+ 603              	.LCFI11:
+ 604              		.cfi_def_cfa_offset 16
+ 605              		.cfi_offset 3, -16
+ 606              		.cfi_offset 4, -12
+ 607              		.cfi_offset 5, -8
+ 608              		.cfi_offset 14, -4
+ 609 0002 0C46     		mov	r4, r1
+ 610 0004 1546     		mov	r5, r2
+ 112:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     struct file *file = get_file_from_fd(fd);
+ 611              		.loc 1 112 5 is_stmt 1 view .LVU149
+ 612              		.loc 1 112 25 is_stmt 0 view .LVU150
+ 613 0006 FFF7FEFF 		bl	get_file_from_fd
+ 614              	.LVL61:
+ 113:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     if (!file)
+ 615              		.loc 1 113 5 is_stmt 1 view .LVU151
+ 616              		.loc 1 113 8 is_stmt 0 view .LVU152
+ 617 000a 20B1     		cbz	r0, .L45
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 115:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 116:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     long ret = vfs_ioctl(file, cmd, arg);
+ 618              		.loc 1 116 5 is_stmt 1 view .LVU153
+ 619              		.loc 1 116 16 is_stmt 0 view .LVU154
+ 620 000c 2A46     		mov	r2, r5
+ 621 000e 2146     		mov	r1, r4
+ 622 0010 FFF7FEFF 		bl	vfs_ioctl
+ 623              	.LVL62:
+ 117:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** 
+ 118:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****     return ret;
+ 624              		.loc 1 118 5 is_stmt 1 view .LVU155
+ 625              	.L43:
+ 119:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c **** }
+ 626              		.loc 1 119 1 is_stmt 0 view .LVU156
+ 627 0014 38BD     		pop	{r3, r4, r5, pc}
+ 628              	.LVL63:
+ 629              	.L45:
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 630              		.loc 1 114 16 view .LVU157
+ 631 0016 6FF00800 		mvn	r0, #8
+ 632              	.LVL64:
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/sys/sys_fs.c ****         return -EBADF;
+ 633              		.loc 1 114 16 view .LVU158
+ 634 001a FBE7     		b	.L43
+ 635              		.cfi_endproc
+ 636              	.LFE970:
+ 638              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 639              		.align	2
+ 640              	.LC0:
+ 641 0000 7379735F 		.ascii	"sys_ioctl\000"
+ 641      696F6374 
+ 641      6C00
+ 642 000a 0000     		.align	2
+ 643              	.LC1:
+ 644 000c 00       		.ascii	"\000"
+ 645              		.section	.export_table,"aw"
+ 646              		.align	2
+ARM GAS  /tmp/ccS3yGng.s 			page 24
+
+
+ 649              	sys_ioctl_export_struct:
+ 650 0000 00000000 		.word	.LC0
+ 651 0004 0C000000 		.word	.LC1
+ 652 0008 00000000 		.word	sys_ioctl
+ 653              		.section	.rodata.str1.4
+ 654 000d 000000   		.align	2
+ 655              	.LC2:
+ 656 0010 7379735F 		.ascii	"sys_mkdir\000"
+ 656      6D6B6469 
+ 656      7200
+ 657              		.section	.export_table
+ 658              		.align	2
+ 661              	sys_mkdir_export_struct:
+ 662 000c 10000000 		.word	.LC2
+ 663 0010 0C000000 		.word	.LC1
+ 664 0014 00000000 		.word	sys_mkdir
+ 665              		.section	.rodata.str1.4
+ 666 001a 0000     		.align	2
+ 667              	.LC3:
+ 668 001c 7379735F 		.ascii	"sys_close\000"
+ 668      636C6F73 
+ 668      6500
+ 669              		.section	.export_table
+ 670              		.align	2
+ 673              	sys_close_export_struct:
+ 674 0018 1C000000 		.word	.LC3
+ 675 001c 0C000000 		.word	.LC1
+ 676 0020 00000000 		.word	sys_close
+ 677              		.section	.rodata.str1.4
+ 678 0026 0000     		.align	2
+ 679              	.LC4:
+ 680 0028 7379735F 		.ascii	"sys_write\000"
+ 680      77726974 
+ 680      6500
+ 681              		.section	.export_table
+ 682              		.align	2
+ 685              	sys_write_export_struct:
+ 686 0024 28000000 		.word	.LC4
+ 687 0028 0C000000 		.word	.LC1
+ 688 002c 00000000 		.word	sys_write
+ 689              		.section	.rodata.str1.4
+ 690 0032 0000     		.align	2
+ 691              	.LC5:
+ 692 0034 7379735F 		.ascii	"sys_read\000"
+ 692      72656164 
+ 692      00
+ 693              		.section	.export_table
+ 694              		.align	2
+ 697              	sys_read_export_struct:
+ 698 0030 34000000 		.word	.LC5
+ 699 0034 0C000000 		.word	.LC1
+ 700 0038 00000000 		.word	sys_read
+ 701              		.section	.rodata.str1.4
+ 702 003d 000000   		.align	2
+ 703              	.LC6:
+ 704 0040 7379735F 		.ascii	"sys_open\000"
+ 704      6F70656E 
+ARM GAS  /tmp/ccS3yGng.s 			page 25
+
+
+ 704      00
+ 705              		.section	.export_table
+ 706              		.align	2
+ 709              	sys_open_export_struct:
+ 710 003c 40000000 		.word	.LC6
+ 711 0040 0C000000 		.word	.LC1
+ 712 0044 00000000 		.word	sys_open
+ 713              		.section	.bss.fd_table,"aw",%nobits
+ 714              		.align	2
+ 717              	fd_table:
+ 718 0000 00000000 		.space	1024
+ 718      00000000 
+ 718      00000000 
+ 718      00000000 
+ 718      00000000 
+ 719              		.text
+ 720              	.Letext0:
+ 721              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 722              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 723              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/types.h"
+ 724              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 725              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/errseq.h"
+ 726              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 727              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h"
+ 728              		.file 12 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types_raw.h"
+ 729              		.file 13 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types.h"
+ 730              		.file 14 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rbtree_types.h"
+ 731              		.file 15 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uidgid_types.h"
+ 732              		.file 16 "/mnt/c/Users/31740/Desktop/newcore/include/linux/projid.h"
+ 733              		.file 17 "/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h"
+ 734              		.file 18 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mnt_idmapping.h"
+ 735              		.file 19 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mutex.h"
+ 736              		.file 20 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uio.h"
+ 737              		.file 21 "/mnt/c/Users/31740/Desktop/newcore/include/linux/wait.h"
+ 738              		.file 22 "/mnt/c/Users/31740/Desktop/newcore/include/linux/xarray.h"
+ 739              		.file 23 "/mnt/c/Users/31740/Desktop/newcore/include/linux/migrate_mode.h"
+ 740              		.file 24 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rw_hint.h"
+ 741              		.file 25 "/mnt/c/Users/31740/Desktop/newcore/include/linux/reciprocal_div.h"
+ 742              		.file 26 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mm_type.h"
+ 743              		.file 27 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bvec.h"
+ 744              		.file 28 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk_types.h"
+ 745              		.file 29 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blkdev.h"
+ 746              		.file 30 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bio.h"
+ 747              		.file 31 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool_super_haper.h"
+ 748              		.file 32 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool.h"
+ 749              		.file 33 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockdep_types.h"
+ 750              		.file 34 "/mnt/c/Users/31740/Desktop/newcore/include/linux/workqueue_types.h"
+ 751              		.file 35 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk-mq.h"
+ 752              		.file 36 "/mnt/c/Users/31740/Desktop/newcore/include/linux/dcache.h"
+ 753              		.file 37 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/pr.h"
+ 754              		.file 38 "/mnt/c/Users/31740/Desktop/newcore/include/linux/pr.h"
+ 755              		.file 39 "/mnt/c/Users/31740/Desktop/newcore/include/linux/hdreg.h"
+ 756              		.file 40 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockref.h"
+ 757              		.file 41 "/mnt/c/Users/31740/Desktop/newcore/include/linux/path.h"
+ 758              		.file 42 "/mnt/c/Users/31740/Desktop/newcore/include/linux/statfs.h"
+ 759              		.file 43 "/mnt/c/Users/31740/Desktop/newcore/include/linux/stat.h"
+ 760              		.file 44 "/mnt/c/Users/31740/Desktop/newcore/include/linux/gfp_types.h"
+ARM GAS  /tmp/ccS3yGng.s 			page 26
+
+
+ 761              		.file 45 "/mnt/c/Users/31740/Desktop/newcore/include/linux/export.h"
+ 762              		.file 46 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 763              		.file 47 "<built-in>"
+ARM GAS  /tmp/ccS3yGng.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys_fs.c
+     /tmp/ccS3yGng.s:21     .text.install_fd:00000000 $t
+     /tmp/ccS3yGng.s:26     .text.install_fd:00000000 install_fd
+     /tmp/ccS3yGng.s:77     .text.install_fd:00000024 $d
+     /tmp/ccS3yGng.s:717    .bss.fd_table:00000000 fd_table
+     /tmp/ccS3yGng.s:82     .text.get_file_from_fd:00000000 $t
+     /tmp/ccS3yGng.s:87     .text.get_file_from_fd:00000000 get_file_from_fd
+     /tmp/ccS3yGng.s:116    .text.get_file_from_fd:00000010 $d
+     /tmp/ccS3yGng.s:121    .text.release_fd:00000000 $t
+     /tmp/ccS3yGng.s:126    .text.release_fd:00000000 release_fd
+     /tmp/ccS3yGng.s:149    .text.release_fd:00000010 $d
+     /tmp/ccS3yGng.s:154    .text.sys_close:00000000 $t
+     /tmp/ccS3yGng.s:159    .text.sys_close:00000000 sys_close
+     /tmp/ccS3yGng.s:205    .text.sys_open:00000000 $t
+     /tmp/ccS3yGng.s:210    .text.sys_open:00000000 sys_open
+     /tmp/ccS3yGng.s:290    .text.sys_read:00000000 $t
+     /tmp/ccS3yGng.s:295    .text.sys_read:00000000 sys_read
+     /tmp/ccS3yGng.s:432    .text.sys_write:00000000 $t
+     /tmp/ccS3yGng.s:437    .text.sys_write:00000000 sys_write
+     /tmp/ccS3yGng.s:561    .text.sys_mkdir:00000000 $t
+     /tmp/ccS3yGng.s:566    .text.sys_mkdir:00000000 sys_mkdir
+     /tmp/ccS3yGng.s:589    .text.sys_ioctl:00000000 $t
+     /tmp/ccS3yGng.s:594    .text.sys_ioctl:00000000 sys_ioctl
+     /tmp/ccS3yGng.s:639    .rodata.str1.4:00000000 $d
+     /tmp/ccS3yGng.s:646    .export_table:00000000 $d
+     /tmp/ccS3yGng.s:649    .export_table:00000000 sys_ioctl_export_struct
+     /tmp/ccS3yGng.s:661    .export_table:0000000c sys_mkdir_export_struct
+     /tmp/ccS3yGng.s:673    .export_table:00000018 sys_close_export_struct
+     /tmp/ccS3yGng.s:685    .export_table:00000024 sys_write_export_struct
+     /tmp/ccS3yGng.s:697    .export_table:00000030 sys_read_export_struct
+     /tmp/ccS3yGng.s:709    .export_table:0000003c sys_open_export_struct
+     /tmp/ccS3yGng.s:714    .bss.fd_table:00000000 $d
+
+UNDEFINED SYMBOLS
+file_close
+filp_open
+__smalloc__
+kernel_read
+__sfree__
+memcpy
+kernel_write
+mkdir
+vfs_ioctl

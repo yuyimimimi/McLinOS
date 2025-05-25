@@ -1,5 +1,5 @@
 C_SOURCES    += \
-		$(wildcard ./arch/$(STRUCT)/boot/compressed/*.c)
+		$(wildcard $(BASE_DIR)/arch/$(STRUCT)/boot/compressed/*.c)
 
 
 

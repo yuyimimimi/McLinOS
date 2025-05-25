@@ -210,17 +210,6 @@ static struct ext2_inode*__ext2_read_inode(struct block_device *bdev, struct ext
     return inode;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 size_t get_global_heap_size(void);
 
 static void partiton_test()

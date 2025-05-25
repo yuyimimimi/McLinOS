@@ -3,64 +3,53 @@
 #include <linux/slab.h>
 #include <generated/autoconf.h>
 
-struct task_node{
-    struct task_node *next;
-    struct task_node *priv;
-    struct task_struct *task;
-    int priority;
-};
 
-struct task_pool_1{
-    struct task_node *head_node;
+struct task_pool_Preemptive{
+    struct task_struct *task_head;
     uint32_t tasknode_numbers;
 };
 
-
-
-
-
 static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched);
-
-
 
 static time64_t time = 0;
 struct task_struct* get_next_task(struct task_struct* task){
-    return ((struct task_node*)task->t_node)->next->task;
+    return task->next;
 }
 
-struct task_struct* get_useful_task(struct task_pool_1 *task_pool,struct scheduler *sched)
+struct task_struct* get_useful_task(struct task_struct* head_task,struct scheduler *sched)
 {
-    struct task_struct* head_task = task_pool->head_node->task;
-    struct task_struct* search_task = head_task;
-    while (1)
-    {
-        if (search_task->state == TASK_DEAD) 
-        {
+   struct task_struct* search_task = head_task;
+   while (1)
+   {
+        if (search_task->state == TASK_DEAD) {
             struct task_struct *dead_task = search_task;
             struct task_struct *search_task = get_next_task(search_task);
-            remove_task_from_pool(dead_task, sched);
+            remove_task_from_pool(dead_task,sched);
             __destory_task(dead_task);
+            if(search_task == NULL){ //保险作用
+                search_task = head_task;
+            }
         }
-        if(search_task->state == TASK_READY)
-            break;
+        if(search_task->state == TASK_READY){
+            break;            
+        }
         else if(search_task->state == TASK_WAITING){
-            if(search_task->last_scheduler_time + search_task->block_time
-               < time){
+            if(search_task->last_scheduler_time + search_task->block_time < time){
                 search_task->state = TASK_READY;
                 break;
             }
         }
-        if(get_next_task(search_task) == head_task)
+        if(get_next_task(search_task) == NULL)
             break;
         search_task = get_next_task(search_task);
     }
-    return search_task;
+ return search_task;
 }
 
 static struct task_struct* Preemptive_scheduling(struct scheduler *sched)
 {   
-    time++;    
-    struct task_struct* next_task = get_useful_task(sched->s_task_pool,sched);
+    time++; 
+    struct task_struct* next_task = get_useful_task(((struct task_pool_Preemptive*)sched->s_task_pool)->task_head,sched);    
     if(next_task != sched->current_task)
     {
         if( sched->current_task != NULL){
@@ -71,72 +60,147 @@ static struct task_struct* Preemptive_scheduling(struct scheduler *sched)
     return next_task;
 } 
 
-static int add_task_to_task_pool(struct task_struct* task ,struct scheduler *sched)
-{
-    struct task_pool_1 *pool = sched->s_task_pool;
-    struct task_node* new_node = kmalloc(sizeof(struct task_node),GFP_KERNEL);
-    if (new_node == NULL){
-        return -1;
-    }
-    new_node->task     = task;
-    new_node->priority = task->priority;
-    task->t_node       = new_node;
 
-    block_scheduler(sched);
-    if(pool->head_node == NULL){
-        pool->head_node = new_node;
-        new_node->next  = new_node;
-        new_node->priv  = new_node;
+static void show_all_task(struct task_struct* head)
+{
+    struct task_struct* t = head;
+    if(t == NULL)return NULL;
+    int i = 0;
+    pr_info("--------------------------\n");
+    while(1)
+    {
+        pr_info("task %d: %s \n",i,t->task_name);
+        i++;
+        t = t->next;
+        if(t == NULL)
+        break;
+    }
+    pr_info("--------------------------\n");
+}
+
+
+static int check_task_completeness(struct scheduler * sched)
+{
+     struct task_pool_Preemptive *pool = sched->s_task_pool;
+     struct task_struct* t = pool->task_head;
+     while(1)
+     {
+        if(t->magic != task_struct_magic)
+        return -1;
+        t = t->next;
+        if(t == NULL)
+        break;
+     }
+     return 0;
+}
+
+
+
+
+static struct task_struct* get_task_by_priority(struct task_pool_Preemptive* pool,uint32_t priority)
+{
+    struct task_struct* t = pool->task_head;
+    if(t == NULL)return NULL;
+    while(1)
+    {
+        if(t->priority <= priority || t == NULL)
+            break;
+        t = t->next;
+    }
+    return t;
+}
+
+
+static void add_a_task_node(struct task_struct* new,struct task_struct* task){
+    new->next = task;
+    new->priv = task->priv;
+    task->priv->next = new;
+    task->priv = new;
+}
+static void task_reset(struct task_struct* new){
+    new->priv = NULL;
+    new->next = NULL;
+}
+static int add_task_to_task_pool(struct task_struct* new ,struct scheduler *sched)
+{
+    struct task_pool_Preemptive *pool = sched->s_task_pool;
+    task_reset(new);
+    if(pool->task_head == NULL)
+    {
+        pool->task_head = new;      
     }
     else
     {
-        struct task_node * n = pool->head_node;
-        while (n->priority > new_node->priority)
+        struct task_struct *task = get_task_by_priority(pool,new->priority);
+        if(task == NULL) 
         {
-            n = n->next;
-            if(n == pool->head_node){
-            break;
-            }
+            add_a_task_node(new,pool->task_head);
+            pool->task_head = new;
         }
-        new_node->next = n;
-        new_node->priv = n->priv;
-        n->priv->next  = new_node;
-        n->priv        = new_node;
+        else
+        {
+            add_a_task_node(new,task);
+
+        }        
     }
-    if (new_node->priority > pool->head_node->priority) {
-        pool->head_node = new_node;
+    if(pool->task_head->priv != NULL){
+        pool->task_head = pool->task_head->priv;
     }
-    run_scheduler(sched);
+
+    //show_all_task(pool->task_head);
     return 0;
+}
+
+
+
+
+static void remove_task(struct task_struct* task)
+{
+    if(task->priv != NULL)
+    task->priv->next = task->next;
+    if(task->next != NULL)
+    task->next->priv = task->priv;
 }
 
 static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched)
 {
-    struct task_node* node = (struct task_node*)task->t_node;
-    struct task_pool_1 *pool = sched->s_task_pool;
-    if (pool->head_node == node) {
-            pool->head_node = node->next;
+    pr_info("remove task: %s\n",task->task_name);
+
+    struct task_pool_Preemptive *pool = sched->s_task_pool;
+    if(pool->task_head == task)
+    {
+        if(task->next == NULL) //如果这是最后一个任务，则不能删除
+        return;            
+        
+        pool->task_head = task->next;
+        remove_task(task);
     }
+    else
+    {
+        remove_task(task);
+    }
+   
     if(sched->current_task == task){
         sched->current_task = NULL;
     }
-    node->priv->next = node->next;
-    node->next->priv = node->priv;
-    kfree(node);
+    //show_all_task(pool->task_head);
 }
 
 
-static struct task_pool_1* alloc_new_pool(struct scheduler *sched){
-    struct task_pool_1* new_task_pool = kmalloc(sizeof(struct task_pool_1),GFP_KERNEL);
-    new_task_pool->head_node = NULL;
+static struct task_pool_Preemptive* alloc_new_pool(struct scheduler *sched){
+    struct task_pool_Preemptive* new_task_pool = kmalloc(sizeof(struct task_pool_Preemptive),GFP_KERNEL);
+    new_task_pool->task_head = NULL;
     new_task_pool->tasknode_numbers = 0;
     return new_task_pool;
 }
+
+
 
 static struct task_pool_operations task_op = {
     .get_next_task = Preemptive_scheduling,
     .add_task      = add_task_to_task_pool,
     .remove_task   = remove_task_from_pool,
+    .check_task_completeness = check_task_completeness
 };
 
 static struct task_pool_types task_type = {

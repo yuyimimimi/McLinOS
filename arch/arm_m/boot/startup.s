@@ -1,8 +1,8 @@
-# 0 "arch/arm_m/kernel/Interruptvectorscale.s"
+# 0 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/Interruptvectorscale.s"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "arch/arm_m/kernel/Interruptvectorscale.s"
-# 1 "arch/arm_m/kernel/loadbss.s" 1
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/Interruptvectorscale.s"
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/loadbss.s" 1
 
   .syntax unified
   .cpu cortex-m4
@@ -64,7 +64,7 @@ LoopFillZerobss:
   bl Kernel_Start
   bx lr
 .size Reset_Handler, .-Reset_Handler
-# 70 "arch/arm_m/kernel/loadbss.s"
+# 70 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/loadbss.s"
     .section .text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
@@ -76,14 +76,7 @@ Infinite_Loop:
 
 
 
-
-IRQ_Generic_Handler:
-    PUSH {LR}
-    MRS R0, IPSR
-    SUBS R0, #16
-    BL C_IRQ_Dispatcher
-    POP {PC}
-# 2 "arch/arm_m/kernel/Interruptvectorscale.s" 2
+# 2 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/Interruptvectorscale.s" 2
 
    .section .isr_vector,"a",%progbits
   .type g_pfnVectors, %object
@@ -105,252 +98,88 @@ g_pfnVectors:
   .word 0
   .word PendSV_Handler
   .word SysTick_Handler
-# 1 "arch/arm_m/kernel/Interruptvectorscale.h" 1
-# 1 "./include/generated/autoconf.h" 1
-# 2 "arch/arm_m/kernel/Interruptvectorscale.h" 2
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-
-
-    .word IRQ_Generic_Handler
-# 24 "arch/arm_m/kernel/Interruptvectorscale.s" 2
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+  .word IRQ_Generic_Handler
+# 24 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/Interruptvectorscale.s" 2
 
 
 

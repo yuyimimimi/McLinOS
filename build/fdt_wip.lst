@@ -1,0 +1,1536 @@
+ARM GAS  /tmp/ccyDdcF4.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"fdt_wip.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c"
+  20              		.section	.text.fdt_nop_region_,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	fdt_nop_region_:
+  27              	.LVL0:
+  28              	.LFB77:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** // SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c ****  * libfdt - Flat Device Tree manipulation
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c ****  */
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** #include <linux/libfdt_env.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** #include <linux/fdt.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** #include <linux/libfdt.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** #include "libfdt_internal.h"
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 					const char *name, int namelen,
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 					uint32_t idx, const void *val,
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 					int len)
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	void *propval;
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int proplen;
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	propval = fdt_getprop_namelen_w(fdt, nodeoffset, name, namelen,
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 					&proplen);
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!propval)
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if ((unsigned)proplen < (len + idx))
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	memcpy((char *)propval + idx, val, len);
+ARM GAS  /tmp/ccyDdcF4.s 			page 2
+
+
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return 0;
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** int fdt_setprop_inplace(void *fdt, int nodeoffset, const char *name,
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 			const void *val, int len)
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	const void *propval;
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int proplen;
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	propval = fdt_getprop(fdt, nodeoffset, name, &proplen);
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!propval)
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (proplen != len)
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return fdt_setprop_inplace_namelen_partial(fdt, nodeoffset, name,
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   strlen(name), 0,
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   val, len);
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** static void fdt_nop_region_(void *start, int len)
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+  29              		.loc 1 53 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	fdt32_t *p;
+  34              		.loc 1 54 2 view .LVU1
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	for (p = start; (char *)p < ((char *)start + len); p++)
+  35              		.loc 1 56 2 view .LVU2
+  36              		.loc 1 56 9 is_stmt 0 view .LVU3
+  37 0000 0346     		mov	r3, r0
+  38              		.loc 1 56 2 view .LVU4
+  39 0002 03E0     		b	.L2
+  40              	.LVL1:
+  41              	.L3:
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		*p = cpu_to_fdt32(FDT_NOP);
+  42              		.loc 1 57 3 is_stmt 1 view .LVU5
+  43              		.loc 1 57 6 is_stmt 0 discriminator 1 view .LVU6
+  44 0004 4FF08062 		mov	r2, #67108864
+  45 0008 43F8042B 		str	r2, [r3], #4
+  46              	.LVL2:
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		*p = cpu_to_fdt32(FDT_NOP);
+  47              		.loc 1 56 54 is_stmt 1 discriminator 3 view .LVU7
+  48              	.L2:
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		*p = cpu_to_fdt32(FDT_NOP);
+  49              		.loc 1 56 28 discriminator 1 view .LVU8
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		*p = cpu_to_fdt32(FDT_NOP);
+  50              		.loc 1 56 45 is_stmt 0 discriminator 1 view .LVU9
+  51 000c 4218     		adds	r2, r0, r1
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		*p = cpu_to_fdt32(FDT_NOP);
+  52              		.loc 1 56 28 discriminator 1 view .LVU10
+  53 000e 9A42     		cmp	r2, r3
+  54 0010 F8D8     		bhi	.L3
+ARM GAS  /tmp/ccyDdcF4.s 			page 3
+
+
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+  55              		.loc 1 58 1 view .LVU11
+  56 0012 7047     		bx	lr
+  57              		.cfi_endproc
+  58              	.LFE77:
+  60              		.section	.text.fdt_setprop_inplace_namelen_partial,"ax",%progbits
+  61              		.align	1
+  62              		.global	fdt_setprop_inplace_namelen_partial
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	fdt_setprop_inplace_namelen_partial:
+  68              	.LVL3:
+  69              	.LFB75:
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	void *propval;
+  70              		.loc 1 18 1 is_stmt 1 view -0
+  71              		.cfi_startproc
+  72              		@ args = 12, pretend = 0, frame = 8
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	void *propval;
+  74              		.loc 1 18 1 is_stmt 0 view .LVU13
+  75 0000 70B5     		push	{r4, r5, r6, lr}
+  76              	.LCFI0:
+  77              		.cfi_def_cfa_offset 16
+  78              		.cfi_offset 4, -16
+  79              		.cfi_offset 5, -12
+  80              		.cfi_offset 6, -8
+  81              		.cfi_offset 14, -4
+  82 0002 84B0     		sub	sp, sp, #16
+  83              	.LCFI1:
+  84              		.cfi_def_cfa_offset 32
+  85 0004 089C     		ldr	r4, [sp, #32]
+  86 0006 0A9D     		ldr	r5, [sp, #40]
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int proplen;
+  87              		.loc 1 19 2 is_stmt 1 view .LVU14
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  88              		.loc 1 20 2 view .LVU15
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 					&proplen);
+  89              		.loc 1 22 2 view .LVU16
+  90              	.LVL4:
+  91              	.LBB10:
+  92              	.LBI10:
+  93              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef LIBFDT_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define LIBFDT_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /*
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * libfdt - Flat Device Tree manipulation
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #include <linux/libfdt_env.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #include <linux/fdt.h>
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifdef __cplusplus
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** extern "C" {
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ARM GAS  /tmp/ccyDdcF4.s 			page 4
+
+
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** extern const uint8_t __dtb_file_start_address[];
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** extern const uint8_t __dtb_file_end_address[];
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_FIRST_SUPPORTED_VERSION	0x02
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_LAST_COMPATIBLE_VERSION	0x10
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_LAST_SUPPORTED_VERSION	0x11
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Error codes: informative error codes */
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_NOTFOUND	1
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_NOTFOUND: The requested node or property does not exist */
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_EXISTS		2
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_EXISTS: Attempted to create a node or property which
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * already exists */
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_NOSPACE		3
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_NOSPACE: Operation needed to expand the device
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * tree, but its buffer did not have sufficient space to
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * contain the expanded tree. Use fdt_open_into() to move the
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * device tree to a buffer with more space. */
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Error codes: codes for bad parameters */
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADOFFSET	4
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADOFFSET: Function was passed a structure block
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * offset which is out-of-bounds, or which points to an
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * unsuitable part of the structure for the operation. */
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADPATH		5
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADPATH: Function was passed a badly formatted path
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * (e.g. missing a leading / for a function which requires an
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * absolute path) */
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADPHANDLE	6
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADPHANDLE: Function was passed an invalid phandle.
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * This can be caused either by an invalid phandle property
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * length, or the phandle value was either 0 or -1, which are
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * not permitted. */
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADSTATE	7
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADSTATE: Function was passed an incomplete device
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * tree created by the sequential-write functions, which is
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * not sufficiently complete for the requested operation. */
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Error codes: codes for bad device tree blobs */
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_TRUNCATED	8
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_TRUNCATED: FDT or a sub-block is improperly
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * terminated (overflows, goes outside allowed bounds, or
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * isn't properly terminated).  */
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADMAGIC	9
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADMAGIC: Given "device tree" appears not to be a
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * device tree at all - it is missing the flattened device
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * tree magic number. */
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADVERSION	10
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADVERSION: Given device tree has a version which
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * can't be handled by the requested operation.  For
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * read-write functions, this may mean that fdt_open_into() is
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * required to convert the tree to the expected version. */
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADSTRUCTURE	11
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADSTRUCTURE: Given device tree has a corrupt
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * structure block or other serious error (e.g. misnested
+ARM GAS  /tmp/ccyDdcF4.s 			page 5
+
+
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * nodes, or subnodes preceding properties). */
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADLAYOUT	12
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADLAYOUT: For read-write functions, the given
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * device tree has it's sub-blocks in an order that the
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * function can't handle (memory reserve map, then structure,
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * then strings).  Use fdt_open_into() to reorganize the tree
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * into a form suitable for the read-write operations. */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* "Can't happen" error indicating a bug in libfdt */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_INTERNAL	13
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_INTERNAL: libfdt has failed an internal assertion.
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * Should never be returned, if it is, it indicates a bug in
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * libfdt itself. */
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Errors in device tree content */
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADNCELLS	14
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADNCELLS: Device tree has a #address-cells, #size-cells
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * or similar property with a bad format or value */
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADVALUE	15
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADVALUE: Device tree has a property with an unexpected
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * value. For example: a property expected to contain a string list
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * is not NUL-terminated within the length of its value. */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADOVERLAY	16
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADOVERLAY: The device tree overlay, while
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * correctly structured, cannot be applied due to some
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * unexpected or missing value, property or node. */
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_NOPHANDLES	17
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_NOPHANDLES: The device tree doesn't have any
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * phandle available anymore without causing an overflow */
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_BADFLAGS	18
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_BADFLAGS: The function was passed a flags field that
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * contains invalid flags or an invalid combination of flags. */
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_ALIGNMENT	19
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* FDT_ERR_ALIGNMENT: The device tree base address is not 8-byte
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	 * aligned. */
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_ERR_MAX		19
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* constants */
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define FDT_MAX_PHANDLE 0xfffffffe
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	/* Valid values for phandles range from 1 to 2^32-2. */
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Low-level functions (you probably don't need these)                */
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* This function is not useful in Python */
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int checklen);
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return (void *)(uintptr_t)fdt_offset_ptr(fdt, offset, checklen);
+ARM GAS  /tmp/ccyDdcF4.s 			page 6
+
+
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /*
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * External helpers to access words from a device tree blob. They're built
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * to work even with unaligned pointers on platforms (such as ARMv5) that don't
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * like unaligned loads and stores.
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline uint16_t fdt16_ld(const fdt16_t *p)
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return ((uint16_t)bp[0] << 8) | bp[1];
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline uint32_t fdt32_ld(const fdt32_t *p)
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return ((uint32_t)bp[0] << 24)
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint32_t)bp[1] << 16)
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint32_t)bp[2] << 8)
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| bp[3];
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline void fdt32_st(void *property, uint32_t value)
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	uint8_t *bp = (uint8_t *)property;
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[0] = value >> 24;
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline uint64_t fdt64_ld(const fdt64_t *p)
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return ((uint64_t)bp[0] << 56)
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[1] << 48)
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[2] << 40)
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[3] << 32)
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[4] << 24)
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[5] << 16)
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| ((uint64_t)bp[6] << 8)
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		| bp[7];
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline void fdt64_st(void *property, uint64_t value)
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	uint8_t *bp = (uint8_t *)property;
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[0] = value >> 56;
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[1] = (value >> 48) & 0xff;
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[2] = (value >> 40) & 0xff;
+ARM GAS  /tmp/ccyDdcF4.s 			page 7
+
+
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[3] = (value >> 32) & 0xff;
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[4] = (value >> 24) & 0xff;
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[5] = (value >> 16) & 0xff;
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[6] = (value >> 8) & 0xff;
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	bp[7] = value & 0xff;
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Traversal functions                                                */
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_next_node(const void *fdt, int offset, int *depth);
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_first_subnode() - get offset of first direct subnode
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt:	FDT blob
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @offset:	Offset of node to check
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: offset of first subnode, or -FDT_ERR_NOTFOUND if there is none
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_first_subnode(const void *fdt, int offset);
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_next_subnode() - get offset of next direct subnode
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt:	FDT blob
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @offset:	Offset of previous subnode
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * After first calling fdt_first_subnode(), call this function repeatedly to
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * get direct subnodes of a parent node.
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: offset of next subnode, or -FDT_ERR_NOTFOUND if there are no more
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *         subnodes
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_next_subnode(const void *fdt, int offset);
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_for_each_subnode - iterate over all subnodes of a parent
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @node:	child node (int, lvalue)
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt:	FDT blob (const void *)
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @parent:	parent node (int)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * This is actually a wrapper around a for loop and would be used like so:
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	fdt_for_each_subnode(node, fdt, parent) {
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		Use node
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		...
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	}
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	if ((node < 0) && (node != -FDT_ERR_NOTFOUND)) {
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		Error handling
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	}
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Note that this is implemented as a macro and @node is used as
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * iterator in the loop. The parent variable be constant or even a
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * literal.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ARM GAS  /tmp/ccyDdcF4.s 			page 8
+
+
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_for_each_subnode(node, fdt, parent)		\
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	for (node = fdt_first_subnode(fdt, parent);	\
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	     node >= 0;					\
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	     node = fdt_next_subnode(fdt, node))
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* General functions                                                  */
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_get_header(fdt, field) \
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	(fdt32_ld(&((const struct fdt_header *)(fdt))->field))
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_magic(fdt)			(fdt_get_header(fdt, magic))
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_totalsize(fdt)		(fdt_get_header(fdt, totalsize))
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_off_dt_struct(fdt)		(fdt_get_header(fdt, off_dt_struct))
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_off_dt_strings(fdt)		(fdt_get_header(fdt, off_dt_strings))
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_off_mem_rsvmap(fdt)		(fdt_get_header(fdt, off_mem_rsvmap))
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_version(fdt)		(fdt_get_header(fdt, version))
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_last_comp_version(fdt)	(fdt_get_header(fdt, last_comp_version))
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_boot_cpuid_phys(fdt)	(fdt_get_header(fdt, boot_cpuid_phys))
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_size_dt_strings(fdt)	(fdt_get_header(fdt, size_dt_strings))
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_size_dt_struct(fdt)		(fdt_get_header(fdt, size_dt_struct))
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_set_hdr_(name) \
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	static inline void fdt_set_##name(void *fdt, uint32_t val) \
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	{ \
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		struct fdt_header *fdth = (struct fdt_header *)fdt; \
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		fdth->name = cpu_to_fdt32(val); \
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	}
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(magic)
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(totalsize)
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(off_dt_struct)
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(off_dt_strings)
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(off_mem_rsvmap)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(version)
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(last_comp_version)
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(boot_cpuid_phys)
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(size_dt_strings)
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_set_hdr_(size_dt_struct)
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #undef fdt_set_hdr_
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_header_size - return the size of the tree's header
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to a flattened device tree
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: size of DTB header in bytes
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** size_t fdt_header_size(const void *fdt);
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_header_size_ - internal function to get header size from a version number
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @version: device tree version number
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: size of DTB header in bytes
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** size_t fdt_header_size_(uint32_t version);
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_check_header - sanity check a device tree header
+ARM GAS  /tmp/ccyDdcF4.s 			page 9
+
+
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to data which might be a flattened device tree
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_check_header() checks that the given buffer contains what
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * appears to be a flattened device tree, and that the header contains
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * valid information (to the extent that can be determined from the
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * header alone).
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     0, if the buffer appears to contain a valid device tree
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADMAGIC,
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADVERSION,
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADSTATE,
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_TRUNCATED, standard meanings, as above
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_check_header(const void *fdt);
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_move - move a device tree around in memory
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree to move
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @buf: pointer to memory where the device is to be moved
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @bufsize: size of the memory space at buf
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_move() relocates, if possible, the device tree blob located at
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt to the buffer at buf of size bufsize.  The buffer may overlap
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * with the existing device tree blob at fdt.  Therefore,
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     fdt_move(fdt, fdt, fdt_totalsize(fdt))
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * should always succeed.
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     0, on success
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_NOSPACE, bufsize is insufficient to contain the device tree
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADMAGIC,
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADVERSION,
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADSTATE, standard meanings
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_move(const void *fdt, void *buf, int bufsize);
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /* Read-only functions                                                */
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**********************************************************************/
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_check_full(const void *fdt, size_t bufsize);
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_string - retrieve a string from the strings block of a device tree
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @stroffset: offset of the string within the strings block (native endian)
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: optional pointer to return the string's length
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_string() retrieves a pointer to a single string from the
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * strings block of the device tree blob at fdt, and optionally also
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns the string's length in *lenp.
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     a pointer to the string, on success
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     NULL, if stroffset is out of bounds, or doesn't point to a valid string
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ARM GAS  /tmp/ccyDdcF4.s 			page 10
+
+
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const char *fdt_get_string(const void *fdt, int stroffset, int *lenp);
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_string - retrieve a string from the strings block of a device tree
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @stroffset: offset of the string within the strings block (native endian)
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_string() retrieves a pointer to a single string from the
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * strings block of the device tree blob at fdt.
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     a pointer to the string, on success
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     NULL, if stroffset is out of bounds, or doesn't point to a valid string
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const char *fdt_string(const void *fdt, int stroffset);
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_find_max_phandle - find and return the highest phandle in a tree
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @phandle: return location for the highest phandle value found in the tree
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_find_max_phandle() finds the highest phandle value in the given device
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * tree. The value returned in @phandle is only valid if the function returns
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * success.
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     0 on success or a negative error code on failure
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 385:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_find_max_phandle(const void *fdt, uint32_t *phandle);
+ 386:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 387:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 388:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_max_phandle - retrieves the highest phandle in a tree
+ 389:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 390:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 391:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_max_phandle retrieves the highest phandle in the given
+ 392:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * device tree. This will ignore badly formatted phandles, or phandles
+ 393:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * with a value of 0 or -1.
+ 394:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 395:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * This function is deprecated in favour of fdt_find_max_phandle().
+ 396:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 397:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 398:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *      the highest phandle on success
+ 399:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *      0, if no phandle was found in the device tree
+ 400:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *      -1, if an error occurred
+ 401:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 402:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline uint32_t fdt_get_max_phandle(const void *fdt)
+ 403:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 404:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	uint32_t phandle;
+ 405:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	int err;
+ 406:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 407:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	err = fdt_find_max_phandle(fdt, &phandle);
+ 408:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	if (err < 0)
+ 409:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		return (uint32_t)-1;
+ 410:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 411:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return phandle;
+ 412:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 413:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ARM GAS  /tmp/ccyDdcF4.s 			page 11
+
+
+ 414:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 415:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_generate_phandle - return a new, unused phandle for a device tree blob
+ 416:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 417:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @phandle: return location for the new phandle
+ 418:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 419:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Walks the device tree blob and looks for the highest phandle value. On
+ 420:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * success, the new, unused phandle value (one higher than the previously
+ 421:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * highest phandle value in the device tree blob) will be returned in the
+ 422:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @phandle parameter.
+ 423:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 424:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: 0 on success or a negative error-code on failure
+ 425:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 426:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_generate_phandle(const void *fdt, uint32_t *phandle);
+ 427:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 428:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 429:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
+ 430:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 431:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 432:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Returns the number of entries in the device tree blob's memory
+ 433:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * reservation map.  This does not include the terminating 0,0 entry
+ 434:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * or any other (0,0) entries reserved for expansion.
+ 435:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 436:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 437:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     the number of entries
+ 438:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 439:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_num_mem_rsv(const void *fdt);
+ 440:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 441:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 442:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_mem_rsv - retrieve one memory reserve map entry
+ 443:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 444:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @n: index of reserve map entry
+ 445:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @address: pointer to 64-bit variable to hold the start address
+ 446:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @size: pointer to 64-bit variable to hold the size of the entry
+ 447:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 448:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * On success, @address and @size will contain the address and size of
+ 449:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * the n-th reserve map entry from the device tree blob, in
+ 450:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * native-endian format.
+ 451:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 452:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 453:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     0, on success
+ 454:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADMAGIC,
+ 455:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADVERSION,
+ 456:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     -FDT_ERR_BADSTATE, standard meanings
+ 457:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 458:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size);
+ 459:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 460:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 461:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_subnode_offset_namelen - find a subnode based on substring
+ 462:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 463:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @parentoffset: structure block offset of a node
+ 464:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @name: name of the subnode to locate
+ 465:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @namelen: number of characters of name to consider
+ 466:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 467:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Identical to fdt_subnode_offset(), but only examine the first
+ 468:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * namelen characters of name for matching the subnode name.  This is
+ 469:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * useful for finding subnodes based on a portion of a larger string,
+ 470:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * such as a full path.
+ARM GAS  /tmp/ccyDdcF4.s 			page 12
+
+
+ 471:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 472:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: offset of the subnode or -FDT_ERR_NOTFOUND if name not found.
+ 473:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 474:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* Not available in Python */
+ 475:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_subnode_offset_namelen(const void *fdt, int parentoffset,
+ 476:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 			       const char *name, int namelen);
+ 477:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ 478:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 479:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_subnode_offset - find a subnode of a given node
+ 480:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 481:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @parentoffset: structure block offset of a node
+ 482:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @name: name of the subnode to locate
+ 483:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 484:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_subnode_offset() finds a subnode of the node at structure block
+ 485:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * offset parentoffset with the given name.  name may include a unit
+ 486:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * address, in which case fdt_subnode_offset() will find the subnode
+ 487:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * with that unit address, or the unit address may be omitted, in
+ 488:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * which case fdt_subnode_offset() will find an arbitrary subnode
+ 489:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * whose name excluding unit address matches the given name.
+ 490:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 491:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 492:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	structure block offset of the requested subnode (>=0), on success
+ 493:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_NOTFOUND, if the requested subnode does not exist
+ 494:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADOFFSET, if parentoffset did not point to an FDT_BEGIN_NODE
+ 495:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		tag
+ 496:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADMAGIC,
+ 497:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADVERSION,
+ 498:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTATE,
+ 499:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTRUCTURE,
+ 500:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_TRUNCATED, standard meanings.
+ 501:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 502:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
+ 503:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 504:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 505:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_path_offset_namelen - find a tree node by its full path
+ 506:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 507:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @path: full path of the node to locate
+ 508:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @namelen: number of characters of path to consider
+ 509:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 510:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Identical to fdt_path_offset(), but only consider the first namelen
+ 511:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * characters of path as the path name.
+ 512:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 513:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: offset of the node or negative libfdt error value otherwise
+ 514:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 515:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* Not available in Python */
+ 516:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen);
+ 517:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ 518:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 519:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 520:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_path_offset - find a tree node by its full path
+ 521:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 522:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @path: full path of the node to locate
+ 523:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 524:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_path_offset() finds a node of a given path in the device tree.
+ 525:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Each path component may omit the unit address portion, but the
+ 526:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * results of this are undefined if any such path component is
+ 527:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * ambiguous (that is if there are multiple nodes at the relevant
+ARM GAS  /tmp/ccyDdcF4.s 			page 13
+
+
+ 528:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * level matching the given component, differentiated only by unit
+ 529:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * address).
+ 530:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 531:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * If the path is not absolute (i.e. does not begin with '/'), the
+ 532:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * first component is treated as an alias.  That is, the property by
+ 533:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * that name is looked up in the /aliases node, and the value of that
+ 534:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * property used in place of that first component.
+ 535:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 536:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * For example, for this small fragment
+ 537:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 538:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * / {
+ 539:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     aliases {
+ 540:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *         i2c2 = &foo; // RHS compiles to "/soc@0/i2c@30a40000/eeprom@52"
+ 541:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     };
+ 542:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     soc@0 {
+ 543:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *         foo: i2c@30a40000 {
+ 544:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *             bar: eeprom@52 {
+ 545:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *             };
+ 546:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *         };
+ 547:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *     };
+ 548:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * };
+ 549:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 550:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * these would be equivalent:
+ 551:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 552:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *   /soc@0/i2c@30a40000/eeprom@52
+ 553:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *   i2c2/eeprom@52
+ 554:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 555:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 556:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	structure block offset of the node with the requested path (>=0), on
+ 557:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		success
+ 558:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADPATH, given path does not begin with '/' and the first
+ 559:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		component is not a valid alias
+ 560:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_NOTFOUND, if the requested node does not exist
+ 561:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADMAGIC,
+ 562:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADVERSION,
+ 563:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTATE,
+ 564:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTRUCTURE,
+ 565:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_TRUNCATED, standard meanings.
+ 566:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 567:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_path_offset(const void *fdt, const char *path);
+ 568:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 569:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 570:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_name - retrieve the name of a given node
+ 571:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 572:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @nodeoffset: structure block offset of the starting node
+ 573:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 574:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 575:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_name() retrieves the name (including unit address) of the
+ 576:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * device tree node at structure block offset nodeoffset.  If lenp is
+ 577:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * non-NULL, the length of this name is also returned, in the integer
+ 578:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * pointed to by lenp.
+ 579:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 580:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 581:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	pointer to the node's name, on success
+ 582:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		If lenp is non-NULL, *lenp contains the length of that name
+ 583:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *			(>=0)
+ 584:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	NULL, on error
+ARM GAS  /tmp/ccyDdcF4.s 			page 14
+
+
+ 585:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL *lenp contains an error code (<0):
+ 586:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE
+ 587:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *			tag
+ 588:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADMAGIC,
+ 589:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADVERSION,
+ 590:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTATE, standard meanings
+ 591:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 592:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const char *fdt_get_name(const void *fdt, int nodeoffset, int *lenp);
+ 593:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 594:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 595:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_first_property_offset - find the offset of a node's first property
+ 596:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 597:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @nodeoffset: structure block offset of a node
+ 598:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 599:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_first_property_offset() finds the first property of the node at
+ 600:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * the given structure block offset.
+ 601:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 602:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 603:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	structure block offset of the property (>=0), on success
+ 604:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_NOTFOUND, if the requested node has no properties
+ 605:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADOFFSET, if nodeoffset did not point to an FDT_BEGIN_NODE tag
+ 606:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADMAGIC,
+ 607:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADVERSION,
+ 608:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTATE,
+ 609:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTRUCTURE,
+ 610:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_TRUNCATED, standard meanings.
+ 611:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 612:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_first_property_offset(const void *fdt, int nodeoffset);
+ 613:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 614:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 615:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_next_property_offset - step through a node's properties
+ 616:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 617:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @offset: structure block offset of a property
+ 618:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 619:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_next_property_offset() finds the property immediately after the
+ 620:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * one at the given structure block offset.  This will be a property
+ 621:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * of the same node as the given property.
+ 622:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 623:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 624:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	structure block offset of the next property (>=0), on success
+ 625:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_NOTFOUND, if the given property is the last in its node
+ 626:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADOFFSET, if nodeoffset did not point to an FDT_PROP tag
+ 627:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADMAGIC,
+ 628:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADVERSION,
+ 629:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTATE,
+ 630:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_BADSTRUCTURE,
+ 631:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	-FDT_ERR_TRUNCATED, standard meanings.
+ 632:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 633:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** int fdt_next_property_offset(const void *fdt, int offset);
+ 634:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 635:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 636:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_for_each_property_offset - iterate over all properties of a node
+ 637:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 638:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @property:	property offset (int, lvalue)
+ 639:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt:	FDT blob (const void *)
+ 640:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @node:	node offset (int)
+ 641:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ARM GAS  /tmp/ccyDdcF4.s 			page 15
+
+
+ 642:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * This is actually a wrapper around a for loop and would be used like so:
+ 643:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 644:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	fdt_for_each_property_offset(property, fdt, node) {
+ 645:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		Use property
+ 646:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		...
+ 647:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	}
+ 648:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 649:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	if ((property < 0) && (property != -FDT_ERR_NOTFOUND)) {
+ 650:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		Error handling
+ 651:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	}
+ 652:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 653:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Note that this is implemented as a macro and property is used as
+ 654:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * iterator in the loop. The node variable can be constant or even a
+ 655:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * literal.
+ 656:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 657:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #define fdt_for_each_property_offset(property, fdt, node)	\
+ 658:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	for (property = fdt_first_property_offset(fdt, node);	\
+ 659:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	     property >= 0;					\
+ 660:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	     property = fdt_next_property_offset(fdt, property))
+ 661:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 662:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 663:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_property_by_offset - retrieve the property at a given offset
+ 664:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 665:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @offset: offset of the property to retrieve
+ 666:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 667:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 668:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_property_by_offset() retrieves a pointer to the
+ 669:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_property structure within the device tree blob at the given
+ 670:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * offset.  If lenp is non-NULL, the length of the property value is
+ 671:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * also returned, in the integer pointed to by lenp.
+ 672:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 673:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Note that this code only works on device tree versions >= 16. fdt_getprop()
+ 674:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * works on all versions.
+ 675:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 676:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 677:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	pointer to the structure representing the property
+ 678:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains the length of the property
+ 679:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		value (>=0)
+ 680:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	NULL, on error
+ 681:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains an error code (<0):
+ 682:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_PROP tag
+ 683:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADMAGIC,
+ 684:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADVERSION,
+ 685:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTATE,
+ 686:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTRUCTURE,
+ 687:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_TRUNCATED, standard meanings
+ 688:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 689:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
+ 690:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						      int offset,
+ 691:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						      int *lenp);
+ 692:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline struct fdt_property *fdt_get_property_by_offset_w(void *fdt,
+ 693:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 								int offset,
+ 694:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 								int *lenp)
+ 695:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 696:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return (struct fdt_property *)(uintptr_t)
+ 697:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		fdt_get_property_by_offset(fdt, offset, lenp);
+ 698:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ARM GAS  /tmp/ccyDdcF4.s 			page 16
+
+
+ 699:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 700:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 701:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_property_namelen - find a property based on substring
+ 702:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 703:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @nodeoffset: offset of the node whose property to find
+ 704:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @name: name of the property to find
+ 705:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @namelen: number of characters of name to consider
+ 706:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 707:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 708:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Identical to fdt_get_property(), but only examine the first namelen
+ 709:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * characters of name for matching the property name.
+ 710:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 711:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: pointer to the structure representing the property, or NULL
+ 712:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *         if not found
+ 713:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 714:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* Not available in Python */
+ 715:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const struct fdt_property *fdt_get_property_namelen(const void *fdt,
+ 716:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						    int nodeoffset,
+ 717:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						    const char *name,
+ 718:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						    int namelen, int *lenp);
+ 719:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline struct fdt_property *
+ 720:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** fdt_get_property_namelen_w(void *fdt, int nodeoffset, const char *name,
+ 721:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 			   int namelen, int *lenp)
+ 722:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 723:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return (struct fdt_property *)(uintptr_t)fdt_get_property_namelen(
+ 724:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		fdt, nodeoffset, name, namelen, lenp);
+ 725:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 726:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ 727:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 728:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 729:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_property - find a given property in a given node
+ 730:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 731:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @nodeoffset: offset of the node whose property to find
+ 732:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @name: name of the property to find
+ 733:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 734:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 735:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_get_property() retrieves a pointer to the fdt_property
+ 736:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * structure within the device tree blob corresponding to the property
+ 737:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * named 'name' of the node at offset nodeoffset.  If lenp is
+ 738:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * non-NULL, the length of the property value is also returned, in the
+ 739:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * integer pointed to by lenp.
+ 740:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 741:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 742:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	pointer to the structure representing the property
+ 743:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains the length of the property
+ 744:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		value (>=0)
+ 745:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	NULL, on error
+ 746:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains an error code (<0):
+ 747:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_NOTFOUND, node does not have named property
+ 748:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE
+ 749:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *			tag
+ 750:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADMAGIC,
+ 751:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADVERSION,
+ 752:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTATE,
+ 753:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTRUCTURE,
+ 754:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_TRUNCATED, standard meanings
+ 755:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ARM GAS  /tmp/ccyDdcF4.s 			page 17
+
+
+ 756:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const struct fdt_property *fdt_get_property(const void *fdt, int nodeoffset,
+ 757:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 					    const char *name, int *lenp);
+ 758:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline struct fdt_property *fdt_get_property_w(void *fdt, int nodeoffset,
+ 759:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						      const char *name,
+ 760:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						      int *lenp)
+ 761:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 762:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return (struct fdt_property *)(uintptr_t)
+ 763:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		fdt_get_property(fdt, nodeoffset, name, lenp);
+ 764:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 765:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 766:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 767:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_getprop_by_offset - retrieve the value of a property at a given offset
+ 768:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 769:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @offset: offset of the property to read
+ 770:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @namep: pointer to a string variable (will be overwritten) or NULL
+ 771:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 772:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 773:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_getprop_by_offset() retrieves a pointer to the value of the
+ 774:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * property at structure block offset 'offset' (this will be a pointer
+ 775:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * to within the device blob itself, not a copy of the value).  If
+ 776:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * lenp is non-NULL, the length of the property value is also
+ 777:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returned, in the integer pointed to by lenp.  If namep is non-NULL,
+ 778:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * the property's name will also be returned in the char * pointed to
+ 779:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * by namep (this will be a pointer to within the device tree's string
+ 780:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * block, not a new copy of the name).
+ 781:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 782:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * returns:
+ 783:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	pointer to the property's value
+ 784:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains the length of the property
+ 785:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		value (>=0)
+ 786:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if namep is non-NULL *namep contains a pointer to the property
+ 787:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		name.
+ 788:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *	NULL, on error
+ 789:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		if lenp is non-NULL, *lenp contains an error code (<0):
+ 790:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_PROP tag
+ 791:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADMAGIC,
+ 792:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADVERSION,
+ 793:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTATE,
+ 794:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_BADSTRUCTURE,
+ 795:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *		-FDT_ERR_TRUNCATED, standard meanings
+ 796:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 797:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* This function is not useful in Python */
+ 798:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const void *fdt_getprop_by_offset(const void *fdt, int offset,
+ 799:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 				  const char **namep, int *lenp);
+ 800:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #endif
+ 801:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 
+ 802:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** /**
+ 803:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * fdt_getprop_namelen - get property value based on substring
+ 804:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @fdt: pointer to the device tree blob
+ 805:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @nodeoffset: offset of the node whose property to find
+ 806:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @name: name of the property to find
+ 807:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @namelen: number of characters of name to consider
+ 808:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * @lenp: pointer to an integer variable (will be overwritten) or NULL
+ 809:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ 810:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Identical to fdt_getprop(), but only examine the first namelen
+ 811:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * characters of name for matching the property name.
+ 812:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  *
+ARM GAS  /tmp/ccyDdcF4.s 			page 18
+
+
+ 813:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  * Return: pointer to the property's value or NULL on error
+ 814:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h ****  */
+ 815:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** #ifndef SWIG /* Not available in Python */
+ 816:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+ 817:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 				const char *name, int namelen, int *lenp);
+ 818:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** static inline void *fdt_getprop_namelen_w(void *fdt, int nodeoffset,
+  94              		.loc 2 818 21 view .LVU17
+  95              	.LBB11:
+ 819:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 					  const char *name, int namelen,
+ 820:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 					  int *lenp)
+ 821:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 822:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 	return (void *)(uintptr_t)fdt_getprop_namelen(fdt, nodeoffset, name,
+  96              		.loc 2 822 2 view .LVU18
+  97              		.loc 2 822 28 is_stmt 0 view .LVU19
+  98 0008 03AE     		add	r6, sp, #12
+  99              	.LVL5:
+ 100              		.loc 2 822 28 view .LVU20
+ 101 000a 0096     		str	r6, [sp]
+ 102 000c FFF7FEFF 		bl	fdt_getprop_namelen
+ 103              	.LVL6:
+ 104              		.loc 2 822 28 view .LVU21
+ 105              	.LBE11:
+ 106              	.LBE10:
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+ 107              		.loc 1 24 2 is_stmt 1 view .LVU22
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+ 108              		.loc 1 24 5 is_stmt 0 view .LVU23
+ 109 0010 58B1     		cbz	r0, .L9
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 110              		.loc 1 27 2 is_stmt 1 view .LVU24
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 111              		.loc 1 27 31 is_stmt 0 view .LVU25
+ 112 0012 2919     		adds	r1, r5, r4
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 113              		.loc 1 27 24 view .LVU26
+ 114 0014 039A     		ldr	r2, [sp, #12]
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 115              		.loc 1 27 5 view .LVU27
+ 116 0016 9142     		cmp	r1, r2
+ 117 0018 09D8     		bhi	.L7
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return 0;
+ 118              		.loc 1 30 2 is_stmt 1 view .LVU28
+ 119 001a 2A46     		mov	r2, r5
+ 120 001c 0999     		ldr	r1, [sp, #36]
+ 121 001e 2044     		add	r0, r0, r4
+ 122              	.LVL7:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return 0;
+ 123              		.loc 1 30 2 is_stmt 0 view .LVU29
+ 124 0020 FFF7FEFF 		bl	memcpy
+ 125              	.LVL8:
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+ 126              		.loc 1 31 2 is_stmt 1 view .LVU30
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+ 127              		.loc 1 31 9 is_stmt 0 view .LVU31
+ 128 0024 0020     		movs	r0, #0
+ 129              	.L4:
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ARM GAS  /tmp/ccyDdcF4.s 			page 19
+
+
+ 130              		.loc 1 32 1 view .LVU32
+ 131 0026 04B0     		add	sp, sp, #16
+ 132              	.LCFI2:
+ 133              		.cfi_remember_state
+ 134              		.cfi_def_cfa_offset 16
+ 135              		@ sp needed
+ 136 0028 70BD     		pop	{r4, r5, r6, pc}
+ 137              	.LVL9:
+ 138              	.L9:
+ 139              	.LCFI3:
+ 140              		.cfi_restore_state
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 141              		.loc 1 25 3 is_stmt 1 view .LVU33
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 142              		.loc 1 25 10 is_stmt 0 view .LVU34
+ 143 002a 0398     		ldr	r0, [sp, #12]
+ 144              	.LVL10:
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 145              		.loc 1 25 10 view .LVU35
+ 146 002c FBE7     		b	.L4
+ 147              	.LVL11:
+ 148              	.L7:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 149              		.loc 1 28 10 view .LVU36
+ 150 002e 6FF00200 		mvn	r0, #2
+ 151              	.LVL12:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 152              		.loc 1 28 10 view .LVU37
+ 153 0032 F8E7     		b	.L4
+ 154              		.cfi_endproc
+ 155              	.LFE75:
+ 157              		.section	.text.fdt_setprop_inplace,"ax",%progbits
+ 158              		.align	1
+ 159              		.global	fdt_setprop_inplace
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	fdt_setprop_inplace:
+ 165              	.LVL13:
+ 166              	.LFB76:
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	const void *propval;
+ 167              		.loc 1 36 1 is_stmt 1 view -0
+ 168              		.cfi_startproc
+ 169              		@ args = 4, pretend = 0, frame = 8
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	const void *propval;
+ 171              		.loc 1 36 1 is_stmt 0 view .LVU39
+ 172 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 173              	.LCFI4:
+ 174              		.cfi_def_cfa_offset 24
+ 175              		.cfi_offset 4, -24
+ 176              		.cfi_offset 5, -20
+ 177              		.cfi_offset 6, -16
+ 178              		.cfi_offset 7, -12
+ 179              		.cfi_offset 8, -8
+ 180              		.cfi_offset 14, -4
+ 181 0004 86B0     		sub	sp, sp, #24
+ARM GAS  /tmp/ccyDdcF4.s 			page 20
+
+
+ 182              	.LCFI5:
+ 183              		.cfi_def_cfa_offset 48
+ 184 0006 0746     		mov	r7, r0
+ 185 0008 8846     		mov	r8, r1
+ 186 000a 1446     		mov	r4, r2
+ 187 000c 1D46     		mov	r5, r3
+ 188 000e 0C9E     		ldr	r6, [sp, #48]
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int proplen;
+ 189              		.loc 1 37 2 is_stmt 1 view .LVU40
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 190              		.loc 1 38 2 view .LVU41
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!propval)
+ 191              		.loc 1 40 2 view .LVU42
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!propval)
+ 192              		.loc 1 40 12 is_stmt 0 view .LVU43
+ 193 0010 05AB     		add	r3, sp, #20
+ 194              	.LVL14:
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!propval)
+ 195              		.loc 1 40 12 view .LVU44
+ 196 0012 FFF7FEFF 		bl	fdt_getprop
+ 197              	.LVL15:
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+ 198              		.loc 1 41 2 is_stmt 1 view .LVU45
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return proplen;
+ 199              		.loc 1 41 5 is_stmt 0 view .LVU46
+ 200 0016 90B1     		cbz	r0, .L15
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 201              		.loc 1 44 2 is_stmt 1 view .LVU47
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 202              		.loc 1 44 14 is_stmt 0 view .LVU48
+ 203 0018 059B     		ldr	r3, [sp, #20]
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return -FDT_ERR_NOSPACE;
+ 204              		.loc 1 44 5 view .LVU49
+ 205 001a B342     		cmp	r3, r6
+ 206 001c 11D1     		bne	.L13
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   strlen(name), 0,
+ 207              		.loc 1 47 2 is_stmt 1 view .LVU50
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   val, len);
+ 208              		.loc 1 48 10 is_stmt 0 view .LVU51
+ 209 001e 2046     		mov	r0, r4
+ 210              	.LVL16:
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   val, len);
+ 211              		.loc 1 48 10 view .LVU52
+ 212 0020 FFF7FEFF 		bl	strlen
+ 213              	.LVL17:
+ 214 0024 0346     		mov	r3, r0
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 						   strlen(name), 0,
+ 215              		.loc 1 47 9 view .LVU53
+ 216 0026 0296     		str	r6, [sp, #8]
+ 217 0028 0195     		str	r5, [sp, #4]
+ 218 002a 0022     		movs	r2, #0
+ 219 002c 0092     		str	r2, [sp]
+ 220 002e 2246     		mov	r2, r4
+ 221 0030 4146     		mov	r1, r8
+ 222 0032 3846     		mov	r0, r7
+ 223 0034 FFF7FEFF 		bl	fdt_setprop_inplace_namelen_partial
+ 224              	.LVL18:
+ARM GAS  /tmp/ccyDdcF4.s 			page 21
+
+
+ 225              	.L10:
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 226              		.loc 1 50 1 view .LVU54
+ 227 0038 06B0     		add	sp, sp, #24
+ 228              	.LCFI6:
+ 229              		.cfi_remember_state
+ 230              		.cfi_def_cfa_offset 24
+ 231              		@ sp needed
+ 232 003a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 233              	.LVL19:
+ 234              	.L15:
+ 235              	.LCFI7:
+ 236              		.cfi_restore_state
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 237              		.loc 1 42 3 is_stmt 1 view .LVU55
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 238              		.loc 1 42 10 is_stmt 0 view .LVU56
+ 239 003e 0598     		ldr	r0, [sp, #20]
+ 240              	.LVL20:
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 241              		.loc 1 42 10 view .LVU57
+ 242 0040 FAE7     		b	.L10
+ 243              	.LVL21:
+ 244              	.L13:
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 245              		.loc 1 45 10 view .LVU58
+ 246 0042 6FF00200 		mvn	r0, #2
+ 247              	.LVL22:
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+ 248              		.loc 1 45 10 view .LVU59
+ 249 0046 F7E7     		b	.L10
+ 250              		.cfi_endproc
+ 251              	.LFE76:
+ 253              		.section	.text.fdt_nop_property,"ax",%progbits
+ 254              		.align	1
+ 255              		.global	fdt_nop_property
+ 256              		.syntax unified
+ 257              		.thumb
+ 258              		.thumb_func
+ 260              	fdt_nop_property:
+ 261              	.LVL23:
+ 262              	.LFB78:
+  59:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** int fdt_nop_property(void *fdt, int nodeoffset, const char *name)
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+ 263              		.loc 1 61 1 is_stmt 1 view -0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 8
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267              		.loc 1 61 1 is_stmt 0 view .LVU61
+ 268 0000 00B5     		push	{lr}
+ 269              	.LCFI8:
+ 270              		.cfi_def_cfa_offset 4
+ 271              		.cfi_offset 14, -4
+ 272 0002 83B0     		sub	sp, sp, #12
+ 273              	.LCFI9:
+ 274              		.cfi_def_cfa_offset 16
+ARM GAS  /tmp/ccyDdcF4.s 			page 22
+
+
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	struct fdt_property *prop;
+ 275              		.loc 1 62 2 is_stmt 1 view .LVU62
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int len;
+ 276              		.loc 1 63 2 view .LVU63
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	prop = fdt_get_property_w(fdt, nodeoffset, name, &len);
+ 277              		.loc 1 65 2 view .LVU64
+ 278              	.LVL24:
+ 279              	.LBB12:
+ 280              	.LBI12:
+ 758:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 						      const char *name,
+ 281              		.loc 2 758 36 view .LVU65
+ 282              	.LBB13:
+ 762:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** 		fdt_get_property(fdt, nodeoffset, name, lenp);
+ 283              		.loc 2 762 2 view .LVU66
+ 763:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 284              		.loc 2 763 3 is_stmt 0 view .LVU67
+ 285 0004 01AB     		add	r3, sp, #4
+ 286              	.LVL25:
+ 763:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 287              		.loc 2 763 3 view .LVU68
+ 288 0006 FFF7FEFF 		bl	fdt_get_property
+ 289              	.LVL26:
+ 763:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 290              		.loc 2 763 3 view .LVU69
+ 291              	.LBE13:
+ 292              	.LBE12:
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (!prop)
+ 293              		.loc 1 66 2 is_stmt 1 view .LVU70
+ 294              		.loc 1 66 5 is_stmt 0 view .LVU71
+ 295 000a 38B1     		cbz	r0, .L20
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return len;
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	fdt_nop_region_(prop, len + sizeof(*prop));
+ 296              		.loc 1 69 2 is_stmt 1 view .LVU72
+ 297 000c 0199     		ldr	r1, [sp, #4]
+ 298 000e 0C31     		adds	r1, r1, #12
+ 299 0010 FFF7FEFF 		bl	fdt_nop_region_
+ 300              	.LVL27:
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return 0;
+ 301              		.loc 1 71 2 view .LVU73
+ 302              		.loc 1 71 9 is_stmt 0 view .LVU74
+ 303 0014 0020     		movs	r0, #0
+ 304              	.L16:
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+ 305              		.loc 1 72 1 view .LVU75
+ 306 0016 03B0     		add	sp, sp, #12
+ 307              	.LCFI10:
+ 308              		.cfi_remember_state
+ 309              		.cfi_def_cfa_offset 4
+ 310              		@ sp needed
+ 311 0018 5DF804FB 		ldr	pc, [sp], #4
+ 312              	.LVL28:
+ 313              	.L20:
+ 314              	.LCFI11:
+ 315              		.cfi_restore_state
+ARM GAS  /tmp/ccyDdcF4.s 			page 23
+
+
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return len;
+ 316              		.loc 1 67 3 is_stmt 1 view .LVU76
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return len;
+ 317              		.loc 1 67 10 is_stmt 0 view .LVU77
+ 318 001c 0198     		ldr	r0, [sp, #4]
+ 319              	.LVL29:
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return len;
+ 320              		.loc 1 67 10 view .LVU78
+ 321 001e FAE7     		b	.L16
+ 322              		.cfi_endproc
+ 323              	.LFE78:
+ 325              		.section	.text.fdt_node_end_offset_,"ax",%progbits
+ 326              		.align	1
+ 327              		.global	fdt_node_end_offset_
+ 328              		.syntax unified
+ 329              		.thumb
+ 330              		.thumb_func
+ 332              	fdt_node_end_offset_:
+ 333              	.LVL30:
+ 334              	.LFB79:
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** int fdt_node_end_offset_(void *fdt, int offset)
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+ 335              		.loc 1 75 1 is_stmt 1 view -0
+ 336              		.cfi_startproc
+ 337              		@ args = 0, pretend = 0, frame = 8
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339              		.loc 1 75 1 is_stmt 0 view .LVU80
+ 340 0000 10B5     		push	{r4, lr}
+ 341              	.LCFI12:
+ 342              		.cfi_def_cfa_offset 8
+ 343              		.cfi_offset 4, -8
+ 344              		.cfi_offset 14, -4
+ 345 0002 82B0     		sub	sp, sp, #8
+ 346              	.LCFI13:
+ 347              		.cfi_def_cfa_offset 16
+ 348 0004 0446     		mov	r4, r0
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int depth = 0;
+ 349              		.loc 1 76 2 is_stmt 1 view .LVU81
+ 350              		.loc 1 76 6 is_stmt 0 view .LVU82
+ 351 0006 0023     		movs	r3, #0
+ 352 0008 0193     		str	r3, [sp, #4]
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	while ((offset >= 0) && (depth >= 0))
+ 353              		.loc 1 78 2 is_stmt 1 view .LVU83
+ 354              		.loc 1 78 8 is_stmt 0 view .LVU84
+ 355 000a 04E0     		b	.L22
+ 356              	.LVL31:
+ 357              	.L24:
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		offset = fdt_next_node(fdt, offset, &depth);
+ 358              		.loc 1 79 3 is_stmt 1 view .LVU85
+ 359              		.loc 1 79 12 is_stmt 0 view .LVU86
+ 360 000c 01AA     		add	r2, sp, #4
+ 361 000e 2046     		mov	r0, r4
+ 362 0010 FFF7FEFF 		bl	fdt_next_node
+ 363              	.LVL32:
+ 364              		.loc 1 79 12 view .LVU87
+ARM GAS  /tmp/ccyDdcF4.s 			page 24
+
+
+ 365 0014 0146     		mov	r1, r0
+ 366              	.LVL33:
+ 367              	.L22:
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		offset = fdt_next_node(fdt, offset, &depth);
+ 368              		.loc 1 78 23 is_stmt 1 view .LVU88
+ 369 0016 0029     		cmp	r1, #0
+ 370 0018 02DB     		blt	.L23
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		offset = fdt_next_node(fdt, offset, &depth);
+ 371              		.loc 1 78 33 is_stmt 0 discriminator 1 view .LVU89
+ 372 001a 019B     		ldr	r3, [sp, #4]
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		offset = fdt_next_node(fdt, offset, &depth);
+ 373              		.loc 1 78 23 discriminator 1 view .LVU90
+ 374 001c 002B     		cmp	r3, #0
+ 375 001e F5DA     		bge	.L24
+ 376              	.L23:
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return offset;
+ 377              		.loc 1 81 2 is_stmt 1 view .LVU91
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+ 378              		.loc 1 82 1 is_stmt 0 view .LVU92
+ 379 0020 0846     		mov	r0, r1
+ 380 0022 02B0     		add	sp, sp, #8
+ 381              	.LCFI14:
+ 382              		.cfi_def_cfa_offset 8
+ 383              		@ sp needed
+ 384 0024 10BD     		pop	{r4, pc}
+ 385              		.loc 1 82 1 view .LVU93
+ 386              		.cfi_endproc
+ 387              	.LFE79:
+ 389              		.section	.text.fdt_nop_node,"ax",%progbits
+ 390              		.align	1
+ 391              		.global	fdt_nop_node
+ 392              		.syntax unified
+ 393              		.thumb
+ 394              		.thumb_func
+ 396              	fdt_nop_node:
+ 397              	.LVL34:
+ 398              	.LFB80:
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** int fdt_nop_node(void *fdt, int nodeoffset)
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** {
+ 399              		.loc 1 85 1 is_stmt 1 view -0
+ 400              		.cfi_startproc
+ 401              		@ args = 0, pretend = 0, frame = 0
+ 402              		@ frame_needed = 0, uses_anonymous_args = 0
+ 403              		.loc 1 85 1 is_stmt 0 view .LVU95
+ 404 0000 70B5     		push	{r4, r5, r6, lr}
+ 405              	.LCFI15:
+ 406              		.cfi_def_cfa_offset 16
+ 407              		.cfi_offset 4, -16
+ 408              		.cfi_offset 5, -12
+ 409              		.cfi_offset 6, -8
+ 410              		.cfi_offset 14, -4
+ 411 0002 0646     		mov	r6, r0
+ 412 0004 0D46     		mov	r5, r1
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	int endoffset;
+ 413              		.loc 1 86 2 is_stmt 1 view .LVU96
+ARM GAS  /tmp/ccyDdcF4.s 			page 25
+
+
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	endoffset = fdt_node_end_offset_(fdt, nodeoffset);
+ 414              		.loc 1 88 2 view .LVU97
+ 415              		.loc 1 88 14 is_stmt 0 view .LVU98
+ 416 0006 FFF7FEFF 		bl	fdt_node_end_offset_
+ 417              	.LVL35:
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	if (endoffset < 0)
+ 418              		.loc 1 89 2 is_stmt 1 view .LVU99
+ 419              		.loc 1 89 5 is_stmt 0 view .LVU100
+ 420 000a 041E     		subs	r4, r0, #0
+ 421 000c 08DB     		blt	.L26
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 		return endoffset;
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 
+  92:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	fdt_nop_region_(fdt_offset_ptr_w(fdt, nodeoffset, 0),
+ 422              		.loc 1 92 2 is_stmt 1 view .LVU101
+ 423              	.LVL36:
+ 424              	.LBB14:
+ 425              	.LBI14:
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** {
+ 426              		.loc 2 126 21 view .LVU102
+ 427              	.LBB15:
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 428              		.loc 2 128 2 view .LVU103
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 429              		.loc 2 128 28 is_stmt 0 view .LVU104
+ 430 000e 0022     		movs	r2, #0
+ 431 0010 2946     		mov	r1, r5
+ 432 0012 3046     		mov	r0, r6
+ 433              	.LVL37:
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 434              		.loc 2 128 28 view .LVU105
+ 435 0014 FFF7FEFF 		bl	fdt_offset_ptr
+ 436              	.LVL38:
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt.h **** }
+ 437              		.loc 2 128 28 view .LVU106
+ 438              	.LBE15:
+ 439              	.LBE14:
+ 440              		.loc 1 92 2 discriminator 1 view .LVU107
+ 441 0018 611B     		subs	r1, r4, r5
+ 442 001a FFF7FEFF 		bl	fdt_nop_region_
+ 443              	.LVL39:
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 			endoffset - nodeoffset);
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** 	return 0;
+ 444              		.loc 1 94 2 is_stmt 1 view .LVU108
+ 445              		.loc 1 94 9 is_stmt 0 view .LVU109
+ 446 001e 0024     		movs	r4, #0
+ 447              	.LVL40:
+ 448              	.L26:
+  95:/mnt/c/Users/31740/Desktop/newcore/lib/fdt/fdt_wip.c **** }
+ 449              		.loc 1 95 1 view .LVU110
+ 450 0020 2046     		mov	r0, r4
+ 451 0022 70BD     		pop	{r4, r5, r6, pc}
+ 452              		.loc 1 95 1 view .LVU111
+ 453              		.cfi_endproc
+ 454              	.LFE80:
+ 456              		.text
+ 457              	.Letext0:
+ARM GAS  /tmp/ccyDdcF4.s 			page 26
+
+
+ 458              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 459              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 460              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 461              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/linux/libfdt_env.h"
+ 462              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/linux/fdt.h"
+ 463              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 464              		.file 9 "<built-in>"
+ARM GAS  /tmp/ccyDdcF4.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fdt_wip.c
+     /tmp/ccyDdcF4.s:21     .text.fdt_nop_region_:00000000 $t
+     /tmp/ccyDdcF4.s:26     .text.fdt_nop_region_:00000000 fdt_nop_region_
+     /tmp/ccyDdcF4.s:61     .text.fdt_setprop_inplace_namelen_partial:00000000 $t
+     /tmp/ccyDdcF4.s:67     .text.fdt_setprop_inplace_namelen_partial:00000000 fdt_setprop_inplace_namelen_partial
+     /tmp/ccyDdcF4.s:158    .text.fdt_setprop_inplace:00000000 $t
+     /tmp/ccyDdcF4.s:164    .text.fdt_setprop_inplace:00000000 fdt_setprop_inplace
+     /tmp/ccyDdcF4.s:254    .text.fdt_nop_property:00000000 $t
+     /tmp/ccyDdcF4.s:260    .text.fdt_nop_property:00000000 fdt_nop_property
+     /tmp/ccyDdcF4.s:326    .text.fdt_node_end_offset_:00000000 $t
+     /tmp/ccyDdcF4.s:332    .text.fdt_node_end_offset_:00000000 fdt_node_end_offset_
+     /tmp/ccyDdcF4.s:390    .text.fdt_nop_node:00000000 $t
+     /tmp/ccyDdcF4.s:396    .text.fdt_nop_node:00000000 fdt_nop_node
+
+UNDEFINED SYMBOLS
+fdt_getprop_namelen
+memcpy
+fdt_getprop
+strlen
+fdt_get_property
+fdt_next_node
+fdt_offset_ptr

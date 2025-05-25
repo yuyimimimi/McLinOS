@@ -20,11 +20,13 @@ static struct task_struct *kthread_run(
     vsnprintf(name, sizeof(name), namefmt, args);
     va_end(args);
     struct task_struct *t = task_run(
-    threadfn,KTHREAD_DEFAULT_STACK_SIZE,data,KTHREAD_DEFAULT_PRIORITY,name,default_core_number);
+    threadfn,KTHREAD_DEFAULT_STACK_SIZE,data,KTHREAD_DEFAULT_PRIORITY,name,default_core_number,0);
     run_scheduler(NULL);
     return t;
 }
  
+
+#define current get_current_task()
 
 
 

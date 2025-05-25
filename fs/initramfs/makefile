@@ -1,2 +1,2 @@
 C_SOURCES    += \
-		$(wildcard ./fs/initramfs/*.c)
+		$(wildcard $(BASE_DIR)/fs/initramfs/*.c)

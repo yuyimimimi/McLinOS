@@ -136,10 +136,10 @@ static int spi_device_swap(void *tx_buf, void *rx_buf, int len)
      
     #if SPI1_BSP_DEBUG 
     if(p){ 
-      printk("send data:\n\r");
-      printk("TX:\n\r");
+      pr_info("send data:\n\r");
+      pr_info("TX:\n\r");
       for(int i = 0; i < len; i++){
-        printk("0x%02x \n\r", p[i]);
+        pr_info("0x%02x \n\r", p[i]);
       }
     }
     #endif
@@ -164,10 +164,10 @@ static int spi_device_swap(void *tx_buf, void *rx_buf, int len)
     
     #if SPI1_BSP_DEBUG
     if(q){ 
-      printk("receive data:\n\r");
-      printk("RX:\n\r");
+      pr_info("receive data:\n\r");
+      pr_info("RX:\n\r");
       for(int i = 0; i < len; i++){
-        printk("0x%02x \n\r", q[i]);
+        pr_info("0x%02x \n\r", q[i]);
       }
     }
     #endif
@@ -179,7 +179,7 @@ static int spi_device_swap(void *tx_buf, void *rx_buf, int len)
 
 static int spi_dev_open(struct inode *inode, struct file *file)
 {
-   printk("spi_dev_opern\n\r");
+   pr_info("spi_dev_opern\n\r");
    return 0;
 }
 
@@ -187,7 +187,7 @@ static int spi_dev_open(struct inode *inode, struct file *file)
 long spi_unlocked_ioctl(struct file * file, unsigned int cmd, unsigned long arg)
 {
     if (arg==NULL){
-        printk("arg is null");
+        pr_info("arg is null");
         return -EINVAL;
     } 
     struct spi_ioc_transfer *spi = (struct spi_ioc_transfer *) arg;

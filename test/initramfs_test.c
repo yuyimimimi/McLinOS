@@ -34,5 +34,38 @@ static int root_fs_init()
         pr_info("file has bean remove\n");
     else
         pr_info("file is not remove\n");
+    } 
 
+
+
+    
+
+static struct initramfs_dentry* initramfs_create_mem_file(
+    struct initramfs_superblock *sb,struct initramfs_inode* parent_dentry_inode,struct file_operations* fop,uint32_t major,char *name,
+    __file_data *file
+    )
+{
+    struct initramfs_dentry* fsinode = initramfs_create_inode(sb,parent_dentry_inode,fop,major,name);
+    fsinode->target_inode->i_mode = READONLY;
+    fsinode->target_inode->size   = file->length;
+    fsinode->target_inode->i_page = virt_to_page(file->data);
+    return fsinode;
 }
+
+
+void print_file_head_data(__file_data *file)
+{
+
+    printk("file path:%s  length:%d mode:%d\n",file->path,file->length,file->mode);
+    print_memory(file->data,file->length);
+}
+static void search_all_file(void){
+    for (__file_data *file_head = __export_file_start; file_head != __export_file_end; file_head++) {
+        print_file_head_data(file_head);
+    }
+    if(__export_file_start == __export_file_end)
+    {
+        printk("no any file\n");
+    }
+}
+

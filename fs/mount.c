@@ -71,7 +71,6 @@ int sys_mount(const char __user *dev_name, const char __user *dir_name,
     if((mount_point->d_inode->i_mode & S_IFMT) != S_IFDIR){
         return ERR_PTR(-ENOTDIR);
     }
-
     spin_lock(&mount_point->d_lock);
     struct super_block* mount_sb = (file_system->mount(file_system,0,dev_name,data))->d_sb; 
     if(IS_ERR(mount_sb))
@@ -84,6 +83,8 @@ int sys_mount(const char __user *dev_name, const char __user *dir_name,
     mount_point->d_inode = mount_sb->s_root->d_inode;
 
     spin_unlock(&mount_point->d_lock);
-    pr_info("mount:%s fs:%s to %s \n",dev_name,type,dir_name);
+    if(dev_name == NULL)
+    dev_name = "vfs";
+    pr_info("mount: %s fs: %s to: %s \n",dev_name,type,dir_name);
     return 0;
 }

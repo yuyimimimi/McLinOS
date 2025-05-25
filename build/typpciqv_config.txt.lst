@@ -1,0 +1,197 @@
+ARM GAS  /tmp/ccp7Yqjs.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"typpciqv_config.txt.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/user/rootfs_file_out/typpciqv_config.txt.c"
+  20              		.section	.rodata.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 2F626F6F 		.ascii	"/boot/config.txt\000"
+  23      742F636F 
+  23      6E666967 
+  23      2E747874 
+  23      00
+  24              		.section	.init_ramfs_files,"aw"
+  25              		.align	2
+  28              	register_file_file_data:
+  29 0000 00000000 		.word	.LC0
+  30 0004 EB020000 		.word	747
+  31 0008 00000000 		.word	filedata
+  32 000c 00       		.byte	0
+  33 000d 000000   		.space	3
+  34              		.section	.rodata.filedata,"a"
+  35              		.align	2
+  38              	filedata:
+  39 0000 0D0A0D0A 		.ascii	"\015\012\015\012###############################\015"
+  39      23232323 
+  39      23232323 
+  39      23232323 
+  39      23232323 
+  40 0024 0A232F62 		.ascii	"\012#/boot/config.txt this file is for boot config "
+  40      6F6F742F 
+  40      636F6E66 
+  40      69672E74 
+  40      78742074 
+  41 0054 200D0A23 		.ascii	" \015\012###############################\015\012\015"
+  41      23232323 
+  41      23232323 
+  41      23232323 
+  41      23232323 
+  42 0079 0A205B73 		.ascii	"\012 [syscall]\015\012SyscallTable = /etc/syscall.t"
+  42      79736361 
+  42      6C6C5D0D 
+  42      0A537973 
+ARM GAS  /tmp/ccp7Yqjs.s 			page 2
+
+
+  42      63616C6C 
+  43 00a3 626C0D0A 		.ascii	"bl\015\012\015\012\015\012 [Loader_Config]\015\012m"
+  43      0D0A0D0A 
+  43      205B4C6F 
+  43      61646572 
+  43      5F436F6E 
+  44 00be 61676963 		.ascii	"agic            = 12345678 \015\012min_kernel_ver  "
+  44      20202020 
+  44      20202020 
+  44      20202020 
+  44      3D203132 
+  45 00eb 203D2030 		.ascii	" = 0    # \345\212\240\350\275\275\345\231\250\346\224"
+  45      20202020 
+  45      2320E58A 
+  45      A0E8BDBD 
+  45      E599A8E6 
+  46 0100 AFE68C81 		.ascii	"\257\346\214\201\347\232\204\346\234\200\344\275\216"
+  46      E79A84E6 
+  46      9C80E4BD 
+  46      8E
+  47 010d E58685E6 		.ascii	"\345\206\205\346\240\270\347\211\210\346\234\254\015"
+  47      A0B8E789 
+  47      88E69CAC 
+  47      0D
+  48 011a 0A6D6178 		.ascii	"\012max_kernel_ver   = 2    # \345\212\240\350\275\275"
+  48      5F6B6572 
+  48      6E656C5F 
+  48      76657220 
+  48      20203D20 
+  49 013b E599A8E6 		.ascii	"\345\231\250\346\224\257\346\214\201\347\232\204\346"
+  49      94AFE68C 
+  49      81E79A84 
+  49      E6
+  50 0148 9C80E9AB 		.ascii	"\234\200\351\253\230\345\206\205\346\240\270\347\211"
+  50      98E58685 
+  50      E6A0B8E7 
+  50      89
+  51 0155 88E69CAC 		.ascii	"\210\346\234\254\015\012cmd              = 1    # \346"
+  51      0D0A636D 
+  51      64202020 
+  51      20202020 
+  51      20202020 
+  52 0176 8C87E4BB 		.ascii	"\214\207\344\273\244\346\250\241\345\274\217(\345\234"
+  52      A4E6A8A1 
+  52      E5BC8F28 
+  52      E59C
+  53 0184 A861726D 		.ascii	"\250arm\344\270\255\346\240\207\350\257\206Thumb)\015"
+  53      E4B8ADE6 
+  53      A087E8AF 
+  53      86546875 
+  53      6D62290D 
+  54 0198 0A6D6178 		.ascii	"\012max_stack_size   = 8    #\345\205\201\350\256\270"
+  54      5F737461 
+  54      636B5F73 
+  54      697A6520 
+  54      20203D20 
+  55 01b8 E79A84E6 		.ascii	"\347\232\204\346\234\200\345\244\247\346\240\210\345"
+ARM GAS  /tmp/ccp7Yqjs.s 			page 3
+
+
+  55      9C80E5A4 
+  55      A7E6A088 
+  55      E5
+  56 01c5 A4A7E5B0 		.ascii	"\244\247\345\260\217(KB)\015\012default_priority = "
+  56      8F284B42 
+  56      290D0A64 
+  56      65666175 
+  56      6C745F70 
+  57 01e3 37202020 		.ascii	"7    # \351\273\230\350\256\244\344\273\273\345\212"
+  57      202320E9 
+  57      BB98E8AE 
+  57      A4E4BBBB 
+  57      E58A
+  58 01f5 A1E4BC98 		.ascii	"\241\344\274\230\345\205\210\347\272\247\015\012arc"
+  58      E58588E7 
+  58      BAA70D0A 
+  58      617263
+  59 0204 685F666C 		.ascii	"h_flags       = 7    #armv7\015\012max_app_size    "
+  59      61677320 
+  59      20202020 
+  59      20203D20 
+  59      37202020 
+  60 0231 203D2041 		.ascii	" = Auto #32 #\345\205\201\350\256\270\347\232\204\346"
+  60      75746F20 
+  60      23333220 
+  60      23E58581 
+  60      E8AEB8E7 
+  61 0248 9C80E5A4 		.ascii	"\234\200\345\244\247\344\273\273\345\212\241\345\244"
+  61      A7E4BBBB 
+  61      E58AA1E5 
+  61      A4
+  62 0255 A7E5B08F 		.ascii	"\247\345\260\217(KB)\015\012\015\012\015\012 [user_"
+  62      284B4229 
+  62      0D0A0D0A 
+  62      0D0A205B 
+  62      75736572 
+  63 026a 73746172 		.ascii	"start_app]\015\012path            = /bin/for_cortex"
+  63      745F6170 
+  63      705D0D0A 
+  63      70617468 
+  63      20202020 
+  64 0297 5F6D342E 		.ascii	"_m4.bin\015\012\015\012 [system]\015\012cpu_fq    ="
+  64      62696E0D 
+  64      0A0D0A20 
+  64      5B737973 
+  64      74656D5D 
+  65 02b8 20313638 		.ascii	" 168\015\012\015\012 [file_system]\015\012use_initr"
+  65      0D0A0D0A 
+  65      205B6669 
+  65      6C655F73 
+  65      79737465 
+  66 02d9 616D6673 		.ascii	"amfs_only = y \015\012\015\012"
+  66      5F6F6E6C 
+  66      79203D20 
+  66      79200D0A 
+  66      0D0A
+  67              		.text
+ARM GAS  /tmp/ccp7Yqjs.s 			page 4
+
+
+  68              	.Letext0:
+  69              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/initramfs.h"
+ARM GAS  /tmp/ccp7Yqjs.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 typpciqv_config.txt.c
+     /tmp/ccp7Yqjs.s:21     .rodata.str1.4:00000000 $d
+     /tmp/ccp7Yqjs.s:25     .init_ramfs_files:00000000 $d
+     /tmp/ccp7Yqjs.s:28     .init_ramfs_files:00000000 register_file_file_data
+     /tmp/ccp7Yqjs.s:38     .rodata.filedata:00000000 filedata
+     /tmp/ccp7Yqjs.s:35     .rodata.filedata:00000000 $d
+
+NO UNDEFINED SYMBOLS

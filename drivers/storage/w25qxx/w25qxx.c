@@ -16,12 +16,12 @@ static char *w25qxx_buffer;
 
 
 static int w25qxx_open(struct gendisk *disk, blk_mode_t mode){
-    printk("w25qxx block device opened\n\r");
+    pr_info("w25qxx block device opened\n\r");
     return 0;
 }
 
 static void w25qxx_release(struct gendisk *disk, fmode_t mode){
-    printk("w25qxx block device released\n");
+    pr_info("w25qxx block device released\n");
 }
 
 static int w25qxx_getgeo(struct block_device * device , struct hd_geometry * geo){
@@ -47,13 +47,13 @@ static void w25qxx_request(struct request *req )
             char *buffer = kmap(bvec->bv_page) + bvec->bv_offset;   
             if(rq_data_dir(req) == READ)
             {
-                printk(KERN_INFO "w25qxx: read page:%d (%d b)\n",start,data_length);
+                pr_info("w25qxx: read page:%d (%d b)\n",start,data_length);
                 ret = W25Qxx_device_read_page(w25qxx1_dev,buffer,data_length,start);  
             }
             else if(rq_data_dir(req) == WRITE){
                 int page_4k = start/8;
                 int page_4k_offset = start%8;
-                printk(KERN_INFO "w25qxx: write page:%d (%d b)\n",start,data_length);
+                pr_info("w25qxx: write page:%d (%d b)\n",start,data_length);
                 if(page_4k_offset == 0 && data_length == 4096) //如果4k对其则直接写入
                 {
                     ret = W25Qxx_device_write_page(w25qxx1_dev,buffer,data_length,page_4k);     
@@ -118,12 +118,12 @@ static int __init w25qxx_init(void)
 {
     w25qxx_buffer = vmalloc(4096);
     if(w25qxx_buffer == NULL) {
-        printk(KERN_ERR "Failed to allocate buffer\n");
+        pr_info(KERN_ERR "Failed to allocate buffer\n");
         return -ENOMEM;
     }
     w25qxx1_dev = new_w25qxx_dev(CONFIG_W25QXX_SPI_FLASH_SPI_DEVICE,CONFIG_W25QXX_SPI_FLASH_CS_PIN);    //初始化w25qxx1设备设置使用spi1 cs引脚为AP4
     if(w25qxx1_dev == NULL){
-        printk("w25qxx1 device init failed\n\r");
+        pr_info("w25qxx1 device init failed\n\r");
         vfree(w25qxx_buffer);
         return -1;
     }

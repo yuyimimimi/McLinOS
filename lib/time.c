@@ -13,5 +13,5 @@ time64_t ktime_get(){
 
 void sys_tick_hander(void) {
     time++;
-    sched();
+    i_sched();
 }

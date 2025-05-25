@@ -1,0 +1,164 @@
+ARM GAS  /tmp/ccbtD0T6.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"itcjyi42_syscall.tbl.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/user/rootfs_file_out/itcjyi42_syscall.tbl.c"
+  20              		.section	.rodata.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 2F657463 		.ascii	"/etc/syscall.tbl\000"
+  23      2F737973 
+  23      63616C6C 
+  23      2E74626C 
+  23      00
+  24              		.section	.init_ramfs_files,"aw"
+  25              		.align	2
+  28              	register_file_file_data:
+  29 0000 00000000 		.word	.LC0
+  30 0004 E7020000 		.word	743
+  31 0008 00000000 		.word	filedata
+  32 000c 00       		.byte	0
+  33 000d 000000   		.space	3
+  34              		.section	.rodata.filedata,"a"
+  35              		.align	2
+  38              	filedata:
+  39 0000 23205350 		.ascii	"# SPDX-License-Identifier: GPL-2.0 WITH Linux-sysca"
+  39      44582D4C 
+  39      6963656E 
+  39      73652D49 
+  39      64656E74 
+  40 0033 6C6C2D6E 		.ascii	"ll-note\015\012#\015\012# Linux system call numbers"
+  40      6F74650D 
+  40      0A230D0A 
+  40      23204C69 
+  40      6E757820 
+  41 005a 20616E64 		.ascii	" and entry vectors\015\012#\015\012# The format is:"
+  41      20656E74 
+  41      72792076 
+  41      6563746F 
+  41      72730D0A 
+  42 0081 0D0A2320 		.ascii	"\015\012# <num>\011<abi>\011<name>\011\011\011[<ent"
+  42      3C6E756D 
+  42      3E093C61 
+  42      62693E09 
+ARM GAS  /tmp/ccbtD0T6.s 			page 2
+
+
+  42      3C6E616D 
+  43 009f 72792070 		.ascii	"ry point>\011\011\011[<oabi compat entry point>]]\015"
+  43      6F696E74 
+  43      3E090909 
+  43      5B3C6F61 
+  43      62692063 
+  44 00c8 0A230D0A 		.ascii	"\012#\015\012# Where abi is:\015\012#  common - for"
+  44      23205768 
+  44      65726520 
+  44      61626920 
+  44      69733A0D 
+  45 00ec 20737973 		.ascii	" system calls shared between oabi and eabi (may hav"
+  45      74656D20 
+  45      63616C6C 
+  45      73207368 
+  45      61726564 
+  46 011f 6520636F 		.ascii	"e compat)\015\012#  oabi   - for oabi-only system c"
+  46      6D706174 
+  46      290D0A23 
+  46      20206F61 
+  46      62692020 
+  47 014c 616C6C73 		.ascii	"alls (may have compat)\015\012#  eabi   - for eabi-"
+  47      20286D61 
+  47      79206861 
+  47      76652063 
+  47      6F6D7061 
+  48 0179 6F6E6C79 		.ascii	"only system calls\015\012#\015\012# For each syscal"
+  48      20737973 
+  48      74656D20 
+  48      63616C6C 
+  48      730D0A23 
+  49 01a0 6C206E75 		.ascii	"l number, \"common\" is mutually exclusive with oab"
+  49      6D626572 
+  49      2C202263 
+  49      6F6D6D6F 
+  49      6E222069 
+  50 01d1 6920616E 		.ascii	"i and eabi\015\012#\015\0120\011common\011restart_s"
+  50      64206561 
+  50      62690D0A 
+  50      230D0A30 
+  50      09636F6D 
+  51 01f2 79736361 		.ascii	"yscall\011sys_restart_syscall\015\0121\011common\011"
+  51      6C6C0973 
+  51      79735F72 
+  51      65737461 
+  51      72745F73 
+  52 0217 65786974 		.ascii	"exit\011\011\011sys_exit\015\012\015\0123\011common"
+  52      09090973 
+  52      79735F65 
+  52      7869740D 
+  52      0A0D0A33 
+  53 0232 09726561 		.ascii	"\011read\011\011\011sys_read\015\0124\011common\011"
+  53      64090909 
+  53      7379735F 
+  53      72656164 
+  53      0D0A3409 
+  54 024d 77726974 		.ascii	"write\011\011\011sys_write\015\0125\011common\011op"
+ARM GAS  /tmp/ccbtD0T6.s 			page 3
+
+
+  54      65090909 
+  54      7379735F 
+  54      77726974 
+  54      650D0A35 
+  55 026b 656E0909 		.ascii	"en\011\011\011sys_open\015\0126\011common\011close\011"
+  55      09737973 
+  55      5F6F7065 
+  55      6E0D0A36 
+  55      09636F6D 
+  56 0289 09097379 		.ascii	"\011\011sys_close\015\012# 7 was sys_waitpid\015\012"
+  56      735F636C 
+  56      6F73650D 
+  56      0A232037 
+  56      20776173 
+  57 02ab 0D0A0D0A 		.ascii	"\015\012\015\012\015\012158\011common\011sched_yiel"
+  57      0D0A3135 
+  57      3809636F 
+  57      6D6D6F6E 
+  57      09736368 
+  58 02c6 64090973 		.ascii	"d\011\011sys_sched_yield\015\012\015\012end\015\012"
+  58      79735F73 
+  58      63686564 
+  58      5F796965 
+  58      6C640D0A 
+  59 02e1 0D0A0D0A 		.ascii	"\015\012\015\012\015\012"
+  59      0D0A
+  60              		.text
+  61              	.Letext0:
+  62              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/initramfs.h"
+ARM GAS  /tmp/ccbtD0T6.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 itcjyi42_syscall.tbl.c
+     /tmp/ccbtD0T6.s:21     .rodata.str1.4:00000000 $d
+     /tmp/ccbtD0T6.s:25     .init_ramfs_files:00000000 $d
+     /tmp/ccbtD0T6.s:28     .init_ramfs_files:00000000 register_file_file_data
+     /tmp/ccbtD0T6.s:38     .rodata.filedata:00000000 filedata
+     /tmp/ccbtD0T6.s:35     .rodata.filedata:00000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,20 +1,12 @@
-# 0 "arch/arm_m/boot/dts/stm32f4.dts"
+# 0 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/dts/stm32f4.dts"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "arch/arm_m/boot/dts/stm32f4.dts"
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/dts/stm32f4.dts"
 /dts-v1/;
 
 / {
     model = "STM32F407 Board";
     compatible = "st,stm32f407";
-
-    aliases {
-        serial0 = &uart1;
-    };
-
-    chosen {
-        stdout-path = &uart1;
-    };
 
     soc {
         #address-cells = <1>;
@@ -36,4 +28,5 @@
             status = "okay";
         };
     };
+
 };

@@ -51,9 +51,17 @@ extern initcall_t __start_late_initcall_sync[];
 extern initcall_t __end_late_initcall_sync[];
 
 
+
+
+
+
+
+
+
+
 #define __define_initcall(fn, prio) \
    static initcall_t __attribute__((__section__(prio))) \
-    __used __cold _initcall_##fn  = fn              \
+    __used  _initcall_##fn  = fn              \
  
 #define initcall_fn(name) \
 static void do_##name(void) \

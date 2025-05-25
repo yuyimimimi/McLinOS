@@ -1,3 +1,3 @@
 C_SOURCES    += \
-		$(wildcard ./kernel/mm/*.c)
+		$(wildcard $(BASE_DIR)/kernel/mm/*.c)
 		

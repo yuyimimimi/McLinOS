@@ -27,7 +27,7 @@
 #include <linux/statfs.h>
 #include <linux/stat.h>
 #include <linux/path.h>
-
+#include <linux/fs_types.h>
 
 struct dentry;
 struct file;
@@ -42,6 +42,7 @@ struct seq_file ;
 struct shrink_control;
 struct file_system_type;
 struct buffer_head;
+struct readahead_control;
 
 #define MAY_EXEC		0x00000001
 #define MAY_WRITE		0x00000002
@@ -318,6 +319,50 @@ struct address_space_operations {
  *														* 
 *********************************************************/
 
+struct io_uring {
+	uint8_t 	magic;
+};
+struct io_uring_cmd {
+	uint8_t 	magic;
+};
+struct fs_context {
+	uint8_t 	magic;
+};
+struct file_lease{
+	uint8_t 	magic;
+};
+struct file_lock {
+	uint8_t 	magic;
+};
+struct vm_area_struct{
+	uint8_t 	magic;
+};
+struct pipe_inode_info{
+	uint8_t 	magic;
+};
+struct readahead_control{
+	uint8_t 	magic;
+};
+
+struct fileattr {
+	uint8_t 	magic;
+};
+struct fiemap_extent_info {
+	uint8_t 	magic;
+};
+struct delayed_call {
+	uint8_t 	magic;
+};
+
+
+
+
+
+
+
+
+
+
 struct file {
 	struct mutex					f_ref;
 	struct mutex					f_lock;
@@ -333,7 +378,7 @@ struct file {
 		struct mutex				f_pos_lock;
 		u64							f_pipe;
 	};
-	loff_t							f_pos;
+	loff_t							f_pos;   //用于目录遍历
 	void *							f_private;
 	spinlock_t                      f_slock;
 }__attribute__((aligned(sizeof(long)))) __randomize_layout;	
@@ -455,14 +500,21 @@ struct dir_context {
 };
 
 
+static inline bool dir_emit(struct dir_context *ctx,
+			    const char *name, int namelen,
+			    u64 ino, unsigned type)
+{
+	return ctx->actor(ctx, name, namelen, ctx->pos, ino, type);
+}
 
-
+struct poll_table_struct;
 typedef void (*poll_queue_proc)(struct file *, wait_queue_head_t *, struct poll_table_struct *);
-
 typedef struct poll_table_struct {
 	poll_queue_proc _qproc;
 	__poll_t _key;
 } poll_table;
+
+
 
 typedef unsigned int __bitwise fop_flags_t;
 typedef void *fl_owner_t;

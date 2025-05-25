@@ -1,3 +1,3 @@
 C_SOURCES += 	\
-	./drivers/clock/$(PLATFORM)_start_init.c
+	$(BASE_DIR)/drivers/clock/$(PLATFORM)_start_init.c
 

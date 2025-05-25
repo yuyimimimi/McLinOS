@@ -315,7 +315,9 @@ struct queue_limits {
 	struct blk_integrity	integrity;
 };
 
-
+struct blk_zone {
+	uint8_t magic;
+};
 
 typedef int (*report_zones_cb)(struct blk_zone *zone, unsigned int idx,
     void *data);
@@ -442,7 +444,7 @@ extern void __blk_cleanup_queue(struct request_queue *q);
 static __always_inline struct request_queue *blk_alloc_queue(gfp_t flags){
 	return request_queue_init(0, NULL, flags);
 }
-static __always_inline struct request_queue *blk_init_queue(request_fn_t *fn,spinlock_t *lock){
+static __always_inline struct request_queue *blk_init_queue(request_fn_t fn,spinlock_t *lock){
 	struct request_queue * q= request_queue_init(0, NULL, GFP_KERNEL);
 	q->q_fn = fn;
 	q->q_lock = lock;

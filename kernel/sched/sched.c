@@ -21,18 +21,21 @@ static void scheduler_init( struct scheduler* uninit_scheduler,char* pool_name)
     if(IS_ERR(uninit_scheduler->s_task_pool)) {
         pr_err("can not init create scheduler\n");while (1){}
     }
+    uninit_scheduler->magic  = scheduler_scheduler;
     uninit_scheduler->s_flag = SCHEDULER_RUN;
     uninit_scheduler->current_task = NULL;
     uninit_scheduler->t_pop  = task_pool->t_op;
 }
 
+extern size_t get_global_heap_size(void);
 void default_task(void* argv){
     volatile int j  = 0;
     while (1){
-        for(int i =0;i<120000000;i++){j++;}
-        printk("default_task test\n");
+        for(int i =0;i<1000000000;i++){j++;}
+        printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
     }
 }
+
 
 #ifndef  CONFIG_SCHED_CPU0
 #error "cpu core number is not zero"    
@@ -72,7 +75,7 @@ static char* sched_config[] = {
 static void init_all_scheduler(void){
     for(int i =0 ;i < CONFIG_CPU_NUM ;i++){
         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i]);
-        task_run(default_task,512,10,1,"system_default_task",i);
+        task_run(default_task,512,10,1,"system_default_task",i,0);
     }
 }
 
@@ -92,10 +95,71 @@ uint32_t Scheduler_Task(uint32_t context)
     return context;
 }
 
+
+
+
+void __user_error_process(void){
+    struct  task_struct* task = get_current_task();
+    pr_err("__user_error_process: Task:%s get ERROR\n",task->task_name);
+    task->state = TASK_BROKEN;
+    __sched();
+}
+
+
+extern int check_haper_completeness(void);
+extern void __destory_task(struct task_struct *t);
+extern size_t get_global_heap_size(void);
+
+void __kernel_error_process(void)
+{
+    uint32_t core_id = get_task_using_cpu_core();
+    pr_err("cpu core: (%d) get ERROR\n",core_id);
+    pr_err("checking memory completeness\n");
+    uint32_t err = check_haper_completeness();
+    if(err > 0){
+        pr_err("memory ERROR:(%d)\n",err);
+    }
+    else {
+        printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+    }
+    struct scheduler* current_sched = &k_scheduler[core_id];
+    if(current_sched->magic != scheduler_scheduler){
+        pr_err("Can not get core: (%d) scheduler handler may be task is broken\n",core_id);
+        goto block;
+    }
+    pr_err("get core: (%d) scheduler handler\n",core_id);
+    struct  task_struct* task = current_sched->current_task;
+    if(task == NULL){
+        pr_err("can not get current task\n");
+        goto block;
+    }
+    if(task->magic != task_struct_magic){
+        pr_err("Task controller is broken \n");
+        goto block;
+    }
+    pr_err("__kernel_error_process: Task: %s get ERROR\n",task->task_name);
+    if(current_sched->t_pop->check_task_completeness(current_sched) < 0){
+        pr_err("Task controller has been broken \n");
+        goto block;        
+    }
+    
+    task->state = TASK_BROKEN;
+    current_sched->current_task = NULL;
+    current_sched->t_pop->remove_task(task,current_sched);
+    __destory_task(task);
+    i_sched();
+    return;
+
+    block:
+    pr_err("System get Unfixable errors\n");
+    while (1){}
+}
+
+
 void scheduler_start();
 
 void sched_init(){
-    pr_info("init all scheduler\n");
+    pr_info("sched: init all scheduler\n");
     init_all_scheduler();    
 }
 core_initcall_sync(sched_init);
@@ -103,6 +167,9 @@ core_initcall_sync(sched_init);
 void sched_start(){
     change_to_task_mode();
     scheduler_start();
-    user_system_call(SC_SCHEDULER,NULL,NULL,NULL,NULL,NULL,NULL);
+    sched();
 }
 postcore_initcall_sync(sched_start);
+
+
+

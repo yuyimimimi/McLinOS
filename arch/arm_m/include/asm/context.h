@@ -2,10 +2,10 @@
 #define __CONTEXT_H__                
 
 
-extern void __init_Taskcontext(struct task_struct* task_data);
-static void init_task_context(struct task_struct* task_data){
-    __init_Taskcontext(task_data);
-}
+extern void __init_Taskcontext(struct task_struct* task_data,uint32_t pic_offset);
+static void init_task_context(struct task_struct* task_data,uint32_t pic_offset){
+    __init_Taskcontext(task_data,pic_offset);
+} 
 
 extern int __get_task_using_cpu_core(void);
 

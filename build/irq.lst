@@ -1,0 +1,1883 @@
+ARM GAS  /tmp/ccRMiIdP.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"irq.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c"
+  20              		.section	.text.__spin_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__spin_init:
+  27              	.LVL0:
+  28              	.LFB236:
+  29              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** #ifndef __SPIN_LOCK_H_
+   2:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** #define __SPIN_LOCK_H_
+   3:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+   4:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** #include <linux/sched.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+   6:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** typedef struct { 
+   7:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****      int flag; 
+   8:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** } arch_spinlock_t;
+   9:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+  10:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** static int __spin_init(arch_spinlock_t *lock) 
+  11:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** {
+  30              		.loc 2 11 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  35              		.loc 2 12 5 view .LVU1
+  36              		.loc 2 12 16 is_stmt 0 view .LVU2
+  37 0000 0023     		movs	r3, #0
+  38 0002 0360     		str	r3, [r0]
+  39              	.LVL1:
+  13:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** }
+  40              		.loc 2 13 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE236:
+  45              		.section	.text.__spin_unlock,"ax",%progbits
+  46              		.align	1
+ARM GAS  /tmp/ccRMiIdP.s 			page 2
+
+
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	__spin_unlock:
+  52              	.LVL2:
+  53              	.LFB238:
+  14:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** static int __spin_lock(arch_spinlock_t *lock) {
+  16:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     stop_all_scheduler();
+  18:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+  19:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+  20:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+  21:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****         return 1;
+  22:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+  23:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     else
+  24:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     {
+  25:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****         start_all_scheduler();
+  26:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****         return 0;
+  27:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+  28:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** }
+  29:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** static void  __spin_unlock( arch_spinlock_t *lock ){
+  54              		.loc 2 30 52 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  31:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     lock->flag = 0;
+  59              		.loc 2 31 5 view .LVU5
+  60              		.loc 2 31 16 is_stmt 0 view .LVU6
+  61 0000 0023     		movs	r3, #0
+  62 0002 0360     		str	r3, [r0]
+  32:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** }
+  63              		.loc 2 32 1 view .LVU7
+  64 0004 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE238:
+  68              		.section	.text.spin_lock_init,"ax",%progbits
+  69              		.align	1
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	spin_lock_init:
+  75              	.LVL3:
+  76              	.LFB239:
+  77              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** #include <linux/types.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** #include <linux/sched.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+ARM GAS  /tmp/ccRMiIdP.s 			page 3
+
+
+  78              		.loc 3 10 45 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		.loc 3 10 45 is_stmt 0 view .LVU9
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI0:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     __spin_init(&lock->rlock.raw_lock);
+  88              		.loc 3 11 5 is_stmt 1 view .LVU10
+  89 0002 FFF7FEFF 		bl	__spin_init
+  90              	.LVL4:
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** }
+  91              		.loc 3 12 1 is_stmt 0 view .LVU11
+  92 0006 08BD     		pop	{r3, pc}
+  93              		.cfi_endproc
+  94              	.LFE239:
+  96              		.section	.text.spin_unlock,"ax",%progbits
+  97              		.align	1
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	spin_unlock:
+ 103              	.LVL5:
+ 104              	.LFB241:
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** {  
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     while (1)
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     {
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         if(__spin_lock(&lock->rlock.raw_lock) == 1){
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             lock->owner = get_current_task();
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             break;
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         }
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             return;   
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         }
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         else{
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             __delay(5); //主动让出时间片
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         }
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     }
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** }
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** {
+ 105              		.loc 3 32 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 3 32 1 is_stmt 0 view .LVU13
+ 110 0000 08B5     		push	{r3, lr}
+ 111              	.LCFI1:
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 3, -8
+ 114              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccRMiIdP.s 			page 4
+
+
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     __spin_unlock(&lock->rlock.raw_lock);
+ 115              		.loc 3 33 5 is_stmt 1 view .LVU14
+ 116 0002 FFF7FEFF 		bl	__spin_unlock
+ 117              	.LVL6:
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** }
+ 118              		.loc 3 34 1 is_stmt 0 view .LVU15
+ 119 0006 08BD     		pop	{r3, pc}
+ 120              		.cfi_endproc
+ 121              	.LFE241:
+ 123              		.section	.text.Run_IRQ_Fn,"ax",%progbits
+ 124              		.align	1
+ 125              		.syntax unified
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	Run_IRQ_Fn:
+ 130              	.LVL7:
+ 131              	.LFB273:
+   1:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/list.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/interrupt.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <generated/autoconf.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/slab.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/errno.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/string.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/irqflags.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/spinlock.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** #include <linux/init.h>
+  11:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** struct irqaction* IRQ_list[CONFIG_INTERRUPT_NUMBERS];
+  13:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** spinlock_t ire_list_lock;
+  14:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  16:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** static int Run_IRQ_Fn(struct irqaction* IRQ);
+  17:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** void C_IRQ_Dispatcher(int irq_number)
+  18:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+  19:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(irq_number >= CONFIG_INTERRUPT_NUMBERS)
+  20:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return;
+  21:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(Run_IRQ_Fn(IRQ_list[irq_number]) == 0){
+  23:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         printk(KERN_WARNING "unregister interrpute:(%d)",irq_number);
+  24:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  25:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+  26:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  27:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  28:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** static int Run_IRQ_Fn(struct irqaction* IRQ)
+  29:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+ 132              		.loc 1 29 1 is_stmt 1 view -0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		.loc 1 29 1 is_stmt 0 view .LVU17
+ 137 0000 38B5     		push	{r3, r4, r5, lr}
+ 138              	.LCFI2:
+ 139              		.cfi_def_cfa_offset 16
+ 140              		.cfi_offset 3, -16
+ 141              		.cfi_offset 4, -12
+ 142              		.cfi_offset 5, -8
+ARM GAS  /tmp/ccRMiIdP.s 			page 5
+
+
+ 143              		.cfi_offset 14, -4
+ 144 0002 0446     		mov	r4, r0
+  30:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     int j = 0;
+ 145              		.loc 1 30 5 is_stmt 1 view .LVU18
+ 146              	.LVL8:
+  31:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* i = IRQ;
+ 147              		.loc 1 31 5 view .LVU19
+  30:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     int j = 0;
+ 148              		.loc 1 30 9 is_stmt 0 view .LVU20
+ 149 0004 0025     		movs	r5, #0
+ 150 0006 06E0     		b	.L9
+ 151              	.LVL9:
+ 152              	.L11:
+  32:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     while (1)
+  33:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     {
+  34:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         if(i == NULL)
+  35:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         break;
+  36:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         i->flags = i->handler(i->irq,i->dev_id); 
+ 153              		.loc 1 36 9 is_stmt 1 view .LVU21
+ 154              		.loc 1 36 21 is_stmt 0 view .LVU22
+ 155 0008 2368     		ldr	r3, [r4]
+ 156              		.loc 1 36 20 view .LVU23
+ 157 000a 6168     		ldr	r1, [r4, #4]
+ 158 000c E069     		ldr	r0, [r4, #28]
+ 159 000e 9847     		blx	r3
+ 160              	.LVL10:
+ 161              		.loc 1 36 18 discriminator 1 view .LVU24
+ 162 0010 2062     		str	r0, [r4, #32]
+  37:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         i = i->next;
+ 163              		.loc 1 37 9 is_stmt 1 view .LVU25
+ 164              		.loc 1 37 11 is_stmt 0 view .LVU26
+ 165 0012 E468     		ldr	r4, [r4, #12]
+ 166              	.LVL11:
+  38:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         j++;
+ 167              		.loc 1 38 9 is_stmt 1 view .LVU27
+ 168              		.loc 1 38 10 is_stmt 0 view .LVU28
+ 169 0014 0135     		adds	r5, r5, #1
+ 170              	.LVL12:
+  32:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     while (1)
+ 171              		.loc 1 32 11 is_stmt 1 view .LVU29
+ 172              	.L9:
+  32:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     while (1)
+ 173              		.loc 1 32 5 view .LVU30
+  34:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         break;
+ 174              		.loc 1 34 9 view .LVU31
+  34:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         break;
+ 175              		.loc 1 34 11 is_stmt 0 view .LVU32
+ 176 0016 002C     		cmp	r4, #0
+ 177 0018 F6D1     		bne	.L11
+  39:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  40:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return j;
+  41:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 178              		.loc 1 41 1 view .LVU33
+ 179 001a 2846     		mov	r0, r5
+ 180 001c 38BD     		pop	{r3, r4, r5, pc}
+ 181              		.loc 1 41 1 view .LVU34
+ 182              		.cfi_endproc
+ARM GAS  /tmp/ccRMiIdP.s 			page 6
+
+
+ 183              	.LFE273:
+ 185              		.section	.text.IRQ_List_Init,"ax",%progbits
+ 186              		.align	1
+ 187              		.syntax unified
+ 188              		.thumb
+ 189              		.thumb_func
+ 191              	IRQ_List_Init:
+ 192              	.LFB278:
+  42:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  43:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  44:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** static struct irqaction* new_irq_create(char *name)
+  45:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+  46:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = kmalloc(sizeof(struct irqaction),GFP_KERNEL);
+  47:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new == NULL){
+  48:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return  PTR_ERR(-ENOMEM);
+  49:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  50:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     char *new_name = kmalloc(strlen(name) + 1,GFP_KERNEL);
+  51:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new_name == NULL){
+  52:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         kfree(new);
+  53:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return PTR_ERR(-ENOMEM);
+  54:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  55:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     memset(new,0,sizeof(struct irqaction));
+  56:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     memcpy(new_name,name,strlen(name));
+  57:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->name = new_name;
+  58:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return new;
+  59:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+  60:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  61:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** static void add_irq_to_table(struct irqaction* new)
+  62:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+  63:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+  64:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+  65:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     uint32_t irq_number = new->irq;
+  66:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[irq_number] == NULL){
+  67:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[irq_number] = new;
+  68:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+  69:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  70:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  71:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* i = IRQ_list[irq_number];
+  72:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     while (1)
+  73:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     {
+  74:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         if(i->next == NULL){
+  75:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             new->secondary = i;
+  76:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             i->next = new;
+  77:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             goto out;
+  78:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         }
+  79:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         i = i->next;
+  80:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  81:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  82:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     out:
+  83:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_enable();
+  84:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_unlock(&ire_list_lock);
+  85:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+  86:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  87:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+  88:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** void remove_irq(struct irqaction* remove)
+  89:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+  90:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+ARM GAS  /tmp/ccRMiIdP.s 			page 7
+
+
+  91:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+  92:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[remove->irq] == NULL){
+  93:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+  94:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  95:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[remove->irq] == remove){
+  96:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[remove->irq] = NULL;
+  97:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+  98:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+  99:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 100:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(remove->secondary)
+ 101:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->secondary->next = remove->next;
+ 102:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(remove->next)
+ 103:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->next->secondary = remove->secondary;
+ 104:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 105:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     out:
+ 106:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_enable();
+ 107:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_unlock(&ire_list_lock);
+ 108:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 109:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 110:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 111:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** int request_irq(unsigned int irq,
+ 112:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****                 irq_handler_t handler,
+ 113:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****                 unsigned long flags,
+ 114:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****                 const char *name,
+ 115:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****                 void *dev)
+ 116:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+ 117:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = new_irq_create(name);
+ 118:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IS_ERR(new)){
+ 119:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return PTR_ERR(new);
+ 120:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 121:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->irq = irq;
+ 122:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->handler = handler;
+ 123:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->flags = flags;
+ 124:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->dev_id = dev;
+ 125:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     add_irq_to_table(new);
+ 126:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return 0;
+ 127:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 128:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 129:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 130:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** static int IRQ_List_Init()
+ 131:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** {
+ 193              		.loc 1 131 1 is_stmt 1 view -0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 197              		@ link register save eliminated.
+ 132:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     for(int i =0;i<CONFIG_INTERRUPT_NUMBERS;i++){
+ 198              		.loc 1 132 5 view .LVU36
+ 199              	.LBB16:
+ 200              		.loc 1 132 9 view .LVU37
+ 201              	.LVL13:
+ 202              		.loc 1 132 13 is_stmt 0 view .LVU38
+ 203 0000 0023     		movs	r3, #0
+ 204              		.loc 1 132 5 view .LVU39
+ 205 0002 04E0     		b	.L13
+ 206              	.LVL14:
+ 207              	.L14:
+ARM GAS  /tmp/ccRMiIdP.s 			page 8
+
+
+ 133:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[i] = NULL;
+ 208              		.loc 1 133 9 is_stmt 1 view .LVU40
+ 209              		.loc 1 133 21 is_stmt 0 view .LVU41
+ 210 0004 044A     		ldr	r2, .L15
+ 211 0006 0021     		movs	r1, #0
+ 212 0008 42F82310 		str	r1, [r2, r3, lsl #2]
+ 132:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     for(int i =0;i<CONFIG_INTERRUPT_NUMBERS;i++){
+ 213              		.loc 1 132 46 is_stmt 1 discriminator 3 view .LVU42
+ 214 000c 0133     		adds	r3, r3, #1
+ 215              	.LVL15:
+ 216              	.L13:
+ 132:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     for(int i =0;i<CONFIG_INTERRUPT_NUMBERS;i++){
+ 217              		.loc 1 132 19 discriminator 1 view .LVU43
+ 218 000e 512B     		cmp	r3, #81
+ 219 0010 F8DD     		ble	.L14
+ 220              	.LBE16:
+ 134:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 135:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return 0;
+ 221              		.loc 1 135 5 view .LVU44
+ 136:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 222              		.loc 1 136 1 is_stmt 0 view .LVU45
+ 223 0012 0020     		movs	r0, #0
+ 224 0014 7047     		bx	lr
+ 225              	.L16:
+ 226 0016 00BF     		.align	2
+ 227              	.L15:
+ 228 0018 00000000 		.word	IRQ_list
+ 229              		.cfi_endproc
+ 230              	.LFE278:
+ 232              		.section	.text.__spin_lock,"ax",%progbits
+ 233              		.align	1
+ 234              		.syntax unified
+ 235              		.thumb
+ 236              		.thumb_func
+ 238              	__spin_lock:
+ 239              	.LVL16:
+ 240              	.LFB237:
+  15:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+ 241              		.loc 2 15 47 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+ 245              		.loc 2 15 47 is_stmt 0 view .LVU47
+ 246 0000 38B5     		push	{r3, r4, r5, lr}
+ 247              	.LCFI3:
+ 248              		.cfi_def_cfa_offset 16
+ 249              		.cfi_offset 3, -16
+ 250              		.cfi_offset 4, -12
+ 251              		.cfi_offset 5, -8
+ 252              		.cfi_offset 14, -4
+ 253 0002 0446     		mov	r4, r0
+  17:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     if(lock->flag == 0){
+ 254              		.loc 2 17 5 is_stmt 1 view .LVU48
+ 255 0004 FFF7FEFF 		bl	stop_all_scheduler
+ 256              	.LVL17:
+  18:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ARM GAS  /tmp/ccRMiIdP.s 			page 9
+
+
+ 257              		.loc 2 18 5 view .LVU49
+  18:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 258              		.loc 2 18 12 is_stmt 0 view .LVU50
+ 259 0008 2368     		ldr	r3, [r4]
+  18:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           lock->flag = 1;  
+ 260              		.loc 2 18 7 view .LVU51
+ 261 000a 2BB9     		cbnz	r3, .L18
+  19:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 262              		.loc 2 19 11 is_stmt 1 view .LVU52
+  19:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****           start_all_scheduler();
+ 263              		.loc 2 19 22 is_stmt 0 view .LVU53
+ 264 000c 0125     		movs	r5, #1
+ 265 000e 2560     		str	r5, [r4]
+  20:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****         return 1;
+ 266              		.loc 2 20 11 is_stmt 1 view .LVU54
+ 267 0010 FFF7FEFF 		bl	start_all_scheduler
+ 268              	.LVL18:
+  21:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+ 269              		.loc 2 21 9 view .LVU55
+  21:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+ 270              		.loc 2 21 16 is_stmt 0 view .LVU56
+ 271 0014 2846     		mov	r0, r5
+ 272              	.L17:
+  28:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h **** 
+ 273              		.loc 2 28 1 view .LVU57
+ 274 0016 38BD     		pop	{r3, r4, r5, pc}
+ 275              	.LVL19:
+ 276              	.L18:
+  25:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****         return 0;
+ 277              		.loc 2 25 9 is_stmt 1 view .LVU58
+ 278 0018 FFF7FEFF 		bl	start_all_scheduler
+ 279              	.LVL20:
+  26:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+ 280              		.loc 2 26 9 view .LVU59
+  26:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h ****     }
+ 281              		.loc 2 26 16 is_stmt 0 view .LVU60
+ 282 001c 0020     		movs	r0, #0
+ 283 001e FAE7     		b	.L17
+ 284              		.cfi_endproc
+ 285              	.LFE237:
+ 287              		.section	.text.spin_lock,"ax",%progbits
+ 288              		.align	1
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 293              	spin_lock:
+ 294              	.LVL21:
+ 295              	.LFB240:
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     while (1)
+ 296              		.loc 3 15 1 is_stmt 1 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     while (1)
+ 300              		.loc 3 15 1 is_stmt 0 view .LVU62
+ 301 0000 38B5     		push	{r3, r4, r5, lr}
+ 302              	.LCFI4:
+ARM GAS  /tmp/ccRMiIdP.s 			page 10
+
+
+ 303              		.cfi_def_cfa_offset 16
+ 304              		.cfi_offset 3, -16
+ 305              		.cfi_offset 4, -12
+ 306              		.cfi_offset 5, -8
+ 307              		.cfi_offset 14, -4
+ 308 0002 0446     		mov	r4, r0
+ 309 0004 06E0     		b	.L24
+ 310              	.LVL22:
+ 311              	.L26:
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             break;
+ 312              		.loc 3 19 13 is_stmt 1 view .LVU63
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             break;
+ 313              		.loc 3 19 27 is_stmt 0 view .LVU64
+ 314 0006 FFF7FEFF 		bl	get_current_task
+ 315              	.LVL23:
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             break;
+ 316              		.loc 3 19 25 discriminator 1 view .LVU65
+ 317 000a 2060     		str	r0, [r4]
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         }
+ 318              		.loc 3 20 13 is_stmt 1 view .LVU66
+ 319              	.L21:
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h **** 
+ 320              		.loc 3 29 1 is_stmt 0 view .LVU67
+ 321 000c 38BD     		pop	{r3, r4, r5, pc}
+ 322              	.LVL24:
+ 323              	.L27:
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****         }
+ 324              		.loc 3 26 13 is_stmt 1 view .LVU68
+ 325 000e 0520     		movs	r0, #5
+ 326 0010 FFF7FEFF 		bl	__delay
+ 327              	.LVL25:
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     {
+ 328              		.loc 3 16 11 view .LVU69
+ 329              	.L24:
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****     {
+ 330              		.loc 3 16 5 view .LVU70
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 331              		.loc 3 18 9 view .LVU71
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 332              		.loc 3 18 12 is_stmt 0 view .LVU72
+ 333 0014 2046     		mov	r0, r4
+ 334 0016 FFF7FEFF 		bl	__spin_lock
+ 335              	.LVL26:
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             lock->owner = get_current_task();
+ 336              		.loc 3 18 11 discriminator 1 view .LVU73
+ 337 001a 0128     		cmp	r0, #1
+ 338 001c F3D0     		beq	.L26
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             return;   
+ 339              		.loc 3 22 15 is_stmt 1 view .LVU74
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             return;   
+ 340              		.loc 3 22 22 is_stmt 0 view .LVU75
+ 341 001e 2568     		ldr	r5, [r4]
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             return;   
+ 342              		.loc 3 22 33 view .LVU76
+ 343 0020 FFF7FEFF 		bl	get_current_task
+ 344              	.LVL27:
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock.h ****             return;   
+ARM GAS  /tmp/ccRMiIdP.s 			page 11
+
+
+ 345              		.loc 3 22 17 discriminator 1 view .LVU77
+ 346 0024 8542     		cmp	r5, r0
+ 347 0026 F2D1     		bne	.L27
+ 348 0028 F0E7     		b	.L21
+ 349              		.cfi_endproc
+ 350              	.LFE240:
+ 352              		.section	.text.local_irq_disable,"ax",%progbits
+ 353              		.align	1
+ 354              		.syntax unified
+ 355              		.thumb
+ 356              		.thumb_func
+ 358              	local_irq_disable:
+ 359              	.LFB270:
+ 360              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** #ifndef  __IRQFLAG_H_
+   2:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** #define  __IRQFLAG_H_
+   3:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** 
+   4:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** extern void __enable_irq();
+   5:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** extern void __disble_irq();
+   6:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** 
+   7:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** static void local_irq_disable(){
+ 361              		.loc 4 7 32 is_stmt 1 view -0
+ 362              		.cfi_startproc
+ 363              		@ args = 0, pretend = 0, frame = 0
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+ 365 0000 08B5     		push	{r3, lr}
+ 366              	.LCFI5:
+ 367              		.cfi_def_cfa_offset 8
+ 368              		.cfi_offset 3, -8
+ 369              		.cfi_offset 14, -4
+   8:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h ****     __disble_irq();
+ 370              		.loc 4 8 5 view .LVU79
+ 371 0002 FFF7FEFF 		bl	__disble_irq
+ 372              	.LVL28:
+   9:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** }
+ 373              		.loc 4 9 1 is_stmt 0 view .LVU80
+ 374 0006 08BD     		pop	{r3, pc}
+ 375              		.cfi_endproc
+ 376              	.LFE270:
+ 378              		.section	.text.local_irq_enable,"ax",%progbits
+ 379              		.align	1
+ 380              		.syntax unified
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	local_irq_enable:
+ 385              	.LFB271:
+  10:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** static void local_irq_enable(){
+ 386              		.loc 4 11 31 is_stmt 1 view -0
+ 387              		.cfi_startproc
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390 0000 08B5     		push	{r3, lr}
+ 391              	.LCFI6:
+ 392              		.cfi_def_cfa_offset 8
+ 393              		.cfi_offset 3, -8
+ 394              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccRMiIdP.s 			page 12
+
+
+  12:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h ****     __enable_irq();
+ 395              		.loc 4 12 5 view .LVU82
+ 396 0002 FFF7FEFF 		bl	__enable_irq
+ 397              	.LVL29:
+  13:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/irqflags.h **** }
+ 398              		.loc 4 13 1 is_stmt 0 view .LVU83
+ 399 0006 08BD     		pop	{r3, pc}
+ 400              		.cfi_endproc
+ 401              	.LFE271:
+ 403              		.section	.text.add_irq_to_table,"ax",%progbits
+ 404              		.align	1
+ 405              		.syntax unified
+ 406              		.thumb
+ 407              		.thumb_func
+ 409              	add_irq_to_table:
+ 410              	.LVL30:
+ 411              	.LFB275:
+  62:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+ 412              		.loc 1 62 1 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 0
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+  62:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+ 416              		.loc 1 62 1 is_stmt 0 view .LVU85
+ 417 0000 10B5     		push	{r4, lr}
+ 418              	.LCFI7:
+ 419              		.cfi_def_cfa_offset 8
+ 420              		.cfi_offset 4, -8
+ 421              		.cfi_offset 14, -4
+ 422 0002 0446     		mov	r4, r0
+  63:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+ 423              		.loc 1 63 5 is_stmt 1 view .LVU86
+ 424 0004 0C48     		ldr	r0, .L37
+ 425              	.LVL31:
+  63:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+ 426              		.loc 1 63 5 is_stmt 0 view .LVU87
+ 427 0006 FFF7FEFF 		bl	spin_lock
+ 428              	.LVL32:
+  64:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     uint32_t irq_number = new->irq;
+ 429              		.loc 1 64 5 is_stmt 1 view .LVU88
+ 430 000a FFF7FEFF 		bl	local_irq_disable
+ 431              	.LVL33:
+  65:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[irq_number] == NULL){
+ 432              		.loc 1 65 5 view .LVU89
+  65:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[irq_number] == NULL){
+ 433              		.loc 1 65 14 is_stmt 0 view .LVU90
+ 434 000e E269     		ldr	r2, [r4, #28]
+ 435              	.LVL34:
+  66:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[irq_number] = new;
+ 436              		.loc 1 66 5 is_stmt 1 view .LVU91
+  66:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[irq_number] = new;
+ 437              		.loc 1 66 16 is_stmt 0 view .LVU92
+ 438 0010 0A4B     		ldr	r3, .L37+4
+ 439 0012 53F82230 		ldr	r3, [r3, r2, lsl #2]
+  66:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[irq_number] = new;
+ 440              		.loc 1 66 7 view .LVU93
+ 441 0016 5BB1     		cbz	r3, .L36
+ARM GAS  /tmp/ccRMiIdP.s 			page 13
+
+
+ 442              	.LVL35:
+ 443              	.L33:
+  72:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     {
+ 444              		.loc 1 72 5 is_stmt 1 view .LVU94
+  74:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             new->secondary = i;
+ 445              		.loc 1 74 9 view .LVU95
+ 446 0018 1A46     		mov	r2, r3
+  74:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             new->secondary = i;
+ 447              		.loc 1 74 13 is_stmt 0 view .LVU96
+ 448 001a DB68     		ldr	r3, [r3, #12]
+ 449              	.LVL36:
+  74:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             new->secondary = i;
+ 450              		.loc 1 74 11 view .LVU97
+ 451 001c 002B     		cmp	r3, #0
+ 452 001e FBD1     		bne	.L33
+  75:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             i->next = new;
+ 453              		.loc 1 75 13 is_stmt 1 view .LVU98
+  75:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             i->next = new;
+ 454              		.loc 1 75 28 is_stmt 0 view .LVU99
+ 455 0020 A261     		str	r2, [r4, #24]
+  76:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             goto out;
+ 456              		.loc 1 76 13 is_stmt 1 view .LVU100
+  76:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****             goto out;
+ 457              		.loc 1 76 21 is_stmt 0 view .LVU101
+ 458 0022 D460     		str	r4, [r2, #12]
+ 459              	.LVL37:
+  77:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         }
+ 460              		.loc 1 77 13 is_stmt 1 view .LVU102
+ 461              	.L34:
+  83:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_unlock(&ire_list_lock);
+ 462              		.loc 1 83 5 view .LVU103
+ 463 0024 FFF7FEFF 		bl	local_irq_enable
+ 464              	.LVL38:
+  84:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 465              		.loc 1 84 5 view .LVU104
+ 466 0028 0348     		ldr	r0, .L37
+ 467 002a FFF7FEFF 		bl	spin_unlock
+ 468              	.LVL39:
+  85:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 469              		.loc 1 85 1 is_stmt 0 view .LVU105
+ 470 002e 10BD     		pop	{r4, pc}
+ 471              	.LVL40:
+ 472              	.L36:
+  67:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 473              		.loc 1 67 9 is_stmt 1 view .LVU106
+  67:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 474              		.loc 1 67 30 is_stmt 0 view .LVU107
+ 475 0030 024B     		ldr	r3, .L37+4
+ 476 0032 43F82240 		str	r4, [r3, r2, lsl #2]
+  68:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 477              		.loc 1 68 9 is_stmt 1 view .LVU108
+ 478 0036 F5E7     		b	.L34
+ 479              	.L38:
+ 480              		.align	2
+ 481              	.L37:
+ 482 0038 00000000 		.word	ire_list_lock
+ 483 003c 00000000 		.word	IRQ_list
+ARM GAS  /tmp/ccRMiIdP.s 			page 14
+
+
+ 484              		.cfi_endproc
+ 485              	.LFE275:
+ 487              		.section	.text.new_irq_create,"ax",%progbits
+ 488              		.align	1
+ 489              		.syntax unified
+ 490              		.thumb
+ 491              		.thumb_func
+ 493              	new_irq_create:
+ 494              	.LVL41:
+ 495              	.LFB274:
+  45:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = kmalloc(sizeof(struct irqaction),GFP_KERNEL);
+ 496              		.loc 1 45 1 view -0
+ 497              		.cfi_startproc
+ 498              		@ args = 0, pretend = 0, frame = 0
+ 499              		@ frame_needed = 0, uses_anonymous_args = 0
+  45:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = kmalloc(sizeof(struct irqaction),GFP_KERNEL);
+ 500              		.loc 1 45 1 is_stmt 0 view .LVU110
+ 501 0000 70B5     		push	{r4, r5, r6, lr}
+ 502              	.LCFI8:
+ 503              		.cfi_def_cfa_offset 16
+ 504              		.cfi_offset 4, -16
+ 505              		.cfi_offset 5, -12
+ 506              		.cfi_offset 6, -8
+ 507              		.cfi_offset 14, -4
+ 508 0002 0446     		mov	r4, r0
+  46:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new == NULL){
+ 509              		.loc 1 46 5 is_stmt 1 view .LVU111
+ 510              	.LVL42:
+ 511              	.LBB17:
+ 512              	.LBI17:
+ 513              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+ARM GAS  /tmp/ccRMiIdP.s 			page 15
+
+
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+ARM GAS  /tmp/ccRMiIdP.s 			page 16
+
+
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ARM GAS  /tmp/ccRMiIdP.s 			page 17
+
+
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/ccRMiIdP.s 			page 18
+
+
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/ccRMiIdP.s 			page 19
+
+
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ARM GAS  /tmp/ccRMiIdP.s 			page 20
+
+
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ARM GAS  /tmp/ccRMiIdP.s 			page 21
+
+
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 514              		.loc 5 379 21 view .LVU112
+ 515              	.LBB18:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 516              		.loc 5 380 2 view .LVU113
+ 517              		.loc 5 380 9 is_stmt 0 view .LVU114
+ 518 0004 4FF44C61 		mov	r1, #3264
+ 519 0008 3020     		movs	r0, #48
+ 520              	.LVL43:
+ 521              		.loc 5 380 9 view .LVU115
+ 522 000a FFF7FEFF 		bl	__smalloc__
+ 523              	.LVL44:
+ 524              		.loc 5 380 9 view .LVU116
+ 525              	.LBE18:
+ 526              	.LBE17:
+  47:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return  PTR_ERR(-ENOMEM);
+ 527              		.loc 1 47 5 is_stmt 1 view .LVU117
+  47:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return  PTR_ERR(-ENOMEM);
+ 528              		.loc 1 47 7 is_stmt 0 view .LVU118
+ 529 000e 00B3     		cbz	r0, .L42
+ 530 0010 0546     		mov	r5, r0
+  50:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new_name == NULL){
+ 531              		.loc 1 50 5 is_stmt 1 view .LVU119
+  50:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new_name == NULL){
+ 532              		.loc 1 50 30 is_stmt 0 view .LVU120
+ 533 0012 2046     		mov	r0, r4
+ 534              	.LVL45:
+  50:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(new_name == NULL){
+ 535              		.loc 1 50 30 view .LVU121
+ 536 0014 FFF7FEFF 		bl	strlen
+ 537              	.LVL46:
+ 538              	.LBB19:
+ 539              	.LBI19:
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 540              		.loc 5 379 21 is_stmt 1 view .LVU122
+ 541              	.LBB20:
+ 542              		.loc 5 380 2 view .LVU123
+ 543              		.loc 5 380 9 is_stmt 0 view .LVU124
+ 544 0018 4FF44C61 		mov	r1, #3264
+ 545 001c 0130     		adds	r0, r0, #1
+ 546              	.LVL47:
+ 547              		.loc 5 380 9 view .LVU125
+ 548 001e FFF7FEFF 		bl	__smalloc__
+ 549              	.LVL48:
+ 550              		.loc 5 380 9 view .LVU126
+ 551              	.LBE20:
+ 552              	.LBE19:
+ARM GAS  /tmp/ccRMiIdP.s 			page 22
+
+
+  51:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         kfree(new);
+ 553              		.loc 1 51 5 is_stmt 1 view .LVU127
+  51:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         kfree(new);
+ 554              		.loc 1 51 7 is_stmt 0 view .LVU128
+ 555 0022 0646     		mov	r6, r0
+ 556 0024 78B1     		cbz	r0, .L44
+  55:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     memcpy(new_name,name,strlen(name));
+ 557              		.loc 1 55 5 is_stmt 1 view .LVU129
+ 558 0026 3022     		movs	r2, #48
+ 559 0028 0021     		movs	r1, #0
+ 560 002a 2846     		mov	r0, r5
+ 561              	.LVL49:
+  55:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     memcpy(new_name,name,strlen(name));
+ 562              		.loc 1 55 5 is_stmt 0 view .LVU130
+ 563 002c FFF7FEFF 		bl	memset
+ 564              	.LVL50:
+  56:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->name = new_name;
+ 565              		.loc 1 56 5 is_stmt 1 view .LVU131
+ 566 0030 2046     		mov	r0, r4
+ 567 0032 FFF7FEFF 		bl	strlen
+ 568              	.LVL51:
+ 569 0036 0246     		mov	r2, r0
+  56:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->name = new_name;
+ 570              		.loc 1 56 5 is_stmt 0 discriminator 1 view .LVU132
+ 571 0038 2146     		mov	r1, r4
+ 572 003a 3046     		mov	r0, r6
+ 573 003c FFF7FEFF 		bl	memcpy
+ 574              	.LVL52:
+  57:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return new;
+ 575              		.loc 1 57 5 is_stmt 1 view .LVU133
+  57:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return new;
+ 576              		.loc 1 57 15 is_stmt 0 view .LVU134
+ 577 0040 EE62     		str	r6, [r5, #44]
+  58:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 578              		.loc 1 58 5 is_stmt 1 view .LVU135
+ 579              	.LVL53:
+ 580              	.L39:
+  59:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 581              		.loc 1 59 1 is_stmt 0 view .LVU136
+ 582 0042 2846     		mov	r0, r5
+ 583 0044 70BD     		pop	{r4, r5, r6, pc}
+ 584              	.LVL54:
+ 585              	.L44:
+  52:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return PTR_ERR(-ENOMEM);
+ 586              		.loc 1 52 9 is_stmt 1 view .LVU137
+ 587              	.LBB21:
+ 588              	.LBI21:
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 589              		.loc 5 383 20 view .LVU138
+ 590              	.LBB22:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 591              		.loc 5 384 2 view .LVU139
+ 592 0046 2846     		mov	r0, r5
+ 593              	.LVL55:
+ 594              		.loc 5 384 2 is_stmt 0 view .LVU140
+ARM GAS  /tmp/ccRMiIdP.s 			page 23
+
+
+ 595 0048 FFF7FEFF 		bl	__sfree__
+ 596              	.LVL56:
+ 597              		.loc 5 384 2 view .LVU141
+ 598              	.LBE22:
+ 599              	.LBE21:
+  53:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 600              		.loc 1 53 9 is_stmt 1 view .LVU142
+  53:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 601              		.loc 1 53 16 is_stmt 0 discriminator 1 view .LVU143
+ 602 004c 6FF00B05 		mvn	r5, #11
+ 603              	.LVL57:
+  53:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 604              		.loc 1 53 16 view .LVU144
+ 605 0050 F7E7     		b	.L39
+ 606              	.LVL58:
+ 607              	.L42:
+  48:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 608              		.loc 1 48 17 discriminator 1 view .LVU145
+ 609 0052 6FF00B05 		mvn	r5, #11
+ 610 0056 F4E7     		b	.L39
+ 611              		.cfi_endproc
+ 612              	.LFE274:
+ 614              		.section	.rodata.C_IRQ_Dispatcher.str1.4,"aMS",%progbits,1
+ 615              		.align	2
+ 616              	.LC0:
+ 617 0000 756E7265 		.ascii	"unregister interrpute:(%d)\000"
+ 617      67697374 
+ 617      65722069 
+ 617      6E746572 
+ 617      72707574 
+ 618              		.section	.text.C_IRQ_Dispatcher,"ax",%progbits
+ 619              		.align	1
+ 620              		.global	C_IRQ_Dispatcher
+ 621              		.syntax unified
+ 622              		.thumb
+ 623              		.thumb_func
+ 625              	C_IRQ_Dispatcher:
+ 626              	.LVL59:
+ 627              	.LFB272:
+  18:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(irq_number >= CONFIG_INTERRUPT_NUMBERS)
+ 628              		.loc 1 18 1 is_stmt 1 view -0
+ 629              		.cfi_startproc
+ 630              		@ args = 0, pretend = 0, frame = 0
+ 631              		@ frame_needed = 0, uses_anonymous_args = 0
+  19:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return;
+ 632              		.loc 1 19 5 view .LVU147
+  19:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return;
+ 633              		.loc 1 19 7 is_stmt 0 view .LVU148
+ 634 0000 5128     		cmp	r0, #81
+ 635 0002 00DD     		ble	.L51
+ 636 0004 7047     		bx	lr
+ 637              	.L51:
+  18:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(irq_number >= CONFIG_INTERRUPT_NUMBERS)
+ 638              		.loc 1 18 1 view .LVU149
+ 639 0006 10B5     		push	{r4, lr}
+ 640              	.LCFI9:
+ 641              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccRMiIdP.s 			page 24
+
+
+ 642              		.cfi_offset 4, -8
+ 643              		.cfi_offset 14, -4
+ 644 0008 0446     		mov	r4, r0
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         printk(KERN_WARNING "unregister interrpute:(%d)",irq_number);
+ 645              		.loc 1 22 5 is_stmt 1 view .LVU150
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         printk(KERN_WARNING "unregister interrpute:(%d)",irq_number);
+ 646              		.loc 1 22 8 is_stmt 0 view .LVU151
+ 647 000a 064B     		ldr	r3, .L53
+ 648 000c 53F82000 		ldr	r0, [r3, r0, lsl #2]
+ 649              	.LVL60:
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         printk(KERN_WARNING "unregister interrpute:(%d)",irq_number);
+ 650              		.loc 1 22 8 view .LVU152
+ 651 0010 FFF7FEFF 		bl	Run_IRQ_Fn
+ 652              	.LVL61:
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         printk(KERN_WARNING "unregister interrpute:(%d)",irq_number);
+ 653              		.loc 1 22 7 discriminator 1 view .LVU153
+ 654 0014 00B1     		cbz	r0, .L52
+ 655              	.L45:
+  25:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 656              		.loc 1 25 1 view .LVU154
+ 657 0016 10BD     		pop	{r4, pc}
+ 658              	.LVL62:
+ 659              	.L52:
+  23:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 660              		.loc 1 23 9 is_stmt 1 view .LVU155
+ 661 0018 2246     		mov	r2, r4
+ 662 001a 0349     		ldr	r1, .L53+4
+ 663 001c 0420     		movs	r0, #4
+ 664 001e FFF7FEFF 		bl	printk
+ 665              	.LVL63:
+ 666 0022 F8E7     		b	.L45
+ 667              	.L54:
+ 668              		.align	2
+ 669              	.L53:
+ 670 0024 00000000 		.word	IRQ_list
+ 671 0028 00000000 		.word	.LC0
+ 672              		.cfi_endproc
+ 673              	.LFE272:
+ 675              		.section	.text.remove_irq,"ax",%progbits
+ 676              		.align	1
+ 677              		.global	remove_irq
+ 678              		.syntax unified
+ 679              		.thumb
+ 680              		.thumb_func
+ 682              	remove_irq:
+ 683              	.LVL64:
+ 684              	.LFB276:
+  89:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+ 685              		.loc 1 89 1 view -0
+ 686              		.cfi_startproc
+ 687              		@ args = 0, pretend = 0, frame = 0
+ 688              		@ frame_needed = 0, uses_anonymous_args = 0
+  89:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock(&ire_list_lock);
+ 689              		.loc 1 89 1 is_stmt 0 view .LVU157
+ 690 0000 10B5     		push	{r4, lr}
+ 691              	.LCFI10:
+ 692              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccRMiIdP.s 			page 25
+
+
+ 693              		.cfi_offset 4, -8
+ 694              		.cfi_offset 14, -4
+ 695 0002 0446     		mov	r4, r0
+  90:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+ 696              		.loc 1 90 5 is_stmt 1 view .LVU158
+ 697 0004 0F48     		ldr	r0, .L61
+ 698              	.LVL65:
+  90:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     local_irq_disable();
+ 699              		.loc 1 90 5 is_stmt 0 view .LVU159
+ 700 0006 FFF7FEFF 		bl	spin_lock
+ 701              	.LVL66:
+  91:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IRQ_list[remove->irq] == NULL){
+ 702              		.loc 1 91 5 is_stmt 1 view .LVU160
+ 703 000a FFF7FEFF 		bl	local_irq_disable
+ 704              	.LVL67:
+  92:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 705              		.loc 1 92 5 view .LVU161
+  92:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 706              		.loc 1 92 23 is_stmt 0 view .LVU162
+ 707 000e E269     		ldr	r2, [r4, #28]
+  92:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 708              		.loc 1 92 16 view .LVU163
+ 709 0010 0D4B     		ldr	r3, .L61+4
+ 710 0012 53F82230 		ldr	r3, [r3, r2, lsl #2]
+  92:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 711              		.loc 1 92 7 view .LVU164
+ 712 0016 4BB1     		cbz	r3, .L56
+  95:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[remove->irq] = NULL;
+ 713              		.loc 1 95 5 is_stmt 1 view .LVU165
+  95:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         IRQ_list[remove->irq] = NULL;
+ 714              		.loc 1 95 7 is_stmt 0 view .LVU166
+ 715 0018 A342     		cmp	r3, r4
+ 716 001a 0DD0     		beq	.L60
+ 100:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->secondary->next = remove->next;
+ 717              		.loc 1 100 5 is_stmt 1 view .LVU167
+ 100:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->secondary->next = remove->next;
+ 718              		.loc 1 100 14 is_stmt 0 view .LVU168
+ 719 001c A369     		ldr	r3, [r4, #24]
+ 100:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->secondary->next = remove->next;
+ 720              		.loc 1 100 7 view .LVU169
+ 721 001e 0BB1     		cbz	r3, .L58
+ 101:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(remove->next)
+ 722              		.loc 1 101 5 is_stmt 1 view .LVU170
+ 101:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(remove->next)
+ 723              		.loc 1 101 37 is_stmt 0 view .LVU171
+ 724 0020 E268     		ldr	r2, [r4, #12]
+ 101:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(remove->next)
+ 725              		.loc 1 101 29 view .LVU172
+ 726 0022 DA60     		str	r2, [r3, #12]
+ 727              	.L58:
+ 102:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->next->secondary = remove->secondary;
+ 728              		.loc 1 102 5 is_stmt 1 view .LVU173
+ 102:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->next->secondary = remove->secondary;
+ 729              		.loc 1 102 14 is_stmt 0 view .LVU174
+ 730 0024 E368     		ldr	r3, [r4, #12]
+ 102:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     remove->next->secondary = remove->secondary;
+ 731              		.loc 1 102 7 view .LVU175
+ARM GAS  /tmp/ccRMiIdP.s 			page 26
+
+
+ 732 0026 0BB1     		cbz	r3, .L56
+ 103:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 733              		.loc 1 103 5 is_stmt 1 view .LVU176
+ 103:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 734              		.loc 1 103 37 is_stmt 0 view .LVU177
+ 735 0028 A269     		ldr	r2, [r4, #24]
+ 103:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 736              		.loc 1 103 29 view .LVU178
+ 737 002a 9A61     		str	r2, [r3, #24]
+ 738              	.L56:
+ 106:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_unlock(&ire_list_lock);
+ 739              		.loc 1 106 5 is_stmt 1 view .LVU179
+ 740 002c FFF7FEFF 		bl	local_irq_enable
+ 741              	.LVL68:
+ 107:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 742              		.loc 1 107 5 view .LVU180
+ 743 0030 0448     		ldr	r0, .L61
+ 744 0032 FFF7FEFF 		bl	spin_unlock
+ 745              	.LVL69:
+ 108:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 746              		.loc 1 108 1 is_stmt 0 view .LVU181
+ 747 0036 10BD     		pop	{r4, pc}
+ 748              	.LVL70:
+ 749              	.L60:
+  96:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 750              		.loc 1 96 9 is_stmt 1 view .LVU182
+  96:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         goto out;
+ 751              		.loc 1 96 31 is_stmt 0 view .LVU183
+ 752 0038 034B     		ldr	r3, .L61+4
+ 753 003a 0021     		movs	r1, #0
+ 754 003c 43F82210 		str	r1, [r3, r2, lsl #2]
+  97:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 755              		.loc 1 97 9 is_stmt 1 view .LVU184
+ 756 0040 F4E7     		b	.L56
+ 757              	.L62:
+ 758 0042 00BF     		.align	2
+ 759              	.L61:
+ 760 0044 00000000 		.word	ire_list_lock
+ 761 0048 00000000 		.word	IRQ_list
+ 762              		.cfi_endproc
+ 763              	.LFE276:
+ 765              		.section	.text.request_irq,"ax",%progbits
+ 766              		.align	1
+ 767              		.global	request_irq
+ 768              		.syntax unified
+ 769              		.thumb
+ 770              		.thumb_func
+ 772              	request_irq:
+ 773              	.LVL71:
+ 774              	.LFB277:
+ 116:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = new_irq_create(name);
+ 775              		.loc 1 116 1 view -0
+ 776              		.cfi_startproc
+ 777              		@ args = 4, pretend = 0, frame = 0
+ 778              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     struct irqaction* new = new_irq_create(name);
+ 779              		.loc 1 116 1 is_stmt 0 view .LVU186
+ARM GAS  /tmp/ccRMiIdP.s 			page 27
+
+
+ 780 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 781              	.LCFI11:
+ 782              		.cfi_def_cfa_offset 24
+ 783              		.cfi_offset 3, -24
+ 784              		.cfi_offset 4, -20
+ 785              		.cfi_offset 5, -16
+ 786              		.cfi_offset 6, -12
+ 787              		.cfi_offset 7, -8
+ 788              		.cfi_offset 14, -4
+ 789 0002 0646     		mov	r6, r0
+ 790 0004 0D46     		mov	r5, r1
+ 791 0006 1446     		mov	r4, r2
+ 117:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IS_ERR(new)){
+ 792              		.loc 1 117 5 is_stmt 1 view .LVU187
+ 117:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IS_ERR(new)){
+ 793              		.loc 1 117 29 is_stmt 0 view .LVU188
+ 794 0008 1846     		mov	r0, r3
+ 795              	.LVL72:
+ 117:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     if(IS_ERR(new)){
+ 796              		.loc 1 117 29 view .LVU189
+ 797 000a FFF7FEFF 		bl	new_irq_create
+ 798              	.LVL73:
+ 118:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return PTR_ERR(new);
+ 799              		.loc 1 118 5 is_stmt 1 view .LVU190
+ 800              	.LBB23:
+ 801              	.LBI23:
+ 802              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef unlikely
+ARM GAS  /tmp/ccRMiIdP.s 			page 28
+
+
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 803              		.loc 6 75 33 view .LVU191
+ 804              	.LBB24:
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 805              		.loc 6 77 2 view .LVU192
+ 806              		.loc 6 77 9 is_stmt 0 view .LVU193
+ 807 000e 10F5805F 		cmn	r0, #4096
+ 808 0012 94BF     		ite	ls
+ 809 0014 0027     		movls	r7, #0
+ 810 0016 0127     		movhi	r7, #1
+ 811              	.LVL74:
+ 812              		.loc 6 77 9 view .LVU194
+ARM GAS  /tmp/ccRMiIdP.s 			page 29
+
+
+ 813              	.LBE24:
+ 814              	.LBE23:
+ 118:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****         return PTR_ERR(new);
+ 815              		.loc 1 118 7 discriminator 1 view .LVU195
+ 816 0018 47B9     		cbnz	r7, .L67
+ 121:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->handler = handler;
+ 817              		.loc 1 121 5 is_stmt 1 view .LVU196
+ 121:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->handler = handler;
+ 818              		.loc 1 121 14 is_stmt 0 view .LVU197
+ 819 001a C661     		str	r6, [r0, #28]
+ 122:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->flags = flags;
+ 820              		.loc 1 122 5 is_stmt 1 view .LVU198
+ 122:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->flags = flags;
+ 821              		.loc 1 122 18 is_stmt 0 view .LVU199
+ 822 001c 0560     		str	r5, [r0]
+ 123:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->dev_id = dev;
+ 823              		.loc 1 123 5 is_stmt 1 view .LVU200
+ 123:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     new->dev_id = dev;
+ 824              		.loc 1 123 16 is_stmt 0 view .LVU201
+ 825 001e 0462     		str	r4, [r0, #32]
+ 124:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     add_irq_to_table(new);
+ 826              		.loc 1 124 5 is_stmt 1 view .LVU202
+ 124:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     add_irq_to_table(new);
+ 827              		.loc 1 124 17 is_stmt 0 view .LVU203
+ 828 0020 069B     		ldr	r3, [sp, #24]
+ 829 0022 4360     		str	r3, [r0, #4]
+ 125:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     return 0;
+ 830              		.loc 1 125 5 is_stmt 1 view .LVU204
+ 831 0024 FFF7FEFF 		bl	add_irq_to_table
+ 832              	.LVL75:
+ 126:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 833              		.loc 1 126 5 view .LVU205
+ 834              	.L63:
+ 127:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** 
+ 835              		.loc 1 127 1 is_stmt 0 view .LVU206
+ 836 0028 3846     		mov	r0, r7
+ 837 002a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 838              	.LVL76:
+ 839              	.L67:
+ 119:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ 840              		.loc 1 119 9 is_stmt 1 view .LVU207
+ 841              	.LBB25:
+ 842              	.LBI25:
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 843              		.loc 6 62 33 view .LVU208
+ 844              	.LBB26:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 845              		.loc 6 64 2 view .LVU209
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 846              		.loc 6 64 9 is_stmt 0 view .LVU210
+ 847 002c 0746     		mov	r7, r0
+ 848              	.LVL77:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 849              		.loc 6 64 9 view .LVU211
+ 850              	.LBE26:
+ 851              	.LBE25:
+ 119:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     }
+ARM GAS  /tmp/ccRMiIdP.s 			page 30
+
+
+ 852              		.loc 1 119 16 view .LVU212
+ 853 002e FBE7     		b	.L63
+ 854              		.cfi_endproc
+ 855              	.LFE277:
+ 857              		.section	.text.IRQ_int_router,"ax",%progbits
+ 858              		.align	1
+ 859              		.global	IRQ_int_router
+ 860              		.syntax unified
+ 861              		.thumb
+ 862              		.thumb_func
+ 864              	IRQ_int_router:
+ 865              	.LFB279:
+ 137:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** void IRQ_int_router(){
+ 866              		.loc 1 137 22 is_stmt 1 view -0
+ 867              		.cfi_startproc
+ 868              		@ args = 0, pretend = 0, frame = 0
+ 869              		@ frame_needed = 0, uses_anonymous_args = 0
+ 870 0000 08B5     		push	{r3, lr}
+ 871              	.LCFI12:
+ 872              		.cfi_def_cfa_offset 8
+ 873              		.cfi_offset 3, -8
+ 874              		.cfi_offset 14, -4
+ 138:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     spin_lock_init(&ire_list_lock);
+ 875              		.loc 1 138 5 view .LVU214
+ 876 0002 0348     		ldr	r0, .L70
+ 877 0004 FFF7FEFF 		bl	spin_lock_init
+ 878              	.LVL78:
+ 139:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c ****     IRQ_List_Init();
+ 879              		.loc 1 139 5 view .LVU215
+ 880 0008 FFF7FEFF 		bl	IRQ_List_Init
+ 881              	.LVL79:
+ 140:/mnt/c/Users/31740/Desktop/newcore/kernel/irq.c **** }
+ 882              		.loc 1 140 1 is_stmt 0 view .LVU216
+ 883 000c 08BD     		pop	{r3, pc}
+ 884              	.L71:
+ 885 000e 00BF     		.align	2
+ 886              	.L70:
+ 887 0010 00000000 		.word	ire_list_lock
+ 888              		.cfi_endproc
+ 889              	.LFE279:
+ 891              		.global	ire_list_lock
+ 892              		.section	.bss.ire_list_lock,"aw",%nobits
+ 893              		.align	2
+ 896              	ire_list_lock:
+ 897 0000 00000000 		.space	16
+ 897      00000000 
+ 897      00000000 
+ 897      00000000 
+ 898              		.global	IRQ_list
+ 899              		.section	.bss.IRQ_list,"aw",%nobits
+ 900              		.align	2
+ 903              	IRQ_list:
+ 904 0000 00000000 		.space	328
+ 904      00000000 
+ 904      00000000 
+ 904      00000000 
+ 904      00000000 
+ARM GAS  /tmp/ccRMiIdP.s 			page 31
+
+
+ 905              		.text
+ 906              	.Letext0:
+ 907              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 908              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 909              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 910              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/irqreturn.h"
+ 911              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 912              		.file 12 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/sched.h"
+ 913              		.file 13 "/mnt/c/Users/31740/Desktop/newcore/include/linux/sched.h"
+ 914              		.file 14 "/mnt/c/Users/31740/Desktop/newcore/include/linux/interrupt.h"
+ 915              		.file 15 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types_raw.h"
+ 916              		.file 16 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types.h"
+ 917              		.file 17 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 918              		.file 18 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ 919              		.file 19 "<built-in>"
+ 920              		.file 20 "/mnt/c/Users/31740/Desktop/newcore/include/linux/gfp_types.h"
+ARM GAS  /tmp/ccRMiIdP.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 irq.c
+     /tmp/ccRMiIdP.s:21     .text.__spin_init:00000000 $t
+     /tmp/ccRMiIdP.s:26     .text.__spin_init:00000000 __spin_init
+     /tmp/ccRMiIdP.s:46     .text.__spin_unlock:00000000 $t
+     /tmp/ccRMiIdP.s:51     .text.__spin_unlock:00000000 __spin_unlock
+     /tmp/ccRMiIdP.s:69     .text.spin_lock_init:00000000 $t
+     /tmp/ccRMiIdP.s:74     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccRMiIdP.s:97     .text.spin_unlock:00000000 $t
+     /tmp/ccRMiIdP.s:102    .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccRMiIdP.s:124    .text.Run_IRQ_Fn:00000000 $t
+     /tmp/ccRMiIdP.s:129    .text.Run_IRQ_Fn:00000000 Run_IRQ_Fn
+     /tmp/ccRMiIdP.s:186    .text.IRQ_List_Init:00000000 $t
+     /tmp/ccRMiIdP.s:191    .text.IRQ_List_Init:00000000 IRQ_List_Init
+     /tmp/ccRMiIdP.s:228    .text.IRQ_List_Init:00000018 $d
+     /tmp/ccRMiIdP.s:903    .bss.IRQ_list:00000000 IRQ_list
+     /tmp/ccRMiIdP.s:233    .text.__spin_lock:00000000 $t
+     /tmp/ccRMiIdP.s:238    .text.__spin_lock:00000000 __spin_lock
+     /tmp/ccRMiIdP.s:288    .text.spin_lock:00000000 $t
+     /tmp/ccRMiIdP.s:293    .text.spin_lock:00000000 spin_lock
+     /tmp/ccRMiIdP.s:353    .text.local_irq_disable:00000000 $t
+     /tmp/ccRMiIdP.s:358    .text.local_irq_disable:00000000 local_irq_disable
+     /tmp/ccRMiIdP.s:379    .text.local_irq_enable:00000000 $t
+     /tmp/ccRMiIdP.s:384    .text.local_irq_enable:00000000 local_irq_enable
+     /tmp/ccRMiIdP.s:404    .text.add_irq_to_table:00000000 $t
+     /tmp/ccRMiIdP.s:409    .text.add_irq_to_table:00000000 add_irq_to_table
+     /tmp/ccRMiIdP.s:482    .text.add_irq_to_table:00000038 $d
+     /tmp/ccRMiIdP.s:896    .bss.ire_list_lock:00000000 ire_list_lock
+     /tmp/ccRMiIdP.s:488    .text.new_irq_create:00000000 $t
+     /tmp/ccRMiIdP.s:493    .text.new_irq_create:00000000 new_irq_create
+     /tmp/ccRMiIdP.s:615    .rodata.C_IRQ_Dispatcher.str1.4:00000000 $d
+     /tmp/ccRMiIdP.s:619    .text.C_IRQ_Dispatcher:00000000 $t
+     /tmp/ccRMiIdP.s:625    .text.C_IRQ_Dispatcher:00000000 C_IRQ_Dispatcher
+     /tmp/ccRMiIdP.s:670    .text.C_IRQ_Dispatcher:00000024 $d
+     /tmp/ccRMiIdP.s:676    .text.remove_irq:00000000 $t
+     /tmp/ccRMiIdP.s:682    .text.remove_irq:00000000 remove_irq
+     /tmp/ccRMiIdP.s:760    .text.remove_irq:00000044 $d
+     /tmp/ccRMiIdP.s:766    .text.request_irq:00000000 $t
+     /tmp/ccRMiIdP.s:772    .text.request_irq:00000000 request_irq
+     /tmp/ccRMiIdP.s:858    .text.IRQ_int_router:00000000 $t
+     /tmp/ccRMiIdP.s:864    .text.IRQ_int_router:00000000 IRQ_int_router
+     /tmp/ccRMiIdP.s:887    .text.IRQ_int_router:00000010 $d
+     /tmp/ccRMiIdP.s:893    .bss.ire_list_lock:00000000 $d
+     /tmp/ccRMiIdP.s:900    .bss.IRQ_list:00000000 $d
+
+UNDEFINED SYMBOLS
+stop_all_scheduler
+start_all_scheduler
+get_current_task
+__delay
+__disble_irq
+__enable_irq
+__smalloc__
+strlen
+memset
+memcpy
+__sfree__
+ARM GAS  /tmp/ccRMiIdP.s 			page 33
+
+
+printk

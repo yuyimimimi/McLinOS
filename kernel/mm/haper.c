@@ -75,7 +75,7 @@ size_t get_global_heap_size(void){
 
 void print_haper_status(void){
     for (int i = 0; i < haper_count; i++) {
-        show_blocks_status(hapers[i],printk);
+        show_blocks_status(hapers[i],early_printk);
     }
 } 
 

@@ -1,2 +1,2 @@
-include ./arch/$(STRUCT)/boot/compressed/makefile
+include $(BASE_DIR)/arch/$(STRUCT)/boot/compressed/makefile
 

@@ -42,7 +42,7 @@ typedef struct spinlock {
 #define __SPIN_LOCK_UNLOCKED(lockname) \
 	(spinlock_t) __SPIN_LOCK_INITIALIZER(lockname)
 
-#define DEFINE_SPINLOCK(x)	spinlock_t x = __SPIN_LOCK_UNLOCKED(x)
+#define DEFINE_SPINLOCK(x)	spinlock_t x 
 
 #else /* !CONFIG_PREEMPT_RT */
 

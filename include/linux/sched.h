@@ -7,7 +7,7 @@
 
 #define defauld_thread_priority      8
 #define defauld_Task_watch_dog_tick  1000
-#define task_struct_magic            123
+#define task_struct_magic            123456
 #define task_name_max_len            64
 enum task_state {
     TASK_CREATE  = 1,     //创建
@@ -21,9 +21,11 @@ enum task_state {
 
 struct task_struct 
 {
-    uint8_t            magic;
+    uint32_t           magic;
     uint32_t           id;               //任务ID
     char               task_name[task_name_max_len];         
+    char*              comm;
+    
     TaskContext        context;         //任务上下文
     uint32_t           *stack_ptr;       //任务栈指针
     uint32_t           *stack_Top;       //任务栈底指针
@@ -37,13 +39,21 @@ struct task_struct
     time64_t last_scheduler_time;        //上一次调度状态变更时间
     timer_t  block_time;                 //阻塞时间
 
+    struct task_struct *priv;
+    struct task_struct *next;
+    struct task_struct *father;
+    uint32_t offset;
+    
 };
 
 struct task_pool_operations {
     struct task_struct* (*get_next_task)(struct scheduler *);
-    int  (*add_task)(struct task_struct* ,struct scheduler *   );
+    int  (*add_task)(struct task_struct* ,struct scheduler * );
     void (*remove_task)(struct task_struct* ,struct scheduler *);
+    int (*check_task_completeness)(struct scheduler *);
 };
+
+
 struct task_pool_types{
     struct list_head node;
     char *name;
@@ -55,8 +65,10 @@ enum scheduler_block_flag {
     SCHEDULER_RUN     = 1,
 };
 
+#define scheduler_scheduler  0x123456
 struct scheduler
 {
+    uint32_t                      magic;
     void                   *s_task_pool;
     uint32_t                     s_core;
     struct task_pool_operations*  t_pop;
@@ -66,8 +78,9 @@ struct scheduler
 
 #include <asm/context.h>
 
+void exit();
 void sched(void);
-
+void i_sched(void); //只能在特权指令下使用
 void block_scheduler(struct scheduler *s);
 void run_scheduler(struct scheduler *s);
 void start_all_scheduler(void);
@@ -91,6 +104,8 @@ struct task_struct* task_run(
     void *argv,
     int priority,
     char *name,
-    uint32_t core_id);
+    uint32_t core_id,
+    uint32_t offset
+);
 
 #endif

@@ -12,6 +12,7 @@
 
 struct path;
 struct file;
+struct block_device;
 // struct vfsmount;
 
 /*

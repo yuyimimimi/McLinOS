@@ -1,13 +1,13 @@
-# 0 "arch/arm_m/boot/ld/stm32f4.ld.in"
+# 0 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/stm32f4.ld.in"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "arch/arm_m/boot/ld/stm32f4.ld.in"
-# 1 "./include/generated/autoconf.h" 1
-# 2 "arch/arm_m/boot/ld/stm32f4.ld.in" 2
-# 1 "arch/arm_m/boot/ld/../start.ld.in" 1
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/stm32f4.ld.in"
+# 1 "/mnt/c/Users/31740/Desktop/newcore/include/generated/autoconf.h" 1
+# 2 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/stm32f4.ld.in" 2
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/../start.ld.in" 1
 ENTRY(Reset_Handler)
 _estack = ORIGIN(RAM) + LENGTH(RAM);
-# 3 "arch/arm_m/boot/ld/stm32f4.ld.in" 2
+# 3 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/stm32f4.ld.in" 2
 
 MEMORY
 {
@@ -16,7 +16,7 @@ MEMORY
 }
 
 
-# 1 "arch/arm_m/boot/ld/../kernel.ld.in" 1
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/../kernel.ld.in" 1
 
 
 SECTIONS
@@ -99,13 +99,9 @@ SECTIONS
   } >RAM AT> FLASH
 
 
-# 1 "arch/arm_m/boot/ld/../sys.ld.in" 1
-
-
-
+# 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/../sys.ld.in" 1
   .init :
   {
-
       __start_initcallearly = .;
       KEEP(*(.initcallearly))
       __end_initcallearly = .;
@@ -195,7 +191,14 @@ SECTIONS
     KEEP(*(.export_table))
     __export_table_end = .;
   } >FLASH
-# 84 "arch/arm_m/boot/ld/../kernel.ld.in" 2
+
+  .initramfs :
+  {
+    __export_file_start = .;
+    KEEP(*(.init_ramfs_files))
+    __export_file_end = .;
+  } > FLASH
+# 84 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/../kernel.ld.in" 2
 
 
   . = ALIGN(4);
@@ -215,4 +218,4 @@ SECTIONS
 
 
 }
-# 12 "arch/arm_m/boot/ld/stm32f4.ld.in" 2
+# 12 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/boot/ld/stm32f4.ld.in" 2

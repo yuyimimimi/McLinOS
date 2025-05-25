@@ -1,2 +1,2 @@
 C_SOURCES += 	\
-	./drivers/tty/$(PLATFORM)_tty0.c
+	$(BASE_DIR)/drivers/tty/$(PLATFORM)_tty0.c

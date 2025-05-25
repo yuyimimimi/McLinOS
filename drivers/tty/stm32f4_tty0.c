@@ -11,7 +11,8 @@
 #include <linux/device.h>
 #include <linux/of.h>
 #include <generated/autoconf.h>
-
+#include <linux/interrupt.h>
+#include <linux/irqflags.h>
 
 unsigned int major = 0;
 
@@ -20,93 +21,131 @@ unsigned int major = 0;
 #define USART1_BASE     0x40011000
 #define NVIC_BASE       0xE000E100
 
+#define RCC             ((volatile uint32_t*)RCC_BASE)
+#define GPIOA           ((GPIO_TypeDef*)GPIOA_BASE)
+#define USART1          ((USART_TypeDef*)USART1_BASE)
+
+#define NVIC_ISER0      (*(volatile uint32_t*)(NVIC_BASE + 0x00))
+#define NVIC_ISER1      (*(volatile uint32_t*)(NVIC_BASE + 0x04))
+#define NVIC_ICPR1      (*(volatile uint32_t*)(NVIC_BASE + 0x284))
+#define NVIC_IPR_BASE   ((volatile uint8_t*)(NVIC_BASE + 0x300))
+
 typedef struct {
-    volatile uint32_t MODER;    // 模式寄存器
-    volatile uint32_t OTYPER;   // 输出类型寄存器
-    volatile uint32_t OSPEEDR;  // 输出速度寄存器
-    volatile uint32_t PUPDR;    // 上下拉寄存器
-    volatile uint32_t IDR;      // 输入数据寄存器
-    volatile uint32_t ODR;      // 输出数据寄存器
-    volatile uint32_t BSRR;     // 位设置/清除寄存器
-    volatile uint32_t LCKR;     // 配置锁定寄存器
-    volatile uint32_t AFR[2];   // 复用功能寄存器
+    volatile uint32_t MODER;
+    volatile uint32_t OTYPER;
+    volatile uint32_t OSPEEDR;
+    volatile uint32_t PUPDR;
+    volatile uint32_t IDR;
+    volatile uint32_t ODR;
+    volatile uint32_t BSRR;
+    volatile uint32_t LCKR;
+    volatile uint32_t AFR[2];
 } GPIO_TypeDef;
 
 typedef struct {
-    volatile uint32_t SR;       // 状态寄存器
-    volatile uint32_t DR;       // 数据寄存器
-    volatile uint32_t BRR;      // 波特率寄存器
-    volatile uint32_t CR1;      // 控制寄存器1
-    volatile uint32_t CR2;      // 控制寄存器2
-    volatile uint32_t CR3;      // 控制寄存器3
-    volatile uint32_t GTPR;     // 保护时间和预分频寄存器
+    volatile uint32_t SR;
+    volatile uint32_t DR;
+    volatile uint32_t BRR;
+    volatile uint32_t CR1;
+    volatile uint32_t CR2;
+    volatile uint32_t CR3;
+    volatile uint32_t GTPR;
 } USART_TypeDef;
 
 
-#define RCC     ((volatile uint32_t*)RCC_BASE)
-#define GPIOA   ((GPIO_TypeDef*)GPIOA_BASE)
-#define USART1  ((USART_TypeDef*)USART1_BASE)
-#define NVIC_ISER0  (*(volatile uint32_t*)(NVIC_BASE + 0x00))
-#define NVIC_IPR9   (*(volatile uint32_t*)(NVIC_BASE + 0x424))
 
-static void uart1_device_init_function_from_dtb(void)
+irqreturn_t  USART1_IRQHandler(int i,void *argv);
+
+static u32 irq_num;
+void uart1_device_init_function_from_dtb(void)
 {
+    irq_num = 37;  // 硬编码 USART1 IRQ for simplicity
+    u32 baudrate = 115200;  // 默认波特率
 
-    struct device_node *uart_np;
-    u32 reg[2];
-    u32 irq_num = 0;
-    u32 baudrate = CONFIG_UART1_SPEED; 
-    const char *path = "/soc/serial@40011000";
+    // 1. 使能 GPIOA 和 USART1 时钟
+    RCC[0x30 / 4] |= (1 << 0);   // GPIOAEN
+    RCC[0x44 / 4] |= (1 << 4);   // USART1EN
 
-    uart_np = of_find_compatible_node(NULL, NULL, "st,stm32-uart");
-    if (!uart_np) {
-        uart_np = of_find_node_by_path(path);
-        if (!uart_np) {
-            return;
-        }
-    }
-
-    if (of_property_read_u32_array(uart_np, "reg", reg, 2) != 0)
-    of_property_read_u32_array(uart_np, "interrupts", &irq_num, 1);
-    of_property_read_u32(uart_np, "current-speed", &baudrate);
-
-    USART_TypeDef *uart = (USART_TypeDef *)reg[0];
-
-    RCC[0x30/4] |= (1 << 0);          
-    GPIOA->MODER &= ~(0xF << 18);     
-    GPIOA->MODER |= (0xA << 18);      
+    // 2. 配置 PA9(TX) PA10(RX) 复用功能为 AF7
+    GPIOA->MODER &= ~(0xF << 18);
+    GPIOA->MODER |=  (0xA << 18);       // MODER9 = AF, MODER10 = AF
     GPIOA->AFR[1] &= ~(0xFF << 4);
-    GPIOA->AFR[1] |= (0x77 << 4);    
-    GPIOA->OSPEEDR |= (0xF << 18);
+    GPIOA->AFR[1] |=  (0x77 << 4);      // AFR9, AFR10 = AF7
+    GPIOA->OSPEEDR |= (0xF << 18);      // High speed
     GPIOA->PUPDR &= ~(0xF << 18);
-    GPIOA->PUPDR |= (0x5 << 18);
-    GPIOA->OTYPER &= ~(0x3 << 9);
+    GPIOA->PUPDR |=  (0x5 << 18);       // Pull-up for RX, none for TX
+    GPIOA->OTYPER &= ~(0x3 << 9);       // Push-pull
 
-    RCC[0x44/4] |= (1 << 4);
+    // 3. USART 配置
+    USART1->CR1 = 0;  // 清除所有控制位
+    USART1->BRR = (84000000 + baudrate / 2) / baudrate;  // 波特率设置
+    USART1->CR1 |= (1 << 2) | (1 << 3);  // RE + TE
+    USART1->CR1 |= (1 << 5);             // RXNEIE: 接收中断使能
+    USART1->CR1 |= (1 << 13);            // UE: USART使能
 
-    uart->CR1 = 0;
-    uart->BRR = (84000000 + baudrate/2) / baudrate;
-    uart->CR1 |= (1 << 3) | (1 << 2);
-    uart->CR1 |=  (1 << 13) ;
-    uart->CR1 |= (1 << 5) ;
-
-    if (irq_num < 32)
-        NVIC_ISER0 |= (1 << (irq_num & 0x1F));
-
-    if (irq_num >= 36 && irq_num <= 39) {
-        NVIC_IPR9 |= (3 << ((irq_num - 36) * 8 + 6)); 
+    // 4. 配置 NVIC：使能中断、设置优先级、清除 pending
+    if (irq_num < 32) {
+        NVIC_ISER0 |= (1 << irq_num);
+    } else {
+        NVIC_ISER1 |= (1 << (irq_num - 32));
+        NVIC_ICPR1 |= (1 << (irq_num - 32));  // 清 pending
     }
+
+    NVIC_IPR_BASE[irq_num] = (3 << 4);  // 设置中断优先级（高 4 位有效）
 }
 
 void base_out_opt_device_init(void){
     uart1_device_init_function_from_dtb();
 }
 
-static void USART_1_SendByte(uint8_t byte)
-{
+static void USART_1_SendByte(uint8_t byte){
     while(!(USART1->SR & (1 << 7)));
     USART1->DR = byte;
 }
+
+#define RX_BUFFER_SIZE 1024
+static char usrat1_rx_buffer[RX_BUFFER_SIZE];
+static uint16_t usrat1_rx_index_rear = 0;  // 接收缓冲区尾指针
+static uint16_t usrat1_rx_index_front = 0; // 接收缓冲区头指针
+irqreturn_t  USART1_IRQHandler(int i,void *argv){
+    if(USART1->SR & (1 << 5)) {
+        uint8_t data = USART1->DR;
+        USART1->SR &= ~(1 << 5);
+        //USART_1_SendByte(data);
+        uint16_t next_rear = (usrat1_rx_index_front + 1) % RX_BUFFER_SIZE;     //获取头指针下一次所在点
+        if(next_rear == usrat1_rx_index_rear)                                  //如果存储下一个字节的位点为尾指针说明缓冲区已满
+            usrat1_rx_index_rear = (usrat1_rx_index_rear + 1) % RX_BUFFER_SIZE;//尾指针前移一位丢弃1bit数据
+        usrat1_rx_buffer[usrat1_rx_index_front] = data;                        //将数据添加到缓冲区
+        usrat1_rx_index_front = next_rear;  //更新头指针处
+
+    }
+    return IRQ_HANDLED;
+}
+
+static int get_rx_buffer_state(){
+    if(usrat1_rx_index_rear != usrat1_rx_index_front){ //如果缓冲区非空
+        return 1;
+    }
+    return 0;
+}
+static char get_rx_buffer_data()                                 //从尾指针获取缓冲区数据
+{
+    char byte = usrat1_rx_buffer[usrat1_rx_index_rear];
+    usrat1_rx_index_rear = (usrat1_rx_index_rear + 1) % RX_BUFFER_SIZE;
+    return byte;
+}
+
+static int Usart1_read(char *data){
+    local_irq_disable();
+    if(get_rx_buffer_state() == 1){
+        data[0] = get_rx_buffer_data();
+        local_irq_enable();
+        return 0;
+    }
+    local_irq_enable();
+    return -1;
+}
+
 
 void early_printk(const char *fmt, ...){
     char buf[256];
@@ -119,11 +158,21 @@ void early_printk(const char *fmt, ...){
         if(buf[i] == '\n')
         USART_1_SendByte('\r');
     }
-}  
- 
+} 
 
 static int tty_open(struct inode *node, struct file *file){
     return 0;
+}
+
+static ssize_t tty_read(struct file *file, const char __user *buserdata, size_t size, loff_t *offset){    
+    size_t i;
+    for(i =0;i<size;i++){
+       if(Usart1_read(&buserdata[i]) < 0)
+       {
+         break;        
+       }
+    }
+    return i;
 }
 
 static ssize_t tty_write(struct file *file, const char __user *buserdata, size_t size, loff_t *offset){    
@@ -136,6 +185,7 @@ static ssize_t tty_write(struct file *file, const char __user *buserdata, size_t
     return size;
 }
 
+
 static int tty_close(struct inode *node, struct file *file){
     return 0;
 }
@@ -143,13 +193,14 @@ static int tty_close(struct inode *node, struct file *file){
 static struct file_operations tty_fop = {
     .open = tty_open,
     .write = tty_write,
-    .release = tty_close
+    .release = tty_close,
+    .read   = tty_read
 };
 
 
 int __init main_tty_dev_init(void)
 {
-
+    request_irq(irq_num,USART1_IRQHandler,NULL,"usart1",NULL);
     major = register_chrdev(major,"ttyS0",&tty_fop);
     if(major < 0){
         pr_info("can not get major:(%d)\n",major);
@@ -165,9 +216,6 @@ int __init main_tty_dev_init(void)
         pr_info("can not create tty device\n");
     }
 }
-
-
-
 
 
 

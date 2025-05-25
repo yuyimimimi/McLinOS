@@ -1,0 +1,1335 @@
+ARM GAS  /tmp/ccO1Z4xR.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"kini.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c"
+  20              		.section	.text.goto_next_char,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	goto_next_char:
+  27              	.LFB1033:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #include <linux/fs.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #include <linux/init.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #include <linux/module.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #include <linux/err.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** #define KEY_VALUE_MAX_LENGTH 64
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* goto_next_char(char* data,char c,char limit)
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+  28              		.loc 1 11 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34              		.loc 1 11 1 is_stmt 0 view .LVU1
+  35 0000 00E0     		b	.L3
+  36              	.LVL1:
+  37              	.L5:
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = data;
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while(1){
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == '\0')
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == limit)
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == c){
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           return index;            
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         else
+ARM GAS  /tmp/ccO1Z4xR.s 			page 2
+
+
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index++;
+  38              		.loc 1 22 9 is_stmt 1 view .LVU2
+  39              		.loc 1 22 14 is_stmt 0 view .LVU3
+  40 0002 0130     		adds	r0, r0, #1
+  41              	.LVL2:
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == '\0')
+  42              		.loc 1 13 10 is_stmt 1 view .LVU4
+  43              	.L3:
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == '\0')
+  44              		.loc 1 13 5 view .LVU5
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+  45              		.loc 1 14 9 view .LVU6
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+  46              		.loc 1 14 17 is_stmt 0 view .LVU7
+  47 0004 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+  48              		.loc 1 14 11 view .LVU8
+  49 0006 23B1     		cbz	r3, .L4
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+  50              		.loc 1 16 9 is_stmt 1 view .LVU9
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+  51              		.loc 1 16 11 is_stmt 0 view .LVU10
+  52 0008 9342     		cmp	r3, r2
+  53 000a 03D0     		beq	.L2
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           return index;            
+  54              		.loc 1 18 9 is_stmt 1 view .LVU11
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           return index;            
+  55              		.loc 1 18 11 is_stmt 0 view .LVU12
+  56 000c 8B42     		cmp	r3, r1
+  57 000e F8D1     		bne	.L5
+  58 0010 00E0     		b	.L2
+  59              	.L4:
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == limit)
+  60              		.loc 1 15 20 view .LVU13
+  61 0012 0020     		movs	r0, #0
+  62              	.LVL3:
+  63              	.L2:
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+  64              		.loc 1 24 1 view .LVU14
+  65 0014 7047     		bx	lr
+  66              		.cfi_endproc
+  67              	.LFE1033:
+  69              		.section	.text.goto_next_string,"ax",%progbits
+  70              		.align	1
+  71              		.syntax unified
+  72              		.thumb
+  73              		.thumb_func
+  75              	goto_next_string:
+  76              	.LFB1035:
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** char* __goto_next_char(char* data,char c,char limit)
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* goto_next_string(char* data,char limit)
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+  77              		.loc 1 30 1 is_stmt 1 view -0
+ARM GAS  /tmp/ccO1Z4xR.s 			page 3
+
+
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82              	.LVL4:
+  83              		.loc 1 30 1 is_stmt 0 view .LVU16
+  84 0000 07E0     		b	.L10
+  85              	.LVL5:
+  86              	.L8:
+  87              		.loc 1 30 1 view .LVU17
+  88 0002 5F2B     		cmp	r3, #95
+  89 0004 18D0     		beq	.L6
+  90 0006 03D3     		bcc	.L9
+  91 0008 613B     		subs	r3, r3, #97
+  92 000a DBB2     		uxtb	r3, r3
+  93 000c 192B     		cmp	r3, #25
+  94 000e 13D9     		bls	.L6
+  95              	.L9:
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = data;
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while(1)
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == '\0'){
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index[0] == limit){
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****            return NULL;            
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if ((index[0] >= '0' && index[0] <='9') 
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] >= 'a' && index[0] <='z') 
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] >= 'A' && index[0] <='Z') 
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] == '_')
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] == '\"' )
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] == '/' )
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         )
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         return index;
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         else
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index++;
+  96              		.loc 1 50 9 is_stmt 1 view .LVU18
+  97              		.loc 1 50 14 is_stmt 0 view .LVU19
+  98 0010 0130     		adds	r0, r0, #1
+  99              	.LVL6:
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 100              		.loc 1 32 10 is_stmt 1 view .LVU20
+ 101              	.L10:
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 102              		.loc 1 32 5 view .LVU21
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+ 103              		.loc 1 34 9 view .LVU22
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+ 104              		.loc 1 34 17 is_stmt 0 view .LVU23
+ 105 0012 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+ 106              		.loc 1 34 11 view .LVU24
+ 107 0014 6BB1     		cbz	r3, .L11
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****            return NULL;            
+ 108              		.loc 1 37 9 is_stmt 1 view .LVU25
+ARM GAS  /tmp/ccO1Z4xR.s 			page 4
+
+
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****            return NULL;            
+ 109              		.loc 1 37 11 is_stmt 0 view .LVU26
+ 110 0016 8B42     		cmp	r3, r1
+ 111 0018 0DD0     		beq	.L12
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****           ||(index[0] >= 'a' && index[0] <='z') 
+ 112              		.loc 1 41 9 is_stmt 1 view .LVU27
+ 113 001a 5A2B     		cmp	r3, #90
+ 114 001c F1D8     		bhi	.L8
+ 115 001e 412B     		cmp	r3, #65
+ 116 0020 0AD2     		bcs	.L6
+ 117 0022 222B     		cmp	r3, #34
+ 118 0024 08D0     		beq	.L6
+ 119 0026 F3D3     		bcc	.L9
+ 120 0028 2F3B     		subs	r3, r3, #47
+ 121 002a DBB2     		uxtb	r3, r3
+ 122 002c 0A2B     		cmp	r3, #10
+ 123 002e EFD8     		bhi	.L9
+ 124 0030 7047     		bx	lr
+ 125              	.L11:
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 126              		.loc 1 35 20 is_stmt 0 view .LVU28
+ 127 0032 0020     		movs	r0, #0
+ 128              	.LVL7:
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 129              		.loc 1 35 20 view .LVU29
+ 130 0034 7047     		bx	lr
+ 131              	.LVL8:
+ 132              	.L12:
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 133              		.loc 1 38 19 view .LVU30
+ 134 0036 0020     		movs	r0, #0
+ 135              	.LVL9:
+ 136              	.L6:
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }   
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 137              		.loc 1 52 1 view .LVU31
+ 138 0038 7047     		bx	lr
+ 139              		.cfi_endproc
+ 140              	.LFE1035:
+ 142              		.section	.text.copy_string_data,"ax",%progbits
+ 143              		.align	1
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	copy_string_data:
+ 149              	.LVL10:
+ 150              	.LFB1037:
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** char* __goto_next_string(char* data,char limit){
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_string( data, limit);
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static int copy_string_data(char* from,char* to)
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 151              		.loc 1 58 1 is_stmt 1 view -0
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccO1Z4xR.s 			page 5
+
+
+ 155              		.loc 1 58 1 is_stmt 0 view .LVU33
+ 156 0000 00B5     		push	{lr}
+ 157              	.LCFI0:
+ 158              		.cfi_def_cfa_offset 4
+ 159              		.cfi_offset 14, -4
+ 160 0002 8646     		mov	lr, r0
+  59:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* index = from;
+ 161              		.loc 1 59 5 is_stmt 1 view .LVU34
+ 162              	.LVL11:
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     int i=0;
+ 163              		.loc 1 60 5 view .LVU35
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index[0] == '\"')
+ 164              		.loc 1 62 5 view .LVU36
+ 165              		.loc 1 62 13 is_stmt 0 view .LVU37
+ 166 0004 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 167              		.loc 1 62 7 view .LVU38
+ 168 0006 222B     		cmp	r3, #34
+ 169 0008 01D0     		beq	.L26
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     int i=0;
+ 170              		.loc 1 60 9 view .LVU39
+ 171 000a 0020     		movs	r0, #0
+ 172              	.LVL12:
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     int i=0;
+ 173              		.loc 1 60 9 view .LVU40
+ 174 000c 15E0     		b	.L18
+ 175              	.LVL13:
+ 176              	.L26:
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index++;
+ 177              		.loc 1 64 9 is_stmt 1 view .LVU41
+ 178              		.loc 1 64 14 is_stmt 0 view .LVU42
+ 179 000e 00F1010E 		add	lr, r0, #1
+ 180              	.LVL14:
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         for(;
+ 181              		.loc 1 65 9 is_stmt 1 view .LVU43
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     
+ 182              		.loc 1 60 9 is_stmt 0 view .LVU44
+ 183 0012 0020     		movs	r0, #0
+ 184              	.LVL15:
+ 185              		.loc 1 65 9 view .LVU45
+ 186 0014 01E0     		b	.L19
+ 187              	.LVL16:
+ 188              	.L21:
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\0' && 
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\n' && 
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\"'
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ;i++)
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             to[i] = index[i];
+ 189              		.loc 1 71 13 is_stmt 1 view .LVU46
+ 190              		.loc 1 71 19 is_stmt 0 view .LVU47
+ 191 0016 8B54     		strb	r3, [r1, r2]
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+ 192              		.loc 1 69 11 is_stmt 1 view .LVU48
+ 193 0018 0130     		adds	r0, r0, #1
+ 194              	.LVL17:
+ARM GAS  /tmp/ccO1Z4xR.s 			page 6
+
+
+ 195              	.L19:
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\"'
+ 196              		.loc 1 67 30 view .LVU49
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\0' && 
+ 197              		.loc 1 66 18 is_stmt 0 view .LVU50
+ 198 001a 0246     		mov	r2, r0
+ 199 001c 1EF80030 		ldrb	r3, [lr, r0]	@ zero_extendqisi2
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\"'
+ 200              		.loc 1 67 30 view .LVU51
+ 201 0020 1BB1     		cbz	r3, .L20
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\0' && 
+ 202              		.loc 1 66 30 view .LVU52
+ 203 0022 0A2B     		cmp	r3, #10
+ 204 0024 01D0     		beq	.L20
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] != '\"'
+ 205              		.loc 1 67 30 view .LVU53
+ 206 0026 222B     		cmp	r3, #34
+ 207 0028 F5D1     		bne	.L21
+ 208              	.L20:
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         to[i] ='\0';
+ 209              		.loc 1 73 9 is_stmt 1 view .LVU54
+ 210              		.loc 1 73 15 is_stmt 0 view .LVU55
+ 211 002a 0023     		movs	r3, #0
+ 212 002c 8B54     		strb	r3, [r1, r2]
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         i+=2;
+ 213              		.loc 1 74 9 is_stmt 1 view .LVU56
+ 214              		.loc 1 74 10 is_stmt 0 view .LVU57
+ 215 002e 0230     		adds	r0, r0, #2
+ 216              	.LVL18:
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         return i;   
+ 217              		.loc 1 75 9 is_stmt 1 view .LVU58
+ 218              	.L17:
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     else
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         for(;(
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             index[i] >= '0' && index[i] <='9') 
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] == '_')
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ;i++)
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             to[i] = index[i];
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }  
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         to[i] ='\0';
+  92:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         return i;      
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+  95:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 219              		.loc 1 95 1 is_stmt 0 view .LVU59
+ 220 0030 5DF804FB 		ldr	pc, [sp], #4
+ 221              	.LVL19:
+ 222              	.L23:
+ARM GAS  /tmp/ccO1Z4xR.s 			page 7
+
+
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }  
+ 223              		.loc 1 89 13 is_stmt 1 view .LVU60
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }  
+ 224              		.loc 1 89 19 is_stmt 0 view .LVU61
+ 225 0034 01F80C20 		strb	r2, [r1, ip]
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+ 226              		.loc 1 87 11 is_stmt 1 view .LVU62
+ 227 0038 0130     		adds	r0, r0, #1
+ 228              	.LVL20:
+ 229              	.L18:
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 230              		.loc 1 85 9 view .LVU63
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+ 231              		.loc 1 80 18 is_stmt 0 view .LVU64
+ 232 003a 8446     		mov	ip, r0
+ 233 003c 1EF80020 		ldrb	r2, [lr, r0]	@ zero_extendqisi2
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+ 234              		.loc 1 80 29 view .LVU65
+ 235 0040 A2F13003 		sub	r3, r2, #48
+ 236 0044 DBB2     		uxtb	r3, r3
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 237              		.loc 1 85 9 view .LVU66
+ 238 0046 092B     		cmp	r3, #9
+ 239 0048 F4D9     		bls	.L23
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+ 240              		.loc 1 81 28 view .LVU67
+ 241 004a A2F16103 		sub	r3, r2, #97
+ 242 004e DBB2     		uxtb	r3, r3
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+ 243              		.loc 1 81 9 view .LVU68
+ 244 0050 192B     		cmp	r3, #25
+ 245 0052 EFD9     		bls	.L23
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+ 246              		.loc 1 82 28 view .LVU69
+ 247 0054 A2F14103 		sub	r3, r2, #65
+ 248 0058 DBB2     		uxtb	r3, r3
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+ 249              		.loc 1 82 9 view .LVU70
+ 250 005a 192B     		cmp	r3, #25
+ 251 005c EAD9     		bls	.L23
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+ 252              		.loc 1 83 27 view .LVU71
+ 253 005e A2F12203 		sub	r3, r2, #34
+ 254 0062 DBB2     		uxtb	r3, r3
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+ 255              		.loc 1 83 9 view .LVU72
+ 256 0064 0D2B     		cmp	r3, #13
+ 257 0066 E5D9     		bls	.L23
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] == '_')
+ 258              		.loc 1 84 27 view .LVU73
+ 259 0068 A2F13B03 		sub	r3, r2, #59
+ 260 006c DBB2     		uxtb	r3, r3
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         ||(index[i] == '_')
+ 261              		.loc 1 84 9 view .LVU74
+ 262 006e 052B     		cmp	r3, #5
+ 263 0070 E0D9     		bls	.L23
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ARM GAS  /tmp/ccO1Z4xR.s 			page 8
+
+
+ 264              		.loc 1 85 9 view .LVU75
+ 265 0072 5F2A     		cmp	r2, #95
+ 266 0074 DED0     		beq	.L23
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+ 267              		.loc 1 91 9 is_stmt 1 view .LVU76
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+ 268              		.loc 1 91 15 is_stmt 0 view .LVU77
+ 269 0076 0023     		movs	r3, #0
+ 270 0078 0B54     		strb	r3, [r1, r0]
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 271              		.loc 1 93 9 is_stmt 1 view .LVU78
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 272              		.loc 1 93 16 is_stmt 0 view .LVU79
+ 273 007a D9E7     		b	.L17
+ 274              		.cfi_endproc
+ 275              	.LFE1037:
+ 277              		.section	.text.get_next_head,"ax",%progbits
+ 278              		.align	1
+ 279              		.syntax unified
+ 280              		.thumb
+ 281              		.thumb_func
+ 283              	get_next_head:
+ 284              	.LVL21:
+ 285              	.LFB1039:
+  96:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+  97:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** int __copy_string_data(char* from,char* to)
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return copy_string_data(from, to);
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 101:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 102:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_next_head(char *text_data,char *buffer)
+ 103:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 286              		.loc 1 103 1 is_stmt 1 view -0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 0
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+ 290              		.loc 1 103 1 is_stmt 0 view .LVU81
+ 291 0000 38B5     		push	{r3, r4, r5, lr}
+ 292              	.LCFI1:
+ 293              		.cfi_def_cfa_offset 16
+ 294              		.cfi_offset 3, -16
+ 295              		.cfi_offset 4, -12
+ 296              		.cfi_offset 5, -8
+ 297              		.cfi_offset 14, -4
+ 298 0002 0D46     		mov	r5, r1
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 299              		.loc 1 104 5 is_stmt 1 view .LVU82
+ 300              	.LVL22:
+ 105:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_char(index,'[',']');
+ 301              		.loc 1 105 5 view .LVU83
+ 302              		.loc 1 105 13 is_stmt 0 view .LVU84
+ 303 0004 5D22     		movs	r2, #93
+ 304 0006 5B21     		movs	r1, #91
+ 305              	.LVL23:
+ 306              		.loc 1 105 13 view .LVU85
+ 307 0008 FFF7FEFF 		bl	goto_next_char
+ 308              	.LVL24:
+ARM GAS  /tmp/ccO1Z4xR.s 			page 9
+
+
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 309              		.loc 1 106 5 is_stmt 1 view .LVU86
+ 310              		.loc 1 106 7 is_stmt 0 view .LVU87
+ 311 000c 0446     		mov	r4, r0
+ 312 000e A8B1     		cbz	r0, .L27
+ 107:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index++;
+ 313              		.loc 1 107 5 is_stmt 1 view .LVU88
+ 314              	.LVL25:
+ 108:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_string(index,']');
+ 315              		.loc 1 108 5 view .LVU89
+ 316              		.loc 1 108 13 is_stmt 0 view .LVU90
+ 317 0010 5D21     		movs	r1, #93
+ 318 0012 0130     		adds	r0, r0, #1
+ 319              	.LVL26:
+ 320              		.loc 1 108 13 view .LVU91
+ 321 0014 FFF7FEFF 		bl	goto_next_string
+ 322              	.LVL27:
+ 109:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 323              		.loc 1 109 5 is_stmt 1 view .LVU92
+ 324              		.loc 1 109 7 is_stmt 0 view .LVU93
+ 325 0018 0446     		mov	r4, r0
+ 326 001a 78B1     		cbz	r0, .L27
+ 110:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     int length = copy_string_data(index,buffer);
+ 327              		.loc 1 110 5 is_stmt 1 view .LVU94
+ 328              		.loc 1 110 18 is_stmt 0 view .LVU95
+ 329 001c 2946     		mov	r1, r5
+ 330 001e FFF7FEFF 		bl	copy_string_data
+ 331              	.LVL28:
+ 111:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index +=length;
+ 332              		.loc 1 111 5 is_stmt 1 view .LVU96
+ 112:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_char(index,']','\0');
+ 333              		.loc 1 112 5 view .LVU97
+ 334              		.loc 1 112 13 is_stmt 0 view .LVU98
+ 335 0022 0022     		movs	r2, #0
+ 336 0024 5D21     		movs	r1, #93
+ 337 0026 2044     		add	r0, r0, r4
+ 338              	.LVL29:
+ 339              		.loc 1 112 13 view .LVU99
+ 340 0028 FFF7FEFF 		bl	goto_next_char
+ 341              	.LVL30:
+ 113:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 342              		.loc 1 113 5 is_stmt 1 view .LVU100
+ 343              		.loc 1 113 7 is_stmt 0 view .LVU101
+ 344 002c 0546     		mov	r5, r0
+ 345              	.LVL31:
+ 346              		.loc 1 113 7 view .LVU102
+ 347 002e 48B1     		cbz	r0, .L29
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* new_index;
+ 348              		.loc 1 114 5 is_stmt 1 view .LVU103
+ 115:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     new_index = goto_next_char(index,'\n','\0');
+ 349              		.loc 1 115 5 view .LVU104
+ 350              		.loc 1 115 17 is_stmt 0 view .LVU105
+ 351 0030 0022     		movs	r2, #0
+ 352 0032 0A21     		movs	r1, #10
+ 353 0034 FFF7FEFF 		bl	goto_next_char
+ 354              	.LVL32:
+ 116:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(new_index == NULL) return index;
+ARM GAS  /tmp/ccO1Z4xR.s 			page 10
+
+
+ 355              		.loc 1 116 5 is_stmt 1 view .LVU106
+ 356              		.loc 1 116 7 is_stmt 0 view .LVU107
+ 357 0038 0446     		mov	r4, r0
+ 358 003a 08B1     		cbz	r0, .L31
+ 359              	.LVL33:
+ 360              	.L27:
+ 117:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     else             return new_index;
+ 118:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 361              		.loc 1 118 1 view .LVU108
+ 362 003c 2046     		mov	r0, r4
+ 363 003e 38BD     		pop	{r3, r4, r5, pc}
+ 364              	.LVL34:
+ 365              	.L31:
+ 116:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(new_index == NULL) return index;
+ 366              		.loc 1 116 34 discriminator 1 view .LVU109
+ 367 0040 2C46     		mov	r4, r5
+ 368 0042 FBE7     		b	.L27
+ 369              	.LVL35:
+ 370              	.L29:
+ 113:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* new_index;
+ 371              		.loc 1 113 30 discriminator 1 view .LVU110
+ 372 0044 0446     		mov	r4, r0
+ 373 0046 F9E7     		b	.L27
+ 374              		.cfi_endproc
+ 375              	.LFE1039:
+ 377              		.section	.text.get_next_key,"ax",%progbits
+ 378              		.align	1
+ 379              		.syntax unified
+ 380              		.thumb
+ 381              		.thumb_func
+ 383              	get_next_key:
+ 384              	.LVL36:
+ 385              	.LFB1040:
+ 119:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 120:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 121:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 122:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_next_key(char *text_data,char *buffer)
+ 123:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 386              		.loc 1 123 1 is_stmt 1 view -0
+ 387              		.cfi_startproc
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390              		.loc 1 123 1 is_stmt 0 view .LVU112
+ 391 0000 38B5     		push	{r3, r4, r5, lr}
+ 392              	.LCFI2:
+ 393              		.cfi_def_cfa_offset 16
+ 394              		.cfi_offset 3, -16
+ 395              		.cfi_offset 4, -12
+ 396              		.cfi_offset 5, -8
+ 397              		.cfi_offset 14, -4
+ 398 0002 0D46     		mov	r5, r1
+ 124:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 399              		.loc 1 124 5 is_stmt 1 view .LVU113
+ 400              	.LVL37:
+ 125:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_string(index,'[');
+ 401              		.loc 1 125 5 view .LVU114
+ 402              		.loc 1 125 13 is_stmt 0 view .LVU115
+ARM GAS  /tmp/ccO1Z4xR.s 			page 11
+
+
+ 403 0004 5B21     		movs	r1, #91
+ 404              	.LVL38:
+ 405              		.loc 1 125 13 view .LVU116
+ 406 0006 FFF7FEFF 		bl	goto_next_string
+ 407              	.LVL39:
+ 126:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL){
+ 408              		.loc 1 126 5 is_stmt 1 view .LVU117
+ 409              		.loc 1 126 7 is_stmt 0 view .LVU118
+ 410 000a 0446     		mov	r4, r0
+ 411 000c 18B1     		cbz	r0, .L32
+ 127:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****          return NULL;
+ 128:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     int length = copy_string_data(index,buffer);
+ 412              		.loc 1 129 5 is_stmt 1 view .LVU119
+ 413              		.loc 1 129 18 is_stmt 0 view .LVU120
+ 414 000e 2946     		mov	r1, r5
+ 415 0010 FFF7FEFF 		bl	copy_string_data
+ 416              	.LVL40:
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index +=length;  
+ 417              		.loc 1 130 5 is_stmt 1 view .LVU121
+ 418              		.loc 1 130 11 is_stmt 0 view .LVU122
+ 419 0014 0444     		add	r4, r4, r0
+ 420              	.LVL41:
+ 131:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ 421              		.loc 1 131 5 is_stmt 1 view .LVU123
+ 422              	.L32:
+ 132:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 423              		.loc 1 132 1 is_stmt 0 view .LVU124
+ 424 0016 2046     		mov	r0, r4
+ 425 0018 38BD     		pop	{r3, r4, r5, pc}
+ 426              		.loc 1 132 1 view .LVU125
+ 427              		.cfi_endproc
+ 428              	.LFE1040:
+ 430              		.section	.text.get_head_start,"ax",%progbits
+ 431              		.align	1
+ 432              		.syntax unified
+ 433              		.thumb
+ 434              		.thumb_func
+ 436              	get_head_start:
+ 437              	.LVL42:
+ 438              	.LFB1043:
+ 133:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 134:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_key(char *text_data,char *data)
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 136:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char key_data[32]; 
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     key_data[31] = '\0';
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (1)
+ 140:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index = get_next_key(index,key_data);
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 143:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(strcmp(data,key_data)==0){
+ 145:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 146:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index = goto_next_char(index,'\n','\0');
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ARM GAS  /tmp/ccO1Z4xR.s 			page 12
+
+
+ 149:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index++;
+ 151:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 152:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return NULL;
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 154:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 155:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 156:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* index = text_data;
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index =get_key(index,key);
+ 158:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 160:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index++;
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = get_next_key(index,value);
+ 162:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 164:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_head_start(char* text_data,char* head)
+ 166:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 439              		.loc 1 166 1 is_stmt 1 view -0
+ 440              		.cfi_startproc
+ 441              		@ args = 0, pretend = 0, frame = 64
+ 442              		@ frame_needed = 0, uses_anonymous_args = 0
+ 443              		.loc 1 166 1 is_stmt 0 view .LVU127
+ 444 0000 30B5     		push	{r4, r5, lr}
+ 445              	.LCFI3:
+ 446              		.cfi_def_cfa_offset 12
+ 447              		.cfi_offset 4, -12
+ 448              		.cfi_offset 5, -8
+ 449              		.cfi_offset 14, -4
+ 450 0002 91B0     		sub	sp, sp, #68
+ 451              	.LCFI4:
+ 452              		.cfi_def_cfa_offset 80
+ 453 0004 0446     		mov	r4, r0
+ 454 0006 0D46     		mov	r5, r1
+ 167:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 455              		.loc 1 167 5 is_stmt 1 view .LVU128
+ 456              	.LVL43:
+ 457              	.L37:
+ 168:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char buffer[KEY_VALUE_MAX_LENGTH];
+ 458              		.loc 1 168 5 view .LVU129
+ 169:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (1)
+ 459              		.loc 1 169 5 view .LVU130
+ 170:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 171:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index = get_next_head(index,buffer);           
+ 460              		.loc 1 171 9 view .LVU131
+ 461              		.loc 1 171 17 is_stmt 0 view .LVU132
+ 462 0008 6946     		mov	r1, sp
+ 463 000a 2046     		mov	r0, r4
+ 464 000c FFF7FEFF 		bl	get_next_head
+ 465              	.LVL44:
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 466              		.loc 1 172 9 is_stmt 1 view .LVU133
+ 467              		.loc 1 172 11 is_stmt 0 view .LVU134
+ 468 0010 0446     		mov	r4, r0
+ 469 0012 28B1     		cbz	r0, .L36
+ 173:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+ 174:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;
+ARM GAS  /tmp/ccO1Z4xR.s 			page 13
+
+
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 176:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(strcmp(buffer,head) == 0)
+ 470              		.loc 1 176 9 is_stmt 1 view .LVU135
+ 471              		.loc 1 176 12 is_stmt 0 view .LVU136
+ 472 0014 2946     		mov	r1, r5
+ 473 0016 6846     		mov	r0, sp
+ 474              	.LVL45:
+ 475              		.loc 1 176 12 view .LVU137
+ 476 0018 FFF7FEFF 		bl	strcmp
+ 477              	.LVL46:
+ 478              		.loc 1 176 11 discriminator 1 view .LVU138
+ 479 001c 0028     		cmp	r0, #0
+ 480 001e F3D1     		bne	.L37
+ 481              	.L36:
+ 177:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         {
+ 178:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 179:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 180:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         // else
+ 181:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         // {
+ 182:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         //     pr_info("needhead:%s,headdata:%s\n",head,buffer);
+ 183:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         // }
+ 184:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 185:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 482              		.loc 1 185 1 view .LVU139
+ 483 0020 2046     		mov	r0, r4
+ 484 0022 11B0     		add	sp, sp, #68
+ 485              	.LCFI5:
+ 486              		.cfi_def_cfa_offset 12
+ 487              		@ sp needed
+ 488 0024 30BD     		pop	{r4, r5, pc}
+ 489              		.loc 1 185 1 view .LVU140
+ 490              		.cfi_endproc
+ 491              	.LFE1043:
+ 493              		.section	.text.get_key,"ax",%progbits
+ 494              		.align	1
+ 495              		.syntax unified
+ 496              		.thumb
+ 497              		.thumb_func
+ 499              	get_key:
+ 500              	.LVL47:
+ 501              	.LFB1041:
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char key_data[32]; 
+ 502              		.loc 1 135 1 is_stmt 1 view -0
+ 503              		.cfi_startproc
+ 504              		@ args = 0, pretend = 0, frame = 32
+ 505              		@ frame_needed = 0, uses_anonymous_args = 0
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char key_data[32]; 
+ 506              		.loc 1 135 1 is_stmt 0 view .LVU142
+ 507 0000 30B5     		push	{r4, r5, lr}
+ 508              	.LCFI6:
+ 509              		.cfi_def_cfa_offset 12
+ 510              		.cfi_offset 4, -12
+ 511              		.cfi_offset 5, -8
+ 512              		.cfi_offset 14, -4
+ 513 0002 89B0     		sub	sp, sp, #36
+ 514              	.LCFI7:
+ 515              		.cfi_def_cfa_offset 48
+ARM GAS  /tmp/ccO1Z4xR.s 			page 14
+
+
+ 516 0004 0D46     		mov	r5, r1
+ 136:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     key_data[31] = '\0';
+ 517              		.loc 1 136 5 is_stmt 1 view .LVU143
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 518              		.loc 1 137 5 view .LVU144
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *index = text_data;
+ 519              		.loc 1 137 18 is_stmt 0 view .LVU145
+ 520 0006 0023     		movs	r3, #0
+ 521 0008 8DF81F30 		strb	r3, [sp, #31]
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (1)
+ 522              		.loc 1 138 5 is_stmt 1 view .LVU146
+ 523              	.LVL48:
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (1)
+ 524              		.loc 1 138 5 is_stmt 0 view .LVU147
+ 525 000c 00E0     		b	.L41
+ 526              	.LVL49:
+ 527              	.L43:
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 528              		.loc 1 150 9 is_stmt 1 view .LVU148
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 529              		.loc 1 150 14 is_stmt 0 view .LVU149
+ 530 000e 0130     		adds	r0, r0, #1
+ 531              	.LVL50:
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 532              		.loc 1 139 11 is_stmt 1 view .LVU150
+ 533              	.L41:
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 534              		.loc 1 139 5 view .LVU151
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 535              		.loc 1 141 9 view .LVU152
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 536              		.loc 1 141 17 is_stmt 0 view .LVU153
+ 537 0010 6946     		mov	r1, sp
+ 538 0012 FFF7FEFF 		bl	get_next_key
+ 539              	.LVL51:
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 540              		.loc 1 142 9 is_stmt 1 view .LVU154
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 541              		.loc 1 142 11 is_stmt 0 view .LVU155
+ 542 0016 0446     		mov	r4, r0
+ 543 0018 60B1     		cbz	r0, .L39
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 544              		.loc 1 144 9 is_stmt 1 view .LVU156
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 545              		.loc 1 144 12 is_stmt 0 view .LVU157
+ 546 001a 6946     		mov	r1, sp
+ 547 001c 2846     		mov	r0, r5
+ 548              	.LVL52:
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 549              		.loc 1 144 12 view .LVU158
+ 550 001e FFF7FEFF 		bl	strcmp
+ 551              	.LVL53:
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return index;
+ 552              		.loc 1 144 11 discriminator 1 view .LVU159
+ 553 0022 38B1     		cbz	r0, .L39
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 554              		.loc 1 147 9 is_stmt 1 view .LVU160
+ARM GAS  /tmp/ccO1Z4xR.s 			page 15
+
+
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL)
+ 555              		.loc 1 147 17 is_stmt 0 view .LVU161
+ 556 0024 0022     		movs	r2, #0
+ 557 0026 0A21     		movs	r1, #10
+ 558 0028 2046     		mov	r0, r4
+ 559 002a FFF7FEFF 		bl	goto_next_char
+ 560              	.LVL54:
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 561              		.loc 1 148 9 is_stmt 1 view .LVU162
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         break;
+ 562              		.loc 1 148 11 is_stmt 0 view .LVU163
+ 563 002e 0446     		mov	r4, r0
+ 564 0030 0028     		cmp	r0, #0
+ 565 0032 ECD1     		bne	.L43
+ 566              	.LVL55:
+ 567              	.L39:
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 568              		.loc 1 153 1 view .LVU164
+ 569 0034 2046     		mov	r0, r4
+ 570 0036 09B0     		add	sp, sp, #36
+ 571              	.LCFI8:
+ 572              		.cfi_def_cfa_offset 12
+ 573              		@ sp needed
+ 574 0038 30BD     		pop	{r4, r5, pc}
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 575              		.loc 1 153 1 view .LVU165
+ 576              		.cfi_endproc
+ 577              	.LFE1041:
+ 579              		.section	.text.get_value,"ax",%progbits
+ 580              		.align	1
+ 581              		.syntax unified
+ 582              		.thumb
+ 583              		.thumb_func
+ 585              	get_value:
+ 586              	.LVL56:
+ 587              	.LFB1042:
+ 155:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* index = text_data;
+ 588              		.loc 1 155 1 is_stmt 1 view -0
+ 589              		.cfi_startproc
+ 590              		@ args = 0, pretend = 0, frame = 0
+ 591              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* index = text_data;
+ 592              		.loc 1 155 1 is_stmt 0 view .LVU167
+ 593 0000 10B5     		push	{r4, lr}
+ 594              	.LCFI9:
+ 595              		.cfi_def_cfa_offset 8
+ 596              		.cfi_offset 4, -8
+ 597              		.cfi_offset 14, -4
+ 598 0002 1446     		mov	r4, r2
+ 156:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index =get_key(index,key);
+ 599              		.loc 1 156 5 is_stmt 1 view .LVU168
+ 600              	.LVL57:
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 601              		.loc 1 157 5 view .LVU169
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 602              		.loc 1 157 12 is_stmt 0 view .LVU170
+ 603 0004 FFF7FEFF 		bl	get_key
+ARM GAS  /tmp/ccO1Z4xR.s 			page 16
+
+
+ 604              	.LVL58:
+ 158:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 605              		.loc 1 158 5 is_stmt 1 view .LVU171
+ 158:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 606              		.loc 1 158 7 is_stmt 0 view .LVU172
+ 607 0008 38B1     		cbz	r0, .L44
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index++;
+ 608              		.loc 1 159 5 is_stmt 1 view .LVU173
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index++;
+ 609              		.loc 1 159 13 is_stmt 0 view .LVU174
+ 610 000a 0A22     		movs	r2, #10
+ 611 000c 3D21     		movs	r1, #61
+ 612 000e FFF7FEFF 		bl	goto_next_char
+ 613              	.LVL59:
+ 160:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = get_next_key(index,value);
+ 614              		.loc 1 160 5 is_stmt 1 view .LVU175
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ 615              		.loc 1 161 5 view .LVU176
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ 616              		.loc 1 161 13 is_stmt 0 view .LVU177
+ 617 0012 2146     		mov	r1, r4
+ 618 0014 0130     		adds	r0, r0, #1
+ 619              	.LVL60:
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ 620              		.loc 1 161 13 view .LVU178
+ 621 0016 FFF7FEFF 		bl	get_next_key
+ 622              	.LVL61:
+ 162:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 623              		.loc 1 162 5 is_stmt 1 view .LVU179
+ 624              	.L44:
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 625              		.loc 1 163 1 is_stmt 0 view .LVU180
+ 626 001a 10BD     		pop	{r4, pc}
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 627              		.loc 1 163 1 view .LVU181
+ 628              		.cfi_endproc
+ 629              	.LFE1042:
+ 631              		.section	.text.__goto_next_char,"ax",%progbits
+ 632              		.align	1
+ 633              		.global	__goto_next_char
+ 634              		.syntax unified
+ 635              		.thumb
+ 636              		.thumb_func
+ 638              	__goto_next_char:
+ 639              	.LVL62:
+ 640              	.LFB1034:
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+ 641              		.loc 1 26 1 is_stmt 1 view -0
+ 642              		.cfi_startproc
+ 643              		@ args = 0, pretend = 0, frame = 0
+ 644              		@ frame_needed = 0, uses_anonymous_args = 0
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+ 645              		.loc 1 26 1 is_stmt 0 view .LVU183
+ 646 0000 08B5     		push	{r3, lr}
+ 647              	.LCFI10:
+ 648              		.cfi_def_cfa_offset 8
+ 649              		.cfi_offset 3, -8
+ARM GAS  /tmp/ccO1Z4xR.s 			page 17
+
+
+ 650              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 651              		.loc 1 27 5 is_stmt 1 view .LVU184
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 652              		.loc 1 27 12 is_stmt 0 view .LVU185
+ 653 0002 FFF7FEFF 		bl	goto_next_char
+ 654              	.LVL63:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** static char* goto_next_string(char* data,char limit)
+ 655              		.loc 1 28 1 view .LVU186
+ 656 0006 08BD     		pop	{r3, pc}
+ 657              		.cfi_endproc
+ 658              	.LFE1034:
+ 660              		.section	.text.__goto_next_string,"ax",%progbits
+ 661              		.align	1
+ 662              		.global	__goto_next_string
+ 663              		.syntax unified
+ 664              		.thumb
+ 665              		.thumb_func
+ 667              	__goto_next_string:
+ 668              	.LVL64:
+ 669              	.LFB1036:
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_string( data, limit);
+ 670              		.loc 1 53 48 is_stmt 1 view -0
+ 671              		.cfi_startproc
+ 672              		@ args = 0, pretend = 0, frame = 0
+ 673              		@ frame_needed = 0, uses_anonymous_args = 0
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return goto_next_string( data, limit);
+ 674              		.loc 1 53 48 is_stmt 0 view .LVU188
+ 675 0000 08B5     		push	{r3, lr}
+ 676              	.LCFI11:
+ 677              		.cfi_def_cfa_offset 8
+ 678              		.cfi_offset 3, -8
+ 679              		.cfi_offset 14, -4
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 680              		.loc 1 54 5 is_stmt 1 view .LVU189
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 681              		.loc 1 54 12 is_stmt 0 view .LVU190
+ 682 0002 FFF7FEFF 		bl	goto_next_string
+ 683              	.LVL65:
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 684              		.loc 1 55 1 view .LVU191
+ 685 0006 08BD     		pop	{r3, pc}
+ 686              		.cfi_endproc
+ 687              	.LFE1036:
+ 689              		.section	.text.__copy_string_data,"ax",%progbits
+ 690              		.align	1
+ 691              		.global	__copy_string_data
+ 692              		.syntax unified
+ 693              		.thumb
+ 694              		.thumb_func
+ 696              	__copy_string_data:
+ 697              	.LVL66:
+ 698              	.LFB1038:
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return copy_string_data(from, to);
+ 699              		.loc 1 98 1 is_stmt 1 view -0
+ 700              		.cfi_startproc
+ 701              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccO1Z4xR.s 			page 18
+
+
+ 702              		@ frame_needed = 0, uses_anonymous_args = 0
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return copy_string_data(from, to);
+ 703              		.loc 1 98 1 is_stmt 0 view .LVU193
+ 704 0000 08B5     		push	{r3, lr}
+ 705              	.LCFI12:
+ 706              		.cfi_def_cfa_offset 8
+ 707              		.cfi_offset 3, -8
+ 708              		.cfi_offset 14, -4
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 709              		.loc 1 99 5 is_stmt 1 view .LVU194
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 710              		.loc 1 99 12 is_stmt 0 view .LVU195
+ 711 0002 FFF7FEFF 		bl	copy_string_data
+ 712              	.LVL67:
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 713              		.loc 1 100 1 view .LVU196
+ 714 0006 08BD     		pop	{r3, pc}
+ 715              		.cfi_endproc
+ 716              	.LFE1038:
+ 718              		.section	.rodata.get_value_from_ini.str1.4,"aMS",%progbits,1
+ 719              		.align	2
+ 720              	.LC0:
+ 721 0000 63616E20 		.ascii	"can not get this file head\012\000"
+ 721      6E6F7420 
+ 721      67657420 
+ 721      74686973 
+ 721      2066696C 
+ 722              		.align	2
+ 723              	.LC1:
+ 724 001c 63616E20 		.ascii	"can not get value\012\000"
+ 724      6E6F7420 
+ 724      67657420 
+ 724      76616C75 
+ 724      650A00
+ 725              		.section	.text.get_value_from_ini,"ax",%progbits
+ 726              		.align	1
+ 727              		.global	get_value_from_ini
+ 728              		.syntax unified
+ 729              		.thumb
+ 730              		.thumb_func
+ 732              	get_value_from_ini:
+ 733              	.LVL68:
+ 734              	.LFB1044:
+ 186:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 187:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** char* get_value_from_ini(char *text_data,char *grou,char* key,char* value)
+ 188:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 735              		.loc 1 188 1 is_stmt 1 view -0
+ 736              		.cfi_startproc
+ 737              		@ args = 0, pretend = 0, frame = 0
+ 738              		@ frame_needed = 0, uses_anonymous_args = 0
+ 739              		.loc 1 188 1 is_stmt 0 view .LVU198
+ 740 0000 70B5     		push	{r4, r5, r6, lr}
+ 741              	.LCFI13:
+ 742              		.cfi_def_cfa_offset 16
+ 743              		.cfi_offset 4, -16
+ 744              		.cfi_offset 5, -12
+ 745              		.cfi_offset 6, -8
+ARM GAS  /tmp/ccO1Z4xR.s 			page 19
+
+
+ 746              		.cfi_offset 14, -4
+ 189:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(text_data == NULL  || key == NULL || value == NULL) 
+ 747              		.loc 1 189 5 is_stmt 1 view .LVU199
+ 748              		.loc 1 189 7 is_stmt 0 view .LVU200
+ 749 0002 0446     		mov	r4, r0
+ 750 0004 78B1     		cbz	r0, .L53
+ 751 0006 1546     		mov	r5, r2
+ 752 0008 1E46     		mov	r6, r3
+ 753              		.loc 1 189 27 discriminator 1 view .LVU201
+ 754 000a C2B1     		cbz	r2, .L57
+ 755              		.loc 1 189 42 discriminator 2 view .LVU202
+ 756 000c CBB1     		cbz	r3, .L58
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return NULL;
+ 191:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char* index = text_data;
+ 757              		.loc 1 192 5 is_stmt 1 view .LVU203
+ 758              	.LVL69:
+ 193:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(grou != NULL){
+ 759              		.loc 1 193 5 view .LVU204
+ 760              		.loc 1 193 7 is_stmt 0 view .LVU205
+ 761 000e 19B1     		cbz	r1, .L55
+ 194:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         index = get_head_start(index,grou); //获取起始头部
+ 762              		.loc 1 194 9 is_stmt 1 view .LVU206
+ 763              		.loc 1 194 17 is_stmt 0 view .LVU207
+ 764 0010 FFF7FEFF 		bl	get_head_start
+ 765              	.LVL70:
+ 195:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if(index == NULL){
+ 766              		.loc 1 195 9 is_stmt 1 view .LVU208
+ 767              		.loc 1 195 11 is_stmt 0 view .LVU209
+ 768 0014 0446     		mov	r4, r0
+ 769              	.LVL71:
+ 770              		.loc 1 195 11 view .LVU210
+ 771 0016 40B1     		cbz	r0, .L60
+ 772              	.L55:
+ 196:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             pr_err("can not get this file head\n");
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;               
+ 198:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 199:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 200:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     index = get_value(index,key,value);  
+ 773              		.loc 1 200 5 is_stmt 1 view .LVU211
+ 774              		.loc 1 200 13 is_stmt 0 view .LVU212
+ 775 0018 3246     		mov	r2, r6
+ 776 001a 2946     		mov	r1, r5
+ 777 001c 2046     		mov	r0, r4
+ 778              		.loc 1 200 13 view .LVU213
+ 779 001e FFF7FEFF 		bl	get_value
+ 780              	.LVL72:
+ 201:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     if(index == NULL){
+ 781              		.loc 1 201 5 is_stmt 1 view .LVU214
+ 782              		.loc 1 201 7 is_stmt 0 view .LVU215
+ 783 0022 0446     		mov	r4, r0
+ 784 0024 30B1     		cbz	r0, .L61
+ 785              	.LVL73:
+ 786              	.L53:
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 203:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 204:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     return index;
+ARM GAS  /tmp/ccO1Z4xR.s 			page 20
+
+
+ 205:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 787              		.loc 1 205 1 view .LVU216
+ 788 0026 2046     		mov	r0, r4
+ 789 0028 70BD     		pop	{r4, r5, r6, pc}
+ 790              	.LVL74:
+ 791              	.L60:
+ 196:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;               
+ 792              		.loc 1 196 13 is_stmt 1 view .LVU217
+ 793 002a 0749     		ldr	r1, .L62
+ 794 002c 0320     		movs	r0, #3
+ 795              	.LVL75:
+ 196:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             return NULL;               
+ 796              		.loc 1 196 13 is_stmt 0 view .LVU218
+ 797 002e FFF7FEFF 		bl	printk
+ 798              	.LVL76:
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 799              		.loc 1 197 13 is_stmt 1 view .LVU219
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 800              		.loc 1 197 20 is_stmt 0 view .LVU220
+ 801 0032 F8E7     		b	.L53
+ 802              	.LVL77:
+ 803              	.L61:
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 804              		.loc 1 202 9 is_stmt 1 view .LVU221
+ 805 0034 0549     		ldr	r1, .L62+4
+ 806 0036 0320     		movs	r0, #3
+ 807              	.LVL78:
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 808              		.loc 1 202 9 is_stmt 0 view .LVU222
+ 809 0038 FFF7FEFF 		bl	printk
+ 810              	.LVL79:
+ 811 003c F3E7     		b	.L53
+ 812              	.LVL80:
+ 813              	.L57:
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     
+ 814              		.loc 1 190 12 view .LVU223
+ 815 003e 1446     		mov	r4, r2
+ 816 0040 F1E7     		b	.L53
+ 817              	.L58:
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     
+ 818              		.loc 1 190 12 view .LVU224
+ 819 0042 1C46     		mov	r4, r3
+ 820 0044 EFE7     		b	.L53
+ 821              	.L63:
+ 822 0046 00BF     		.align	2
+ 823              	.L62:
+ 824 0048 00000000 		.word	.LC0
+ 825 004c 1C000000 		.word	.LC1
+ 826              		.cfi_endproc
+ 827              	.LFE1044:
+ 829              		.section	.text.preprocess_ini_data,"ax",%progbits
+ 830              		.align	1
+ 831              		.global	preprocess_ini_data
+ 832              		.syntax unified
+ 833              		.thumb
+ 834              		.thumb_func
+ 836              	preprocess_ini_data:
+ARM GAS  /tmp/ccO1Z4xR.s 			page 21
+
+
+ 837              	.LVL81:
+ 838              	.LFB1045:
+ 206:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** 
+ 207:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** void preprocess_ini_data(char *data)
+ 208:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** {
+ 839              		.loc 1 208 1 is_stmt 1 view -0
+ 840              		.cfi_startproc
+ 841              		@ args = 0, pretend = 0, frame = 0
+ 842              		@ frame_needed = 0, uses_anonymous_args = 0
+ 843              		@ link register save eliminated.
+ 209:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *src = data;
+ 844              		.loc 1 209 5 view .LVU226
+ 210:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *dst = data;
+ 845              		.loc 1 210 5 view .LVU227
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (*src != '\0') 
+ 846              		.loc 1 211 5 view .LVU228
+ 210:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     char *dst = data;
+ 847              		.loc 1 210 11 is_stmt 0 view .LVU229
+ 848 0000 0246     		mov	r2, r0
+ 849              		.loc 1 211 11 view .LVU230
+ 850 0002 04E0     		b	.L65
+ 851              	.LVL82:
+ 852              	.L70:
+ 212:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     {
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         if (*src == '#' || *src == ';' ) {
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 215:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****                 src++;
+ 853              		.loc 1 215 17 is_stmt 1 view .LVU231
+ 854              		.loc 1 215 20 is_stmt 0 view .LVU232
+ 855 0004 0130     		adds	r0, r0, #1
+ 856              	.LVL83:
+ 857              	.L68:
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****                 src++;
+ 858              		.loc 1 214 33 is_stmt 1 view .LVU233
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****                 src++;
+ 859              		.loc 1 214 20 is_stmt 0 view .LVU234
+ 860 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****                 src++;
+ 861              		.loc 1 214 33 view .LVU235
+ 862 0008 0BB1     		cbz	r3, .L65
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****                 src++;
+ 863              		.loc 1 214 33 discriminator 1 view .LVU236
+ 864 000a 0A2B     		cmp	r3, #10
+ 865 000c FAD1     		bne	.L70
+ 866              	.L65:
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (*src != '\0') 
+ 867              		.loc 1 211 17 is_stmt 1 view .LVU237
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (*src != '\0') 
+ 868              		.loc 1 211 12 is_stmt 0 view .LVU238
+ 869 000e 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     while (*src != '\0') 
+ 870              		.loc 1 211 17 view .LVU239
+ 871 0010 3BB1     		cbz	r3, .L73
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 872              		.loc 1 213 9 is_stmt 1 view .LVU240
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 873              		.loc 1 213 12 is_stmt 0 view .LVU241
+ARM GAS  /tmp/ccO1Z4xR.s 			page 22
+
+
+ 874 0012 232B     		cmp	r3, #35
+ 875 0014 F7D0     		beq	.L68
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 876              		.loc 1 213 25 discriminator 1 view .LVU242
+ 877 0016 3B2B     		cmp	r3, #59
+ 878 0018 F5D0     		beq	.L68
+ 216:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             }
+ 217:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         } 
+ 218:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         else {
+ 219:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****             *dst++ = *src++;
+ 879              		.loc 1 219 13 is_stmt 1 view .LVU243
+ 880              		.loc 1 219 26 is_stmt 0 view .LVU244
+ 881 001a 0130     		adds	r0, r0, #1
+ 882              	.LVL84:
+ 883              		.loc 1 219 20 view .LVU245
+ 884 001c 02F8013B 		strb	r3, [r2], #1
+ 885              	.LVL85:
+ 886              		.loc 1 219 20 view .LVU246
+ 887 0020 F5E7     		b	.L65
+ 888              	.L73:
+ 220:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****         }
+ 221:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     }
+ 222:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c ****     *dst = '\0'; 
+ 889              		.loc 1 222 5 is_stmt 1 view .LVU247
+ 890              		.loc 1 222 10 is_stmt 0 view .LVU248
+ 891 0022 1370     		strb	r3, [r2]
+ 223:/mnt/c/Users/31740/Desktop/newcore/lib/script/kini.c **** }
+ 892              		.loc 1 223 1 view .LVU249
+ 893 0024 7047     		bx	lr
+ 894              		.cfi_endproc
+ 895              	.LFE1045:
+ 897              		.text
+ 898              	.Letext0:
+ 899              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 900              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ARM GAS  /tmp/ccO1Z4xR.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 kini.c
+     /tmp/ccO1Z4xR.s:21     .text.goto_next_char:00000000 $t
+     /tmp/ccO1Z4xR.s:26     .text.goto_next_char:00000000 goto_next_char
+     /tmp/ccO1Z4xR.s:70     .text.goto_next_string:00000000 $t
+     /tmp/ccO1Z4xR.s:75     .text.goto_next_string:00000000 goto_next_string
+     /tmp/ccO1Z4xR.s:143    .text.copy_string_data:00000000 $t
+     /tmp/ccO1Z4xR.s:148    .text.copy_string_data:00000000 copy_string_data
+     /tmp/ccO1Z4xR.s:278    .text.get_next_head:00000000 $t
+     /tmp/ccO1Z4xR.s:283    .text.get_next_head:00000000 get_next_head
+     /tmp/ccO1Z4xR.s:378    .text.get_next_key:00000000 $t
+     /tmp/ccO1Z4xR.s:383    .text.get_next_key:00000000 get_next_key
+     /tmp/ccO1Z4xR.s:431    .text.get_head_start:00000000 $t
+     /tmp/ccO1Z4xR.s:436    .text.get_head_start:00000000 get_head_start
+     /tmp/ccO1Z4xR.s:494    .text.get_key:00000000 $t
+     /tmp/ccO1Z4xR.s:499    .text.get_key:00000000 get_key
+     /tmp/ccO1Z4xR.s:580    .text.get_value:00000000 $t
+     /tmp/ccO1Z4xR.s:585    .text.get_value:00000000 get_value
+     /tmp/ccO1Z4xR.s:632    .text.__goto_next_char:00000000 $t
+     /tmp/ccO1Z4xR.s:638    .text.__goto_next_char:00000000 __goto_next_char
+     /tmp/ccO1Z4xR.s:661    .text.__goto_next_string:00000000 $t
+     /tmp/ccO1Z4xR.s:667    .text.__goto_next_string:00000000 __goto_next_string
+     /tmp/ccO1Z4xR.s:690    .text.__copy_string_data:00000000 $t
+     /tmp/ccO1Z4xR.s:696    .text.__copy_string_data:00000000 __copy_string_data
+     /tmp/ccO1Z4xR.s:719    .rodata.get_value_from_ini.str1.4:00000000 $d
+     /tmp/ccO1Z4xR.s:726    .text.get_value_from_ini:00000000 $t
+     /tmp/ccO1Z4xR.s:732    .text.get_value_from_ini:00000000 get_value_from_ini
+     /tmp/ccO1Z4xR.s:824    .text.get_value_from_ini:00000048 $d
+     /tmp/ccO1Z4xR.s:830    .text.preprocess_ini_data:00000000 $t
+     /tmp/ccO1Z4xR.s:836    .text.preprocess_ini_data:00000000 preprocess_ini_data
+
+UNDEFINED SYMBOLS
+strcmp
+printk

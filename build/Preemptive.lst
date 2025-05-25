@@ -1,0 +1,1536 @@
+ARM GAS  /tmp/cck6rm7r.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Preemptive.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c"
+  20              		.section	.text.check_task_completeness,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	check_task_completeness:
+  27              	.LVL0:
+  28              	.LFB254:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** #include <linux/kernel.h> 
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** #include <linux/sched.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** #include <linux/slab.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** #include <generated/autoconf.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** struct task_pool_Preemptive{
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct *task_head;
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     uint32_t tasknode_numbers;
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** };
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched);
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static time64_t time = 0;
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** struct task_struct* get_next_task(struct task_struct* task){
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return task->next;
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** struct task_struct* get_useful_task(struct task_struct* head_task,struct scheduler *sched)
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    struct task_struct* search_task = head_task;
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    while (1)
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    {
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if (search_task->state == TASK_DEAD) {
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *dead_task = search_task;
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *search_task = get_next_task(search_task);
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             remove_task_from_pool(dead_task,sched);
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             __destory_task(dead_task);
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             if(search_task == NULL){ //保险作用
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task = head_task;
+ARM GAS  /tmp/cck6rm7r.s 			page 2
+
+
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(search_task->state == TASK_READY){
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;            
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         else if(search_task->state == TASK_WAITING){
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time < time){
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 break;
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(get_next_task(search_task) == NULL)
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         search_task = get_next_task(search_task);
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****  return search_task;
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static struct task_struct* Preemptive_scheduling(struct scheduler *sched)
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {   
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     time++; 
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(((struct task_pool_Preemptive*)sched->s_task_po
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(next_task != sched->current_task)
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if( sched->current_task != NULL){
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         next_task->last_scheduler_time = time;
+  59:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return next_task;
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** } 
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void show_all_task(struct task_struct* head)
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct* t = head;
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(t == NULL)return NULL;
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     int i = 0;
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     pr_info("--------------------------\n");
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     while(1)
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         pr_info("task %d: %s \n",i,t->task_name);
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         i++;
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         t = t->next;
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(t == NULL)
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         break;
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     pr_info("--------------------------\n");
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static int check_task_completeness(struct scheduler * sched)
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+  29              		.loc 1 83 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/cck6rm7r.s 			page 3
+
+
+  33              		@ link register save eliminated.
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      struct task_pool_Preemptive *pool = sched->s_task_pool;
+  34              		.loc 1 84 6 view .LVU1
+  35              		.loc 1 84 35 is_stmt 0 view .LVU2
+  36 0000 4368     		ldr	r3, [r0, #4]
+  37              	.LVL1:
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      struct task_struct* t = pool->task_head;
+  38              		.loc 1 85 6 is_stmt 1 view .LVU3
+  39              		.loc 1 85 26 is_stmt 0 view .LVU4
+  40 0002 1B68     		ldr	r3, [r3]
+  41              	.LVL2:
+  42              	.L3:
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      while(1)
+  43              		.loc 1 86 6 is_stmt 1 view .LVU5
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      {
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(t->magic != task_struct_magic)
+  44              		.loc 1 88 9 view .LVU6
+  45              		.loc 1 88 13 is_stmt 0 view .LVU7
+  46 0004 1968     		ldr	r1, [r3]
+  47              		.loc 1 88 11 view .LVU8
+  48 0006 054A     		ldr	r2, .L5
+  49 0008 9142     		cmp	r1, r2
+  50 000a 04D1     		bne	.L4
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         return -1;
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         t = t->next;
+  51              		.loc 1 90 9 is_stmt 1 view .LVU9
+  52              		.loc 1 90 11 is_stmt 0 view .LVU10
+  53 000c DB6F     		ldr	r3, [r3, #124]
+  54              	.LVL3:
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(t == NULL)
+  55              		.loc 1 91 9 is_stmt 1 view .LVU11
+  56              		.loc 1 91 11 is_stmt 0 view .LVU12
+  57 000e 002B     		cmp	r3, #0
+  58 0010 F8D1     		bne	.L3
+  92:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         break;
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      }
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****      return 0;
+  59              		.loc 1 94 13 view .LVU13
+  60 0012 0020     		movs	r0, #0
+  61              	.LVL4:
+  62              		.loc 1 94 13 view .LVU14
+  63 0014 7047     		bx	lr
+  64              	.LVL5:
+  65              	.L4:
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         t = t->next;
+  66              		.loc 1 89 16 view .LVU15
+  67 0016 4FF0FF30 		mov	r0, #-1
+  68              	.LVL6:
+  95:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+  69              		.loc 1 95 1 view .LVU16
+  70 001a 7047     		bx	lr
+  71              	.L6:
+  72              		.align	2
+  73              	.L5:
+  74 001c 40E20100 		.word	123456
+  75              		.cfi_endproc
+  76              	.LFE254:
+ARM GAS  /tmp/cck6rm7r.s 			page 4
+
+
+  78              		.section	.text.get_task_by_priority,"ax",%progbits
+  79              		.align	1
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	get_task_by_priority:
+  85              	.LVL7:
+  86              	.LFB255:
+  96:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  97:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static struct task_struct* get_task_by_priority(struct task_pool_Preemptive* pool,uint32_t priority
+ 101:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+  87              		.loc 1 101 1 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+ 102:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct* t = pool->task_head;
+  92              		.loc 1 102 5 view .LVU18
+  93              		.loc 1 102 25 is_stmt 0 view .LVU19
+  94 0000 0068     		ldr	r0, [r0]
+  95              	.LVL8:
+ 103:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(t == NULL)return NULL;
+  96              		.loc 1 103 5 is_stmt 1 view .LVU20
+  97              		.loc 1 103 7 is_stmt 0 view .LVU21
+  98 0002 08B9     		cbnz	r0, .L9
+  99 0004 03E0     		b	.L7
+ 100              	.L10:
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     while(1)
+ 105:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(t->priority <= priority || t == NULL)
+ 107:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 108:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         t = t->next;
+ 101              		.loc 1 108 9 is_stmt 1 view .LVU22
+ 102              		.loc 1 108 11 is_stmt 0 view .LVU23
+ 103 0006 C06F     		ldr	r0, [r0, #124]
+ 104              	.LVL9:
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     while(1)
+ 105              		.loc 1 104 10 is_stmt 1 view .LVU24
+ 106              	.L9:
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     while(1)
+ 107              		.loc 1 104 5 view .LVU25
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 108              		.loc 1 106 9 view .LVU26
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 109              		.loc 1 106 13 is_stmt 0 view .LVU27
+ 110 0008 836E     		ldr	r3, [r0, #104]
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 111              		.loc 1 106 11 view .LVU28
+ 112 000a 8B42     		cmp	r3, r1
+ 113 000c FBD8     		bhi	.L10
+ 114              	.L7:
+ 109:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 110:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return t;
+ 111:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ARM GAS  /tmp/cck6rm7r.s 			page 5
+
+
+ 115              		.loc 1 111 1 view .LVU29
+ 116 000e 7047     		bx	lr
+ 117              		.cfi_endproc
+ 118              	.LFE255:
+ 120              		.section	.text.add_a_task_node,"ax",%progbits
+ 121              		.align	1
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	add_a_task_node:
+ 127              	.LVL10:
+ 128              	.LFB256:
+ 112:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 113:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void add_a_task_node(struct task_struct* new,struct task_struct* task){
+ 129              		.loc 1 114 78 is_stmt 1 view -0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 115:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new->next = task;
+ 134              		.loc 1 115 5 view .LVU31
+ 135              		.loc 1 115 15 is_stmt 0 view .LVU32
+ 136 0000 C167     		str	r1, [r0, #124]
+ 116:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new->priv = task->priv;
+ 137              		.loc 1 116 5 is_stmt 1 view .LVU33
+ 138              		.loc 1 116 21 is_stmt 0 view .LVU34
+ 139 0002 8B6F     		ldr	r3, [r1, #120]
+ 140              		.loc 1 116 15 view .LVU35
+ 141 0004 8367     		str	r3, [r0, #120]
+ 117:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     task->priv->next = new;
+ 142              		.loc 1 117 5 is_stmt 1 view .LVU36
+ 143              		.loc 1 117 22 is_stmt 0 view .LVU37
+ 144 0006 D867     		str	r0, [r3, #124]
+ 118:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     task->priv = new;
+ 145              		.loc 1 118 5 is_stmt 1 view .LVU38
+ 146              		.loc 1 118 16 is_stmt 0 view .LVU39
+ 147 0008 8867     		str	r0, [r1, #120]
+ 119:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 148              		.loc 1 119 1 view .LVU40
+ 149 000a 7047     		bx	lr
+ 150              		.cfi_endproc
+ 151              	.LFE256:
+ 153              		.section	.text.task_reset,"ax",%progbits
+ 154              		.align	1
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	task_reset:
+ 160              	.LVL11:
+ 161              	.LFB257:
+ 120:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void task_reset(struct task_struct* new){
+ 162              		.loc 1 120 48 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ARM GAS  /tmp/cck6rm7r.s 			page 6
+
+
+ 121:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new->priv = NULL;
+ 167              		.loc 1 121 5 view .LVU42
+ 168              		.loc 1 121 15 is_stmt 0 view .LVU43
+ 169 0000 0023     		movs	r3, #0
+ 170 0002 8367     		str	r3, [r0, #120]
+ 122:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new->next = NULL;
+ 171              		.loc 1 122 5 is_stmt 1 view .LVU44
+ 172              		.loc 1 122 15 is_stmt 0 view .LVU45
+ 173 0004 C367     		str	r3, [r0, #124]
+ 123:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 174              		.loc 1 123 1 view .LVU46
+ 175 0006 7047     		bx	lr
+ 176              		.cfi_endproc
+ 177              	.LFE257:
+ 179              		.section	.text.add_task_to_task_pool,"ax",%progbits
+ 180              		.align	1
+ 181              		.syntax unified
+ 182              		.thumb
+ 183              		.thumb_func
+ 185              	add_task_to_task_pool:
+ 186              	.LVL12:
+ 187              	.LFB258:
+ 124:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static int add_task_to_task_pool(struct task_struct* new ,struct scheduler *sched)
+ 125:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+ 188              		.loc 1 125 1 is_stmt 1 view -0
+ 189              		.cfi_startproc
+ 190              		@ args = 0, pretend = 0, frame = 0
+ 191              		@ frame_needed = 0, uses_anonymous_args = 0
+ 192              		.loc 1 125 1 is_stmt 0 view .LVU48
+ 193 0000 70B5     		push	{r4, r5, r6, lr}
+ 194              	.LCFI0:
+ 195              		.cfi_def_cfa_offset 16
+ 196              		.cfi_offset 4, -16
+ 197              		.cfi_offset 5, -12
+ 198              		.cfi_offset 6, -8
+ 199              		.cfi_offset 14, -4
+ 200 0002 0546     		mov	r5, r0
+ 126:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_pool_Preemptive *pool = sched->s_task_pool;
+ 201              		.loc 1 126 5 is_stmt 1 view .LVU49
+ 202              		.loc 1 126 34 is_stmt 0 view .LVU50
+ 203 0004 4C68     		ldr	r4, [r1, #4]
+ 204              	.LVL13:
+ 127:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     task_reset(new);
+ 205              		.loc 1 127 5 is_stmt 1 view .LVU51
+ 206 0006 FFF7FEFF 		bl	task_reset
+ 207              	.LVL14:
+ 128:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(pool->task_head == NULL)
+ 208              		.loc 1 128 5 view .LVU52
+ 209              		.loc 1 128 12 is_stmt 0 view .LVU53
+ 210 000a 2668     		ldr	r6, [r4]
+ 211              		.loc 1 128 7 view .LVU54
+ 212 000c 4EB1     		cbz	r6, .L19
+ 213              	.LBB4:
+ 129:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         pool->task_head = new;      
+ 131:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 132:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     else
+ARM GAS  /tmp/cck6rm7r.s 			page 7
+
+
+ 133:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 134:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         struct task_struct *task = get_task_by_priority(pool,new->priority);
+ 214              		.loc 1 134 9 is_stmt 1 view .LVU55
+ 215              		.loc 1 134 36 is_stmt 0 view .LVU56
+ 216 000e A96E     		ldr	r1, [r5, #104]
+ 217 0010 2046     		mov	r0, r4
+ 218 0012 FFF7FEFF 		bl	get_task_by_priority
+ 219              	.LVL15:
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(task == NULL) 
+ 220              		.loc 1 135 9 is_stmt 1 view .LVU57
+ 221              		.loc 1 135 11 is_stmt 0 view .LVU58
+ 222 0016 0146     		mov	r1, r0
+ 223 0018 50B1     		cbz	r0, .L20
+ 136:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         {
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             add_a_task_node(new,pool->task_head);
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             pool->task_head = new;
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+ 140:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         else
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         {
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             add_a_task_node(new,task);
+ 224              		.loc 1 142 13 is_stmt 1 view .LVU59
+ 225 001a 2846     		mov	r0, r5
+ 226              	.LVL16:
+ 227              		.loc 1 142 13 is_stmt 0 view .LVU60
+ 228 001c FFF7FEFF 		bl	add_a_task_node
+ 229              	.LVL17:
+ 230              		.loc 1 142 13 view .LVU61
+ 231 0020 00E0     		b	.L15
+ 232              	.LVL18:
+ 233              	.L19:
+ 234              		.loc 1 142 13 view .LVU62
+ 235              	.LBE4:
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 236              		.loc 1 130 9 is_stmt 1 view .LVU63
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 237              		.loc 1 130 25 is_stmt 0 view .LVU64
+ 238 0022 2560     		str	r5, [r4]
+ 239              	.L15:
+ 143:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }        
+ 145:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 146:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(pool->task_head->priv != NULL){
+ 240              		.loc 1 146 5 is_stmt 1 view .LVU65
+ 241              		.loc 1 146 12 is_stmt 0 view .LVU66
+ 242 0024 2368     		ldr	r3, [r4]
+ 243              		.loc 1 146 23 view .LVU67
+ 244 0026 9B6F     		ldr	r3, [r3, #120]
+ 245              		.loc 1 146 7 view .LVU68
+ 246 0028 03B1     		cbz	r3, .L17
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         pool->task_head = pool->task_head->priv;
+ 247              		.loc 1 147 9 is_stmt 1 view .LVU69
+ 248              		.loc 1 147 25 is_stmt 0 view .LVU70
+ 249 002a 2360     		str	r3, [r4]
+ 250              	.L17:
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 149:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     //show_all_task(pool->task_head);
+ARM GAS  /tmp/cck6rm7r.s 			page 8
+
+
+ 151:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return 0;
+ 251              		.loc 1 151 5 is_stmt 1 view .LVU71
+ 152:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 252              		.loc 1 152 1 is_stmt 0 view .LVU72
+ 253 002c 0020     		movs	r0, #0
+ 254 002e 70BD     		pop	{r4, r5, r6, pc}
+ 255              	.LVL19:
+ 256              	.L20:
+ 257              	.LBB5:
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             pool->task_head = new;
+ 258              		.loc 1 137 13 is_stmt 1 view .LVU73
+ 259 0030 3146     		mov	r1, r6
+ 260 0032 2846     		mov	r0, r5
+ 261              	.LVL20:
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             pool->task_head = new;
+ 262              		.loc 1 137 13 is_stmt 0 view .LVU74
+ 263 0034 FFF7FEFF 		bl	add_a_task_node
+ 264              	.LVL21:
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+ 265              		.loc 1 138 13 is_stmt 1 view .LVU75
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+ 266              		.loc 1 138 29 is_stmt 0 view .LVU76
+ 267 0038 2560     		str	r5, [r4]
+ 268 003a F3E7     		b	.L15
+ 269              	.LBE5:
+ 270              		.cfi_endproc
+ 271              	.LFE258:
+ 273              		.section	.text.remove_task,"ax",%progbits
+ 274              		.align	1
+ 275              		.syntax unified
+ 276              		.thumb
+ 277              		.thumb_func
+ 279              	remove_task:
+ 280              	.LVL22:
+ 281              	.LFB259:
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 154:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 155:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 156:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void remove_task(struct task_struct* task)
+ 158:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+ 282              		.loc 1 158 1 is_stmt 1 view -0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              		@ link register save eliminated.
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(task->priv != NULL)
+ 287              		.loc 1 159 5 view .LVU78
+ 288              		.loc 1 159 12 is_stmt 0 view .LVU79
+ 289 0000 836F     		ldr	r3, [r0, #120]
+ 290              		.loc 1 159 7 view .LVU80
+ 291 0002 0BB1     		cbz	r3, .L22
+ 160:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     task->priv->next = task->next;
+ 292              		.loc 1 160 5 is_stmt 1 view .LVU81
+ 293              		.loc 1 160 28 is_stmt 0 view .LVU82
+ 294 0004 C26F     		ldr	r2, [r0, #124]
+ 295              		.loc 1 160 22 view .LVU83
+ARM GAS  /tmp/cck6rm7r.s 			page 9
+
+
+ 296 0006 DA67     		str	r2, [r3, #124]
+ 297              	.L22:
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(task->next != NULL)
+ 298              		.loc 1 161 5 is_stmt 1 view .LVU84
+ 299              		.loc 1 161 12 is_stmt 0 view .LVU85
+ 300 0008 C36F     		ldr	r3, [r0, #124]
+ 301              		.loc 1 161 7 view .LVU86
+ 302 000a 0BB1     		cbz	r3, .L21
+ 162:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     task->next->priv = task->priv;
+ 303              		.loc 1 162 5 is_stmt 1 view .LVU87
+ 304              		.loc 1 162 28 is_stmt 0 view .LVU88
+ 305 000c 826F     		ldr	r2, [r0, #120]
+ 306              		.loc 1 162 22 view .LVU89
+ 307 000e 9A67     		str	r2, [r3, #120]
+ 308              	.L21:
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 309              		.loc 1 163 1 view .LVU90
+ 310 0010 7047     		bx	lr
+ 311              		.cfi_endproc
+ 312              	.LFE259:
+ 314              		.section	.rodata.remove_task_from_pool.str1.4,"aMS",%progbits,1
+ 315              		.align	2
+ 316              	.LC0:
+ 317 0000 72656D6F 		.ascii	"remove task: %s\012\000"
+ 317      76652074 
+ 317      61736B3A 
+ 317      2025730A 
+ 317      00
+ 318              		.section	.text.remove_task_from_pool,"ax",%progbits
+ 319              		.align	1
+ 320              		.syntax unified
+ 321              		.thumb
+ 322              		.thumb_func
+ 324              	remove_task_from_pool:
+ 325              	.LVL23:
+ 326              	.LFB260:
+ 164:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched)
+ 166:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** {
+ 327              		.loc 1 166 1 is_stmt 1 view -0
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 0
+ 330              		@ frame_needed = 0, uses_anonymous_args = 0
+ 331              		.loc 1 166 1 is_stmt 0 view .LVU92
+ 332 0000 38B5     		push	{r3, r4, r5, lr}
+ 333              	.LCFI1:
+ 334              		.cfi_def_cfa_offset 16
+ 335              		.cfi_offset 3, -16
+ 336              		.cfi_offset 4, -12
+ 337              		.cfi_offset 5, -8
+ 338              		.cfi_offset 14, -4
+ 339 0002 0446     		mov	r4, r0
+ 340 0004 0D46     		mov	r5, r1
+ 167:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     pr_info("remove task: %s\n",task->task_name);
+ 341              		.loc 1 167 5 is_stmt 1 view .LVU93
+ 342 0006 00F10802 		add	r2, r0, #8
+ 343 000a 0D49     		ldr	r1, .L31
+ARM GAS  /tmp/cck6rm7r.s 			page 10
+
+
+ 344              	.LVL24:
+ 345              		.loc 1 167 5 is_stmt 0 view .LVU94
+ 346 000c 0620     		movs	r0, #6
+ 347              	.LVL25:
+ 348              		.loc 1 167 5 view .LVU95
+ 349 000e FFF7FEFF 		bl	printk
+ 350              	.LVL26:
+ 168:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 169:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_pool_Preemptive *pool = sched->s_task_pool;
+ 351              		.loc 1 169 5 is_stmt 1 view .LVU96
+ 352              		.loc 1 169 34 is_stmt 0 view .LVU97
+ 353 0012 6B68     		ldr	r3, [r5, #4]
+ 354              	.LVL27:
+ 170:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(pool->task_head == task)
+ 355              		.loc 1 170 5 is_stmt 1 view .LVU98
+ 356              		.loc 1 170 12 is_stmt 0 view .LVU99
+ 357 0014 1A68     		ldr	r2, [r3]
+ 358              		.loc 1 170 7 view .LVU100
+ 359 0016 A242     		cmp	r2, r4
+ 360 0018 06D0     		beq	.L29
+ 171:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         if(task->next == NULL) //如果这是最后一个任务，则不能删除
+ 173:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         return;            
+ 174:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         pool->task_head = task->next;
+ 176:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         remove_task(task);
+ 177:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 178:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     else
+ 179:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 180:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         remove_task(task);
+ 361              		.loc 1 180 9 is_stmt 1 view .LVU101
+ 362 001a 2046     		mov	r0, r4
+ 363 001c FFF7FEFF 		bl	remove_task
+ 364              	.LVL28:
+ 365              	.L27:
+ 181:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 182:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    
+ 183:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(sched->current_task == task){
+ 366              		.loc 1 183 5 view .LVU102
+ 367              		.loc 1 183 13 is_stmt 0 view .LVU103
+ 368 0020 6B69     		ldr	r3, [r5, #20]
+ 369              		.loc 1 183 7 view .LVU104
+ 370 0022 A342     		cmp	r3, r4
+ 371 0024 08D0     		beq	.L30
+ 372              	.L24:
+ 184:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         sched->current_task = NULL;
+ 185:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 186:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     //show_all_task(pool->task_head);
+ 187:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 373              		.loc 1 187 1 view .LVU105
+ 374 0026 38BD     		pop	{r3, r4, r5, pc}
+ 375              	.LVL29:
+ 376              	.L29:
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         return;            
+ 377              		.loc 1 172 9 is_stmt 1 view .LVU106
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         return;            
+ 378              		.loc 1 172 16 is_stmt 0 view .LVU107
+ARM GAS  /tmp/cck6rm7r.s 			page 11
+
+
+ 379 0028 E26F     		ldr	r2, [r4, #124]
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         return;            
+ 380              		.loc 1 172 11 view .LVU108
+ 381 002a 002A     		cmp	r2, #0
+ 382 002c FBD0     		beq	.L24
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         remove_task(task);
+ 383              		.loc 1 175 9 is_stmt 1 view .LVU109
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         remove_task(task);
+ 384              		.loc 1 175 25 is_stmt 0 view .LVU110
+ 385 002e 1A60     		str	r2, [r3]
+ 176:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 386              		.loc 1 176 9 is_stmt 1 view .LVU111
+ 387 0030 2046     		mov	r0, r4
+ 388 0032 FFF7FEFF 		bl	remove_task
+ 389              	.LVL30:
+ 176:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 390              		.loc 1 176 9 is_stmt 0 view .LVU112
+ 391 0036 F3E7     		b	.L27
+ 392              	.L30:
+ 184:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 393              		.loc 1 184 9 is_stmt 1 view .LVU113
+ 184:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 394              		.loc 1 184 29 is_stmt 0 view .LVU114
+ 395 0038 0023     		movs	r3, #0
+ 396 003a 6B61     		str	r3, [r5, #20]
+ 397 003c F3E7     		b	.L24
+ 398              	.L32:
+ 399 003e 00BF     		.align	2
+ 400              	.L31:
+ 401 0040 00000000 		.word	.LC0
+ 402              		.cfi_endproc
+ 403              	.LFE260:
+ 405              		.section	.init.text,"ax",%progbits
+ 406              		.align	1
+ 407              		.syntax unified
+ 408              		.thumb
+ 409              		.thumb_func
+ 411              	init_Preemptive_fn:
+ 412              	.LFB262:
+ 188:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 189:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static struct task_pool_Preemptive* alloc_new_pool(struct scheduler *sched){
+ 191:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_pool_Preemptive* new_task_pool = kmalloc(sizeof(struct task_pool_Preemptive),GFP_KE
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new_task_pool->task_head = NULL;
+ 193:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 194:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return new_task_pool;
+ 195:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 196:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 198:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 199:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static struct task_pool_operations task_op = {
+ 200:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .get_next_task = Preemptive_scheduling,
+ 201:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .add_task      = add_task_to_task_pool,
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .remove_task   = remove_task_from_pool,
+ 203:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .check_task_completeness = check_task_completeness
+ 204:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** };
+ 205:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ARM GAS  /tmp/cck6rm7r.s 			page 12
+
+
+ 206:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static struct task_pool_types task_type = {
+ 207:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .name = "Preemptive",
+ 208:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .alloc_task_pool = alloc_new_pool,
+ 209:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     .t_op = &task_op,
+ 210:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** };
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 212:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** static int __init init_Preemptive_fn(void){
+ 413              		.loc 1 212 43 is_stmt 1 view -0
+ 414              		.cfi_startproc
+ 415              		@ args = 0, pretend = 0, frame = 0
+ 416              		@ frame_needed = 0, uses_anonymous_args = 0
+ 417 0000 08B5     		push	{r3, lr}
+ 418              	.LCFI2:
+ 419              		.cfi_def_cfa_offset 8
+ 420              		.cfi_offset 3, -8
+ 421              		.cfi_offset 14, -4
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     register_task_pool(&task_type);
+ 422              		.loc 1 213 5 view .LVU116
+ 423 0002 0248     		ldr	r0, .L35
+ 424 0004 FFF7FEFF 		bl	register_task_pool
+ 425              	.LVL31:
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 426              		.loc 1 214 1 is_stmt 0 view .LVU117
+ 427 0008 08BD     		pop	{r3, pc}
+ 428              	.L36:
+ 429 000a 00BF     		.align	2
+ 430              	.L35:
+ 431 000c 00000000 		.word	task_type
+ 432              		.cfi_endproc
+ 433              	.LFE262:
+ 435              		.section	.text.alloc_new_pool,"ax",%progbits
+ 436              		.align	1
+ 437              		.syntax unified
+ 438              		.thumb
+ 439              		.thumb_func
+ 441              	alloc_new_pool:
+ 442              	.LVL32:
+ 443              	.LFB261:
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_pool_Preemptive* new_task_pool = kmalloc(sizeof(struct task_pool_Preemptive),GFP_KE
+ 444              		.loc 1 190 76 is_stmt 1 view -0
+ 445              		.cfi_startproc
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_pool_Preemptive* new_task_pool = kmalloc(sizeof(struct task_pool_Preemptive),GFP_KE
+ 448              		.loc 1 190 76 is_stmt 0 view .LVU119
+ 449 0000 08B5     		push	{r3, lr}
+ 450              	.LCFI3:
+ 451              		.cfi_def_cfa_offset 8
+ 452              		.cfi_offset 3, -8
+ 453              		.cfi_offset 14, -4
+ 191:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new_task_pool->task_head = NULL;
+ 454              		.loc 1 191 5 is_stmt 1 view .LVU120
+ 455              	.LVL33:
+ 456              	.LBB6:
+ 457              	.LBI6:
+ 458              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+ARM GAS  /tmp/cck6rm7r.s 			page 13
+
+
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+ARM GAS  /tmp/cck6rm7r.s 			page 14
+
+
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ARM GAS  /tmp/cck6rm7r.s 			page 15
+
+
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ARM GAS  /tmp/cck6rm7r.s 			page 16
+
+
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ARM GAS  /tmp/cck6rm7r.s 			page 17
+
+
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_order_objects {
+ARM GAS  /tmp/cck6rm7r.s 			page 18
+
+
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ARM GAS  /tmp/cck6rm7r.s 			page 19
+
+
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 459              		.loc 2 379 21 view .LVU121
+ 460              	.LBB7:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 461              		.loc 2 380 2 view .LVU122
+ 462              		.loc 2 380 9 is_stmt 0 view .LVU123
+ 463 0002 4FF44C61 		mov	r1, #3264
+ 464 0006 0820     		movs	r0, #8
+ 465              	.LVL34:
+ 466              		.loc 2 380 9 view .LVU124
+ 467 0008 FFF7FEFF 		bl	__smalloc__
+ 468              	.LVL35:
+ 469              		.loc 2 380 9 view .LVU125
+ 470              	.LBE7:
+ 471              	.LBE6:
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 472              		.loc 1 192 5 is_stmt 1 view .LVU126
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     new_task_pool->tasknode_numbers = 0;
+ 473              		.loc 1 192 30 is_stmt 0 view .LVU127
+ 474 000c 0022     		movs	r2, #0
+ 475 000e 0260     		str	r2, [r0]
+ 193:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return new_task_pool;
+ARM GAS  /tmp/cck6rm7r.s 			page 20
+
+
+ 476              		.loc 1 193 5 is_stmt 1 view .LVU128
+ 193:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return new_task_pool;
+ 477              		.loc 1 193 37 is_stmt 0 view .LVU129
+ 478 0010 4260     		str	r2, [r0, #4]
+ 194:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 479              		.loc 1 194 5 is_stmt 1 view .LVU130
+ 195:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 480              		.loc 1 195 1 is_stmt 0 view .LVU131
+ 481 0012 08BD     		pop	{r3, pc}
+ 482              		.cfi_endproc
+ 483              	.LFE261:
+ 485              		.section	.text.get_next_task,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	get_next_task
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 492              	get_next_task:
+ 493              	.LVL36:
+ 494              	.LFB250:
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     return task->next;
+ 495              		.loc 1 15 60 is_stmt 1 view -0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 0
+ 498              		@ frame_needed = 0, uses_anonymous_args = 0
+ 499              		@ link register save eliminated.
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** }
+ 500              		.loc 1 16 5 view .LVU133
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 501              		.loc 1 17 1 is_stmt 0 view .LVU134
+ 502 0000 C06F     		ldr	r0, [r0, #124]
+ 503              	.LVL37:
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 504              		.loc 1 17 1 view .LVU135
+ 505 0002 7047     		bx	lr
+ 506              		.cfi_endproc
+ 507              	.LFE250:
+ 509              		.section	.text.get_useful_task,"ax",%progbits
+ 510              		.align	1
+ 511              		.global	get_useful_task
+ 512              		.syntax unified
+ 513              		.thumb
+ 514              		.thumb_func
+ 516              	get_useful_task:
+ 517              	.LVL38:
+ 518              	.LFB251:
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    struct task_struct* search_task = head_task;
+ 519              		.loc 1 20 1 is_stmt 1 view -0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    struct task_struct* search_task = head_task;
+ 523              		.loc 1 20 1 is_stmt 0 view .LVU137
+ 524 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 525              	.LCFI4:
+ 526              		.cfi_def_cfa_offset 24
+ 527              		.cfi_offset 3, -24
+ARM GAS  /tmp/cck6rm7r.s 			page 21
+
+
+ 528              		.cfi_offset 4, -20
+ 529              		.cfi_offset 5, -16
+ 530              		.cfi_offset 6, -12
+ 531              		.cfi_offset 7, -8
+ 532              		.cfi_offset 14, -4
+ 533 0002 0746     		mov	r7, r0
+ 534 0004 0E46     		mov	r6, r1
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    while (1)
+ 535              		.loc 1 21 4 is_stmt 1 view .LVU138
+ 536              	.LVL39:
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    while (1)
+ 537              		.loc 1 21 24 is_stmt 0 view .LVU139
+ 538 0006 0446     		mov	r4, r0
+ 539 0008 13E0     		b	.L44
+ 540              	.LVL40:
+ 541              	.L48:
+ 542              	.LBB8:
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *search_task = get_next_task(search_task);
+ 543              		.loc 1 25 13 is_stmt 1 view .LVU140
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             remove_task_from_pool(dead_task,sched);
+ 544              		.loc 1 26 13 view .LVU141
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             remove_task_from_pool(dead_task,sched);
+ 545              		.loc 1 26 47 is_stmt 0 view .LVU142
+ 546 000a 2846     		mov	r0, r5
+ 547 000c FFF7FEFF 		bl	get_next_task
+ 548              	.LVL41:
+ 549 0010 0546     		mov	r5, r0
+ 550              	.LVL42:
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             __destory_task(dead_task);
+ 551              		.loc 1 27 13 is_stmt 1 view .LVU143
+ 552 0012 3146     		mov	r1, r6
+ 553 0014 2046     		mov	r0, r4
+ 554              	.LVL43:
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             __destory_task(dead_task);
+ 555              		.loc 1 27 13 is_stmt 0 view .LVU144
+ 556 0016 FFF7FEFF 		bl	remove_task_from_pool
+ 557              	.LVL44:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             if(search_task == NULL){ //保险作用
+ 558              		.loc 1 28 13 is_stmt 1 view .LVU145
+ 559 001a 2046     		mov	r0, r4
+ 560 001c FFF7FEFF 		bl	__destory_task
+ 561              	.LVL45:
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task = head_task;
+ 562              		.loc 1 29 13 view .LVU146
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task = head_task;
+ 563              		.loc 1 29 15 is_stmt 0 view .LVU147
+ 564 0020 5DB9     		cbnz	r5, .L41
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+ 565              		.loc 1 30 29 view .LVU148
+ 566 0022 3D46     		mov	r5, r7
+ 567              	.LVL46:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+ 568              		.loc 1 30 29 view .LVU149
+ 569 0024 09E0     		b	.L41
+ 570              	.LVL47:
+ 571              	.L43:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+ARM GAS  /tmp/cck6rm7r.s 			page 22
+
+
+ 572              		.loc 1 30 29 view .LVU150
+ 573              	.LBE8:
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 574              		.loc 1 42 9 is_stmt 1 view .LVU151
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 575              		.loc 1 42 12 is_stmt 0 view .LVU152
+ 576 0026 2046     		mov	r0, r4
+ 577 0028 FFF7FEFF 		bl	get_next_task
+ 578              	.LVL48:
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;
+ 579              		.loc 1 42 11 discriminator 1 view .LVU153
+ 580 002c 0346     		mov	r3, r0
+ 581 002e A0B1     		cbz	r0, .L40
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 582              		.loc 1 44 23 view .LVU154
+ 583 0030 1C46     		mov	r4, r3
+ 584              	.LVL49:
+ 585              	.L44:
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****    {
+ 586              		.loc 1 22 4 is_stmt 1 view .LVU155
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *dead_task = search_task;
+ 587              		.loc 1 24 9 view .LVU156
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *dead_task = search_task;
+ 588              		.loc 1 24 24 is_stmt 0 view .LVU157
+ 589 0032 94F86030 		ldrb	r3, [r4, #96]	@ zero_extendqisi2
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             struct task_struct *dead_task = search_task;
+ 590              		.loc 1 24 12 view .LVU158
+ 591 0036 062B     		cmp	r3, #6
+ 592 0038 E7D0     		beq	.L48
+ 593              	.LVL50:
+ 594              	.L41:
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;            
+ 595              		.loc 1 33 9 is_stmt 1 view .LVU159
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;            
+ 596              		.loc 1 33 23 is_stmt 0 view .LVU160
+ 597 003a 94F86030 		ldrb	r3, [r4, #96]	@ zero_extendqisi2
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             break;            
+ 598              		.loc 1 33 11 view .LVU161
+ 599 003e 022B     		cmp	r3, #2
+ 600 0040 0BD0     		beq	.L40
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time < time){
+ 601              		.loc 1 36 14 is_stmt 1 view .LVU162
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             if(search_task->last_scheduler_time + search_task->block_time < time){
+ 602              		.loc 1 36 16 is_stmt 0 view .LVU163
+ 603 0042 032B     		cmp	r3, #3
+ 604 0044 EFD1     		bne	.L43
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 605              		.loc 1 37 13 is_stmt 1 view .LVU164
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 606              		.loc 1 37 27 is_stmt 0 view .LVU165
+ 607 0046 236F     		ldr	r3, [r4, #112]
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 608              		.loc 1 37 62 view .LVU166
+ 609 0048 626F     		ldr	r2, [r4, #116]
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 610              		.loc 1 37 49 view .LVU167
+ 611 004a 1344     		add	r3, r3, r2
+ARM GAS  /tmp/cck6rm7r.s 			page 23
+
+
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 612              		.loc 1 37 75 view .LVU168
+ 613 004c 044A     		ldr	r2, .L49
+ 614 004e 1268     		ldr	r2, [r2]
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 search_task->state = TASK_READY;
+ 615              		.loc 1 37 15 view .LVU169
+ 616 0050 9342     		cmp	r3, r2
+ 617 0052 E8DA     		bge	.L43
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 break;
+ 618              		.loc 1 38 17 is_stmt 1 view .LVU170
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****                 break;
+ 619              		.loc 1 38 36 is_stmt 0 view .LVU171
+ 620 0054 0223     		movs	r3, #2
+ 621 0056 84F86030 		strb	r3, [r4, #96]
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             }
+ 622              		.loc 1 39 17 is_stmt 1 view .LVU172
+ 623              	.L40:
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 624              		.loc 1 47 1 is_stmt 0 view .LVU173
+ 625 005a 2046     		mov	r0, r4
+ 626 005c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 627              	.LVL51:
+ 628              	.L50:
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 629              		.loc 1 47 1 view .LVU174
+ 630 005e 00BF     		.align	2
+ 631              	.L49:
+ 632 0060 00000000 		.word	time
+ 633              		.cfi_endproc
+ 634              	.LFE251:
+ 636              		.section	.text.Preemptive_scheduling,"ax",%progbits
+ 637              		.align	1
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 642              	Preemptive_scheduling:
+ 643              	.LVL52:
+ 644              	.LFB252:
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     time++; 
+ 645              		.loc 1 50 1 is_stmt 1 view -0
+ 646              		.cfi_startproc
+ 647              		@ args = 0, pretend = 0, frame = 0
+ 648              		@ frame_needed = 0, uses_anonymous_args = 0
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     time++; 
+ 649              		.loc 1 50 1 is_stmt 0 view .LVU176
+ 650 0000 10B5     		push	{r4, lr}
+ 651              	.LCFI5:
+ 652              		.cfi_def_cfa_offset 8
+ 653              		.cfi_offset 4, -8
+ 654              		.cfi_offset 14, -4
+ 655 0002 0446     		mov	r4, r0
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(((struct task_pool_Preemptive*)sched->s_task_po
+ 656              		.loc 1 51 5 is_stmt 1 view .LVU177
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     struct task_struct* next_task = get_useful_task(((struct task_pool_Preemptive*)sched->s_task_po
+ 657              		.loc 1 51 9 is_stmt 0 view .LVU178
+ 658 0004 094A     		ldr	r2, .L55
+ 659 0006 1368     		ldr	r3, [r2]
+ARM GAS  /tmp/cck6rm7r.s 			page 24
+
+
+ 660 0008 0133     		adds	r3, r3, #1
+ 661 000a 1360     		str	r3, [r2]
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 662              		.loc 1 52 5 is_stmt 1 view .LVU179
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 663              		.loc 1 52 89 is_stmt 0 view .LVU180
+ 664 000c 4368     		ldr	r3, [r0, #4]
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 665              		.loc 1 52 37 view .LVU181
+ 666 000e 0146     		mov	r1, r0
+ 667 0010 1868     		ldr	r0, [r3]
+ 668              	.LVL53:
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     if(next_task != sched->current_task)
+ 669              		.loc 1 52 37 view .LVU182
+ 670 0012 FFF7FEFF 		bl	get_useful_task
+ 671              	.LVL54:
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 672              		.loc 1 53 5 is_stmt 1 view .LVU183
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 673              		.loc 1 53 26 is_stmt 0 view .LVU184
+ 674 0016 6369     		ldr	r3, [r4, #20]
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     {
+ 675              		.loc 1 53 7 view .LVU185
+ 676 0018 8342     		cmp	r3, r0
+ 677 001a 06D0     		beq	.L51
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+ 678              		.loc 1 55 9 is_stmt 1 view .LVU186
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****             sched->current_task->last_scheduler_time = time;
+ 679              		.loc 1 55 11 is_stmt 0 view .LVU187
+ 680 001c 13B1     		cbz	r3, .L53
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+ 681              		.loc 1 56 13 is_stmt 1 view .LVU188
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****         }
+ 682              		.loc 1 56 54 is_stmt 0 view .LVU189
+ 683 001e 034A     		ldr	r2, .L55
+ 684 0020 1268     		ldr	r2, [r2]
+ 685 0022 1A67     		str	r2, [r3, #112]
+ 686              	.L53:
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 687              		.loc 1 58 9 is_stmt 1 view .LVU190
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c ****     }
+ 688              		.loc 1 58 40 is_stmt 0 view .LVU191
+ 689 0024 014B     		ldr	r3, .L55
+ 690 0026 1B68     		ldr	r3, [r3]
+ 691 0028 0367     		str	r3, [r0, #112]
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** } 
+ 692              		.loc 1 60 5 is_stmt 1 view .LVU192
+ 693              	.L51:
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 694              		.loc 1 61 1 is_stmt 0 view .LVU193
+ 695 002a 10BD     		pop	{r4, pc}
+ 696              	.LVL55:
+ 697              	.L56:
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/Preemptive.c **** 
+ 698              		.loc 1 61 1 view .LVU194
+ 699              		.align	2
+ 700              	.L55:
+ARM GAS  /tmp/cck6rm7r.s 			page 25
+
+
+ 701 002c 00000000 		.word	time
+ 702              		.cfi_endproc
+ 703              	.LFE252:
+ 705              		.section	.coreinitcall,"aw"
+ 706              		.align	2
+ 709              	_initcall_init_Preemptive_fn:
+ 710 0000 00000000 		.word	init_Preemptive_fn
+ 711              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 712              		.align	2
+ 713              	.LC1:
+ 714 0000 50726565 		.ascii	"Preemptive\000"
+ 714      6D707469 
+ 714      766500
+ 715              		.section	.data.task_type,"aw"
+ 716              		.align	2
+ 719              	task_type:
+ 720 0000 00000000 		.space	8
+ 720      00000000 
+ 721 0008 00000000 		.word	.LC1
+ 722 000c 00000000 		.word	task_op
+ 723 0010 00000000 		.word	alloc_new_pool
+ 724              		.section	.data.task_op,"aw"
+ 725              		.align	2
+ 728              	task_op:
+ 729 0000 00000000 		.word	Preemptive_scheduling
+ 730 0004 00000000 		.word	add_task_to_task_pool
+ 731 0008 00000000 		.word	remove_task_from_pool
+ 732 000c 00000000 		.word	check_task_completeness
+ 733              		.section	.bss.time,"aw",%nobits
+ 734              		.align	2
+ 737              	time:
+ 738 0000 00000000 		.space	4
+ 739              		.text
+ 740              	.Letext0:
+ 741              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 742              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 743              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 744              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/linux/init.h"
+ 745              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 746              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/sched.h"
+ 747              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/sched.h"
+ 748              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ 749              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/include/linux/gfp_types.h"
+ARM GAS  /tmp/cck6rm7r.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Preemptive.c
+     /tmp/cck6rm7r.s:21     .text.check_task_completeness:00000000 $t
+     /tmp/cck6rm7r.s:26     .text.check_task_completeness:00000000 check_task_completeness
+     /tmp/cck6rm7r.s:74     .text.check_task_completeness:0000001c $d
+     /tmp/cck6rm7r.s:79     .text.get_task_by_priority:00000000 $t
+     /tmp/cck6rm7r.s:84     .text.get_task_by_priority:00000000 get_task_by_priority
+     /tmp/cck6rm7r.s:121    .text.add_a_task_node:00000000 $t
+     /tmp/cck6rm7r.s:126    .text.add_a_task_node:00000000 add_a_task_node
+     /tmp/cck6rm7r.s:154    .text.task_reset:00000000 $t
+     /tmp/cck6rm7r.s:159    .text.task_reset:00000000 task_reset
+     /tmp/cck6rm7r.s:180    .text.add_task_to_task_pool:00000000 $t
+     /tmp/cck6rm7r.s:185    .text.add_task_to_task_pool:00000000 add_task_to_task_pool
+     /tmp/cck6rm7r.s:274    .text.remove_task:00000000 $t
+     /tmp/cck6rm7r.s:279    .text.remove_task:00000000 remove_task
+     /tmp/cck6rm7r.s:315    .rodata.remove_task_from_pool.str1.4:00000000 $d
+     /tmp/cck6rm7r.s:319    .text.remove_task_from_pool:00000000 $t
+     /tmp/cck6rm7r.s:324    .text.remove_task_from_pool:00000000 remove_task_from_pool
+     /tmp/cck6rm7r.s:401    .text.remove_task_from_pool:00000040 $d
+     /tmp/cck6rm7r.s:406    .init.text:00000000 $t
+     /tmp/cck6rm7r.s:411    .init.text:00000000 init_Preemptive_fn
+     /tmp/cck6rm7r.s:431    .init.text:0000000c $d
+     /tmp/cck6rm7r.s:719    .data.task_type:00000000 task_type
+     /tmp/cck6rm7r.s:436    .text.alloc_new_pool:00000000 $t
+     /tmp/cck6rm7r.s:441    .text.alloc_new_pool:00000000 alloc_new_pool
+     /tmp/cck6rm7r.s:486    .text.get_next_task:00000000 $t
+     /tmp/cck6rm7r.s:492    .text.get_next_task:00000000 get_next_task
+     /tmp/cck6rm7r.s:510    .text.get_useful_task:00000000 $t
+     /tmp/cck6rm7r.s:516    .text.get_useful_task:00000000 get_useful_task
+     /tmp/cck6rm7r.s:632    .text.get_useful_task:00000060 $d
+     /tmp/cck6rm7r.s:737    .bss.time:00000000 time
+     /tmp/cck6rm7r.s:637    .text.Preemptive_scheduling:00000000 $t
+     /tmp/cck6rm7r.s:642    .text.Preemptive_scheduling:00000000 Preemptive_scheduling
+     /tmp/cck6rm7r.s:701    .text.Preemptive_scheduling:0000002c $d
+     /tmp/cck6rm7r.s:706    .coreinitcall:00000000 $d
+     /tmp/cck6rm7r.s:709    .coreinitcall:00000000 _initcall_init_Preemptive_fn
+     /tmp/cck6rm7r.s:712    .rodata.str1.4:00000000 $d
+     /tmp/cck6rm7r.s:716    .data.task_type:00000000 $d
+     /tmp/cck6rm7r.s:728    .data.task_op:00000000 task_op
+     /tmp/cck6rm7r.s:725    .data.task_op:00000000 $d
+     /tmp/cck6rm7r.s:734    .bss.time:00000000 $d
+
+UNDEFINED SYMBOLS
+printk
+register_task_pool
+__smalloc__
+__destory_task

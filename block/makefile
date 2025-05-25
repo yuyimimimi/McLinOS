@@ -1,3 +1,3 @@
 C_SOURCES    += \
-		$(wildcard ./block/*.c)
+		$(wildcard $(BASE_DIR)/block/*.c)
 		

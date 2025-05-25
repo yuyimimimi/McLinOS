@@ -15,6 +15,8 @@
  * side effect of the *.o build rule.
  */
 
+
+
 #ifdef CONFIG_64BIT
 #define __EXPORT_SYMBOL_REF(sym)			\
 	.balign 8				ASM_NL	\
@@ -64,7 +66,6 @@ struct export_node_struct{
 	static struct export_node_struct             \
 	__attribute__((__section__(".export_table")))\
 	__attribute__((__used__))                    \
-	__attribute__((cold))                        \ 
 	sym##_export_struct = { 	                 \
 		.export_node_name = #sym,			     \
 		.export_node_license = license,			 \

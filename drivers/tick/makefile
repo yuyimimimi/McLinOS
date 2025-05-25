@@ -1,2 +1,2 @@
 C_SOURCES += 	\
-	./drivers/tick/$(PLATFORM)_tick.c
+	$(BASE_DIR)/drivers/tick/$(PLATFORM)_tick.c

@@ -1,2 +1,2 @@
 C_SOURCES += 	\
-	./drivers/gpio/$(PLATFORM)_gpio.c
+	$(BASE_DIR)/drivers/gpio/$(PLATFORM)_gpio.c

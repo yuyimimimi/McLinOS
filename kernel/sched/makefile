@@ -1,4 +1,4 @@
 C_SOURCES    += \
-		$(wildcard ./kernel/sched/*.c)
+		$(wildcard $(BASE_DIR)/kernel/sched/*.c)
 
 		

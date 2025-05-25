@@ -1,0 +1,3534 @@
+ARM GAS  /tmp/cc0ki2gK.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"error.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/error.c"
+  20              		.section	.text.__write_error_message,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__write_error_message:
+  27              	.LVL0:
+  28              	.LFB286:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/errno.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/error.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/time.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/slab.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/string.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/stdarg.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** #include <linux/sprintf.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** error_t *l_error_create(void *target,char *name,size_t error_buffer_size,enum error_exception_mode 
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error_t *error = (error_t *)kmalloc(sizeof(error_t), GFP_KERNEL);
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL)return (error_t*)-MAX_ERRNO;
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error_buffer_size <= 0) error_buffer_size = DEFAULT_ERRR_BUFFER_SIZE;
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errmsg = (char *)kmalloc(error_buffer_size, GFP_KERNEL);
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg == NULL){
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error);
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return (error_t*) -ENOMEM;
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errmsg_size = error_buffer_size; 
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(name == NULL) name = __FILE__;
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     int name_length = strlen(name);
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->name = (char *)kmalloc(name_length+1, GFP_KERNEL);
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name == NULL){
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error->errmsg);
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error);
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return (error_t*)-ENOMEM;
+ARM GAS  /tmp/cc0ki2gK.s 			page 2
+
+
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }        
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     strcpy(error->name, name);
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->target = target;
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count = 0;
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->mode = mode;
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     return error;
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** void l_delete_error(error_t *error)
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name != NULL) kfree(error->name);
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg != NULL) kfree(error->errmsg);
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     kfree(error);
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+  47:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  48:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** static void __write_error_message(error_t *error,char *errmsg,...){
+  29              		.loc 1 48 67 view -0
+  30              		.cfi_startproc
+  31              		@ args = 4, pretend = 12, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 1
+  33              		.loc 1 48 67 is_stmt 0 view .LVU1
+  34 0000 0EB4     		push	{r1, r2, r3}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 12
+  37              		.cfi_offset 1, -12
+  38              		.cfi_offset 2, -8
+  39              		.cfi_offset 3, -4
+  40 0002 00B5     		push	{lr}
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 16
+  43              		.cfi_offset 14, -16
+  44 0004 82B0     		sub	sp, sp, #8
+  45              	.LCFI2:
+  46              		.cfi_def_cfa_offset 24
+  47 0006 039A     		ldr	r2, [sp, #12]
+  49:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+  48              		.loc 1 49 5 is_stmt 1 view .LVU2
+  49              		.loc 1 49 7 is_stmt 0 view .LVU3
+  50 0008 30B1     		cbz	r0, .L1
+  50:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(errmsg == NULL) return;
+  51              		.loc 1 50 5 is_stmt 1 view .LVU4
+  52              		.loc 1 50 7 is_stmt 0 view .LVU5
+  53 000a 2AB1     		cbz	r2, .L1
+  51:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     va_list args;
+  54              		.loc 1 51 5 is_stmt 1 view .LVU6
+  52:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     va_start(args, errmsg);
+  55              		.loc 1 52 5 view .LVU7
+  56 000c 04AB     		add	r3, sp, #16
+  57 000e 0193     		str	r3, [sp, #4]
+  53:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     vsnprintf(error->errmsg,error->errmsg_size,errmsg,args);
+  58              		.loc 1 53 5 view .LVU8
+  59 0010 0169     		ldr	r1, [r0, #16]
+  60 0012 4069     		ldr	r0, [r0, #20]
+  61              	.LVL1:
+  62              		.loc 1 53 5 is_stmt 0 view .LVU9
+ARM GAS  /tmp/cc0ki2gK.s 			page 3
+
+
+  63 0014 FFF7FEFF 		bl	vsnprintf
+  64              	.LVL2:
+  54:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     va_end(args);
+  65              		.loc 1 54 5 is_stmt 1 view .LVU10
+  55:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     return;
+  66              		.loc 1 55 5 view .LVU11
+  67              	.L1:
+  56:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+  68              		.loc 1 56 1 is_stmt 0 view .LVU12
+  69 0018 02B0     		add	sp, sp, #8
+  70              	.LCFI3:
+  71              		.cfi_def_cfa_offset 16
+  72              		@ sp needed
+  73 001a 5DF804EB 		ldr	lr, [sp], #4
+  74              	.LCFI4:
+  75              		.cfi_restore 14
+  76              		.cfi_def_cfa_offset 12
+  77 001e 03B0     		add	sp, sp, #12
+  78              	.LCFI5:
+  79              		.cfi_restore 3
+  80              		.cfi_restore 2
+  81              		.cfi_restore 1
+  82              		.cfi_def_cfa_offset 0
+  83 0020 7047     		bx	lr
+  84              		.cfi_endproc
+  85              	.LFE286:
+  87              		.section	.rodata.l_error_create.str1.4,"aMS",%progbits,1
+  88              		.align	2
+  89              	.LC0:
+  90 0000 2F6D6E74 		.ascii	"/mnt/c/Users/31740/Desktop/newcore/lib/error.c\000"
+  90      2F632F55 
+  90      73657273 
+  90      2F333137 
+  90      34302F44 
+  91              		.section	.text.l_error_create,"ax",%progbits
+  92              		.align	1
+  93              		.global	l_error_create
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  98              	l_error_create:
+  99              	.LVL3:
+ 100              	.LFB284:
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error_t *error = (error_t *)kmalloc(sizeof(error_t), GFP_KERNEL);
+ 101              		.loc 1 12 1 is_stmt 1 view -0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error_t *error = (error_t *)kmalloc(sizeof(error_t), GFP_KERNEL);
+ 105              		.loc 1 12 1 is_stmt 0 view .LVU14
+ 106 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 107              	.LCFI6:
+ 108              		.cfi_def_cfa_offset 24
+ 109              		.cfi_offset 4, -24
+ 110              		.cfi_offset 5, -20
+ 111              		.cfi_offset 6, -16
+ 112              		.cfi_offset 7, -12
+ARM GAS  /tmp/cc0ki2gK.s 			page 4
+
+
+ 113              		.cfi_offset 8, -8
+ 114              		.cfi_offset 14, -4
+ 115 0004 8046     		mov	r8, r0
+ 116 0006 0E46     		mov	r6, r1
+ 117 0008 1546     		mov	r5, r2
+ 118 000a 1F46     		mov	r7, r3
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL)return (error_t*)-MAX_ERRNO;
+ 119              		.loc 1 13 5 is_stmt 1 view .LVU15
+ 120              	.LVL4:
+ 121              	.LBB20:
+ 122              	.LBI20:
+ 123              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+ARM GAS  /tmp/cc0ki2gK.s 			page 5
+
+
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ARM GAS  /tmp/cc0ki2gK.s 			page 6
+
+
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ARM GAS  /tmp/cc0ki2gK.s 			page 7
+
+
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/cc0ki2gK.s 			page 8
+
+
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/cc0ki2gK.s 			page 9
+
+
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ARM GAS  /tmp/cc0ki2gK.s 			page 10
+
+
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 124              		.loc 2 379 21 view .LVU16
+ 125              	.LBB21:
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 126              		.loc 2 380 2 view .LVU17
+ 127              		.loc 2 380 9 is_stmt 0 view .LVU18
+ 128 000c 4FF44C61 		mov	r1, #3264
+ 129              	.LVL5:
+ 130              		.loc 2 380 9 view .LVU19
+ARM GAS  /tmp/cc0ki2gK.s 			page 11
+
+
+ 131 0010 3C20     		movs	r0, #60
+ 132              	.LVL6:
+ 133              		.loc 2 380 9 view .LVU20
+ 134 0012 FFF7FEFF 		bl	__smalloc__
+ 135              	.LVL7:
+ 136              		.loc 2 380 9 view .LVU21
+ 137              	.LBE21:
+ 138              	.LBE20:
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+ 139              		.loc 1 14 5 is_stmt 1 view .LVU22
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+ 140              		.loc 1 14 7 is_stmt 0 view .LVU23
+ 141 0016 90B3     		cbz	r0, .L10
+ 142 0018 0446     		mov	r4, r0
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errmsg = (char *)kmalloc(error_buffer_size, GFP_KERNEL);
+ 143              		.loc 1 16 5 is_stmt 1 view .LVU24
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errmsg = (char *)kmalloc(error_buffer_size, GFP_KERNEL);
+ 144              		.loc 1 16 7 is_stmt 0 view .LVU25
+ 145 001a 0DB9     		cbnz	r5, .L6
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errmsg = (char *)kmalloc(error_buffer_size, GFP_KERNEL);
+ 146              		.loc 1 16 50 discriminator 1 view .LVU26
+ 147 001c 4FF40075 		mov	r5, #512
+ 148              	.LVL8:
+ 149              	.L6:
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg == NULL){
+ 150              		.loc 1 17 5 is_stmt 1 view .LVU27
+ 151              	.LBB22:
+ 152              	.LBI22:
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 153              		.loc 2 379 21 view .LVU28
+ 154              	.LBB23:
+ 155              		.loc 2 380 2 view .LVU29
+ 156              		.loc 2 380 9 is_stmt 0 view .LVU30
+ 157 0020 4FF44C61 		mov	r1, #3264
+ 158 0024 2846     		mov	r0, r5
+ 159              	.LVL9:
+ 160              		.loc 2 380 9 view .LVU31
+ 161 0026 FFF7FEFF 		bl	__smalloc__
+ 162              	.LVL10:
+ 163              		.loc 2 380 9 view .LVU32
+ 164              	.LBE23:
+ 165              	.LBE22:
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg == NULL){
+ 166              		.loc 1 17 19 discriminator 1 view .LVU33
+ 167 002a 6061     		str	r0, [r4, #20]
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error);
+ 168              		.loc 1 18 5 is_stmt 1 view .LVU34
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error);
+ 169              		.loc 1 18 7 is_stmt 0 view .LVU35
+ 170 002c B0B1     		cbz	r0, .L14
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+ 171              		.loc 1 22 5 is_stmt 1 view .LVU36
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+ 172              		.loc 1 22 24 is_stmt 0 view .LVU37
+ 173 002e 2561     		str	r5, [r4, #16]
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     int name_length = strlen(name);
+ 174              		.loc 1 24 5 is_stmt 1 view .LVU38
+ARM GAS  /tmp/cc0ki2gK.s 			page 12
+
+
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     int name_length = strlen(name);
+ 175              		.loc 1 24 7 is_stmt 0 view .LVU39
+ 176 0030 D6B1     		cbz	r6, .L15
+ 177              	.LVL11:
+ 178              	.L8:
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->name = (char *)kmalloc(name_length+1, GFP_KERNEL);
+ 179              		.loc 1 25 5 is_stmt 1 view .LVU40
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->name = (char *)kmalloc(name_length+1, GFP_KERNEL);
+ 180              		.loc 1 25 23 is_stmt 0 view .LVU41
+ 181 0032 3046     		mov	r0, r6
+ 182 0034 FFF7FEFF 		bl	strlen
+ 183              	.LVL12:
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name == NULL){
+ 184              		.loc 1 26 5 is_stmt 1 view .LVU42
+ 185              	.LBB24:
+ 186              	.LBI24:
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 187              		.loc 2 379 21 view .LVU43
+ 188              	.LBB25:
+ 189              		.loc 2 380 2 view .LVU44
+ 190              		.loc 2 380 9 is_stmt 0 view .LVU45
+ 191 0038 4FF44C61 		mov	r1, #3264
+ 192 003c 0130     		adds	r0, r0, #1
+ 193              	.LVL13:
+ 194              		.loc 2 380 9 view .LVU46
+ 195 003e FFF7FEFF 		bl	__smalloc__
+ 196              	.LVL14:
+ 197              		.loc 2 380 9 view .LVU47
+ 198              	.LBE25:
+ 199              	.LBE24:
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name == NULL){
+ 200              		.loc 1 26 17 discriminator 1 view .LVU48
+ 201 0042 2060     		str	r0, [r4]
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error->errmsg);
+ 202              		.loc 1 27 5 is_stmt 1 view .LVU49
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error->errmsg);
+ 203              		.loc 1 27 7 is_stmt 0 view .LVU50
+ 204 0044 90B1     		cbz	r0, .L16
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 205              		.loc 1 32 5 is_stmt 1 view .LVU51
+ 206 0046 3146     		mov	r1, r6
+ 207 0048 FFF7FEFF 		bl	strcpy
+ 208              	.LVL15:
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count = 0;
+ 209              		.loc 1 34 5 view .LVU52
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count = 0;
+ 210              		.loc 1 34 19 is_stmt 0 view .LVU53
+ 211 004c C4F82080 		str	r8, [r4, #32]
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->mode = mode;
+ 212              		.loc 1 35 5 is_stmt 1 view .LVU54
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->mode = mode;
+ 213              		.loc 1 35 24 is_stmt 0 view .LVU55
+ 214 0050 0023     		movs	r3, #0
+ 215 0052 A361     		str	r3, [r4, #24]
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     return error;
+ 216              		.loc 1 36 5 is_stmt 1 view .LVU56
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     return error;
+ARM GAS  /tmp/cc0ki2gK.s 			page 13
+
+
+ 217              		.loc 1 36 17 is_stmt 0 view .LVU57
+ 218 0054 2777     		strb	r7, [r4, #28]
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+ 219              		.loc 1 37 5 is_stmt 1 view .LVU58
+ 220              	.LVL16:
+ 221              	.L4:
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 222              		.loc 1 38 1 is_stmt 0 view .LVU59
+ 223 0056 2046     		mov	r0, r4
+ 224 0058 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 225              	.LVL17:
+ 226              	.L14:
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return (error_t*) -ENOMEM;
+ 227              		.loc 1 19 9 is_stmt 1 view .LVU60
+ 228              	.LBB26:
+ 229              	.LBI26:
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 230              		.loc 2 383 20 view .LVU61
+ 231              	.LBB27:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 232              		.loc 2 384 2 view .LVU62
+ 233 005c 2046     		mov	r0, r4
+ 234 005e FFF7FEFF 		bl	__sfree__
+ 235              	.LVL18:
+ 236              		.loc 2 384 2 is_stmt 0 view .LVU63
+ 237              	.LBE27:
+ 238              	.LBE26:
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 239              		.loc 1 20 9 is_stmt 1 view .LVU64
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 240              		.loc 1 20 16 is_stmt 0 view .LVU65
+ 241 0062 6FF00B04 		mvn	r4, #11
+ 242              	.LVL19:
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 243              		.loc 1 20 16 view .LVU66
+ 244 0066 F6E7     		b	.L4
+ 245              	.LVL20:
+ 246              	.L15:
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     int name_length = strlen(name);
+ 247              		.loc 1 24 27 discriminator 1 view .LVU67
+ 248 0068 064E     		ldr	r6, .L17
+ 249              	.LVL21:
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     int name_length = strlen(name);
+ 250              		.loc 1 24 27 discriminator 1 view .LVU68
+ 251 006a E2E7     		b	.L8
+ 252              	.LVL22:
+ 253              	.L16:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         kfree(error);
+ 254              		.loc 1 28 9 is_stmt 1 view .LVU69
+ 255              	.LBB28:
+ 256              	.LBI28:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 257              		.loc 2 383 20 view .LVU70
+ 258              	.LBB29:
+ 259              		.loc 2 384 2 view .LVU71
+ARM GAS  /tmp/cc0ki2gK.s 			page 14
+
+
+ 260 006c 6069     		ldr	r0, [r4, #20]
+ 261 006e FFF7FEFF 		bl	__sfree__
+ 262              	.LVL23:
+ 263              		.loc 2 384 2 is_stmt 0 view .LVU72
+ 264              	.LBE29:
+ 265              	.LBE28:
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return (error_t*)-ENOMEM;
+ 266              		.loc 1 29 9 is_stmt 1 view .LVU73
+ 267              	.LBB30:
+ 268              	.LBI30:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 269              		.loc 2 383 20 view .LVU74
+ 270              	.LBB31:
+ 271              		.loc 2 384 2 view .LVU75
+ 272 0072 2046     		mov	r0, r4
+ 273 0074 FFF7FEFF 		bl	__sfree__
+ 274              	.LVL24:
+ 275              		.loc 2 384 2 is_stmt 0 view .LVU76
+ 276              	.LBE31:
+ 277              	.LBE30:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }        
+ 278              		.loc 1 30 9 is_stmt 1 view .LVU77
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }        
+ 279              		.loc 1 30 16 is_stmt 0 view .LVU78
+ 280 0078 6FF00B04 		mvn	r4, #11
+ 281              	.LVL25:
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }        
+ 282              		.loc 1 30 16 view .LVU79
+ 283 007c EBE7     		b	.L4
+ 284              	.LVL26:
+ 285              	.L10:
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****  
+ 286              		.loc 1 14 29 discriminator 1 view .LVU80
+ 287 007e 024C     		ldr	r4, .L17+4
+ 288 0080 E9E7     		b	.L4
+ 289              	.L18:
+ 290 0082 00BF     		.align	2
+ 291              	.L17:
+ 292 0084 00000000 		.word	.LC0
+ 293 0088 01F0FFFF 		.word	-4095
+ 294              		.cfi_endproc
+ 295              	.LFE284:
+ 297              		.section	.text.l_delete_error,"ax",%progbits
+ 298              		.align	1
+ 299              		.global	l_delete_error
+ 300              		.syntax unified
+ 301              		.thumb
+ 302              		.thumb_func
+ 304              	l_delete_error:
+ 305              	.LVL27:
+ 306              	.LFB285:
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+ 307              		.loc 1 41 1 is_stmt 1 view -0
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name != NULL) kfree(error->name);
+ARM GAS  /tmp/cc0ki2gK.s 			page 15
+
+
+ 311              		.loc 1 42 5 view .LVU82
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->name != NULL) kfree(error->name);
+ 312              		.loc 1 42 7 is_stmt 0 view .LVU83
+ 313 0000 68B1     		cbz	r0, .L24
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+ 314              		.loc 1 41 1 view .LVU84
+ 315 0002 10B5     		push	{r4, lr}
+ 316              	.LCFI7:
+ 317              		.cfi_def_cfa_offset 8
+ 318              		.cfi_offset 4, -8
+ 319              		.cfi_offset 14, -4
+ 320 0004 0446     		mov	r4, r0
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg != NULL) kfree(error->errmsg);
+ 321              		.loc 1 43 5 is_stmt 1 view .LVU85
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg != NULL) kfree(error->errmsg);
+ 322              		.loc 1 43 13 is_stmt 0 view .LVU86
+ 323 0006 0068     		ldr	r0, [r0]
+ 324              	.LVL28:
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg != NULL) kfree(error->errmsg);
+ 325              		.loc 1 43 7 view .LVU87
+ 326 0008 08B1     		cbz	r0, .L21
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error->errmsg != NULL) kfree(error->errmsg);
+ 327              		.loc 1 43 29 is_stmt 1 discriminator 1 view .LVU88
+ 328              	.LVL29:
+ 329              	.LBB32:
+ 330              	.LBI32:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 331              		.loc 2 383 20 view .LVU89
+ 332              	.LBB33:
+ 333              		.loc 2 384 2 view .LVU90
+ 334 000a FFF7FEFF 		bl	__sfree__
+ 335              	.LVL30:
+ 336              	.L21:
+ 337              		.loc 2 384 2 is_stmt 0 view .LVU91
+ 338              	.LBE33:
+ 339              	.LBE32:
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     kfree(error);
+ 340              		.loc 1 44 5 is_stmt 1 view .LVU92
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     kfree(error);
+ 341              		.loc 1 44 13 is_stmt 0 view .LVU93
+ 342 000e 6069     		ldr	r0, [r4, #20]
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     kfree(error);
+ 343              		.loc 1 44 7 view .LVU94
+ 344 0010 08B1     		cbz	r0, .L22
+  44:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     kfree(error);
+ 345              		.loc 1 44 31 is_stmt 1 discriminator 1 view .LVU95
+ 346              	.LVL31:
+ 347              	.LBB34:
+ 348              	.LBI34:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 349              		.loc 2 383 20 view .LVU96
+ 350              	.LBB35:
+ 351              		.loc 2 384 2 view .LVU97
+ 352 0012 FFF7FEFF 		bl	__sfree__
+ 353              	.LVL32:
+ 354              	.L22:
+ 355              		.loc 2 384 2 is_stmt 0 view .LVU98
+ARM GAS  /tmp/cc0ki2gK.s 			page 16
+
+
+ 356              	.LBE35:
+ 357              	.LBE34:
+  45:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+ 358              		.loc 1 45 5 is_stmt 1 view .LVU99
+ 359              	.LBB36:
+ 360              	.LBI36:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 361              		.loc 2 383 20 view .LVU100
+ 362              	.LBB37:
+ 363              		.loc 2 384 2 view .LVU101
+ 364 0016 2046     		mov	r0, r4
+ 365 0018 FFF7FEFF 		bl	__sfree__
+ 366              	.LVL33:
+ 367              		.loc 2 384 2 is_stmt 0 view .LVU102
+ 368              	.LBE37:
+ 369              	.LBE36:
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 370              		.loc 1 46 1 view .LVU103
+ 371 001c 10BD     		pop	{r4, pc}
+ 372              	.LVL34:
+ 373              	.L24:
+ 374              	.LCFI8:
+ 375              		.cfi_def_cfa_offset 0
+ 376              		.cfi_restore 4
+ 377              		.cfi_restore 14
+  46:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 378              		.loc 1 46 1 view .LVU104
+ 379 001e 7047     		bx	lr
+ 380              		.cfi_endproc
+ 381              	.LFE285:
+ 383              		.section	.rodata.l_output_error_message.str1.4,"aMS",%progbits,1
+ 384              		.align	2
+ 385              	.LC1:
+ 386 0000 2825752E 		.ascii	"(%u.%06u) (%d)[ \"%s\":(%d)] %s free memory size:%d"
+ 386      25303675 
+ 386      29202825 
+ 386      64295B20 
+ 386      22257322 
+ 387 0031 620A00   		.ascii	"b\012\000"
+ 388              		.section	.text.l_output_error_message,"ax",%progbits
+ 389              		.align	1
+ 390              		.global	l_output_error_message
+ 391              		.syntax unified
+ 392              		.thumb
+ 393              		.thumb_func
+ 395              	l_output_error_message:
+ 396              	.LVL35:
+ 397              	.LFB288:
+  57:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+  58:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** extern size_t get_global_heap_size(void);
+  59:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** void l_error_exception(error_t *error, intptr_t errnum, int line, char *errmsg, ...) 
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(errnum >= 0) return;
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errnum = errnum;
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->line = line;
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->time = ktime_get();
+ARM GAS  /tmp/cc0ki2gK.s 			page 17
+
+
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->haper_size = get_global_heap_size();
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count++;
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (errmsg != NULL) {
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_list args;
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_start(args, errmsg);
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         vsnprintf(error->errmsg, error->errmsg_size, errmsg, args);
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_end(args);
+  73:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     } 
+  74:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     else 
+  75:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     {
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         switch (errnum) {
+  77:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EPERM:
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPERM: Operation not permitted");
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  80:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOENT:
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOENT: No such file or directory");
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  83:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ESRCH:
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESRCH: No such process");
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  86:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EINTR:
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: EINTR: Interrupted system call");
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  89:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EIO:
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EIO: I/O error");
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  92:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENXIO:
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENXIO: No such device or address");
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  95:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -E2BIG:
+  96:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: E2BIG: Argument list too long");
+  97:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+  98:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOEXEC:
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOEXEC: Exec format error");
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 101:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EBADF:
+ 102:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EBADF: Bad file descriptor");
+ 103:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 104:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ECHILD:
+ 105:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECHILD: No child processes");
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 107:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EAGAIN:
+ 108:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: EAGAIN: Resource temporarily unavailable");
+ 109:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 110:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOMEM:
+ 111:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOMEM: Out of memory");
+ 112:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 113:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EACCES:
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EACCES: Permission denied");
+ 115:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 116:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EFAULT:
+ 117:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EFAULT: Bad address");
+ 118:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 119:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTBLK:
+ 120:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTBLK: Block device required");
+ 121:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 122:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EBUSY:
+ARM GAS  /tmp/cc0ki2gK.s 			page 18
+
+
+ 123:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EBUSY: Device or resource busy");
+ 124:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 125:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EEXIST:
+ 126:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EEXIST: File exists");
+ 127:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 128:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EXDEV:
+ 129:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EXDEV: Cross-device link");
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 131:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENODEV:
+ 132:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENODEV: No such device");
+ 133:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 134:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTDIR:
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTDIR: Not a directory");
+ 136:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 137:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EISDIR:
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISDIR: Is a directory");
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 140:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EINVAL:
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EINVAL: Invalid argument");
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 143:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENFILE:
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENFILE: File table overflow");
+ 145:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 146:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EMFILE:
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMFILE: Too many open files");
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 149:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTTY:
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTTY: Not a terminal");
+ 151:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 152:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ETXTBSY:
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETXTBSY: Text file busy");
+ 154:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 155:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EFBIG:
+ 156:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EFBIG: File too large");
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 158:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOSPC:
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOSPC: No space left on device");
+ 160:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 161:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ESPIPE:
+ 162:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESPIPE: Illegal seek");
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 164:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EROFS:
+ 165:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EROFS: Read-only file system");
+ 166:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 167:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EMLINK:
+ 168:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMLINK: Too many links");
+ 169:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 170:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EPIPE:
+ 171:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPIPE: Broken pipe");
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 173:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EDOM:
+ 174:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDOM: Math argument out of domain");
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 176:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ERANGE:
+ 177:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ERANGE: Math result not representable");
+ 178:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 179:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         
+ARM GAS  /tmp/cc0ki2gK.s 			page 19
+
+
+ 180:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             /* 扩展错误码 (from errno.h) */
+ 181:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EDEADLK:
+ 182:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDEADLK: Resource deadlock would occur");
+ 183:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 184:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENAMETOOLONG:
+ 185:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENAMETOOLONG: File name too long");
+ 186:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 187:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOLCK:
+ 188:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOLCK: No record locks available");
+ 189:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 190:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOSYS:
+ 191:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOSYS: Function not implemented");
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 193:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTEMPTY:
+ 194:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTEMPTY: Directory not empty");
+ 195:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 196:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ELOOP:
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ELOOP: Too many symbolic links encountered");
+ 198:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 199:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             /* 网络相关错误码 */
+ 200:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTSOCK:
+ 201:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTSOCK: Socket operation on non-socket");
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 203:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EDESTADDRREQ:
+ 204:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDESTADDRREQ: Destination address required");
+ 205:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 206:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EMSGSIZE:
+ 207:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMSGSIZE: Message too long");
+ 208:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 209:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EPROTOTYPE:
+ 210:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPROTOTYPE: Protocol wrong type for socket");
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 212:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOPROTOOPT:
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOPROTOOPT: Protocol not available");
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 215:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EPROTONOSUPPORT:
+ 216:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPROTONOSUPPORT: Protocol not supported");
+ 217:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 218:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ESOCKTNOSUPPORT:
+ 219:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESOCKTNOSUPPORT: Socket type not supported");
+ 220:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 221:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EOPNOTSUPP:
+ 222:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EOPNOTSUPP: Operation not supported");
+ 223:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 224:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EPFNOSUPPORT:
+ 225:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPFNOSUPPORT: Protocol family not supported");
+ 226:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 227:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EAFNOSUPPORT:
+ 228:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EAFNOSUPPORT: Address family not supported");
+ 229:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 230:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EADDRINUSE:
+ 231:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EADDRINUSE: Address already in use");
+ 232:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 233:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EADDRNOTAVAIL:
+ 234:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EADDRNOTAVAIL: Cannot assign requested address
+ 235:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 236:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENETDOWN:
+ARM GAS  /tmp/cc0ki2gK.s 			page 20
+
+
+ 237:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETDOWN: Network is down");
+ 238:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 239:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENETUNREACH:
+ 240:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETUNREACH: Network is unreachable");
+ 241:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 242:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENETRESET:
+ 243:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETRESET: Network dropped connection on reset
+ 244:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 245:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ECONNABORTED:
+ 246:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNABORTED: Software caused connection abort
+ 247:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 248:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ECONNRESET:
+ 249:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNRESET: Connection reset by peer");
+ 250:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 251:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOBUFS:
+ 252:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOBUFS: No buffer space available");
+ 253:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 254:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EISCONN:
+ 255:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISCONN: Transport endpoint is already connect
+ 256:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 257:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTCONN:
+ 258:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTCONN: Transport endpoint is not connected"
+ 259:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 260:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ESHUTDOWN:
+ 261:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESHUTDOWN: Cannot send after transport endpoin
+ 262:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 263:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ETOOMANYREFS:
+ 264:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETOOMANYREFS: Too many references");
+ 265:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 266:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ETIMEDOUT:
+ 267:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETIMEDOUT: Connection timed out");
+ 268:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 269:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ECONNREFUSED:
+ 270:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNREFUSED: Connection refused");
+ 271:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 272:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EHOSTDOWN:
+ 273:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHOSTDOWN: Host is down");
+ 274:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 275:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EHOSTUNREACH:
+ 276:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHOSTUNREACH: No route to host");
+ 277:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 278:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             /* 其他错误码 */
+ 279:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EALREADY:
+ 280:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "INFO: EALREADY: Operation already in progress");
+ 281:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 282:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EINPROGRESS:
+ 283:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "INFO: EINPROGRESS: Operation now in progress");
+ 284:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 285:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ESTALE:
+ 286:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESTALE: Stale file handle");
+ 287:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 288:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EUCLEAN:
+ 289:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EUCLEAN: Structure needs cleaning");
+ 290:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 291:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTNAM:
+ 292:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTNAM: Not a XENIX named type file");
+ 293:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ARM GAS  /tmp/cc0ki2gK.s 			page 21
+
+
+ 294:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENAVAIL:
+ 295:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENAVAIL: No XENIX semaphores available");
+ 296:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 297:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EISNAM:
+ 298:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISNAM: Is a named type file");
+ 299:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 300:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EREMOTEIO:
+ 301:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EREMOTEIO: Remote I/O error");
+ 302:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 303:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EDQUOT:
+ 304:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDQUOT: Disk quota exceeded");
+ 305:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 306:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOMEDIUM:
+ 307:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOMEDIUM: No medium found");
+ 308:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 309:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EMEDIUMTYPE:
+ 310:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMEDIUMTYPE: Wrong medium type");
+ 311:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 312:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ECANCELED:
+ 313:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: ECANCELED: Operation canceled");
+ 314:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 315:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOKEY:
+ 316:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOKEY: Required key not available");
+ 317:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 318:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EKEYEXPIRED:
+ 319:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYEXPIRED: Key has expired");
+ 320:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 321:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EKEYREVOKED:
+ 322:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYREVOKED: Key has been revoked");
+ 323:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 324:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EKEYREJECTED:
+ 325:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYREJECTED: Key was rejected by service");
+ 326:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 327:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EOWNERDEAD:
+ 328:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EOWNERDEAD: Owner died");
+ 329:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 330:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ENOTRECOVERABLE:
+ 331:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTRECOVERABLE: State not recoverable");
+ 332:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 333:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -ERFKILL:
+ 334:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ERFKILL: Operation not possible due to RF-kill
+ 335:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 336:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             case -EHWPOISON:
+ 337:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHWPOISON: Memory page has hardware error");
+ 338:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 339:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****             default:
+ 340:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: Unknown error code");
+ 341:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 342:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         }
+ 343:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 344:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_ONLY) {
+ 345:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return;
+ 346:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 347:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_PRINT_TO_LOG || error->mode == ERROR_SAVE_AND_BLOCK) {
+ 348:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         l_output_error_message(error,NULL,0,printk);
+ 349:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 350:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_BLOCK) 
+ARM GAS  /tmp/cc0ki2gK.s 			page 22
+
+
+ 351:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     {
+ 352:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         while (1);
+ 353:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 354:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     return;
+ 355:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+ 356:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 357:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** 
+ 358:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** int l_output_error_message(error_t *error,char *buffer,int buffer_size,void (out_function)(char *,.
+ 359:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+ 398              		.loc 1 359 1 is_stmt 1 view -0
+ 399              		.cfi_startproc
+ 400              		@ args = 0, pretend = 0, frame = 0
+ 401              		@ frame_needed = 0, uses_anonymous_args = 0
+ 360:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return -1;
+ 402              		.loc 1 360 5 view .LVU106
+ 403              		.loc 1 360 7 is_stmt 0 view .LVU107
+ 404 0000 0028     		cmp	r0, #0
+ 405 0002 39D0     		beq	.L31
+ 359:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return -1;
+ 406              		.loc 1 359 1 view .LVU108
+ 407 0004 70B5     		push	{r4, r5, r6, lr}
+ 408              	.LCFI9:
+ 409              		.cfi_def_cfa_offset 16
+ 410              		.cfi_offset 4, -16
+ 411              		.cfi_offset 5, -12
+ 412              		.cfi_offset 6, -8
+ 413              		.cfi_offset 14, -4
+ 414 0006 86B0     		sub	sp, sp, #24
+ 415              	.LCFI10:
+ 416              		.cfi_def_cfa_offset 40
+ 417 0008 0D46     		mov	r5, r1
+ 418 000a 1146     		mov	r1, r2
+ 419              	.LVL36:
+ 359:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return -1;
+ 420              		.loc 1 359 1 view .LVU109
+ 421 000c 1E46     		mov	r6, r3
+ 422 000e 0446     		mov	r4, r0
+ 361:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(buffer != NULL)
+ 423              		.loc 1 361 5 is_stmt 1 view .LVU110
+ 424              		.loc 1 361 7 is_stmt 0 view .LVU111
+ 425 0010 DDB1     		cbz	r5, .L29
+ 426              	.LBB38:
+ 362:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     {
+ 363:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         uint32_t sec  = error->time / HZ;
+ 427              		.loc 1 363 9 is_stmt 1 view .LVU112
+ 428              		.loc 1 363 30 is_stmt 0 view .LVU113
+ 429 0012 8068     		ldr	r0, [r0, #8]
+ 430              	.LVL37:
+ 431              		.loc 1 363 37 view .LVU114
+ 432 0014 1A4B     		ldr	r3, .L36
+ 433              	.LVL38:
+ 434              		.loc 1 363 37 view .LVU115
+ 435 0016 1A68     		ldr	r2, [r3]
+ 436              	.LVL39:
+ 437              		.loc 1 363 18 view .LVU116
+ 438 0018 B0FBF2F3 		udiv	r3, r0, r2
+ 439              	.LVL40:
+ARM GAS  /tmp/cc0ki2gK.s 			page 23
+
+
+ 364:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         uint32_t nsec = error->time % HZ;
+ 440              		.loc 1 364 9 is_stmt 1 view .LVU117
+ 441              		.loc 1 364 18 is_stmt 0 view .LVU118
+ 442 001c 02FB1300 		mls	r0, r2, r3, r0
+ 443              	.LVL41:
+ 365:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         int len = snprintf(buffer, buffer_size, "(%u.%06u) (%d)[ \"%s\":(%d)] %s free memory size:%
+ 444              		.loc 1 365 9 is_stmt 1 view .LVU119
+ 445              		.loc 1 365 19 is_stmt 0 view .LVU120
+ 446 0020 626A     		ldr	r2, [r4, #36]
+ 447 0022 0592     		str	r2, [sp, #20]
+ 448 0024 6269     		ldr	r2, [r4, #20]
+ 449 0026 0492     		str	r2, [sp, #16]
+ 450 0028 E268     		ldr	r2, [r4, #12]
+ 451 002a 0392     		str	r2, [sp, #12]
+ 452 002c 2268     		ldr	r2, [r4]
+ 453 002e 0292     		str	r2, [sp, #8]
+ 454 0030 A269     		ldr	r2, [r4, #24]
+ 455 0032 0192     		str	r2, [sp, #4]
+ 456 0034 0090     		str	r0, [sp]
+ 457 0036 134A     		ldr	r2, .L36+4
+ 458 0038 2846     		mov	r0, r5
+ 459              	.LVL42:
+ 460              		.loc 1 365 19 view .LVU121
+ 461 003a FFF7FEFF 		bl	snprintf
+ 462              	.LVL43:
+ 366:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         if(len >= error->errmsg_size) return -1;
+ 463              		.loc 1 366 9 is_stmt 1 view .LVU122
+ 464              		.loc 1 366 24 is_stmt 0 view .LVU123
+ 465 003e 2369     		ldr	r3, [r4, #16]
+ 466              		.loc 1 366 11 view .LVU124
+ 467 0040 8342     		cmp	r3, r0
+ 468 0042 17D8     		bhi	.L27
+ 469              		.loc 1 366 46 discriminator 1 view .LVU125
+ 470 0044 4FF0FF30 		mov	r0, #-1
+ 471              	.LVL44:
+ 472              		.loc 1 366 46 discriminator 1 view .LVU126
+ 473 0048 14E0     		b	.L27
+ 474              	.LVL45:
+ 475              	.L29:
+ 476              		.loc 1 366 46 discriminator 1 view .LVU127
+ 477              	.LBE38:
+ 367:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         return len;
+ 368:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 369:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(out_function != NULL)
+ 478              		.loc 1 369 5 is_stmt 1 view .LVU128
+ 479              		.loc 1 369 7 is_stmt 0 view .LVU129
+ 480 004a 9BB1     		cbz	r3, .L27
+ 481              	.LBB39:
+ 370:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     {
+ 371:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         uint32_t sec  = error->time / HZ;
+ 482              		.loc 1 371 9 is_stmt 1 view .LVU130
+ 483              		.loc 1 371 30 is_stmt 0 view .LVU131
+ 484 004c 8168     		ldr	r1, [r0, #8]
+ 485              	.LVL46:
+ 486              		.loc 1 371 37 view .LVU132
+ 487 004e 0C4B     		ldr	r3, .L36
+ 488              	.LVL47:
+ARM GAS  /tmp/cc0ki2gK.s 			page 24
+
+
+ 489              		.loc 1 371 37 view .LVU133
+ 490 0050 1B68     		ldr	r3, [r3]
+ 491              		.loc 1 371 18 view .LVU134
+ 492 0052 B1FBF3F2 		udiv	r2, r1, r3
+ 493              	.LVL48:
+ 372:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         uint32_t nsec = error->time % HZ;
+ 494              		.loc 1 372 9 is_stmt 1 view .LVU135
+ 373:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         out_function(KERN_INFO "(%u.%06u) (%d)[ \"%s\":(%d)] %s free memory size:%db\n",sec ,nsec,e
+ 495              		.loc 1 373 9 view .LVU136
+ 496 0056 406A     		ldr	r0, [r0, #36]
+ 497              	.LVL49:
+ 498              		.loc 1 373 9 is_stmt 0 view .LVU137
+ 499 0058 0490     		str	r0, [sp, #16]
+ 500 005a 6069     		ldr	r0, [r4, #20]
+ 501 005c 0390     		str	r0, [sp, #12]
+ 502 005e E068     		ldr	r0, [r4, #12]
+ 503 0060 0290     		str	r0, [sp, #8]
+ 504 0062 2068     		ldr	r0, [r4]
+ 505 0064 0190     		str	r0, [sp, #4]
+ 506 0066 A069     		ldr	r0, [r4, #24]
+ 507 0068 0090     		str	r0, [sp]
+ 508 006a 03FB1213 		mls	r3, r3, r2, r1
+ 509              	.LVL50:
+ 510              		.loc 1 373 9 view .LVU138
+ 511 006e 0549     		ldr	r1, .L36+4
+ 512 0070 0620     		movs	r0, #6
+ 513 0072 B047     		blx	r6
+ 514              	.LVL51:
+ 515              	.LVL52:
+ 516              	.L27:
+ 517              		.loc 1 373 9 view .LVU139
+ 518              	.LBE39:
+ 374:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     }
+ 375:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }...
+ 519              		.loc 1 375 1 view .LVU140
+ 520 0074 06B0     		add	sp, sp, #24
+ 521              	.LCFI11:
+ 522              		.cfi_def_cfa_offset 16
+ 523              		@ sp needed
+ 524 0076 70BD     		pop	{r4, r5, r6, pc}
+ 525              	.LVL53:
+ 526              	.L31:
+ 527              	.LCFI12:
+ 528              		.cfi_def_cfa_offset 0
+ 529              		.cfi_restore 4
+ 530              		.cfi_restore 5
+ 531              		.cfi_restore 6
+ 532              		.cfi_restore 14
+ 360:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return -1;
+ 533              		.loc 1 360 30 discriminator 1 view .LVU141
+ 534 0078 4FF0FF30 		mov	r0, #-1
+ 535              	.LVL54:
+ 536              		.loc 1 375 1 view .LVU142
+ 537 007c 7047     		bx	lr
+ 538              	.L37:
+ 539 007e 00BF     		.align	2
+ 540              	.L36:
+ARM GAS  /tmp/cc0ki2gK.s 			page 25
+
+
+ 541 0080 00000000 		.word	HZ
+ 542 0084 00000000 		.word	.LC1
+ 543              		.cfi_endproc
+ 544              	.LFE288:
+ 546              		.section	.rodata.l_error_exception.str1.4,"aMS",%progbits,1
+ 547              		.align	2
+ 548              	.LC2:
+ 549 0000 4552524F 		.ascii	"ERROR: EPERM: Operation not permitted\000"
+ 549      523A2045 
+ 549      5045524D 
+ 549      3A204F70 
+ 549      65726174 
+ 550 0026 0000     		.align	2
+ 551              	.LC3:
+ 552 0028 4552524F 		.ascii	"ERROR: ENOENT: No such file or directory\000"
+ 552      523A2045 
+ 552      4E4F454E 
+ 552      543A204E 
+ 552      6F207375 
+ 553 0051 000000   		.align	2
+ 554              	.LC4:
+ 555 0054 4552524F 		.ascii	"ERROR: ESRCH: No such process\000"
+ 555      523A2045 
+ 555      53524348 
+ 555      3A204E6F 
+ 555      20737563 
+ 556 0072 0000     		.align	2
+ 557              	.LC5:
+ 558 0074 5741524E 		.ascii	"WARN: EINTR: Interrupted system call\000"
+ 558      3A204549 
+ 558      4E54523A 
+ 558      20496E74 
+ 558      65727275 
+ 559 0099 000000   		.align	2
+ 560              	.LC6:
+ 561 009c 4552524F 		.ascii	"ERROR: EIO: I/O error\000"
+ 561      523A2045 
+ 561      494F3A20 
+ 561      492F4F20 
+ 561      6572726F 
+ 562 00b2 0000     		.align	2
+ 563              	.LC7:
+ 564 00b4 4552524F 		.ascii	"ERROR: ENXIO: No such device or address\000"
+ 564      523A2045 
+ 564      4E58494F 
+ 564      3A204E6F 
+ 564      20737563 
+ 565              		.align	2
+ 566              	.LC8:
+ 567 00dc 4552524F 		.ascii	"ERROR: E2BIG: Argument list too long\000"
+ 567      523A2045 
+ 567      32424947 
+ 567      3A204172 
+ 567      67756D65 
+ 568 0101 000000   		.align	2
+ 569              	.LC9:
+ 570 0104 4552524F 		.ascii	"ERROR: ENOEXEC: Exec format error\000"
+ARM GAS  /tmp/cc0ki2gK.s 			page 26
+
+
+ 570      523A2045 
+ 570      4E4F4558 
+ 570      45433A20 
+ 570      45786563 
+ 571 0126 0000     		.align	2
+ 572              	.LC10:
+ 573 0128 4552524F 		.ascii	"ERROR: EBADF: Bad file descriptor\000"
+ 573      523A2045 
+ 573      42414446 
+ 573      3A204261 
+ 573      64206669 
+ 574 014a 0000     		.align	2
+ 575              	.LC11:
+ 576 014c 4552524F 		.ascii	"ERROR: ECHILD: No child processes\000"
+ 576      523A2045 
+ 576      4348494C 
+ 576      443A204E 
+ 576      6F206368 
+ 577 016e 0000     		.align	2
+ 578              	.LC12:
+ 579 0170 5741524E 		.ascii	"WARN: EAGAIN: Resource temporarily unavailable\000"
+ 579      3A204541 
+ 579      4741494E 
+ 579      3A205265 
+ 579      736F7572 
+ 580 019f 00       		.align	2
+ 581              	.LC13:
+ 582 01a0 4552524F 		.ascii	"ERROR: ENOMEM: Out of memory\000"
+ 582      523A2045 
+ 582      4E4F4D45 
+ 582      4D3A204F 
+ 582      7574206F 
+ 583 01bd 000000   		.align	2
+ 584              	.LC14:
+ 585 01c0 4552524F 		.ascii	"ERROR: EACCES: Permission denied\000"
+ 585      523A2045 
+ 585      41434345 
+ 585      533A2050 
+ 585      65726D69 
+ 586 01e1 000000   		.align	2
+ 587              	.LC15:
+ 588 01e4 4552524F 		.ascii	"ERROR: EFAULT: Bad address\000"
+ 588      523A2045 
+ 588      4641554C 
+ 588      543A2042 
+ 588      61642061 
+ 589 01ff 00       		.align	2
+ 590              	.LC16:
+ 591 0200 4552524F 		.ascii	"ERROR: ENOTBLK: Block device required\000"
+ 591      523A2045 
+ 591      4E4F5442 
+ 591      4C4B3A20 
+ 591      426C6F63 
+ 592 0226 0000     		.align	2
+ 593              	.LC17:
+ 594 0228 4552524F 		.ascii	"ERROR: EBUSY: Device or resource busy\000"
+ 594      523A2045 
+ARM GAS  /tmp/cc0ki2gK.s 			page 27
+
+
+ 594      42555359 
+ 594      3A204465 
+ 594      76696365 
+ 595 024e 0000     		.align	2
+ 596              	.LC18:
+ 597 0250 4552524F 		.ascii	"ERROR: EEXIST: File exists\000"
+ 597      523A2045 
+ 597      45584953 
+ 597      543A2046 
+ 597      696C6520 
+ 598 026b 00       		.align	2
+ 599              	.LC19:
+ 600 026c 4552524F 		.ascii	"ERROR: EXDEV: Cross-device link\000"
+ 600      523A2045 
+ 600      58444556 
+ 600      3A204372 
+ 600      6F73732D 
+ 601              		.align	2
+ 602              	.LC20:
+ 603 028c 4552524F 		.ascii	"ERROR: ENODEV: No such device\000"
+ 603      523A2045 
+ 603      4E4F4445 
+ 603      563A204E 
+ 603      6F207375 
+ 604 02aa 0000     		.align	2
+ 605              	.LC21:
+ 606 02ac 4552524F 		.ascii	"ERROR: ENOTDIR: Not a directory\000"
+ 606      523A2045 
+ 606      4E4F5444 
+ 606      49523A20 
+ 606      4E6F7420 
+ 607              		.align	2
+ 608              	.LC22:
+ 609 02cc 4552524F 		.ascii	"ERROR: EISDIR: Is a directory\000"
+ 609      523A2045 
+ 609      49534449 
+ 609      523A2049 
+ 609      73206120 
+ 610 02ea 0000     		.align	2
+ 611              	.LC23:
+ 612 02ec 4552524F 		.ascii	"ERROR: EINVAL: Invalid argument\000"
+ 612      523A2045 
+ 612      494E5641 
+ 612      4C3A2049 
+ 612      6E76616C 
+ 613              		.align	2
+ 614              	.LC24:
+ 615 030c 4552524F 		.ascii	"ERROR: ENFILE: File table overflow\000"
+ 615      523A2045 
+ 615      4E46494C 
+ 615      453A2046 
+ 615      696C6520 
+ 616 032f 00       		.align	2
+ 617              	.LC25:
+ 618 0330 4552524F 		.ascii	"ERROR: EMFILE: Too many open files\000"
+ 618      523A2045 
+ 618      4D46494C 
+ARM GAS  /tmp/cc0ki2gK.s 			page 28
+
+
+ 618      453A2054 
+ 618      6F6F206D 
+ 619 0353 00       		.align	2
+ 620              	.LC26:
+ 621 0354 4552524F 		.ascii	"ERROR: ENOTTY: Not a terminal\000"
+ 621      523A2045 
+ 621      4E4F5454 
+ 621      593A204E 
+ 621      6F742061 
+ 622 0372 0000     		.align	2
+ 623              	.LC27:
+ 624 0374 4552524F 		.ascii	"ERROR: ETXTBSY: Text file busy\000"
+ 624      523A2045 
+ 624      54585442 
+ 624      53593A20 
+ 624      54657874 
+ 625 0393 00       		.align	2
+ 626              	.LC28:
+ 627 0394 4552524F 		.ascii	"ERROR: EFBIG: File too large\000"
+ 627      523A2045 
+ 627      46424947 
+ 627      3A204669 
+ 627      6C652074 
+ 628 03b1 000000   		.align	2
+ 629              	.LC29:
+ 630 03b4 4552524F 		.ascii	"ERROR: ENOSPC: No space left on device\000"
+ 630      523A2045 
+ 630      4E4F5350 
+ 630      433A204E 
+ 630      6F207370 
+ 631 03db 00       		.align	2
+ 632              	.LC30:
+ 633 03dc 4552524F 		.ascii	"ERROR: ESPIPE: Illegal seek\000"
+ 633      523A2045 
+ 633      53504950 
+ 633      453A2049 
+ 633      6C6C6567 
+ 634              		.align	2
+ 635              	.LC31:
+ 636 03f8 4552524F 		.ascii	"ERROR: EROFS: Read-only file system\000"
+ 636      523A2045 
+ 636      524F4653 
+ 636      3A205265 
+ 636      61642D6F 
+ 637              		.align	2
+ 638              	.LC32:
+ 639 041c 4552524F 		.ascii	"ERROR: EMLINK: Too many links\000"
+ 639      523A2045 
+ 639      4D4C494E 
+ 639      4B3A2054 
+ 639      6F6F206D 
+ 640 043a 0000     		.align	2
+ 641              	.LC33:
+ 642 043c 4552524F 		.ascii	"ERROR: EPIPE: Broken pipe\000"
+ 642      523A2045 
+ 642      50495045 
+ 642      3A204272 
+ARM GAS  /tmp/cc0ki2gK.s 			page 29
+
+
+ 642      6F6B656E 
+ 643 0456 0000     		.align	2
+ 644              	.LC34:
+ 645 0458 4552524F 		.ascii	"ERROR: EDOM: Math argument out of domain\000"
+ 645      523A2045 
+ 645      444F4D3A 
+ 645      204D6174 
+ 645      68206172 
+ 646 0481 000000   		.align	2
+ 647              	.LC35:
+ 648 0484 4552524F 		.ascii	"ERROR: ERANGE: Math result not representable\000"
+ 648      523A2045 
+ 648      52414E47 
+ 648      453A204D 
+ 648      61746820 
+ 649 04b1 000000   		.align	2
+ 650              	.LC36:
+ 651 04b4 4552524F 		.ascii	"ERROR: EDEADLK: Resource deadlock would occur\000"
+ 651      523A2045 
+ 651      44454144 
+ 651      4C4B3A20 
+ 651      5265736F 
+ 652 04e2 0000     		.align	2
+ 653              	.LC37:
+ 654 04e4 4552524F 		.ascii	"ERROR: ENAMETOOLONG: File name too long\000"
+ 654      523A2045 
+ 654      4E414D45 
+ 654      544F4F4C 
+ 654      4F4E473A 
+ 655              		.align	2
+ 656              	.LC38:
+ 657 050c 4552524F 		.ascii	"ERROR: ENOLCK: No record locks available\000"
+ 657      523A2045 
+ 657      4E4F4C43 
+ 657      4B3A204E 
+ 657      6F207265 
+ 658 0535 000000   		.align	2
+ 659              	.LC39:
+ 660 0538 4552524F 		.ascii	"ERROR: ENOSYS: Function not implemented\000"
+ 660      523A2045 
+ 660      4E4F5359 
+ 660      533A2046 
+ 660      756E6374 
+ 661              		.align	2
+ 662              	.LC40:
+ 663 0560 4552524F 		.ascii	"ERROR: ENOTEMPTY: Directory not empty\000"
+ 663      523A2045 
+ 663      4E4F5445 
+ 663      4D505459 
+ 663      3A204469 
+ 664 0586 0000     		.align	2
+ 665              	.LC41:
+ 666 0588 4552524F 		.ascii	"ERROR: ELOOP: Too many symbolic links encountered\000"
+ 666      523A2045 
+ 666      4C4F4F50 
+ 666      3A20546F 
+ 666      6F206D61 
+ARM GAS  /tmp/cc0ki2gK.s 			page 30
+
+
+ 667 05ba 0000     		.align	2
+ 668              	.LC42:
+ 669 05bc 4552524F 		.ascii	"ERROR: ENOTSOCK: Socket operation on non-socket\000"
+ 669      523A2045 
+ 669      4E4F5453 
+ 669      4F434B3A 
+ 669      20536F63 
+ 670              		.align	2
+ 671              	.LC43:
+ 672 05ec 4552524F 		.ascii	"ERROR: EDESTADDRREQ: Destination address required\000"
+ 672      523A2045 
+ 672      44455354 
+ 672      41444452 
+ 672      5245513A 
+ 673 061e 0000     		.align	2
+ 674              	.LC44:
+ 675 0620 4552524F 		.ascii	"ERROR: EMSGSIZE: Message too long\000"
+ 675      523A2045 
+ 675      4D534753 
+ 675      495A453A 
+ 675      204D6573 
+ 676 0642 0000     		.align	2
+ 677              	.LC45:
+ 678 0644 4552524F 		.ascii	"ERROR: EPROTOTYPE: Protocol wrong type for socket\000"
+ 678      523A2045 
+ 678      50524F54 
+ 678      4F545950 
+ 678      453A2050 
+ 679 0676 0000     		.align	2
+ 680              	.LC46:
+ 681 0678 4552524F 		.ascii	"ERROR: ENOPROTOOPT: Protocol not available\000"
+ 681      523A2045 
+ 681      4E4F5052 
+ 681      4F544F4F 
+ 681      50543A20 
+ 682 06a3 00       		.align	2
+ 683              	.LC47:
+ 684 06a4 4552524F 		.ascii	"ERROR: EPROTONOSUPPORT: Protocol not supported\000"
+ 684      523A2045 
+ 684      50524F54 
+ 684      4F4E4F53 
+ 684      5550504F 
+ 685 06d3 00       		.align	2
+ 686              	.LC48:
+ 687 06d4 4552524F 		.ascii	"ERROR: ESOCKTNOSUPPORT: Socket type not supported\000"
+ 687      523A2045 
+ 687      534F434B 
+ 687      544E4F53 
+ 687      5550504F 
+ 688 0706 0000     		.align	2
+ 689              	.LC49:
+ 690 0708 4552524F 		.ascii	"ERROR: EOPNOTSUPP: Operation not supported\000"
+ 690      523A2045 
+ 690      4F504E4F 
+ 690      54535550 
+ 690      503A204F 
+ 691 0733 00       		.align	2
+ARM GAS  /tmp/cc0ki2gK.s 			page 31
+
+
+ 692              	.LC50:
+ 693 0734 4552524F 		.ascii	"ERROR: EPFNOSUPPORT: Protocol family not supported\000"
+ 693      523A2045 
+ 693      50464E4F 
+ 693      53555050 
+ 693      4F52543A 
+ 694 0767 00       		.align	2
+ 695              	.LC51:
+ 696 0768 4552524F 		.ascii	"ERROR: EAFNOSUPPORT: Address family not supported\000"
+ 696      523A2045 
+ 696      41464E4F 
+ 696      53555050 
+ 696      4F52543A 
+ 697 079a 0000     		.align	2
+ 698              	.LC52:
+ 699 079c 4552524F 		.ascii	"ERROR: EADDRINUSE: Address already in use\000"
+ 699      523A2045 
+ 699      41444452 
+ 699      494E5553 
+ 699      453A2041 
+ 700 07c6 0000     		.align	2
+ 701              	.LC53:
+ 702 07c8 4552524F 		.ascii	"ERROR: EADDRNOTAVAIL: Cannot assign requested addre"
+ 702      523A2045 
+ 702      41444452 
+ 702      4E4F5441 
+ 702      5641494C 
+ 703 07fb 737300   		.ascii	"ss\000"
+ 704 07fe 0000     		.align	2
+ 705              	.LC54:
+ 706 0800 4552524F 		.ascii	"ERROR: ENETDOWN: Network is down\000"
+ 706      523A2045 
+ 706      4E455444 
+ 706      4F574E3A 
+ 706      204E6574 
+ 707 0821 000000   		.align	2
+ 708              	.LC55:
+ 709 0824 4552524F 		.ascii	"ERROR: ENETUNREACH: Network is unreachable\000"
+ 709      523A2045 
+ 709      4E455455 
+ 709      4E524541 
+ 709      43483A20 
+ 710 084f 00       		.align	2
+ 711              	.LC56:
+ 712 0850 4552524F 		.ascii	"ERROR: ENETRESET: Network dropped connection on res"
+ 712      523A2045 
+ 712      4E455452 
+ 712      45534554 
+ 712      3A204E65 
+ 713 0883 657400   		.ascii	"et\000"
+ 714 0886 0000     		.align	2
+ 715              	.LC57:
+ 716 0888 4552524F 		.ascii	"ERROR: ECONNABORTED: Software caused connection abo"
+ 716      523A2045 
+ 716      434F4E4E 
+ 716      41424F52 
+ 716      5445443A 
+ARM GAS  /tmp/cc0ki2gK.s 			page 32
+
+
+ 717 08bb 727400   		.ascii	"rt\000"
+ 718 08be 0000     		.align	2
+ 719              	.LC58:
+ 720 08c0 4552524F 		.ascii	"ERROR: ECONNRESET: Connection reset by peer\000"
+ 720      523A2045 
+ 720      434F4E4E 
+ 720      52455345 
+ 720      543A2043 
+ 721              		.align	2
+ 722              	.LC59:
+ 723 08ec 4552524F 		.ascii	"ERROR: ENOBUFS: No buffer space available\000"
+ 723      523A2045 
+ 723      4E4F4255 
+ 723      46533A20 
+ 723      4E6F2062 
+ 724 0916 0000     		.align	2
+ 725              	.LC60:
+ 726 0918 4552524F 		.ascii	"ERROR: EISCONN: Transport endpoint is already conne"
+ 726      523A2045 
+ 726      4953434F 
+ 726      4E4E3A20 
+ 726      5472616E 
+ 727 094b 63746564 		.ascii	"cted\000"
+ 727      00
+ 728              		.align	2
+ 729              	.LC61:
+ 730 0950 4552524F 		.ascii	"ERROR: ENOTCONN: Transport endpoint is not connecte"
+ 730      523A2045 
+ 730      4E4F5443 
+ 730      4F4E4E3A 
+ 730      20547261 
+ 731 0983 6400     		.ascii	"d\000"
+ 732 0985 000000   		.align	2
+ 733              	.LC62:
+ 734 0988 4552524F 		.ascii	"ERROR: ESHUTDOWN: Cannot send after transport endpo"
+ 734      523A2045 
+ 734      53485554 
+ 734      444F574E 
+ 734      3A204361 
+ 735 09bb 696E7420 		.ascii	"int shutdown\000"
+ 735      73687574 
+ 735      646F776E 
+ 735      00
+ 736              		.align	2
+ 737              	.LC63:
+ 738 09c8 4552524F 		.ascii	"ERROR: ETOOMANYREFS: Too many references\000"
+ 738      523A2045 
+ 738      544F4F4D 
+ 738      414E5952 
+ 738      4546533A 
+ 739 09f1 000000   		.align	2
+ 740              	.LC64:
+ 741 09f4 4552524F 		.ascii	"ERROR: ETIMEDOUT: Connection timed out\000"
+ 741      523A2045 
+ 741      54494D45 
+ 741      444F5554 
+ 741      3A20436F 
+ARM GAS  /tmp/cc0ki2gK.s 			page 33
+
+
+ 742 0a1b 00       		.align	2
+ 743              	.LC65:
+ 744 0a1c 4552524F 		.ascii	"ERROR: ECONNREFUSED: Connection refused\000"
+ 744      523A2045 
+ 744      434F4E4E 
+ 744      52454655 
+ 744      5345443A 
+ 745              		.align	2
+ 746              	.LC66:
+ 747 0a44 4552524F 		.ascii	"ERROR: EHOSTDOWN: Host is down\000"
+ 747      523A2045 
+ 747      484F5354 
+ 747      444F574E 
+ 747      3A20486F 
+ 748 0a63 00       		.align	2
+ 749              	.LC67:
+ 750 0a64 4552524F 		.ascii	"ERROR: EHOSTUNREACH: No route to host\000"
+ 750      523A2045 
+ 750      484F5354 
+ 750      554E5245 
+ 750      4143483A 
+ 751 0a8a 0000     		.align	2
+ 752              	.LC68:
+ 753 0a8c 494E464F 		.ascii	"INFO: EALREADY: Operation already in progress\000"
+ 753      3A204541 
+ 753      4C524541 
+ 753      44593A20 
+ 753      4F706572 
+ 754 0aba 0000     		.align	2
+ 755              	.LC69:
+ 756 0abc 494E464F 		.ascii	"INFO: EINPROGRESS: Operation now in progress\000"
+ 756      3A204549 
+ 756      4E50524F 
+ 756      47524553 
+ 756      533A204F 
+ 757 0ae9 000000   		.align	2
+ 758              	.LC70:
+ 759 0aec 4552524F 		.ascii	"ERROR: ESTALE: Stale file handle\000"
+ 759      523A2045 
+ 759      5354414C 
+ 759      453A2053 
+ 759      74616C65 
+ 760 0b0d 000000   		.align	2
+ 761              	.LC71:
+ 762 0b10 4552524F 		.ascii	"ERROR: EUCLEAN: Structure needs cleaning\000"
+ 762      523A2045 
+ 762      55434C45 
+ 762      414E3A20 
+ 762      53747275 
+ 763 0b39 000000   		.align	2
+ 764              	.LC72:
+ 765 0b3c 4552524F 		.ascii	"ERROR: ENOTNAM: Not a XENIX named type file\000"
+ 765      523A2045 
+ 765      4E4F544E 
+ 765      414D3A20 
+ 765      4E6F7420 
+ 766              		.align	2
+ARM GAS  /tmp/cc0ki2gK.s 			page 34
+
+
+ 767              	.LC73:
+ 768 0b68 4552524F 		.ascii	"ERROR: ENAVAIL: No XENIX semaphores available\000"
+ 768      523A2045 
+ 768      4E415641 
+ 768      494C3A20 
+ 768      4E6F2058 
+ 769 0b96 0000     		.align	2
+ 770              	.LC74:
+ 771 0b98 4552524F 		.ascii	"ERROR: EISNAM: Is a named type file\000"
+ 771      523A2045 
+ 771      49534E41 
+ 771      4D3A2049 
+ 771      73206120 
+ 772              		.align	2
+ 773              	.LC75:
+ 774 0bbc 4552524F 		.ascii	"ERROR: EREMOTEIO: Remote I/O error\000"
+ 774      523A2045 
+ 774      52454D4F 
+ 774      5445494F 
+ 774      3A205265 
+ 775 0bdf 00       		.align	2
+ 776              	.LC76:
+ 777 0be0 4552524F 		.ascii	"ERROR: EDQUOT: Disk quota exceeded\000"
+ 777      523A2045 
+ 777      4451554F 
+ 777      543A2044 
+ 777      69736B20 
+ 778 0c03 00       		.align	2
+ 779              	.LC77:
+ 780 0c04 4552524F 		.ascii	"ERROR: ENOMEDIUM: No medium found\000"
+ 780      523A2045 
+ 780      4E4F4D45 
+ 780      4449554D 
+ 780      3A204E6F 
+ 781 0c26 0000     		.align	2
+ 782              	.LC78:
+ 783 0c28 4552524F 		.ascii	"ERROR: EMEDIUMTYPE: Wrong medium type\000"
+ 783      523A2045 
+ 783      4D454449 
+ 783      554D5459 
+ 783      50453A20 
+ 784 0c4e 0000     		.align	2
+ 785              	.LC79:
+ 786 0c50 5741524E 		.ascii	"WARN: ECANCELED: Operation canceled\000"
+ 786      3A204543 
+ 786      414E4345 
+ 786      4C45443A 
+ 786      204F7065 
+ 787              		.align	2
+ 788              	.LC80:
+ 789 0c74 4552524F 		.ascii	"ERROR: ENOKEY: Required key not available\000"
+ 789      523A2045 
+ 789      4E4F4B45 
+ 789      593A2052 
+ 789      65717569 
+ 790 0c9e 0000     		.align	2
+ 791              	.LC81:
+ARM GAS  /tmp/cc0ki2gK.s 			page 35
+
+
+ 792 0ca0 4552524F 		.ascii	"ERROR: EKEYEXPIRED: Key has expired\000"
+ 792      523A2045 
+ 792      4B455945 
+ 792      58504952 
+ 792      45443A20 
+ 793              		.align	2
+ 794              	.LC82:
+ 795 0cc4 4552524F 		.ascii	"ERROR: EKEYREVOKED: Key has been revoked\000"
+ 795      523A2045 
+ 795      4B455952 
+ 795      45564F4B 
+ 795      45443A20 
+ 796 0ced 000000   		.align	2
+ 797              	.LC83:
+ 798 0cf0 4552524F 		.ascii	"ERROR: EKEYREJECTED: Key was rejected by service\000"
+ 798      523A2045 
+ 798      4B455952 
+ 798      454A4543 
+ 798      5445443A 
+ 799 0d21 000000   		.align	2
+ 800              	.LC84:
+ 801 0d24 4552524F 		.ascii	"ERROR: EOWNERDEAD: Owner died\000"
+ 801      523A2045 
+ 801      4F574E45 
+ 801      52444541 
+ 801      443A204F 
+ 802 0d42 0000     		.align	2
+ 803              	.LC85:
+ 804 0d44 4552524F 		.ascii	"ERROR: ENOTRECOVERABLE: State not recoverable\000"
+ 804      523A2045 
+ 804      4E4F5452 
+ 804      45434F56 
+ 804      45524142 
+ 805 0d72 0000     		.align	2
+ 806              	.LC86:
+ 807 0d74 4552524F 		.ascii	"ERROR: ERFKILL: Operation not possible due to RF-ki"
+ 807      523A2045 
+ 807      52464B49 
+ 807      4C4C3A20 
+ 807      4F706572 
+ 808 0da7 6C6C00   		.ascii	"ll\000"
+ 809 0daa 0000     		.align	2
+ 810              	.LC87:
+ 811 0dac 4552524F 		.ascii	"ERROR: EHWPOISON: Memory page has hardware error\000"
+ 811      523A2045 
+ 811      4857504F 
+ 811      49534F4E 
+ 811      3A204D65 
+ 812 0ddd 000000   		.align	2
+ 813              	.LC88:
+ 814 0de0 4552524F 		.ascii	"ERROR: Unknown error code\000"
+ 814      523A2055 
+ 814      6E6B6E6F 
+ 814      776E2065 
+ 814      72726F72 
+ 815              		.section	.text.l_error_exception,"ax",%progbits
+ 816              		.align	1
+ARM GAS  /tmp/cc0ki2gK.s 			page 36
+
+
+ 817              		.global	l_error_exception
+ 818              		.syntax unified
+ 819              		.thumb
+ 820              		.thumb_func
+ 822              	l_error_exception:
+ 823              	.LVL55:
+ 824              	.LFB287:
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+ 825              		.loc 1 60 1 is_stmt 1 view -0
+ 826              		.cfi_startproc
+ 827              		@ args = 4, pretend = 4, frame = 8
+ 828              		@ frame_needed = 0, uses_anonymous_args = 1
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+ 829              		.loc 1 61 5 view .LVU144
+  61:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(error == NULL) return;
+ 830              		.loc 1 61 7 is_stmt 0 view .LVU145
+ 831 0000 0028     		cmp	r0, #0
+ 832 0002 00F00783 		beq	.L133
+  60:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** {
+ 833              		.loc 1 60 1 view .LVU146
+ 834 0006 08B4     		push	{r3}
+ 835              	.LCFI13:
+ 836              		.cfi_def_cfa_offset 4
+ 837              		.cfi_offset 3, -4
+ 838 0008 30B5     		push	{r4, r5, lr}
+ 839              	.LCFI14:
+ 840              		.cfi_def_cfa_offset 16
+ 841              		.cfi_offset 4, -16
+ 842              		.cfi_offset 5, -12
+ 843              		.cfi_offset 14, -8
+ 844 000a 82B0     		sub	sp, sp, #8
+ 845              	.LCFI15:
+ 846              		.cfi_def_cfa_offset 24
+ 847 000c 0C46     		mov	r4, r1
+ 848 000e 0546     		mov	r5, r0
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(errnum >= 0) return;
+ 849              		.loc 1 62 5 is_stmt 1 view .LVU147
+  62:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if(errnum >= 0) return;
+ 850              		.loc 1 62 7 is_stmt 0 view .LVU148
+ 851 0010 0029     		cmp	r1, #0
+ 852 0012 04DB     		blt	.L136
+ 853              	.LVL56:
+ 854              	.L38:
+ 355:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+ 855              		.loc 1 355 1 view .LVU149
+ 856 0014 02B0     		add	sp, sp, #8
+ 857              	.LCFI16:
+ 858              		.cfi_remember_state
+ 859              		.cfi_def_cfa_offset 16
+ 860              		@ sp needed
+ 861 0016 BDE83040 		pop	{r4, r5, lr}
+ 862              	.LCFI17:
+ 863              		.cfi_restore 14
+ 864              		.cfi_restore 5
+ 865              		.cfi_restore 4
+ 866              		.cfi_def_cfa_offset 4
+ 867              	.LVL57:
+ARM GAS  /tmp/cc0ki2gK.s 			page 37
+
+
+ 355:/mnt/c/Users/31740/Desktop/newcore/lib/error.c **** }
+ 868              		.loc 1 355 1 view .LVU150
+ 869 001a 01B0     		add	sp, sp, #4
+ 870              	.LCFI18:
+ 871              		.cfi_restore 3
+ 872              		.cfi_def_cfa_offset 0
+ 873 001c 7047     		bx	lr
+ 874              	.LVL58:
+ 875              	.L136:
+ 876              	.LCFI19:
+ 877              		.cfi_restore_state
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errnum = errnum;
+ 878              		.loc 1 63 5 is_stmt 1 view .LVU151
+  63:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->errnum = errnum;
+ 879              		.loc 1 63 19 is_stmt 0 view .LVU152
+ 880 001e 4160     		str	r1, [r0, #4]
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->line = line;
+ 881              		.loc 1 64 5 is_stmt 1 view .LVU153
+  64:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->line = line;
+ 882              		.loc 1 64 17 is_stmt 0 view .LVU154
+ 883 0020 C260     		str	r2, [r0, #12]
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->time = ktime_get();
+ 884              		.loc 1 65 5 is_stmt 1 view .LVU155
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->time = ktime_get();
+ 885              		.loc 1 65 19 is_stmt 0 view .LVU156
+ 886 0022 FFF7FEFF 		bl	ktime_get
+ 887              	.LVL59:
+  65:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->time = ktime_get();
+ 888              		.loc 1 65 17 discriminator 1 view .LVU157
+ 889 0026 A860     		str	r0, [r5, #8]
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->haper_size = get_global_heap_size();
+ 890              		.loc 1 66 5 is_stmt 1 view .LVU158
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->haper_size = get_global_heap_size();
+ 891              		.loc 1 66 25 is_stmt 0 view .LVU159
+ 892 0028 FFF7FEFF 		bl	get_global_heap_size
+ 893              	.LVL60:
+  66:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->haper_size = get_global_heap_size();
+ 894              		.loc 1 66 23 discriminator 1 view .LVU160
+ 895 002c 6862     		str	r0, [r5, #36]
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count++;
+ 896              		.loc 1 67 5 is_stmt 1 view .LVU161
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count++;
+ 897              		.loc 1 67 10 is_stmt 0 view .LVU162
+ 898 002e AB69     		ldr	r3, [r5, #24]
+  67:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     error->error_count++;
+ 899              		.loc 1 67 23 view .LVU163
+ 900 0030 0133     		adds	r3, r3, #1
+ 901 0032 AB61     		str	r3, [r5, #24]
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (errmsg != NULL) {
+ 902              		.loc 1 68 5 is_stmt 1 view .LVU164
+  68:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (errmsg != NULL) {
+ 903              		.loc 1 68 8 is_stmt 0 view .LVU165
+ 904 0034 059B     		ldr	r3, [sp, #20]
+ 905 0036 93B1     		cbz	r3, .L40
+ 906              	.LBB40:
+  69:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_list args;
+ 907              		.loc 1 69 9 is_stmt 1 view .LVU166
+ARM GAS  /tmp/cc0ki2gK.s 			page 38
+
+
+  70:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_start(args, errmsg);
+ 908              		.loc 1 70 9 view .LVU167
+ 909 0038 06AB     		add	r3, sp, #24
+ 910 003a 0193     		str	r3, [sp, #4]
+  71:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         vsnprintf(error->errmsg, error->errmsg_size, errmsg, args);
+ 911              		.loc 1 71 9 view .LVU168
+ 912 003c 059A     		ldr	r2, [sp, #20]
+ 913 003e 2969     		ldr	r1, [r5, #16]
+ 914 0040 6869     		ldr	r0, [r5, #20]
+ 915 0042 FFF7FEFF 		bl	vsnprintf
+ 916              	.LVL61:
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_end(args);
+ 917              		.loc 1 72 9 view .LVU169
+ 918              	.L41:
+  72:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         va_end(args);
+ 919              		.loc 1 72 9 is_stmt 0 view .LVU170
+ 920              	.LBE40:
+ 344:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_ONLY) {
+ 921              		.loc 1 344 5 is_stmt 1 view .LVU171
+ 344:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_ONLY) {
+ 922              		.loc 1 344 14 is_stmt 0 view .LVU172
+ 923 0046 2B7F     		ldrb	r3, [r5, #28]	@ zero_extendqisi2
+ 344:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_ONLY) {
+ 924              		.loc 1 344 8 view .LVU173
+ 925 0048 002B     		cmp	r3, #0
+ 926 004a E3D0     		beq	.L38
+ 347:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_PRINT_TO_LOG || error->mode == ERROR_SAVE_AND_BLOCK) {
+ 927              		.loc 1 347 5 is_stmt 1 view .LVU174
+ 347:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_PRINT_TO_LOG || error->mode == ERROR_SAVE_AND_BLOCK) {
+ 928              		.loc 1 347 52 is_stmt 0 view .LVU175
+ 929 004c 013B     		subs	r3, r3, #1
+ 930 004e DBB2     		uxtb	r3, r3
+ 347:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_PRINT_TO_LOG || error->mode == ERROR_SAVE_AND_BLOCK) {
+ 931              		.loc 1 347 8 view .LVU176
+ 932 0050 012B     		cmp	r3, #1
+ 933 0052 40F2D882 		bls	.L137
+ 934              	.L130:
+ 350:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_BLOCK) 
+ 935              		.loc 1 350 5 is_stmt 1 view .LVU177
+ 350:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_BLOCK) 
+ 936              		.loc 1 350 14 is_stmt 0 view .LVU178
+ 937 0056 2B7F     		ldrb	r3, [r5, #28]	@ zero_extendqisi2
+ 350:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****     if (error->mode == ERROR_SAVE_AND_BLOCK) 
+ 938              		.loc 1 350 8 view .LVU179
+ 939 0058 022B     		cmp	r3, #2
+ 940 005a DBD1     		bne	.L38
+ 941              	.L131:
+ 352:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         while (1);
+ 942              		.loc 1 352 9 is_stmt 1 view .LVU180
+ 352:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         while (1);
+ 943              		.loc 1 352 15 view .LVU181
+ 944 005c FEE7     		b	.L131
+ 945              	.LVL62:
+ 946              	.L40:
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         switch (errnum) {
+ 947              		.loc 1 76 9 view .LVU182
+ 948 005e 8B34     		adds	r4, r4, #139
+ARM GAS  /tmp/cc0ki2gK.s 			page 39
+
+
+ 949              	.LVL63:
+  76:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         switch (errnum) {
+ 950              		.loc 1 76 9 is_stmt 0 view .LVU183
+ 951 0060 8A2C     		cmp	r4, #138
+ 952 0062 00F2CB82 		bhi	.L42
+ 953 0066 DFE814F0 		tbh	[pc, r4, lsl #1]
+ 954              	.L44:
+ 955 006a C402     		.2byte	(.L129-.L44)/2
+ 956 006c BF02     		.2byte	(.L128-.L44)/2
+ 957 006e BA02     		.2byte	(.L127-.L44)/2
+ 958 0070 B502     		.2byte	(.L126-.L44)/2
+ 959 0072 B002     		.2byte	(.L125-.L44)/2
+ 960 0074 AB02     		.2byte	(.L124-.L44)/2
+ 961 0076 A602     		.2byte	(.L123-.L44)/2
+ 962 0078 A102     		.2byte	(.L122-.L44)/2
+ 963 007a 9C02     		.2byte	(.L121-.L44)/2
+ 964 007c 9702     		.2byte	(.L120-.L44)/2
+ 965 007e 9202     		.2byte	(.L119-.L44)/2
+ 966 0080 C902     		.2byte	(.L42-.L44)/2
+ 967 0082 C902     		.2byte	(.L42-.L44)/2
+ 968 0084 C902     		.2byte	(.L42-.L44)/2
+ 969 0086 C902     		.2byte	(.L42-.L44)/2
+ 970 0088 C902     		.2byte	(.L42-.L44)/2
+ 971 008a C902     		.2byte	(.L42-.L44)/2
+ 972 008c C902     		.2byte	(.L42-.L44)/2
+ 973 008e 8802     		.2byte	(.L118-.L44)/2
+ 974 0090 8302     		.2byte	(.L117-.L44)/2
+ 975 0092 EE01     		.2byte	(.L116-.L44)/2
+ 976 0094 E901     		.2byte	(.L115-.L44)/2
+ 977 0096 E401     		.2byte	(.L114-.L44)/2
+ 978 0098 C902     		.2byte	(.L42-.L44)/2
+ 979 009a C902     		.2byte	(.L42-.L44)/2
+ 980 009c C902     		.2byte	(.L42-.L44)/2
+ 981 009e C902     		.2byte	(.L42-.L44)/2
+ 982 00a0 C902     		.2byte	(.L42-.L44)/2
+ 983 00a2 C902     		.2byte	(.L42-.L44)/2
+ 984 00a4 C902     		.2byte	(.L42-.L44)/2
+ 985 00a6 C902     		.2byte	(.L42-.L44)/2
+ 986 00a8 C902     		.2byte	(.L42-.L44)/2
+ 987 00aa C902     		.2byte	(.L42-.L44)/2
+ 988 00ac C902     		.2byte	(.L42-.L44)/2
+ 989 00ae C902     		.2byte	(.L42-.L44)/2
+ 990 00b0 C902     		.2byte	(.L42-.L44)/2
+ 991 00b2 C902     		.2byte	(.L42-.L44)/2
+ 992 00b4 C902     		.2byte	(.L42-.L44)/2
+ 993 00b6 C902     		.2byte	(.L42-.L44)/2
+ 994 00b8 C902     		.2byte	(.L42-.L44)/2
+ 995 00ba C902     		.2byte	(.L42-.L44)/2
+ 996 00bc C902     		.2byte	(.L42-.L44)/2
+ 997 00be C902     		.2byte	(.L42-.L44)/2
+ 998 00c0 C902     		.2byte	(.L42-.L44)/2
+ 999 00c2 C902     		.2byte	(.L42-.L44)/2
+ 1000 00c4 C902     		.2byte	(.L42-.L44)/2
+ 1001 00c6 C902     		.2byte	(.L42-.L44)/2
+ 1002 00c8 C902     		.2byte	(.L42-.L44)/2
+ 1003 00ca C902     		.2byte	(.L42-.L44)/2
+ 1004 00cc C902     		.2byte	(.L42-.L44)/2
+ARM GAS  /tmp/cc0ki2gK.s 			page 40
+
+
+ 1005 00ce C902     		.2byte	(.L42-.L44)/2
+ 1006 00d0 C902     		.2byte	(.L42-.L44)/2
+ 1007 00d2 C902     		.2byte	(.L42-.L44)/2
+ 1008 00d4 C902     		.2byte	(.L42-.L44)/2
+ 1009 00d6 C902     		.2byte	(.L42-.L44)/2
+ 1010 00d8 C902     		.2byte	(.L42-.L44)/2
+ 1011 00da C902     		.2byte	(.L42-.L44)/2
+ 1012 00dc C902     		.2byte	(.L42-.L44)/2
+ 1013 00de C902     		.2byte	(.L42-.L44)/2
+ 1014 00e0 C902     		.2byte	(.L42-.L44)/2
+ 1015 00e2 C902     		.2byte	(.L42-.L44)/2
+ 1016 00e4 4401     		.2byte	(.L113-.L44)/2
+ 1017 00e6 3F01     		.2byte	(.L112-.L44)/2
+ 1018 00e8 C902     		.2byte	(.L42-.L44)/2
+ 1019 00ea C902     		.2byte	(.L42-.L44)/2
+ 1020 00ec C902     		.2byte	(.L42-.L44)/2
+ 1021 00ee C902     		.2byte	(.L42-.L44)/2
+ 1022 00f0 C902     		.2byte	(.L42-.L44)/2
+ 1023 00f2 C902     		.2byte	(.L42-.L44)/2
+ 1024 00f4 DF01     		.2byte	(.L111-.L44)/2
+ 1025 00f6 8D02     		.2byte	(.L110-.L44)/2
+ 1026 00f8 C902     		.2byte	(.L42-.L44)/2
+ 1027 00fa C902     		.2byte	(.L42-.L44)/2
+ 1028 00fc 4901     		.2byte	(.L109-.L44)/2
+ 1029 00fe D001     		.2byte	(.L108-.L44)/2
+ 1030 0100 CB01     		.2byte	(.L107-.L44)/2
+ 1031 0102 3A01     		.2byte	(.L106-.L44)/2
+ 1032 0104 4E01     		.2byte	(.L105-.L44)/2
+ 1033 0106 C601     		.2byte	(.L104-.L44)/2
+ 1034 0108 C101     		.2byte	(.L103-.L44)/2
+ 1035 010a BC01     		.2byte	(.L102-.L44)/2
+ 1036 010c B701     		.2byte	(.L101-.L44)/2
+ 1037 010e B201     		.2byte	(.L100-.L44)/2
+ 1038 0110 AD01     		.2byte	(.L99-.L44)/2
+ 1039 0112 A801     		.2byte	(.L98-.L44)/2
+ 1040 0114 A301     		.2byte	(.L97-.L44)/2
+ 1041 0116 9E01     		.2byte	(.L96-.L44)/2
+ 1042 0118 9901     		.2byte	(.L95-.L44)/2
+ 1043 011a 9401     		.2byte	(.L94-.L44)/2
+ 1044 011c 8F01     		.2byte	(.L93-.L44)/2
+ 1045 011e 8A01     		.2byte	(.L92-.L44)/2
+ 1046 0120 8501     		.2byte	(.L91-.L44)/2
+ 1047 0122 8001     		.2byte	(.L90-.L44)/2
+ 1048 0124 7B01     		.2byte	(.L89-.L44)/2
+ 1049 0126 7601     		.2byte	(.L88-.L44)/2
+ 1050 0128 7101     		.2byte	(.L87-.L44)/2
+ 1051 012a 6C01     		.2byte	(.L86-.L44)/2
+ 1052 012c 6701     		.2byte	(.L85-.L44)/2
+ 1053 012e 6201     		.2byte	(.L84-.L44)/2
+ 1054 0130 5D01     		.2byte	(.L83-.L44)/2
+ 1055 0132 5801     		.2byte	(.L82-.L44)/2
+ 1056 0134 5301     		.2byte	(.L81-.L44)/2
+ 1057 0136 D501     		.2byte	(.L80-.L44)/2
+ 1058 0138 DA01     		.2byte	(.L79-.L44)/2
+ 1059 013a BD00     		.2byte	(.L78-.L44)/2
+ 1060 013c 3001     		.2byte	(.L77-.L44)/2
+ 1061 013e 2B01     		.2byte	(.L76-.L44)/2
+ARM GAS  /tmp/cc0ki2gK.s 			page 41
+
+
+ 1062 0140 2601     		.2byte	(.L75-.L44)/2
+ 1063 0142 2101     		.2byte	(.L74-.L44)/2
+ 1064 0144 1C01     		.2byte	(.L73-.L44)/2
+ 1065 0146 1701     		.2byte	(.L72-.L44)/2
+ 1066 0148 1201     		.2byte	(.L71-.L44)/2
+ 1067 014a 0D01     		.2byte	(.L70-.L44)/2
+ 1068 014c 0801     		.2byte	(.L69-.L44)/2
+ 1069 014e 0301     		.2byte	(.L68-.L44)/2
+ 1070 0150 FE00     		.2byte	(.L67-.L44)/2
+ 1071 0152 F900     		.2byte	(.L66-.L44)/2
+ 1072 0154 F400     		.2byte	(.L65-.L44)/2
+ 1073 0156 EF00     		.2byte	(.L64-.L44)/2
+ 1074 0158 EA00     		.2byte	(.L63-.L44)/2
+ 1075 015a E500     		.2byte	(.L62-.L44)/2
+ 1076 015c E000     		.2byte	(.L61-.L44)/2
+ 1077 015e DB00     		.2byte	(.L60-.L44)/2
+ 1078 0160 D600     		.2byte	(.L59-.L44)/2
+ 1079 0162 D100     		.2byte	(.L58-.L44)/2
+ 1080 0164 CC00     		.2byte	(.L57-.L44)/2
+ 1081 0166 C700     		.2byte	(.L56-.L44)/2
+ 1082 0168 C200     		.2byte	(.L55-.L44)/2
+ 1083 016a 3501     		.2byte	(.L54-.L44)/2
+ 1084 016c B800     		.2byte	(.L53-.L44)/2
+ 1085 016e B300     		.2byte	(.L52-.L44)/2
+ 1086 0170 AE00     		.2byte	(.L51-.L44)/2
+ 1087 0172 A900     		.2byte	(.L50-.L44)/2
+ 1088 0174 A400     		.2byte	(.L49-.L44)/2
+ 1089 0176 9F00     		.2byte	(.L48-.L44)/2
+ 1090 0178 9A00     		.2byte	(.L47-.L44)/2
+ 1091 017a 9500     		.2byte	(.L46-.L44)/2
+ 1092 017c 9000     		.2byte	(.L45-.L44)/2
+ 1093 017e 8B00     		.2byte	(.L43-.L44)/2
+ 1094              		.p2align 1
+ 1095              	.L43:
+  78:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPERM: Operation not permitted");
+ 1096              		.loc 1 78 17 is_stmt 1 view .LVU184
+ 1097 0180 B349     		ldr	r1, .L138
+ 1098 0182 2846     		mov	r0, r5
+ 1099 0184 FFF7FEFF 		bl	__write_error_message
+ 1100              	.LVL64:
+  79:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1101              		.loc 1 79 17 view .LVU185
+ 1102 0188 5DE7     		b	.L41
+ 1103              	.L45:
+  81:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOENT: No such file or directory");
+ 1104              		.loc 1 81 17 view .LVU186
+ 1105 018a B249     		ldr	r1, .L138+4
+ 1106 018c 2846     		mov	r0, r5
+ 1107 018e FFF7FEFF 		bl	__write_error_message
+ 1108              	.LVL65:
+  82:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1109              		.loc 1 82 17 view .LVU187
+ 1110 0192 58E7     		b	.L41
+ 1111              	.L46:
+  84:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESRCH: No such process");
+ 1112              		.loc 1 84 17 view .LVU188
+ 1113 0194 B049     		ldr	r1, .L138+8
+ARM GAS  /tmp/cc0ki2gK.s 			page 42
+
+
+ 1114 0196 2846     		mov	r0, r5
+ 1115 0198 FFF7FEFF 		bl	__write_error_message
+ 1116              	.LVL66:
+  85:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1117              		.loc 1 85 17 view .LVU189
+ 1118 019c 53E7     		b	.L41
+ 1119              	.L47:
+  87:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: EINTR: Interrupted system call");
+ 1120              		.loc 1 87 17 view .LVU190
+ 1121 019e AF49     		ldr	r1, .L138+12
+ 1122 01a0 2846     		mov	r0, r5
+ 1123 01a2 FFF7FEFF 		bl	__write_error_message
+ 1124              	.LVL67:
+  88:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1125              		.loc 1 88 17 view .LVU191
+ 1126 01a6 4EE7     		b	.L41
+ 1127              	.L48:
+  90:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EIO: I/O error");
+ 1128              		.loc 1 90 17 view .LVU192
+ 1129 01a8 AD49     		ldr	r1, .L138+16
+ 1130 01aa 2846     		mov	r0, r5
+ 1131 01ac FFF7FEFF 		bl	__write_error_message
+ 1132              	.LVL68:
+  91:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1133              		.loc 1 91 17 view .LVU193
+ 1134 01b0 49E7     		b	.L41
+ 1135              	.L49:
+  93:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENXIO: No such device or address");
+ 1136              		.loc 1 93 17 view .LVU194
+ 1137 01b2 AC49     		ldr	r1, .L138+20
+ 1138 01b4 2846     		mov	r0, r5
+ 1139 01b6 FFF7FEFF 		bl	__write_error_message
+ 1140              	.LVL69:
+  94:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1141              		.loc 1 94 17 view .LVU195
+ 1142 01ba 44E7     		b	.L41
+ 1143              	.L50:
+  96:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: E2BIG: Argument list too long");
+ 1144              		.loc 1 96 17 view .LVU196
+ 1145 01bc AA49     		ldr	r1, .L138+24
+ 1146 01be 2846     		mov	r0, r5
+ 1147 01c0 FFF7FEFF 		bl	__write_error_message
+ 1148              	.LVL70:
+  97:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1149              		.loc 1 97 17 view .LVU197
+ 1150 01c4 3FE7     		b	.L41
+ 1151              	.L51:
+  99:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOEXEC: Exec format error");
+ 1152              		.loc 1 99 17 view .LVU198
+ 1153 01c6 A949     		ldr	r1, .L138+28
+ 1154 01c8 2846     		mov	r0, r5
+ 1155 01ca FFF7FEFF 		bl	__write_error_message
+ 1156              	.LVL71:
+ 100:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1157              		.loc 1 100 17 view .LVU199
+ 1158 01ce 3AE7     		b	.L41
+ 1159              	.L52:
+ARM GAS  /tmp/cc0ki2gK.s 			page 43
+
+
+ 102:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EBADF: Bad file descriptor");
+ 1160              		.loc 1 102 17 view .LVU200
+ 1161 01d0 A749     		ldr	r1, .L138+32
+ 1162 01d2 2846     		mov	r0, r5
+ 1163 01d4 FFF7FEFF 		bl	__write_error_message
+ 1164              	.LVL72:
+ 103:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1165              		.loc 1 103 17 view .LVU201
+ 1166 01d8 35E7     		b	.L41
+ 1167              	.L53:
+ 105:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECHILD: No child processes");
+ 1168              		.loc 1 105 17 view .LVU202
+ 1169 01da A649     		ldr	r1, .L138+36
+ 1170 01dc 2846     		mov	r0, r5
+ 1171 01de FFF7FEFF 		bl	__write_error_message
+ 1172              	.LVL73:
+ 106:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1173              		.loc 1 106 17 view .LVU203
+ 1174 01e2 30E7     		b	.L41
+ 1175              	.L78:
+ 108:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: EAGAIN: Resource temporarily unavailable");
+ 1176              		.loc 1 108 17 view .LVU204
+ 1177 01e4 A449     		ldr	r1, .L138+40
+ 1178 01e6 2846     		mov	r0, r5
+ 1179 01e8 FFF7FEFF 		bl	__write_error_message
+ 1180              	.LVL74:
+ 109:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1181              		.loc 1 109 17 view .LVU205
+ 1182 01ec 2BE7     		b	.L41
+ 1183              	.L55:
+ 111:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOMEM: Out of memory");
+ 1184              		.loc 1 111 17 view .LVU206
+ 1185 01ee A349     		ldr	r1, .L138+44
+ 1186 01f0 2846     		mov	r0, r5
+ 1187 01f2 FFF7FEFF 		bl	__write_error_message
+ 1188              	.LVL75:
+ 112:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1189              		.loc 1 112 17 view .LVU207
+ 1190 01f6 26E7     		b	.L41
+ 1191              	.L56:
+ 114:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EACCES: Permission denied");
+ 1192              		.loc 1 114 17 view .LVU208
+ 1193 01f8 A149     		ldr	r1, .L138+48
+ 1194 01fa 2846     		mov	r0, r5
+ 1195 01fc FFF7FEFF 		bl	__write_error_message
+ 1196              	.LVL76:
+ 115:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1197              		.loc 1 115 17 view .LVU209
+ 1198 0200 21E7     		b	.L41
+ 1199              	.L57:
+ 117:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EFAULT: Bad address");
+ 1200              		.loc 1 117 17 view .LVU210
+ 1201 0202 A049     		ldr	r1, .L138+52
+ 1202 0204 2846     		mov	r0, r5
+ 1203 0206 FFF7FEFF 		bl	__write_error_message
+ 1204              	.LVL77:
+ 118:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ARM GAS  /tmp/cc0ki2gK.s 			page 44
+
+
+ 1205              		.loc 1 118 17 view .LVU211
+ 1206 020a 1CE7     		b	.L41
+ 1207              	.L58:
+ 120:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTBLK: Block device required");
+ 1208              		.loc 1 120 17 view .LVU212
+ 1209 020c 9E49     		ldr	r1, .L138+56
+ 1210 020e 2846     		mov	r0, r5
+ 1211 0210 FFF7FEFF 		bl	__write_error_message
+ 1212              	.LVL78:
+ 121:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1213              		.loc 1 121 17 view .LVU213
+ 1214 0214 17E7     		b	.L41
+ 1215              	.L59:
+ 123:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EBUSY: Device or resource busy");
+ 1216              		.loc 1 123 17 view .LVU214
+ 1217 0216 9D49     		ldr	r1, .L138+60
+ 1218 0218 2846     		mov	r0, r5
+ 1219 021a FFF7FEFF 		bl	__write_error_message
+ 1220              	.LVL79:
+ 124:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1221              		.loc 1 124 17 view .LVU215
+ 1222 021e 12E7     		b	.L41
+ 1223              	.L60:
+ 126:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EEXIST: File exists");
+ 1224              		.loc 1 126 17 view .LVU216
+ 1225 0220 9B49     		ldr	r1, .L138+64
+ 1226 0222 2846     		mov	r0, r5
+ 1227 0224 FFF7FEFF 		bl	__write_error_message
+ 1228              	.LVL80:
+ 127:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1229              		.loc 1 127 17 view .LVU217
+ 1230 0228 0DE7     		b	.L41
+ 1231              	.L61:
+ 129:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EXDEV: Cross-device link");
+ 1232              		.loc 1 129 17 view .LVU218
+ 1233 022a 9A49     		ldr	r1, .L138+68
+ 1234 022c 2846     		mov	r0, r5
+ 1235 022e FFF7FEFF 		bl	__write_error_message
+ 1236              	.LVL81:
+ 130:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1237              		.loc 1 130 17 view .LVU219
+ 1238 0232 08E7     		b	.L41
+ 1239              	.L62:
+ 132:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENODEV: No such device");
+ 1240              		.loc 1 132 17 view .LVU220
+ 1241 0234 9849     		ldr	r1, .L138+72
+ 1242 0236 2846     		mov	r0, r5
+ 1243 0238 FFF7FEFF 		bl	__write_error_message
+ 1244              	.LVL82:
+ 133:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1245              		.loc 1 133 17 view .LVU221
+ 1246 023c 03E7     		b	.L41
+ 1247              	.L63:
+ 135:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTDIR: Not a directory");
+ 1248              		.loc 1 135 17 view .LVU222
+ 1249 023e 9749     		ldr	r1, .L138+76
+ 1250 0240 2846     		mov	r0, r5
+ARM GAS  /tmp/cc0ki2gK.s 			page 45
+
+
+ 1251 0242 FFF7FEFF 		bl	__write_error_message
+ 1252              	.LVL83:
+ 136:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1253              		.loc 1 136 17 view .LVU223
+ 1254 0246 FEE6     		b	.L41
+ 1255              	.L64:
+ 138:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISDIR: Is a directory");
+ 1256              		.loc 1 138 17 view .LVU224
+ 1257 0248 9549     		ldr	r1, .L138+80
+ 1258 024a 2846     		mov	r0, r5
+ 1259 024c FFF7FEFF 		bl	__write_error_message
+ 1260              	.LVL84:
+ 139:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1261              		.loc 1 139 17 view .LVU225
+ 1262 0250 F9E6     		b	.L41
+ 1263              	.L65:
+ 141:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EINVAL: Invalid argument");
+ 1264              		.loc 1 141 17 view .LVU226
+ 1265 0252 9449     		ldr	r1, .L138+84
+ 1266 0254 2846     		mov	r0, r5
+ 1267 0256 FFF7FEFF 		bl	__write_error_message
+ 1268              	.LVL85:
+ 142:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1269              		.loc 1 142 17 view .LVU227
+ 1270 025a F4E6     		b	.L41
+ 1271              	.L66:
+ 144:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENFILE: File table overflow");
+ 1272              		.loc 1 144 17 view .LVU228
+ 1273 025c 9249     		ldr	r1, .L138+88
+ 1274 025e 2846     		mov	r0, r5
+ 1275 0260 FFF7FEFF 		bl	__write_error_message
+ 1276              	.LVL86:
+ 145:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1277              		.loc 1 145 17 view .LVU229
+ 1278 0264 EFE6     		b	.L41
+ 1279              	.L67:
+ 147:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMFILE: Too many open files");
+ 1280              		.loc 1 147 17 view .LVU230
+ 1281 0266 9149     		ldr	r1, .L138+92
+ 1282 0268 2846     		mov	r0, r5
+ 1283 026a FFF7FEFF 		bl	__write_error_message
+ 1284              	.LVL87:
+ 148:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1285              		.loc 1 148 17 view .LVU231
+ 1286 026e EAE6     		b	.L41
+ 1287              	.L68:
+ 150:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTTY: Not a terminal");
+ 1288              		.loc 1 150 17 view .LVU232
+ 1289 0270 8F49     		ldr	r1, .L138+96
+ 1290 0272 2846     		mov	r0, r5
+ 1291 0274 FFF7FEFF 		bl	__write_error_message
+ 1292              	.LVL88:
+ 151:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1293              		.loc 1 151 17 view .LVU233
+ 1294 0278 E5E6     		b	.L41
+ 1295              	.L69:
+ 153:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETXTBSY: Text file busy");
+ARM GAS  /tmp/cc0ki2gK.s 			page 46
+
+
+ 1296              		.loc 1 153 17 view .LVU234
+ 1297 027a 8E49     		ldr	r1, .L138+100
+ 1298 027c 2846     		mov	r0, r5
+ 1299 027e FFF7FEFF 		bl	__write_error_message
+ 1300              	.LVL89:
+ 154:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1301              		.loc 1 154 17 view .LVU235
+ 1302 0282 E0E6     		b	.L41
+ 1303              	.L70:
+ 156:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EFBIG: File too large");
+ 1304              		.loc 1 156 17 view .LVU236
+ 1305 0284 8C49     		ldr	r1, .L138+104
+ 1306 0286 2846     		mov	r0, r5
+ 1307 0288 FFF7FEFF 		bl	__write_error_message
+ 1308              	.LVL90:
+ 157:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1309              		.loc 1 157 17 view .LVU237
+ 1310 028c DBE6     		b	.L41
+ 1311              	.L71:
+ 159:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOSPC: No space left on device");
+ 1312              		.loc 1 159 17 view .LVU238
+ 1313 028e 8B49     		ldr	r1, .L138+108
+ 1314 0290 2846     		mov	r0, r5
+ 1315 0292 FFF7FEFF 		bl	__write_error_message
+ 1316              	.LVL91:
+ 160:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1317              		.loc 1 160 17 view .LVU239
+ 1318 0296 D6E6     		b	.L41
+ 1319              	.L72:
+ 162:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESPIPE: Illegal seek");
+ 1320              		.loc 1 162 17 view .LVU240
+ 1321 0298 8949     		ldr	r1, .L138+112
+ 1322 029a 2846     		mov	r0, r5
+ 1323 029c FFF7FEFF 		bl	__write_error_message
+ 1324              	.LVL92:
+ 163:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1325              		.loc 1 163 17 view .LVU241
+ 1326 02a0 D1E6     		b	.L41
+ 1327              	.L73:
+ 165:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EROFS: Read-only file system");
+ 1328              		.loc 1 165 17 view .LVU242
+ 1329 02a2 8849     		ldr	r1, .L138+116
+ 1330 02a4 2846     		mov	r0, r5
+ 1331 02a6 FFF7FEFF 		bl	__write_error_message
+ 1332              	.LVL93:
+ 166:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1333              		.loc 1 166 17 view .LVU243
+ 1334 02aa CCE6     		b	.L41
+ 1335              	.L74:
+ 168:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMLINK: Too many links");
+ 1336              		.loc 1 168 17 view .LVU244
+ 1337 02ac 8649     		ldr	r1, .L138+120
+ 1338 02ae 2846     		mov	r0, r5
+ 1339 02b0 FFF7FEFF 		bl	__write_error_message
+ 1340              	.LVL94:
+ 169:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1341              		.loc 1 169 17 view .LVU245
+ARM GAS  /tmp/cc0ki2gK.s 			page 47
+
+
+ 1342 02b4 C7E6     		b	.L41
+ 1343              	.L75:
+ 171:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPIPE: Broken pipe");
+ 1344              		.loc 1 171 17 view .LVU246
+ 1345 02b6 8549     		ldr	r1, .L138+124
+ 1346 02b8 2846     		mov	r0, r5
+ 1347 02ba FFF7FEFF 		bl	__write_error_message
+ 1348              	.LVL95:
+ 172:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1349              		.loc 1 172 17 view .LVU247
+ 1350 02be C2E6     		b	.L41
+ 1351              	.L76:
+ 174:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDOM: Math argument out of domain");
+ 1352              		.loc 1 174 17 view .LVU248
+ 1353 02c0 8349     		ldr	r1, .L138+128
+ 1354 02c2 2846     		mov	r0, r5
+ 1355 02c4 FFF7FEFF 		bl	__write_error_message
+ 1356              	.LVL96:
+ 175:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1357              		.loc 1 175 17 view .LVU249
+ 1358 02c8 BDE6     		b	.L41
+ 1359              	.L77:
+ 177:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ERANGE: Math result not representable");
+ 1360              		.loc 1 177 17 view .LVU250
+ 1361 02ca 8249     		ldr	r1, .L138+132
+ 1362 02cc 2846     		mov	r0, r5
+ 1363 02ce FFF7FEFF 		bl	__write_error_message
+ 1364              	.LVL97:
+ 178:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1365              		.loc 1 178 17 view .LVU251
+ 1366 02d2 B8E6     		b	.L41
+ 1367              	.L54:
+ 182:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDEADLK: Resource deadlock would occur");
+ 1368              		.loc 1 182 17 view .LVU252
+ 1369 02d4 8049     		ldr	r1, .L138+136
+ 1370 02d6 2846     		mov	r0, r5
+ 1371 02d8 FFF7FEFF 		bl	__write_error_message
+ 1372              	.LVL98:
+ 183:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1373              		.loc 1 183 17 view .LVU253
+ 1374 02dc B3E6     		b	.L41
+ 1375              	.L106:
+ 185:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENAMETOOLONG: File name too long");
+ 1376              		.loc 1 185 17 view .LVU254
+ 1377 02de 7F49     		ldr	r1, .L138+140
+ 1378 02e0 2846     		mov	r0, r5
+ 1379 02e2 FFF7FEFF 		bl	__write_error_message
+ 1380              	.LVL99:
+ 186:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1381              		.loc 1 186 17 view .LVU255
+ 1382 02e6 AEE6     		b	.L41
+ 1383              	.L112:
+ 188:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOLCK: No record locks available");
+ 1384              		.loc 1 188 17 view .LVU256
+ 1385 02e8 7D49     		ldr	r1, .L138+144
+ 1386 02ea 2846     		mov	r0, r5
+ 1387 02ec FFF7FEFF 		bl	__write_error_message
+ARM GAS  /tmp/cc0ki2gK.s 			page 48
+
+
+ 1388              	.LVL100:
+ 189:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1389              		.loc 1 189 17 view .LVU257
+ 1390 02f0 A9E6     		b	.L41
+ 1391              	.L113:
+ 191:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOSYS: Function not implemented");
+ 1392              		.loc 1 191 17 view .LVU258
+ 1393 02f2 7C49     		ldr	r1, .L138+148
+ 1394 02f4 2846     		mov	r0, r5
+ 1395 02f6 FFF7FEFF 		bl	__write_error_message
+ 1396              	.LVL101:
+ 192:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1397              		.loc 1 192 17 view .LVU259
+ 1398 02fa A4E6     		b	.L41
+ 1399              	.L109:
+ 194:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTEMPTY: Directory not empty");
+ 1400              		.loc 1 194 17 view .LVU260
+ 1401 02fc 7A49     		ldr	r1, .L138+152
+ 1402 02fe 2846     		mov	r0, r5
+ 1403 0300 FFF7FEFF 		bl	__write_error_message
+ 1404              	.LVL102:
+ 195:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1405              		.loc 1 195 17 view .LVU261
+ 1406 0304 9FE6     		b	.L41
+ 1407              	.L105:
+ 197:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ELOOP: Too many symbolic links encountered");
+ 1408              		.loc 1 197 17 view .LVU262
+ 1409 0306 7949     		ldr	r1, .L138+156
+ 1410 0308 2846     		mov	r0, r5
+ 1411 030a FFF7FEFF 		bl	__write_error_message
+ 1412              	.LVL103:
+ 198:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1413              		.loc 1 198 17 view .LVU263
+ 1414 030e 9AE6     		b	.L41
+ 1415              	.L81:
+ 201:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTSOCK: Socket operation on non-socket");
+ 1416              		.loc 1 201 17 view .LVU264
+ 1417 0310 7749     		ldr	r1, .L138+160
+ 1418 0312 2846     		mov	r0, r5
+ 1419 0314 FFF7FEFF 		bl	__write_error_message
+ 1420              	.LVL104:
+ 202:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1421              		.loc 1 202 17 view .LVU265
+ 1422 0318 95E6     		b	.L41
+ 1423              	.L82:
+ 204:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDESTADDRREQ: Destination address required");
+ 1424              		.loc 1 204 17 view .LVU266
+ 1425 031a 7649     		ldr	r1, .L138+164
+ 1426 031c 2846     		mov	r0, r5
+ 1427 031e FFF7FEFF 		bl	__write_error_message
+ 1428              	.LVL105:
+ 205:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1429              		.loc 1 205 17 view .LVU267
+ 1430 0322 90E6     		b	.L41
+ 1431              	.L83:
+ 207:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMSGSIZE: Message too long");
+ 1432              		.loc 1 207 17 view .LVU268
+ARM GAS  /tmp/cc0ki2gK.s 			page 49
+
+
+ 1433 0324 7449     		ldr	r1, .L138+168
+ 1434 0326 2846     		mov	r0, r5
+ 1435 0328 FFF7FEFF 		bl	__write_error_message
+ 1436              	.LVL106:
+ 208:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1437              		.loc 1 208 17 view .LVU269
+ 1438 032c 8BE6     		b	.L41
+ 1439              	.L84:
+ 210:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPROTOTYPE: Protocol wrong type for socket");
+ 1440              		.loc 1 210 17 view .LVU270
+ 1441 032e 7349     		ldr	r1, .L138+172
+ 1442 0330 2846     		mov	r0, r5
+ 1443 0332 FFF7FEFF 		bl	__write_error_message
+ 1444              	.LVL107:
+ 211:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1445              		.loc 1 211 17 view .LVU271
+ 1446 0336 86E6     		b	.L41
+ 1447              	.L85:
+ 213:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOPROTOOPT: Protocol not available");
+ 1448              		.loc 1 213 17 view .LVU272
+ 1449 0338 7149     		ldr	r1, .L138+176
+ 1450 033a 2846     		mov	r0, r5
+ 1451 033c FFF7FEFF 		bl	__write_error_message
+ 1452              	.LVL108:
+ 214:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1453              		.loc 1 214 17 view .LVU273
+ 1454 0340 81E6     		b	.L41
+ 1455              	.L86:
+ 216:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPROTONOSUPPORT: Protocol not supported");
+ 1456              		.loc 1 216 17 view .LVU274
+ 1457 0342 7049     		ldr	r1, .L138+180
+ 1458 0344 2846     		mov	r0, r5
+ 1459 0346 FFF7FEFF 		bl	__write_error_message
+ 1460              	.LVL109:
+ 217:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1461              		.loc 1 217 17 view .LVU275
+ 1462 034a 7CE6     		b	.L41
+ 1463              	.L87:
+ 219:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESOCKTNOSUPPORT: Socket type not supported");
+ 1464              		.loc 1 219 17 view .LVU276
+ 1465 034c 6E49     		ldr	r1, .L138+184
+ 1466 034e 2846     		mov	r0, r5
+ 1467 0350 FFF7FEFF 		bl	__write_error_message
+ 1468              	.LVL110:
+ 220:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1469              		.loc 1 220 17 view .LVU277
+ 1470 0354 77E6     		b	.L41
+ 1471              	.L88:
+ 222:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EOPNOTSUPP: Operation not supported");
+ 1472              		.loc 1 222 17 view .LVU278
+ 1473 0356 6D49     		ldr	r1, .L138+188
+ 1474 0358 2846     		mov	r0, r5
+ 1475 035a FFF7FEFF 		bl	__write_error_message
+ 1476              	.LVL111:
+ 223:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1477              		.loc 1 223 17 view .LVU279
+ 1478 035e 72E6     		b	.L41
+ARM GAS  /tmp/cc0ki2gK.s 			page 50
+
+
+ 1479              	.L89:
+ 225:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EPFNOSUPPORT: Protocol family not supported");
+ 1480              		.loc 1 225 17 view .LVU280
+ 1481 0360 6B49     		ldr	r1, .L138+192
+ 1482 0362 2846     		mov	r0, r5
+ 1483 0364 FFF7FEFF 		bl	__write_error_message
+ 1484              	.LVL112:
+ 226:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1485              		.loc 1 226 17 view .LVU281
+ 1486 0368 6DE6     		b	.L41
+ 1487              	.L90:
+ 228:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EAFNOSUPPORT: Address family not supported");
+ 1488              		.loc 1 228 17 view .LVU282
+ 1489 036a 6A49     		ldr	r1, .L138+196
+ 1490 036c 2846     		mov	r0, r5
+ 1491 036e FFF7FEFF 		bl	__write_error_message
+ 1492              	.LVL113:
+ 229:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1493              		.loc 1 229 17 view .LVU283
+ 1494 0372 68E6     		b	.L41
+ 1495              	.L91:
+ 231:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EADDRINUSE: Address already in use");
+ 1496              		.loc 1 231 17 view .LVU284
+ 1497 0374 6849     		ldr	r1, .L138+200
+ 1498 0376 2846     		mov	r0, r5
+ 1499 0378 FFF7FEFF 		bl	__write_error_message
+ 1500              	.LVL114:
+ 232:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1501              		.loc 1 232 17 view .LVU285
+ 1502 037c 63E6     		b	.L41
+ 1503              	.L92:
+ 234:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EADDRNOTAVAIL: Cannot assign requested address
+ 1504              		.loc 1 234 17 view .LVU286
+ 1505 037e 6749     		ldr	r1, .L138+204
+ 1506 0380 2846     		mov	r0, r5
+ 1507 0382 FFF7FEFF 		bl	__write_error_message
+ 1508              	.LVL115:
+ 235:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1509              		.loc 1 235 17 view .LVU287
+ 1510 0386 5EE6     		b	.L41
+ 1511              	.L93:
+ 237:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETDOWN: Network is down");
+ 1512              		.loc 1 237 17 view .LVU288
+ 1513 0388 6549     		ldr	r1, .L138+208
+ 1514 038a 2846     		mov	r0, r5
+ 1515 038c FFF7FEFF 		bl	__write_error_message
+ 1516              	.LVL116:
+ 238:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1517              		.loc 1 238 17 view .LVU289
+ 1518 0390 59E6     		b	.L41
+ 1519              	.L94:
+ 240:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETUNREACH: Network is unreachable");
+ 1520              		.loc 1 240 17 view .LVU290
+ 1521 0392 6449     		ldr	r1, .L138+212
+ 1522 0394 2846     		mov	r0, r5
+ 1523 0396 FFF7FEFF 		bl	__write_error_message
+ 1524              	.LVL117:
+ARM GAS  /tmp/cc0ki2gK.s 			page 51
+
+
+ 241:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1525              		.loc 1 241 17 view .LVU291
+ 1526 039a 54E6     		b	.L41
+ 1527              	.L95:
+ 243:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENETRESET: Network dropped connection on reset
+ 1528              		.loc 1 243 17 view .LVU292
+ 1529 039c 6249     		ldr	r1, .L138+216
+ 1530 039e 2846     		mov	r0, r5
+ 1531 03a0 FFF7FEFF 		bl	__write_error_message
+ 1532              	.LVL118:
+ 244:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1533              		.loc 1 244 17 view .LVU293
+ 1534 03a4 4FE6     		b	.L41
+ 1535              	.L96:
+ 246:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNABORTED: Software caused connection abort
+ 1536              		.loc 1 246 17 view .LVU294
+ 1537 03a6 6149     		ldr	r1, .L138+220
+ 1538 03a8 2846     		mov	r0, r5
+ 1539 03aa FFF7FEFF 		bl	__write_error_message
+ 1540              	.LVL119:
+ 247:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1541              		.loc 1 247 17 view .LVU295
+ 1542 03ae 4AE6     		b	.L41
+ 1543              	.L97:
+ 249:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNRESET: Connection reset by peer");
+ 1544              		.loc 1 249 17 view .LVU296
+ 1545 03b0 5F49     		ldr	r1, .L138+224
+ 1546 03b2 2846     		mov	r0, r5
+ 1547 03b4 FFF7FEFF 		bl	__write_error_message
+ 1548              	.LVL120:
+ 250:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1549              		.loc 1 250 17 view .LVU297
+ 1550 03b8 45E6     		b	.L41
+ 1551              	.L98:
+ 252:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOBUFS: No buffer space available");
+ 1552              		.loc 1 252 17 view .LVU298
+ 1553 03ba 5E49     		ldr	r1, .L138+228
+ 1554 03bc 2846     		mov	r0, r5
+ 1555 03be FFF7FEFF 		bl	__write_error_message
+ 1556              	.LVL121:
+ 253:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1557              		.loc 1 253 17 view .LVU299
+ 1558 03c2 40E6     		b	.L41
+ 1559              	.L99:
+ 255:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISCONN: Transport endpoint is already connect
+ 1560              		.loc 1 255 17 view .LVU300
+ 1561 03c4 5C49     		ldr	r1, .L138+232
+ 1562 03c6 2846     		mov	r0, r5
+ 1563 03c8 FFF7FEFF 		bl	__write_error_message
+ 1564              	.LVL122:
+ 256:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1565              		.loc 1 256 17 view .LVU301
+ 1566 03cc 3BE6     		b	.L41
+ 1567              	.L100:
+ 258:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTCONN: Transport endpoint is not connected"
+ 1568              		.loc 1 258 17 view .LVU302
+ 1569 03ce 5B49     		ldr	r1, .L138+236
+ARM GAS  /tmp/cc0ki2gK.s 			page 52
+
+
+ 1570 03d0 2846     		mov	r0, r5
+ 1571 03d2 FFF7FEFF 		bl	__write_error_message
+ 1572              	.LVL123:
+ 259:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1573              		.loc 1 259 17 view .LVU303
+ 1574 03d6 36E6     		b	.L41
+ 1575              	.L101:
+ 261:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESHUTDOWN: Cannot send after transport endpoin
+ 1576              		.loc 1 261 17 view .LVU304
+ 1577 03d8 5949     		ldr	r1, .L138+240
+ 1578 03da 2846     		mov	r0, r5
+ 1579 03dc FFF7FEFF 		bl	__write_error_message
+ 1580              	.LVL124:
+ 262:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1581              		.loc 1 262 17 view .LVU305
+ 1582 03e0 31E6     		b	.L41
+ 1583              	.L102:
+ 264:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETOOMANYREFS: Too many references");
+ 1584              		.loc 1 264 17 view .LVU306
+ 1585 03e2 5849     		ldr	r1, .L138+244
+ 1586 03e4 2846     		mov	r0, r5
+ 1587 03e6 FFF7FEFF 		bl	__write_error_message
+ 1588              	.LVL125:
+ 265:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1589              		.loc 1 265 17 view .LVU307
+ 1590 03ea 2CE6     		b	.L41
+ 1591              	.L103:
+ 267:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ETIMEDOUT: Connection timed out");
+ 1592              		.loc 1 267 17 view .LVU308
+ 1593 03ec 5649     		ldr	r1, .L138+248
+ 1594 03ee 2846     		mov	r0, r5
+ 1595 03f0 FFF7FEFF 		bl	__write_error_message
+ 1596              	.LVL126:
+ 268:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1597              		.loc 1 268 17 view .LVU309
+ 1598 03f4 27E6     		b	.L41
+ 1599              	.L104:
+ 270:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ECONNREFUSED: Connection refused");
+ 1600              		.loc 1 270 17 view .LVU310
+ 1601 03f6 5549     		ldr	r1, .L138+252
+ 1602 03f8 2846     		mov	r0, r5
+ 1603 03fa FFF7FEFF 		bl	__write_error_message
+ 1604              	.LVL127:
+ 271:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1605              		.loc 1 271 17 view .LVU311
+ 1606 03fe 22E6     		b	.L41
+ 1607              	.L107:
+ 273:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHOSTDOWN: Host is down");
+ 1608              		.loc 1 273 17 view .LVU312
+ 1609 0400 5349     		ldr	r1, .L138+256
+ 1610 0402 2846     		mov	r0, r5
+ 1611 0404 FFF7FEFF 		bl	__write_error_message
+ 1612              	.LVL128:
+ 274:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1613              		.loc 1 274 17 view .LVU313
+ 1614 0408 1DE6     		b	.L41
+ 1615              	.L108:
+ARM GAS  /tmp/cc0ki2gK.s 			page 53
+
+
+ 276:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHOSTUNREACH: No route to host");
+ 1616              		.loc 1 276 17 view .LVU314
+ 1617 040a 5249     		ldr	r1, .L138+260
+ 1618 040c 2846     		mov	r0, r5
+ 1619 040e FFF7FEFF 		bl	__write_error_message
+ 1620              	.LVL129:
+ 277:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1621              		.loc 1 277 17 view .LVU315
+ 1622 0412 18E6     		b	.L41
+ 1623              	.L80:
+ 280:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "INFO: EALREADY: Operation already in progress");
+ 1624              		.loc 1 280 17 view .LVU316
+ 1625 0414 5049     		ldr	r1, .L138+264
+ 1626 0416 2846     		mov	r0, r5
+ 1627 0418 FFF7FEFF 		bl	__write_error_message
+ 1628              	.LVL130:
+ 281:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1629              		.loc 1 281 17 view .LVU317
+ 1630 041c 13E6     		b	.L41
+ 1631              	.L79:
+ 283:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "INFO: EINPROGRESS: Operation now in progress");
+ 1632              		.loc 1 283 17 view .LVU318
+ 1633 041e 4F49     		ldr	r1, .L138+268
+ 1634 0420 2846     		mov	r0, r5
+ 1635 0422 FFF7FEFF 		bl	__write_error_message
+ 1636              	.LVL131:
+ 284:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1637              		.loc 1 284 17 view .LVU319
+ 1638 0426 0EE6     		b	.L41
+ 1639              	.L111:
+ 286:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ESTALE: Stale file handle");
+ 1640              		.loc 1 286 17 view .LVU320
+ 1641 0428 4D49     		ldr	r1, .L138+272
+ 1642 042a 2846     		mov	r0, r5
+ 1643 042c FFF7FEFF 		bl	__write_error_message
+ 1644              	.LVL132:
+ 287:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1645              		.loc 1 287 17 view .LVU321
+ 1646 0430 09E6     		b	.L41
+ 1647              	.L114:
+ 289:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EUCLEAN: Structure needs cleaning");
+ 1648              		.loc 1 289 17 view .LVU322
+ 1649 0432 4C49     		ldr	r1, .L138+276
+ 1650 0434 2846     		mov	r0, r5
+ 1651 0436 FFF7FEFF 		bl	__write_error_message
+ 1652              	.LVL133:
+ 290:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1653              		.loc 1 290 17 view .LVU323
+ 1654 043a 04E6     		b	.L41
+ 1655              	.L115:
+ 292:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTNAM: Not a XENIX named type file");
+ 1656              		.loc 1 292 17 view .LVU324
+ 1657 043c 4A49     		ldr	r1, .L138+280
+ 1658 043e 2846     		mov	r0, r5
+ 1659 0440 FFF7FEFF 		bl	__write_error_message
+ 1660              	.LVL134:
+ 293:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ARM GAS  /tmp/cc0ki2gK.s 			page 54
+
+
+ 1661              		.loc 1 293 17 view .LVU325
+ 1662 0444 FFE5     		b	.L41
+ 1663              	.L116:
+ 295:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENAVAIL: No XENIX semaphores available");
+ 1664              		.loc 1 295 17 view .LVU326
+ 1665 0446 4949     		ldr	r1, .L138+284
+ 1666 0448 2846     		mov	r0, r5
+ 1667 044a FFF7FEFF 		bl	__write_error_message
+ 1668              	.LVL135:
+ 296:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1669              		.loc 1 296 17 view .LVU327
+ 1670 044e FAE5     		b	.L41
+ 1671              	.L139:
+ 1672              		.align	2
+ 1673              	.L138:
+ 1674 0450 00000000 		.word	.LC2
+ 1675 0454 28000000 		.word	.LC3
+ 1676 0458 54000000 		.word	.LC4
+ 1677 045c 74000000 		.word	.LC5
+ 1678 0460 9C000000 		.word	.LC6
+ 1679 0464 B4000000 		.word	.LC7
+ 1680 0468 DC000000 		.word	.LC8
+ 1681 046c 04010000 		.word	.LC9
+ 1682 0470 28010000 		.word	.LC10
+ 1683 0474 4C010000 		.word	.LC11
+ 1684 0478 70010000 		.word	.LC12
+ 1685 047c A0010000 		.word	.LC13
+ 1686 0480 C0010000 		.word	.LC14
+ 1687 0484 E4010000 		.word	.LC15
+ 1688 0488 00020000 		.word	.LC16
+ 1689 048c 28020000 		.word	.LC17
+ 1690 0490 50020000 		.word	.LC18
+ 1691 0494 6C020000 		.word	.LC19
+ 1692 0498 8C020000 		.word	.LC20
+ 1693 049c AC020000 		.word	.LC21
+ 1694 04a0 CC020000 		.word	.LC22
+ 1695 04a4 EC020000 		.word	.LC23
+ 1696 04a8 0C030000 		.word	.LC24
+ 1697 04ac 30030000 		.word	.LC25
+ 1698 04b0 54030000 		.word	.LC26
+ 1699 04b4 74030000 		.word	.LC27
+ 1700 04b8 94030000 		.word	.LC28
+ 1701 04bc B4030000 		.word	.LC29
+ 1702 04c0 DC030000 		.word	.LC30
+ 1703 04c4 F8030000 		.word	.LC31
+ 1704 04c8 1C040000 		.word	.LC32
+ 1705 04cc 3C040000 		.word	.LC33
+ 1706 04d0 58040000 		.word	.LC34
+ 1707 04d4 84040000 		.word	.LC35
+ 1708 04d8 B4040000 		.word	.LC36
+ 1709 04dc E4040000 		.word	.LC37
+ 1710 04e0 0C050000 		.word	.LC38
+ 1711 04e4 38050000 		.word	.LC39
+ 1712 04e8 60050000 		.word	.LC40
+ 1713 04ec 88050000 		.word	.LC41
+ 1714 04f0 BC050000 		.word	.LC42
+ 1715 04f4 EC050000 		.word	.LC43
+ARM GAS  /tmp/cc0ki2gK.s 			page 55
+
+
+ 1716 04f8 20060000 		.word	.LC44
+ 1717 04fc 44060000 		.word	.LC45
+ 1718 0500 78060000 		.word	.LC46
+ 1719 0504 A4060000 		.word	.LC47
+ 1720 0508 D4060000 		.word	.LC48
+ 1721 050c 08070000 		.word	.LC49
+ 1722 0510 34070000 		.word	.LC50
+ 1723 0514 68070000 		.word	.LC51
+ 1724 0518 9C070000 		.word	.LC52
+ 1725 051c C8070000 		.word	.LC53
+ 1726 0520 00080000 		.word	.LC54
+ 1727 0524 24080000 		.word	.LC55
+ 1728 0528 50080000 		.word	.LC56
+ 1729 052c 88080000 		.word	.LC57
+ 1730 0530 C0080000 		.word	.LC58
+ 1731 0534 EC080000 		.word	.LC59
+ 1732 0538 18090000 		.word	.LC60
+ 1733 053c 50090000 		.word	.LC61
+ 1734 0540 88090000 		.word	.LC62
+ 1735 0544 C8090000 		.word	.LC63
+ 1736 0548 F4090000 		.word	.LC64
+ 1737 054c 1C0A0000 		.word	.LC65
+ 1738 0550 440A0000 		.word	.LC66
+ 1739 0554 640A0000 		.word	.LC67
+ 1740 0558 8C0A0000 		.word	.LC68
+ 1741 055c BC0A0000 		.word	.LC69
+ 1742 0560 EC0A0000 		.word	.LC70
+ 1743 0564 100B0000 		.word	.LC71
+ 1744 0568 3C0B0000 		.word	.LC72
+ 1745 056c 680B0000 		.word	.LC73
+ 1746              	.L117:
+ 298:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EISNAM: Is a named type file");
+ 1747              		.loc 1 298 17 view .LVU328
+ 1748 0570 2949     		ldr	r1, .L140
+ 1749 0572 2846     		mov	r0, r5
+ 1750 0574 FFF7FEFF 		bl	__write_error_message
+ 1751              	.LVL136:
+ 299:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1752              		.loc 1 299 17 view .LVU329
+ 1753 0578 65E5     		b	.L41
+ 1754              	.L118:
+ 301:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EREMOTEIO: Remote I/O error");
+ 1755              		.loc 1 301 17 view .LVU330
+ 1756 057a 2849     		ldr	r1, .L140+4
+ 1757 057c 2846     		mov	r0, r5
+ 1758 057e FFF7FEFF 		bl	__write_error_message
+ 1759              	.LVL137:
+ 302:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1760              		.loc 1 302 17 view .LVU331
+ 1761 0582 60E5     		b	.L41
+ 1762              	.L110:
+ 304:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EDQUOT: Disk quota exceeded");
+ 1763              		.loc 1 304 17 view .LVU332
+ 1764 0584 2649     		ldr	r1, .L140+8
+ 1765 0586 2846     		mov	r0, r5
+ 1766 0588 FFF7FEFF 		bl	__write_error_message
+ 1767              	.LVL138:
+ARM GAS  /tmp/cc0ki2gK.s 			page 56
+
+
+ 305:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1768              		.loc 1 305 17 view .LVU333
+ 1769 058c 5BE5     		b	.L41
+ 1770              	.L119:
+ 307:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOMEDIUM: No medium found");
+ 1771              		.loc 1 307 17 view .LVU334
+ 1772 058e 2549     		ldr	r1, .L140+12
+ 1773 0590 2846     		mov	r0, r5
+ 1774 0592 FFF7FEFF 		bl	__write_error_message
+ 1775              	.LVL139:
+ 308:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1776              		.loc 1 308 17 view .LVU335
+ 1777 0596 56E5     		b	.L41
+ 1778              	.L120:
+ 310:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EMEDIUMTYPE: Wrong medium type");
+ 1779              		.loc 1 310 17 view .LVU336
+ 1780 0598 2349     		ldr	r1, .L140+16
+ 1781 059a 2846     		mov	r0, r5
+ 1782 059c FFF7FEFF 		bl	__write_error_message
+ 1783              	.LVL140:
+ 311:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1784              		.loc 1 311 17 view .LVU337
+ 1785 05a0 51E5     		b	.L41
+ 1786              	.L121:
+ 313:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "WARN: ECANCELED: Operation canceled");
+ 1787              		.loc 1 313 17 view .LVU338
+ 1788 05a2 2249     		ldr	r1, .L140+20
+ 1789 05a4 2846     		mov	r0, r5
+ 1790 05a6 FFF7FEFF 		bl	__write_error_message
+ 1791              	.LVL141:
+ 314:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1792              		.loc 1 314 17 view .LVU339
+ 1793 05aa 4CE5     		b	.L41
+ 1794              	.L122:
+ 316:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOKEY: Required key not available");
+ 1795              		.loc 1 316 17 view .LVU340
+ 1796 05ac 2049     		ldr	r1, .L140+24
+ 1797 05ae 2846     		mov	r0, r5
+ 1798 05b0 FFF7FEFF 		bl	__write_error_message
+ 1799              	.LVL142:
+ 317:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1800              		.loc 1 317 17 view .LVU341
+ 1801 05b4 47E5     		b	.L41
+ 1802              	.L123:
+ 319:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYEXPIRED: Key has expired");
+ 1803              		.loc 1 319 17 view .LVU342
+ 1804 05b6 1F49     		ldr	r1, .L140+28
+ 1805 05b8 2846     		mov	r0, r5
+ 1806 05ba FFF7FEFF 		bl	__write_error_message
+ 1807              	.LVL143:
+ 320:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1808              		.loc 1 320 17 view .LVU343
+ 1809 05be 42E5     		b	.L41
+ 1810              	.L124:
+ 322:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYREVOKED: Key has been revoked");
+ 1811              		.loc 1 322 17 view .LVU344
+ 1812 05c0 1D49     		ldr	r1, .L140+32
+ARM GAS  /tmp/cc0ki2gK.s 			page 57
+
+
+ 1813 05c2 2846     		mov	r0, r5
+ 1814 05c4 FFF7FEFF 		bl	__write_error_message
+ 1815              	.LVL144:
+ 323:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1816              		.loc 1 323 17 view .LVU345
+ 1817 05c8 3DE5     		b	.L41
+ 1818              	.L125:
+ 325:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EKEYREJECTED: Key was rejected by service");
+ 1819              		.loc 1 325 17 view .LVU346
+ 1820 05ca 1C49     		ldr	r1, .L140+36
+ 1821 05cc 2846     		mov	r0, r5
+ 1822 05ce FFF7FEFF 		bl	__write_error_message
+ 1823              	.LVL145:
+ 326:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1824              		.loc 1 326 17 view .LVU347
+ 1825 05d2 38E5     		b	.L41
+ 1826              	.L126:
+ 328:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EOWNERDEAD: Owner died");
+ 1827              		.loc 1 328 17 view .LVU348
+ 1828 05d4 1A49     		ldr	r1, .L140+40
+ 1829 05d6 2846     		mov	r0, r5
+ 1830 05d8 FFF7FEFF 		bl	__write_error_message
+ 1831              	.LVL146:
+ 329:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1832              		.loc 1 329 17 view .LVU349
+ 1833 05dc 33E5     		b	.L41
+ 1834              	.L127:
+ 331:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ENOTRECOVERABLE: State not recoverable");
+ 1835              		.loc 1 331 17 view .LVU350
+ 1836 05de 1949     		ldr	r1, .L140+44
+ 1837 05e0 2846     		mov	r0, r5
+ 1838 05e2 FFF7FEFF 		bl	__write_error_message
+ 1839              	.LVL147:
+ 332:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1840              		.loc 1 332 17 view .LVU351
+ 1841 05e6 2EE5     		b	.L41
+ 1842              	.L128:
+ 334:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: ERFKILL: Operation not possible due to RF-kill
+ 1843              		.loc 1 334 17 view .LVU352
+ 1844 05e8 1749     		ldr	r1, .L140+48
+ 1845 05ea 2846     		mov	r0, r5
+ 1846 05ec FFF7FEFF 		bl	__write_error_message
+ 1847              	.LVL148:
+ 335:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1848              		.loc 1 335 17 view .LVU353
+ 1849 05f0 29E5     		b	.L41
+ 1850              	.L129:
+ 337:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: EHWPOISON: Memory page has hardware error");
+ 1851              		.loc 1 337 17 view .LVU354
+ 1852 05f2 1649     		ldr	r1, .L140+52
+ 1853 05f4 2846     		mov	r0, r5
+ 1854 05f6 FFF7FEFF 		bl	__write_error_message
+ 1855              	.LVL149:
+ 338:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1856              		.loc 1 338 17 view .LVU355
+ 1857 05fa 24E5     		b	.L41
+ 1858              	.L42:
+ARM GAS  /tmp/cc0ki2gK.s 			page 58
+
+
+ 340:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 __write_error_message(error, "ERROR: Unknown error code");
+ 1859              		.loc 1 340 17 view .LVU356
+ 1860 05fc 1449     		ldr	r1, .L140+56
+ 1861 05fe 2846     		mov	r0, r5
+ 1862 0600 FFF7FEFF 		bl	__write_error_message
+ 1863              	.LVL150:
+ 341:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****                 break;
+ 1864              		.loc 1 341 17 view .LVU357
+ 1865 0604 1FE5     		b	.L41
+ 1866              	.LVL151:
+ 1867              	.L137:
+ 348:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         l_output_error_message(error,NULL,0,printk);
+ 1868              		.loc 1 348 9 view .LVU358
+ 1869 0606 134B     		ldr	r3, .L140+60
+ 1870 0608 0022     		movs	r2, #0
+ 1871 060a 1146     		mov	r1, r2
+ 1872 060c 2846     		mov	r0, r5
+ 1873 060e FFF7FEFF 		bl	l_output_error_message
+ 1874              	.LVL152:
+ 1875 0612 20E5     		b	.L130
+ 1876              	.LVL153:
+ 1877              	.L133:
+ 1878              	.LCFI20:
+ 1879              		.cfi_def_cfa_offset 0
+ 1880              		.cfi_restore 3
+ 1881              		.cfi_restore 4
+ 1882              		.cfi_restore 5
+ 1883              		.cfi_restore 14
+ 348:/mnt/c/Users/31740/Desktop/newcore/lib/error.c ****         l_output_error_message(error,NULL,0,printk);
+ 1884              		.loc 1 348 9 is_stmt 0 view .LVU359
+ 1885 0614 7047     		bx	lr
+ 1886              	.L141:
+ 1887 0616 00BF     		.align	2
+ 1888              	.L140:
+ 1889 0618 980B0000 		.word	.LC74
+ 1890 061c BC0B0000 		.word	.LC75
+ 1891 0620 E00B0000 		.word	.LC76
+ 1892 0624 040C0000 		.word	.LC77
+ 1893 0628 280C0000 		.word	.LC78
+ 1894 062c 500C0000 		.word	.LC79
+ 1895 0630 740C0000 		.word	.LC80
+ 1896 0634 A00C0000 		.word	.LC81
+ 1897 0638 C40C0000 		.word	.LC82
+ 1898 063c F00C0000 		.word	.LC83
+ 1899 0640 240D0000 		.word	.LC84
+ 1900 0644 440D0000 		.word	.LC85
+ 1901 0648 740D0000 		.word	.LC86
+ 1902 064c AC0D0000 		.word	.LC87
+ 1903 0650 E00D0000 		.word	.LC88
+ 1904 0654 00000000 		.word	printk
+ 1905              		.cfi_endproc
+ 1906              	.LFE287:
+ 1908              		.text
+ 1909              	.Letext0:
+ 1910              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/stdarg.h"
+ 1911              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 1912              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ARM GAS  /tmp/cc0ki2gK.s 			page 59
+
+
+ 1913              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 1914              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 1915              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h"
+ 1916              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types_raw.h"
+ 1917              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types.h"
+ 1918              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mutex.h"
+ 1919              		.file 12 "/mnt/c/Users/31740/Desktop/newcore/include/linux/error.h"
+ 1920              		.file 13 "/mnt/c/Users/31740/Desktop/newcore/include/linux/sprintf.h"
+ 1921              		.file 14 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ 1922              		.file 15 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time.h"
+ 1923              		.file 16 "/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h"
+ 1924              		.file 17 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 1925              		.file 18 "<built-in>"
+ 1926              		.file 19 "/mnt/c/Users/31740/Desktop/newcore/include/linux/gfp_types.h"
+ARM GAS  /tmp/cc0ki2gK.s 			page 60
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 error.c
+     /tmp/cc0ki2gK.s:21     .text.__write_error_message:00000000 $t
+     /tmp/cc0ki2gK.s:26     .text.__write_error_message:00000000 __write_error_message
+     /tmp/cc0ki2gK.s:88     .rodata.l_error_create.str1.4:00000000 $d
+     /tmp/cc0ki2gK.s:92     .text.l_error_create:00000000 $t
+     /tmp/cc0ki2gK.s:98     .text.l_error_create:00000000 l_error_create
+     /tmp/cc0ki2gK.s:292    .text.l_error_create:00000084 $d
+     /tmp/cc0ki2gK.s:298    .text.l_delete_error:00000000 $t
+     /tmp/cc0ki2gK.s:304    .text.l_delete_error:00000000 l_delete_error
+     /tmp/cc0ki2gK.s:384    .rodata.l_output_error_message.str1.4:00000000 $d
+     /tmp/cc0ki2gK.s:389    .text.l_output_error_message:00000000 $t
+     /tmp/cc0ki2gK.s:395    .text.l_output_error_message:00000000 l_output_error_message
+     /tmp/cc0ki2gK.s:541    .text.l_output_error_message:00000080 $d
+     /tmp/cc0ki2gK.s:547    .rodata.l_error_exception.str1.4:00000000 $d
+     /tmp/cc0ki2gK.s:816    .text.l_error_exception:00000000 $t
+     /tmp/cc0ki2gK.s:822    .text.l_error_exception:00000000 l_error_exception
+     /tmp/cc0ki2gK.s:955    .text.l_error_exception:0000006a $d
+     /tmp/cc0ki2gK.s:1094   .text.l_error_exception:00000180 $t
+     /tmp/cc0ki2gK.s:1674   .text.l_error_exception:00000450 $d
+     /tmp/cc0ki2gK.s:1748   .text.l_error_exception:00000570 $t
+     /tmp/cc0ki2gK.s:1889   .text.l_error_exception:00000618 $d
+
+UNDEFINED SYMBOLS
+vsnprintf
+__smalloc__
+strlen
+strcpy
+__sfree__
+snprintf
+HZ
+ktime_get
+get_global_heap_size
+printk

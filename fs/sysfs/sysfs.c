@@ -15,10 +15,10 @@ struct sys_fs_inode {
     int                     magic;
     uint32_t                i_mode;
     uint32_t                major;
-    atomic_t                dentry_count;          //引用计数
+    atomic_t                dentry_count;        
     struct file_operations *i_fop;                
-    struct list_head        list_node;             // 挂在superblock的inode链表
-    struct list_head        dentry_list_head;      // 如果这是目录项，这里存储inode下的所有dentry链表头
+    struct list_head        list_node;            
+    struct list_head        dentry_list_head;     
     spinlock_t              lock;
     struct block_sys_ice       *bsys_;
     struct sys_fs_superblock *sb;
@@ -27,15 +27,15 @@ struct sys_fs_inode {
 
 struct sys_fs_dentry {
     int                    magic;
-    char *name;                             // 名字
-    struct sys_fs_inode *target_inode;       // 该dentry指向的目标inode
-    struct list_head list_node;             // 挂载到父目录inode中的listhead中
+    char *name;                             
+    struct sys_fs_inode *target_inode;      
+    struct list_head list_node;         
 };
 struct sys_fs_superblock {
     int                    magic;
     spinlock_t             lock;
     struct sys_fs_inode *rootinode;
-    struct list_head inode_list_head;       // 该superblock下的inode链表头
+    struct list_head inode_list_head;      
 };
 
 int sysfs_mount_kobject(struct inode *inode, struct kobject * kobject)
@@ -43,6 +43,7 @@ int sysfs_mount_kobject(struct inode *inode, struct kobject * kobject)
     struct sys_fs_inode *sysfs_inode = inode->i_private;
     if(sysfs_inode->magic != MAGIC) return -1;
     sysfs_inode->i_mode = S_ISVTX | (sysfs_inode->i_mode & 0777);
+    sysfs_inode->kobject = kobject;
     return 0;
 }
 
@@ -62,7 +63,6 @@ static int sys_fs_write(struct file *file, char __user * data, size_t size, loff
     early_printk("sys_fs test write\n");
     return 0;
 }
-
 
 static struct file_operations sys_fs_file_fops = {
     .owner = THIS_MODULE,
@@ -226,7 +226,6 @@ static struct sys_fs_dentry* sys_fs_lookup(struct sys_fs_inode* dentry_inode,cha
     spin_unlock(&dentry_inode->lock);
     return NULL;
 }
-
 
 
 

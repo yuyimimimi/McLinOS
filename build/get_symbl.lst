@@ -1,0 +1,149 @@
+ARM GAS  /tmp/ccH3a7hR.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"get_symbl.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c"
+  20              		.section	.text.find_table_by_fnname,"ax",%progbits
+  21              		.align	1
+  22              		.global	find_table_by_fnname
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	find_table_by_fnname:
+  28              	.LVL0:
+  29              	.LFB269:
+   1:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** #include <linux/module.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** #include <linux/export.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** #include <linux/string.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** 
+   6:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct __export_table_start[];
+   7:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct __export_table_end[];
+   8:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** void* find_table_by_fnname(char *name)
+  10:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** {
+  30              		.loc 1 10 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 10 1 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  11:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****     if(name == NULL) return 0;
+  42              		.loc 1 11 5 is_stmt 1 view .LVU2
+  43              		.loc 1 11 7 is_stmt 0 view .LVU3
+  44 0002 0546     		mov	r5, r0
+  45 0004 80B1     		cbz	r0, .L1
+  46              	.LBB2:
+  12:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****     for (struct export_node_struct *index =__export_table_start; index < __export_table_end; index+
+ARM GAS  /tmp/ccH3a7hR.s 			page 2
+
+
+  47              		.loc 1 12 37 view .LVU4
+  48 0006 094C     		ldr	r4, .L9
+  49 0008 00E0     		b	.L3
+  50              	.LVL1:
+  51              	.L4:
+  52              		.loc 1 12 99 is_stmt 1 discriminator 2 view .LVU5
+  53 000a 0C34     		adds	r4, r4, #12
+  54              	.LVL2:
+  55              	.L3:
+  56              		.loc 1 12 72 discriminator 1 view .LVU6
+  57 000c 084B     		ldr	r3, .L9+4
+  58 000e 9C42     		cmp	r4, r3
+  59 0010 09D2     		bcs	.L8
+  13:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****     {
+  14:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****        if(index->export_node_name != NULL )
+  60              		.loc 1 14 8 view .LVU7
+  61              		.loc 1 14 16 is_stmt 0 view .LVU8
+  62 0012 2068     		ldr	r0, [r4]
+  63              		.loc 1 14 10 view .LVU9
+  64 0014 0028     		cmp	r0, #0
+  65 0016 F8D0     		beq	.L4
+  66              	.LBB3:
+  15:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****        {
+  16:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****            int i = strcmp(index->export_node_name,name);        
+  67              		.loc 1 16 12 is_stmt 1 view .LVU10
+  68              		.loc 1 16 20 is_stmt 0 view .LVU11
+  69 0018 2946     		mov	r1, r5
+  70 001a FFF7FEFF 		bl	strcmp
+  71              	.LVL3:
+  17:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****            if(i == 0){
+  72              		.loc 1 17 12 is_stmt 1 view .LVU12
+  73              		.loc 1 17 14 is_stmt 0 view .LVU13
+  74 001e 0028     		cmp	r0, #0
+  75 0020 F3D1     		bne	.L4
+  18:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****              return index->export_node_fn_address;
+  76              		.loc 1 18 14 is_stmt 1 view .LVU14
+  77              		.loc 1 18 26 is_stmt 0 view .LVU15
+  78 0022 A068     		ldr	r0, [r4, #8]
+  79              	.LVL4:
+  80              		.loc 1 18 26 view .LVU16
+  81 0024 00E0     		b	.L1
+  82              	.LVL5:
+  83              	.L8:
+  84              		.loc 1 18 26 view .LVU17
+  85              	.LBE3:
+  86              	.LBE2:
+  19:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****            }
+  20:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****         }
+  21:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****     }
+  22:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c ****     return NULL;
+  87              		.loc 1 22 12 view .LVU18
+  88 0026 0020     		movs	r0, #0
+  89              	.LVL6:
+  90              	.L1:
+  23:/mnt/c/Users/31740/Desktop/newcore/kernel/symbol_table/get_symbl.c **** }
+  91              		.loc 1 23 1 view .LVU19
+  92 0028 38BD     		pop	{r3, r4, r5, pc}
+ARM GAS  /tmp/ccH3a7hR.s 			page 3
+
+
+  93              	.LVL7:
+  94              	.L10:
+  95              		.loc 1 23 1 view .LVU20
+  96 002a 00BF     		.align	2
+  97              	.L9:
+  98 002c 00000000 		.word	__export_table_start
+  99 0030 00000000 		.word	__export_table_end
+ 100              		.cfi_endproc
+ 101              	.LFE269:
+ 103              		.text
+ 104              	.Letext0:
+ 105              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/export.h"
+ 106              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ARM GAS  /tmp/ccH3a7hR.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 get_symbl.c
+     /tmp/ccH3a7hR.s:21     .text.find_table_by_fnname:00000000 $t
+     /tmp/ccH3a7hR.s:27     .text.find_table_by_fnname:00000000 find_table_by_fnname
+     /tmp/ccH3a7hR.s:98     .text.find_table_by_fnname:0000002c $d
+
+UNDEFINED SYMBOLS
+strcmp
+__export_table_start
+__export_table_end

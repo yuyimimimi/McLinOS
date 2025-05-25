@@ -379,6 +379,33 @@ static struct template_fs_dentry* template_fs_lookup(struct template_fs_inode* d
     return NULL;
 }
 
+
+
+static int template_fs_iterate(struct file *file, struct dir_context *ctx)
+{
+    struct template_fs_inode *inode = file->private_data;
+    struct template_fs_dentry *pos;
+    loff_t curr = 0;
+
+    if ((inode->i_mode & S_IFMT) != S_IFDIR)
+        return -ENOTDIR;
+
+    spin_lock(&inode->lock);
+    list_for_each_entry(pos, &inode->dentry_list_head, list_node) {
+        if (curr++ < ctx->pos)
+            continue;
+
+        if (!dir_emit(ctx, pos->name, strlen(pos->name),
+                      curr, 0,  // inode number 可为 0 或 pos->target_inode->major
+                      (pos->target_inode->i_mode & S_IFDIR) ? DT_DIR : DT_REG)) {
+            break;  // 缓冲区满了
+        }
+        ctx->pos++;
+    }
+    spin_unlock(&inode->lock);
+    return 0;
+}
+
 /* VFS interface functions VFS接口函数 */
 
 static struct super_operations template_fs_super_operation;

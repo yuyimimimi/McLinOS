@@ -1,2 +1,2 @@
 C_SOURCES    += \
-		$(wildcard ./init/*.c)
+		$(wildcard $(BASE_DIR)/init/*.c)

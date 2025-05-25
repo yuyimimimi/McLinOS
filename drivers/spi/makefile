@@ -1,2 +1,2 @@
 C_SOURCES += 	\
-	./drivers/spi/$(PLATFORM)_spi.c
+	$(BASE_DIR)/drivers/spi/$(PLATFORM)_spi.c

@@ -1,9 +1,9 @@
-include ./fs/devfs/makefile
-include ./fs/pipefs/makefile
-include ./fs/initramfs/makefile
-include ./fs/ext2/Makefile
-include ./fs/sysfs/Makefile
+include $(BASE_DIR)/fs/devfs/makefile
+include $(BASE_DIR)/fs/pipefs/makefile
+include $(BASE_DIR)/fs/initramfs/makefile
+include $(BASE_DIR)/fs/ext2/Makefile
+include $(BASE_DIR)/fs/sysfs/Makefile
 
 C_SOURCES    += \
-		$(wildcard ./fs/*.c)
+		$(wildcard $(BASE_DIR)/fs/*.c)
 

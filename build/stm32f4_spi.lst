@@ -1,0 +1,2318 @@
+ARM GAS  /tmp/ccRdDVeE.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4_spi.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c"
+  20              		.section	.text.SPI1_Init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	SPI1_Init:
+  27              	.LFB1033:
+   1:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/fs.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/init.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/spi/spi.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/slab.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/device.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #include <linux/gpio_subsystem.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** // 基础地址
+  10:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define PERIPH_BASE           ((unsigned int)0x40000000)
+  11:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define AHB1PERIPH_BASE       (PERIPH_BASE + 0x00020000)
+  12:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000)
+  13:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  14:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** // GPIOA
+  15:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_BASE            (AHB1PERIPH_BASE + 0x0000)
+  16:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_MODER           (*(volatile unsigned int *)(GPIOA_BASE + 0x00))
+  17:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_OTYPER          (*(volatile unsigned int *)(GPIOA_BASE + 0x04))
+  18:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_OSPEEDR         (*(volatile unsigned int *)(GPIOA_BASE + 0x08))
+  19:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_PUPDR           (*(volatile unsigned int *)(GPIOA_BASE + 0x0C))
+  20:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define GPIOA_AFRL            (*(volatile unsigned int *)(GPIOA_BASE + 0x20))  // 低8位引脚AFR
+  21:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  22:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** // RCC
+  23:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_BASE              (AHB1PERIPH_BASE + 0x3800)
+  24:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_AHB1ENR           (*(volatile unsigned int *)(RCC_BASE + 0x30))
+  25:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_APB2ENR           (*(volatile unsigned int *)(RCC_BASE + 0x44))
+  26:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_APB2RSTR          (*(volatile unsigned int *)(RCC_BASE + 0x24))
+  27:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  28:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** // SPI1
+  29:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_BASE             (APB2PERIPH_BASE + 0x3000)
+  30:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_CR1              (*(volatile unsigned int *)(SPI1_BASE + 0x00))
+  31:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_CR2              (*(volatile unsigned int *)(SPI1_BASE + 0x04))
+ARM GAS  /tmp/ccRdDVeE.s 			page 2
+
+
+  32:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_SR               (*(volatile unsigned int *)(SPI1_BASE + 0x08))
+  33:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_DR               (*(volatile unsigned int *)(SPI1_BASE + 0x0C))
+  34:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  35:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** // 位定义
+  36:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_AHB1ENR_GPIOAEN   (1 << 0)
+  37:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_APB2ENR_SPI1EN    (1 << 12)
+  38:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define RCC_APB2RSTR_SPI1RST  (1 << 12)
+  39:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_SPE           (1 << 6)
+  41:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_MSTR          (1 << 2)
+  42:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_CPOL          (1 << 1)
+  43:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_CPHA          (1 << 0)
+  44:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_DFF           (1 << 11)
+  45:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_LSBFIRST      (1 << 7)
+  46:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_SSM           (1 << 9)
+  47:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_CR1_SSI           (1 << 8)
+  48:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  49:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_SR_TXE            (1 << 1)
+  50:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI_SR_RXNE           (1 << 0)
+  51:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  52:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  53:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  54:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static void SPI1_Init(void)
+  55:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+  28              		.loc 1 55 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  56:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 1. 使能GPIOA时钟
+  57:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     RCC_AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+  33              		.loc 1 57 5 view .LVU1
+  34 0000 284A     		ldr	r2, .L2
+  35 0002 D2F83038 		ldr	r3, [r2, #2096]
+  36              		.loc 1 57 17 is_stmt 0 view .LVU2
+  37 0006 43F00103 		orr	r3, r3, #1
+  38 000a C2F83038 		str	r3, [r2, #2096]
+  58:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  59:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 2. 配置PA5, PA6, PA7为复用模式
+  60:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_MODER &= ~((3 << (5 * 2)) | (3 << (6 * 2)) | (3 << (7 * 2)));
+  39              		.loc 1 60 5 is_stmt 1 view .LVU3
+  40 000e 264B     		ldr	r3, .L2+4
+  41 0010 1968     		ldr	r1, [r3]
+  42              		.loc 1 60 17 is_stmt 0 view .LVU4
+  43 0012 21F47C41 		bic	r1, r1, #64512
+  44 0016 1960     		str	r1, [r3]
+  61:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_MODER |=  ((2 << (5 * 2)) | (2 << (6 * 2)) | (2 << (7 * 2)));
+  45              		.loc 1 61 5 is_stmt 1 view .LVU5
+  46 0018 1968     		ldr	r1, [r3]
+  47              		.loc 1 61 17 is_stmt 0 view .LVU6
+  48 001a 41F42841 		orr	r1, r1, #43008
+  49 001e 1960     		str	r1, [r3]
+  62:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  63:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 3. 推挽输出
+  64:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_OTYPER &= ~((1 << 5) | (1 << 6) | (1 << 7));
+  50              		.loc 1 64 5 is_stmt 1 view .LVU7
+  51 0020 5968     		ldr	r1, [r3, #4]
+ARM GAS  /tmp/ccRdDVeE.s 			page 3
+
+
+  52              		.loc 1 64 18 is_stmt 0 view .LVU8
+  53 0022 21F0E001 		bic	r1, r1, #224
+  54 0026 5960     		str	r1, [r3, #4]
+  65:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 4. 高速
+  67:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_OSPEEDR |= ((3 << (5 * 2)) | (3 << (6 * 2)) | (3 << (7 * 2)));
+  55              		.loc 1 67 5 is_stmt 1 view .LVU9
+  56 0028 9968     		ldr	r1, [r3, #8]
+  57              		.loc 1 67 19 is_stmt 0 view .LVU10
+  58 002a 41F47C41 		orr	r1, r1, #64512
+  59 002e 9960     		str	r1, [r3, #8]
+  68:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  69:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 5. 无上下拉
+  70:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_PUPDR &= ~((3 << (5 * 2)) | (3 << (6 * 2)) | (3 << (7 * 2)));
+  60              		.loc 1 70 5 is_stmt 1 view .LVU11
+  61 0030 D968     		ldr	r1, [r3, #12]
+  62              		.loc 1 70 17 is_stmt 0 view .LVU12
+  63 0032 21F47C41 		bic	r1, r1, #64512
+  64 0036 D960     		str	r1, [r3, #12]
+  71:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  72:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 6. 配置PA5, PA6, PA7 复用为AF5 (SPI1)
+  73:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_AFRL &= ~((0xF << (5 * 4)) | (0xF << (6 * 4)) | (0xF << (7 * 4)));
+  65              		.loc 1 73 5 is_stmt 1 view .LVU13
+  66 0038 196A     		ldr	r1, [r3, #32]
+  67              		.loc 1 73 16 is_stmt 0 view .LVU14
+  68 003a C1F31301 		ubfx	r1, r1, #0, #20
+  69 003e 1962     		str	r1, [r3, #32]
+  74:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     GPIOA_AFRL |=  ((5 << (5 * 4)) | (5 << (6 * 4)) | (5 << (7 * 4)));
+  70              		.loc 1 74 5 is_stmt 1 view .LVU15
+  71 0040 196A     		ldr	r1, [r3, #32]
+  72              		.loc 1 74 16 is_stmt 0 view .LVU16
+  73 0042 41F0AA41 		orr	r1, r1, #1426063360
+  74 0046 41F4A001 		orr	r1, r1, #5242880
+  75 004a 1962     		str	r1, [r3, #32]
+  75:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  76:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 7. 使能SPI1时钟
+  77:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     RCC_APB2ENR |= RCC_APB2ENR_SPI1EN;
+  76              		.loc 1 77 5 is_stmt 1 view .LVU17
+  77 004c D2F84438 		ldr	r3, [r2, #2116]
+  78              		.loc 1 77 17 is_stmt 0 view .LVU18
+  79 0050 43F48053 		orr	r3, r3, #4096
+  80 0054 C2F84438 		str	r3, [r2, #2116]
+  78:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  79:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 8. SPI1复位
+  80:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     RCC_APB2RSTR |= RCC_APB2RSTR_SPI1RST;
+  81              		.loc 1 80 5 is_stmt 1 view .LVU19
+  82 0058 D2F82438 		ldr	r3, [r2, #2084]
+  83              		.loc 1 80 18 is_stmt 0 view .LVU20
+  84 005c 43F48053 		orr	r3, r3, #4096
+  85 0060 C2F82438 		str	r3, [r2, #2084]
+  81:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     RCC_APB2RSTR &= ~RCC_APB2RSTR_SPI1RST;
+  86              		.loc 1 81 5 is_stmt 1 view .LVU21
+  87 0064 D2F82438 		ldr	r3, [r2, #2084]
+  88              		.loc 1 81 18 is_stmt 0 view .LVU22
+  89 0068 23F48053 		bic	r3, r3, #4096
+  90 006c C2F82438 		str	r3, [r2, #2084]
+  82:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ARM GAS  /tmp/ccRdDVeE.s 			page 4
+
+
+  83:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 9. SPI1参数配置
+  84:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 = 0;
+  91              		.loc 1 84 5 is_stmt 1 view .LVU23
+  92              		.loc 1 84 14 is_stmt 0 view .LVU24
+  93 0070 0E4B     		ldr	r3, .L2+8
+  94 0072 0022     		movs	r2, #0
+  95 0074 1A60     		str	r2, [r3]
+  85:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= SPI_CR1_MSTR;      // 主模式
+  96              		.loc 1 85 5 is_stmt 1 view .LVU25
+  97 0076 1A68     		ldr	r2, [r3]
+  98              		.loc 1 85 14 is_stmt 0 view .LVU26
+  99 0078 42F00402 		orr	r2, r2, #4
+ 100 007c 1A60     		str	r2, [r3]
+  86:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= SPI_CR1_CPOL;      // 空闲高电平
+ 101              		.loc 1 86 5 is_stmt 1 view .LVU27
+ 102 007e 1A68     		ldr	r2, [r3]
+ 103              		.loc 1 86 14 is_stmt 0 view .LVU28
+ 104 0080 42F00202 		orr	r2, r2, #2
+ 105 0084 1A60     		str	r2, [r3]
+  87:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= SPI_CR1_CPHA;      // 第二个边沿采样
+ 106              		.loc 1 87 5 is_stmt 1 view .LVU29
+ 107 0086 1A68     		ldr	r2, [r3]
+ 108              		.loc 1 87 14 is_stmt 0 view .LVU30
+ 109 0088 42F00102 		orr	r2, r2, #1
+ 110 008c 1A60     		str	r2, [r3]
+  88:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= SPI_CR1_SSM | SPI_CR1_SSI;  // 软件管理NSS
+ 111              		.loc 1 88 5 is_stmt 1 view .LVU31
+ 112 008e 1A68     		ldr	r2, [r3]
+ 113              		.loc 1 88 14 is_stmt 0 view .LVU32
+ 114 0090 42F44072 		orr	r2, r2, #768
+ 115 0094 1A60     		str	r2, [r3]
+  89:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= (0 << 3);          // 默认分频：fPCLK/2
+ 116              		.loc 1 89 5 is_stmt 1 view .LVU33
+ 117              		.loc 1 89 14 is_stmt 0 view .LVU34
+ 118 0096 1A68     		ldr	r2, [r3]
+ 119 0098 1A60     		str	r2, [r3]
+  90:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  91:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 10. 使能SPI1
+  92:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= SPI_CR1_SPE;
+ 120              		.loc 1 92 5 is_stmt 1 view .LVU35
+ 121 009a 1A68     		ldr	r2, [r3]
+ 122              		.loc 1 92 14 is_stmt 0 view .LVU36
+ 123 009c 42F04002 		orr	r2, r2, #64
+ 124 00a0 1A60     		str	r2, [r3]
+  93:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 125              		.loc 1 93 1 view .LVU37
+ 126 00a2 7047     		bx	lr
+ 127              	.L3:
+ 128              		.align	2
+ 129              	.L2:
+ 130 00a4 00300240 		.word	1073885184
+ 131 00a8 00000240 		.word	1073872896
+ 132 00ac 00300140 		.word	1073819648
+ 133              		.cfi_endproc
+ 134              	.LFE1033:
+ 136              		.section	.text.SPI1_SetSpeed,"ax",%progbits
+ 137              		.align	1
+ARM GAS  /tmp/ccRdDVeE.s 			page 5
+
+
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	SPI1_SetSpeed:
+ 143              	.LVL0:
+ 144              	.LFB1034:
+  94:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+  95:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static void SPI1_SetSpeed(uint8_t prescaler)
+  96:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 145              		.loc 1 96 1 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+  97:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 &= ~(7 << 3);  // 清除BR[2:0]位
+ 150              		.loc 1 97 5 view .LVU39
+ 151 0000 044B     		ldr	r3, .L5
+ 152 0002 1A68     		ldr	r2, [r3]
+ 153              		.loc 1 97 14 is_stmt 0 view .LVU40
+ 154 0004 22F03802 		bic	r2, r2, #56
+ 155 0008 1A60     		str	r2, [r3]
+  98:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_CR1 |= (prescaler << 3); // 设置新的分频值
+ 156              		.loc 1 98 5 is_stmt 1 view .LVU41
+ 157 000a 1A68     		ldr	r2, [r3]
+ 158              		.loc 1 98 14 is_stmt 0 view .LVU42
+ 159 000c 42EAC002 		orr	r2, r2, r0, lsl #3
+ 160 0010 1A60     		str	r2, [r3]
+  99:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 161              		.loc 1 99 1 view .LVU43
+ 162 0012 7047     		bx	lr
+ 163              	.L6:
+ 164              		.align	2
+ 165              	.L5:
+ 166 0014 00300140 		.word	1073819648
+ 167              		.cfi_endproc
+ 168              	.LFE1034:
+ 170              		.section	.text.SPI1_ReadWriteByte,"ax",%progbits
+ 171              		.align	1
+ 172              		.syntax unified
+ 173              		.thumb
+ 174              		.thumb_func
+ 176              	SPI1_ReadWriteByte:
+ 177              	.LFB1036:
+ 100:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 101:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 102:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 103:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** unsigned short get_spi_speed(unsigned int speed)
+ 104:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 105:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     unsigned int pclk2 = 168000000 / 2; // 默认核心频率是168MHz
+ 106:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/2 )   return 0;
+ 107:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/4 )   return 1;
+ 108:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/8 )   return 2;
+ 109:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/16 )  return 3;
+ 110:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/32 )  return 4;
+ 111:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/64 )  return 5;
+ 112:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/128 ) return 6;
+ 113:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 7;
+ARM GAS  /tmp/ccRdDVeE.s 			page 6
+
+
+ 114:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 115:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 116:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static inline uint8_t SPI1_ReadWriteByte(uint8_t TxData)
+ 117:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 178              		.loc 1 117 1 is_stmt 1 view -0
+ 179              		.cfi_startproc
+ 180              		@ args = 0, pretend = 0, frame = 0
+ 181              		@ frame_needed = 0, uses_anonymous_args = 0
+ 182              		@ link register save eliminated.
+ 183              	.LVL1:
+ 184              	.L8:
+ 118:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 等待发送缓冲区空
+ 119:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     while (!(SPI1_SR & SPI_SR_TXE));
+ 185              		.loc 1 119 12 discriminator 1 view .LVU45
+ 186              		.loc 1 119 14 is_stmt 0 discriminator 1 view .LVU46
+ 187 0000 074B     		ldr	r3, .L10
+ 188 0002 9B68     		ldr	r3, [r3, #8]
+ 189              		.loc 1 119 12 discriminator 1 view .LVU47
+ 190 0004 13F0020F 		tst	r3, #2
+ 191 0008 FAD0     		beq	.L8
+ 120:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_DR = TxData;
+ 192              		.loc 1 120 5 is_stmt 1 view .LVU48
+ 193              		.loc 1 120 13 is_stmt 0 view .LVU49
+ 194 000a 054B     		ldr	r3, .L10
+ 195 000c D860     		str	r0, [r3, #12]
+ 121:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     // 等待接收缓冲区有数据
+ 122:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     while (!(SPI1_SR & SPI_SR_RXNE));
+ 196              		.loc 1 122 5 is_stmt 1 view .LVU50
+ 197              	.L9:
+ 198              		.loc 1 122 12 discriminator 1 view .LVU51
+ 199              		.loc 1 122 14 is_stmt 0 discriminator 1 view .LVU52
+ 200 000e 044B     		ldr	r3, .L10
+ 201 0010 9B68     		ldr	r3, [r3, #8]
+ 202              		.loc 1 122 12 discriminator 1 view .LVU53
+ 203 0012 13F0010F 		tst	r3, #1
+ 204 0016 FAD0     		beq	.L9
+ 123:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return (uint8_t)(SPI1_DR);
+ 205              		.loc 1 123 5 is_stmt 1 view .LVU54
+ 206              		.loc 1 123 22 is_stmt 0 view .LVU55
+ 207 0018 014B     		ldr	r3, .L10
+ 208 001a D868     		ldr	r0, [r3, #12]
+ 209              	.LVL2:
+ 124:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 210              		.loc 1 124 1 view .LVU56
+ 211 001c C0B2     		uxtb	r0, r0
+ 212 001e 7047     		bx	lr
+ 213              	.L11:
+ 214              		.align	2
+ 215              	.L10:
+ 216 0020 00300140 		.word	1073819648
+ 217              		.cfi_endproc
+ 218              	.LFE1036:
+ 220              		.section	.text.spi_device_swap,"ax",%progbits
+ 221              		.align	1
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ARM GAS  /tmp/ccRdDVeE.s 			page 7
+
+
+ 226              	spi_device_swap:
+ 227              	.LVL3:
+ 228              	.LFB1037:
+ 125:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 126:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 127:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 128:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** #define SPI1_BSP_DEBUG 0
+ 129:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 130:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static int spi_device_swap(void *tx_buf, void *rx_buf, int len)
+ 131:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 229              		.loc 1 131 1 is_stmt 1 view -0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		.loc 1 131 1 is_stmt 0 view .LVU58
+ 234 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 235              	.LCFI0:
+ 236              		.cfi_def_cfa_offset 24
+ 237              		.cfi_offset 3, -24
+ 238              		.cfi_offset 4, -20
+ 239              		.cfi_offset 5, -16
+ 240              		.cfi_offset 6, -12
+ 241              		.cfi_offset 7, -8
+ 242              		.cfi_offset 14, -4
+ 243 0002 0E46     		mov	r6, r1
+ 244 0004 1546     		mov	r5, r2
+ 132:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(tx_buf == NULL && rx_buf == NULL) return -1;
+ 245              		.loc 1 132 5 is_stmt 1 view .LVU59
+ 246              		.loc 1 132 7 is_stmt 0 view .LVU60
+ 247 0006 18B1     		cbz	r0, .L29
+ 248 0008 0746     		mov	r7, r0
+ 133:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     
+ 134:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     uint8_t *p = (uint8_t *)tx_buf;
+ 135:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     uint8_t *q = (uint8_t *)rx_buf;
+ 136:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****      
+ 137:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     #if SPI1_BSP_DEBUG 
+ 138:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(p){ 
+ 139:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       pr_info("send data:\n\r");
+ 140:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       pr_info("TX:\n\r");
+ 141:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       for(int i = 0; i < len; i++){
+ 142:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("0x%02x \n\r", p[i]);
+ 143:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       }
+ 144:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 145:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     #endif
+ 146:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 147:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 148:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(p && q) {
+ 249              		.loc 1 148 10 discriminator 1 view .LVU61
+ 250 000a 71B1     		cbz	r1, .L30
+ 251              	.LBB8:
+ 149:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 150:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         for(int i = 0; i < len; i++) {
+ 252              		.loc 1 150 17 view .LVU62
+ 253 000c 0024     		movs	r4, #0
+ 254 000e 08E0     		b	.L16
+ 255              	.L29:
+ 256              		.loc 1 150 17 view .LVU63
+ARM GAS  /tmp/ccRdDVeE.s 			page 8
+
+
+ 257              	.LBE8:
+ 132:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     
+ 258              		.loc 1 132 23 discriminator 1 view .LVU64
+ 259 0010 F1B1     		cbz	r1, .L31
+ 260              	.L15:
+ 151:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 152:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 153:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     } 
+ 154:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     else if(p) {
+ 155:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         for(int i = 0; i < len; i++) {
+ 156:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_ReadWriteByte(p[i]);
+ 157:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 158:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 159:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     else if(q) {
+ 261              		.loc 1 159 10 is_stmt 1 view .LVU65
+ 262              		.loc 1 159 12 is_stmt 0 view .LVU66
+ 263 0012 46B1     		cbz	r6, .L14
+ 264              	.LBB9:
+ 160:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         for(int i = 0; i < len; i++) {
+ 265              		.loc 1 160 17 view .LVU67
+ 266 0014 0024     		movs	r4, #0
+ 267 0016 18E0     		b	.L21
+ 268              	.LVL4:
+ 269              	.L18:
+ 270              		.loc 1 160 17 view .LVU68
+ 271              	.LBE9:
+ 272              	.LBB10:
+ 151:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 273              		.loc 1 151 13 is_stmt 1 view .LVU69
+ 151:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 274              		.loc 1 151 20 is_stmt 0 view .LVU70
+ 275 0018 385D     		ldrb	r0, [r7, r4]	@ zero_extendqisi2
+ 276 001a FFF7FEFF 		bl	SPI1_ReadWriteByte
+ 277              	.LVL5:
+ 151:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 278              		.loc 1 151 18 discriminator 1 view .LVU71
+ 279 001e 3055     		strb	r0, [r6, r4]
+ 150:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 280              		.loc 1 150 34 is_stmt 1 discriminator 3 view .LVU72
+ 281 0020 0134     		adds	r4, r4, #1
+ 282              	.LVL6:
+ 283              	.L16:
+ 150:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 284              		.loc 1 150 26 discriminator 1 view .LVU73
+ 285 0022 AC42     		cmp	r4, r5
+ 286 0024 F8DB     		blt	.L18
+ 287              	.LVL7:
+ 288              	.L14:
+ 150:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(p[i]);
+ 289              		.loc 1 150 26 is_stmt 0 discriminator 1 view .LVU74
+ 290              	.LBE10:
+ 161:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(0xFF);
+ 162:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 163:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 164:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     
+ 165:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     #if SPI1_BSP_DEBUG
+ 166:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(q){ 
+ARM GAS  /tmp/ccRdDVeE.s 			page 9
+
+
+ 167:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       pr_info("receive data:\n\r");
+ 168:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       pr_info("RX:\n\r");
+ 169:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       for(int i = 0; i < len; i++){
+ 170:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("0x%02x \n\r", q[i]);
+ 171:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****       }
+ 172:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 173:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     #endif
+ 174:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 175:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return len;
+ 176:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 291              		.loc 1 176 1 view .LVU75
+ 292 0026 2846     		mov	r0, r5
+ 293 0028 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 294              	.LVL8:
+ 295              	.L30:
+ 154:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         for(int i = 0; i < len; i++) {
+ 296              		.loc 1 154 10 is_stmt 1 view .LVU76
+ 154:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         for(int i = 0; i < len; i++) {
+ 297              		.loc 1 154 12 is_stmt 0 view .LVU77
+ 298 002a 0028     		cmp	r0, #0
+ 299 002c F1D0     		beq	.L15
+ 300              	.LBB11:
+ 155:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_ReadWriteByte(p[i]);
+ 301              		.loc 1 155 17 view .LVU78
+ 302 002e 0024     		movs	r4, #0
+ 303 0030 03E0     		b	.L19
+ 304              	.LVL9:
+ 305              	.L20:
+ 156:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 306              		.loc 1 156 13 is_stmt 1 view .LVU79
+ 307 0032 385D     		ldrb	r0, [r7, r4]	@ zero_extendqisi2
+ 308 0034 FFF7FEFF 		bl	SPI1_ReadWriteByte
+ 309              	.LVL10:
+ 155:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_ReadWriteByte(p[i]);
+ 310              		.loc 1 155 34 discriminator 3 view .LVU80
+ 311 0038 0134     		adds	r4, r4, #1
+ 312              	.LVL11:
+ 313              	.L19:
+ 155:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_ReadWriteByte(p[i]);
+ 314              		.loc 1 155 26 discriminator 1 view .LVU81
+ 315 003a AC42     		cmp	r4, r5
+ 316 003c F9DB     		blt	.L20
+ 317 003e F2E7     		b	.L14
+ 318              	.LVL12:
+ 319              	.L22:
+ 155:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_ReadWriteByte(p[i]);
+ 320              		.loc 1 155 26 is_stmt 0 discriminator 1 view .LVU82
+ 321              	.LBE11:
+ 322              	.LBB12:
+ 161:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 323              		.loc 1 161 13 is_stmt 1 view .LVU83
+ 161:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ 324              		.loc 1 161 20 is_stmt 0 view .LVU84
+ 325 0040 FF20     		movs	r0, #255
+ 326 0042 FFF7FEFF 		bl	SPI1_ReadWriteByte
+ 327              	.LVL13:
+ 161:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         }
+ARM GAS  /tmp/ccRdDVeE.s 			page 10
+
+
+ 328              		.loc 1 161 18 discriminator 1 view .LVU85
+ 329 0046 3055     		strb	r0, [r6, r4]
+ 160:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(0xFF);
+ 330              		.loc 1 160 34 is_stmt 1 discriminator 3 view .LVU86
+ 331 0048 0134     		adds	r4, r4, #1
+ 332              	.LVL14:
+ 333              	.L21:
+ 160:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(0xFF);
+ 334              		.loc 1 160 26 discriminator 1 view .LVU87
+ 335 004a AC42     		cmp	r4, r5
+ 336 004c F8DB     		blt	.L22
+ 337 004e EAE7     		b	.L14
+ 338              	.LVL15:
+ 339              	.L31:
+ 160:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             q[i] = SPI1_ReadWriteByte(0xFF);
+ 340              		.loc 1 160 26 is_stmt 0 discriminator 1 view .LVU88
+ 341              	.LBE12:
+ 132:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     
+ 342              		.loc 1 132 49 discriminator 2 view .LVU89
+ 343 0050 4FF0FF35 		mov	r5, #-1
+ 344 0054 E7E7     		b	.L14
+ 345              		.cfi_endproc
+ 346              	.LFE1037:
+ 348              		.section	.rodata.spi_dev_open.str1.4,"aMS",%progbits,1
+ 349              		.align	2
+ 350              	.LC0:
+ 351 0000 7370695F 		.ascii	"spi_dev_opern\012\015\000"
+ 351      6465765F 
+ 351      6F706572 
+ 351      6E0A0D00 
+ 352              		.section	.text.spi_dev_open,"ax",%progbits
+ 353              		.align	1
+ 354              		.syntax unified
+ 355              		.thumb
+ 356              		.thumb_func
+ 358              	spi_dev_open:
+ 359              	.LVL16:
+ 360              	.LFB1038:
+ 177:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 178:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 179:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static int spi_dev_open(struct inode *inode, struct file *file)
+ 181:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 361              		.loc 1 181 1 is_stmt 1 view -0
+ 362              		.cfi_startproc
+ 363              		@ args = 0, pretend = 0, frame = 0
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+ 365              		.loc 1 181 1 is_stmt 0 view .LVU91
+ 366 0000 08B5     		push	{r3, lr}
+ 367              	.LCFI1:
+ 368              		.cfi_def_cfa_offset 8
+ 369              		.cfi_offset 3, -8
+ 370              		.cfi_offset 14, -4
+ 182:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****    pr_info("spi_dev_opern\n\r");
+ 371              		.loc 1 182 4 is_stmt 1 view .LVU92
+ 372 0002 0349     		ldr	r1, .L34
+ 373              	.LVL17:
+ARM GAS  /tmp/ccRdDVeE.s 			page 11
+
+
+ 374              		.loc 1 182 4 is_stmt 0 view .LVU93
+ 375 0004 0620     		movs	r0, #6
+ 376              	.LVL18:
+ 377              		.loc 1 182 4 view .LVU94
+ 378 0006 FFF7FEFF 		bl	printk
+ 379              	.LVL19:
+ 183:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****    return 0;
+ 380              		.loc 1 183 4 is_stmt 1 view .LVU95
+ 184:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 381              		.loc 1 184 1 is_stmt 0 view .LVU96
+ 382 000a 0020     		movs	r0, #0
+ 383 000c 08BD     		pop	{r3, pc}
+ 384              	.L35:
+ 385 000e 00BF     		.align	2
+ 386              	.L34:
+ 387 0010 00000000 		.word	.LC0
+ 388              		.cfi_endproc
+ 389              	.LFE1038:
+ 391              		.section	.rodata.spi1_device_init.str1.4,"aMS",%progbits,1
+ 392              		.align	2
+ 393              	.LC1:
+ 394 0000 73706964 		.ascii	"spidev1\000"
+ 394      65763100 
+ 395              		.align	2
+ 396              	.LC2:
+ 397 0008 72656769 		.ascii	"register spi device %d\000"
+ 397      73746572 
+ 397      20737069 
+ 397      20646576 
+ 397      69636520 
+ 398 001f 00       		.align	2
+ 399              	.LC3:
+ 400 0020 63616E20 		.ascii	"can not create spi class\012\000"
+ 400      6E6F7420 
+ 400      63726561 
+ 400      74652073 
+ 400      70692063 
+ 401 003a 0000     		.align	2
+ 402              	.LC4:
+ 403 003c 63616E20 		.ascii	"can not create spi device\012\000"
+ 403      6E6F7420 
+ 403      63726561 
+ 403      74652073 
+ 403      70692064 
+ 404              		.section	.text.spi1_device_init,"ax",%progbits
+ 405              		.align	1
+ 406              		.syntax unified
+ 407              		.thumb
+ 408              		.thumb_func
+ 410              	spi1_device_init:
+ 411              	.LFB1040:
+ 185:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 186:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 187:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** long spi_unlocked_ioctl(struct file * file, unsigned int cmd, unsigned long arg)
+ 188:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** {
+ 189:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if (arg==NULL){
+ 190:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("arg is null");
+ARM GAS  /tmp/ccRdDVeE.s 			page 12
+
+
+ 191:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         return -EINVAL;
+ 192:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     } 
+ 193:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     struct spi_ioc_transfer *spi = (struct spi_ioc_transfer *) arg;
+ 194:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     switch(cmd)
+ 195:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     {
+ 196:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         case SPI_IOC_MESSAGE(1):
+ 197:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             // pr_info("setspeed:%d\n",spi->speed_hz);
+ 198:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             SPI1_SetSpeed(get_spi_speed(spi->speed_hz));
+ 199:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return spi_device_swap(spi->tx_buf, spi->rx_buf, spi->len);
+ 200:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         default:
+ 201:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return -EINVAL;
+ 202:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 203:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 0;
+ 204:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 205:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 206:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static struct file_operations spi_fops = {
+ 207:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     .owner = THIS_MODULE,
+ 208:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     .open = spi_dev_open,
+ 209:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     .unlocked_ioctl = spi_unlocked_ioctl,
+ 210:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** };
+ 211:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 212:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 213:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 214:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** static int spi1_device_init(void){
+ 412              		.loc 1 214 34 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 0
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 416 0000 30B5     		push	{r4, r5, lr}
+ 417              	.LCFI2:
+ 418              		.cfi_def_cfa_offset 12
+ 419              		.cfi_offset 4, -12
+ 420              		.cfi_offset 5, -8
+ 421              		.cfi_offset 14, -4
+ 422 0002 83B0     		sub	sp, sp, #12
+ 423              	.LCFI3:
+ 424              		.cfi_def_cfa_offset 24
+ 215:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     SPI1_Init();
+ 425              		.loc 1 215 5 view .LVU98
+ 426 0004 FFF7FEFF 		bl	SPI1_Init
+ 427              	.LVL20:
+ 216:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     
+ 217:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     int major = register_chrdev(0,"spidev1", &spi_fops);
+ 428              		.loc 1 217 5 view .LVU99
+ 429              	.LBB13:
+ 430              	.LBI13:
+ 431              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #ifndef _LINUX_FS_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define _LINUX_FS_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/types.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/errseq.h> 
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/spinlock.h> 
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/list.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/rbtree_types.h>  
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/uuid.h>  
+ARM GAS  /tmp/ccRdDVeE.s 			page 13
+
+
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/uidgid_types.h>   
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/projid.h>       
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/time64.h> 
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/mnt_idmapping.h>  
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/mutex.h>         
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/uio.h>              
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/migrate_mode.h>  
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/raid/pq.h> 
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/lockdep_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/wait.h>				
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/pipe_fs_i.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/fcntl.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/xarray.h>
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/blkdev.h>
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/dcache.h>
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/mm_type.h>
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/statfs.h>
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/stat.h>
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/path.h>
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #include <linux/fs_types.h>
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dentry;
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file;
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct inode;
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct kiocb;
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_operations;
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct inode_operations  ;
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dentry_operations ;
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct writeback_control ;
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct address_space;
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct seq_file ;
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct shrink_control;
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_system_type;
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct buffer_head;
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct readahead_control;
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_EXEC		0x00000001
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_WRITE		0x00000002
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_READ		0x00000004
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_APPEND		0x00000008
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_ACCESS		0x00000010
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_OPEN		0x00000020
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_CHDIR		0x00000040
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* called from RCU mode, don't block */
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MAY_NOT_BLOCK		0x00000080
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * flags in file.f_mode.  Note that FMODE_READ and FMODE_WRITE must correspond
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * to O_WRONLY and O_RDWR via the strange trick in do_dentry_open()
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* file is open for reading */
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_READ		((__force fmode_t)(1 << 0))
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* file is open for writing */
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_WRITE		((__force fmode_t)(1 << 1))
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* file is seekable */
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_LSEEK		((__force fmode_t)(1 << 2))
+ARM GAS  /tmp/ccRdDVeE.s 			page 14
+
+
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* file can be accessed using pread */
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_PREAD		((__force fmode_t)(1 << 3))
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* file can be accessed using pwrite */
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_PWRITE		((__force fmode_t)(1 << 4))
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File is opened for execution with sys_execve / sys_uselib */
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_EXEC		((__force fmode_t)(1 << 5))
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File writes are restricted (block device specific) */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_WRITE_RESTRICTED	((__force fmode_t)(1 << 6))
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File supports atomic writes */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_CAN_ATOMIC_WRITE	((__force fmode_t)(1 << 7))
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* FMODE_* bit 8 */
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* 32bit hashes as llseek() offset (for directories) */
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_32BITHASH         ((__force fmode_t)(1 << 9))
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* 64bit hashes as llseek() offset (for directories) */
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_64BITHASH         ((__force fmode_t)(1 << 10))
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * Don't update ctime and mtime.
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * Currently a special hack for the XFS open_by_handle ioctl, but we'll
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * hopefully graduate it to a proper O_CMTIME flag supported by open(2) soon.
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_NOCMTIME		((__force fmode_t)(1 << 11))
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Expect random access pattern */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_RANDOM		((__force fmode_t)(1 << 12))
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* FMODE_* bit 13 */
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File is opened with O_PATH; almost nothing can be done with it */
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_PATH		((__force fmode_t)(1 << 14))
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File needs atomic accesses to f_pos */
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_ATOMIC_POS	((__force fmode_t)(1 << 15))
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Write access to underlying fs */
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_WRITER		((__force fmode_t)(1 << 16))
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Has read method(s) */
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_CAN_READ          ((__force fmode_t)(1 << 17))
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Has write method(s) */
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_CAN_WRITE         ((__force fmode_t)(1 << 18))
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_OPENED		((__force fmode_t)(1 << 19))
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_CREATED		((__force fmode_t)(1 << 20))
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File is stream-like */
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_STREAM		((__force fmode_t)(1 << 21))
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File supports DIRECT IO */
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define	FMODE_CAN_ODIRECT	((__force fmode_t)(1 << 22))
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define	FMODE_NOREUSE		((__force fmode_t)(1 << 23))
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* FMODE_* bit 24 */
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File is embedded in backing_file object */
+ARM GAS  /tmp/ccRdDVeE.s 			page 15
+
+
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_BACKING		((__force fmode_t)(1 << 25))
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File was opened by fanotify and shouldn't generate fanotify events */
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_NONOTIFY		((__force fmode_t)(1 << 26))
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File is capable of returning -EAGAIN if I/O will block */
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_NOWAIT		((__force fmode_t)(1 << 27))
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File represents mount that needs unmounting */
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_NEED_UNMOUNT	((__force fmode_t)(1 << 28))
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* File does not contribute to nr_files count */
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FMODE_NOACCOUNT		((__force fmode_t)(1 << 29))
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * Attribute flags.  These should be or-ed together to figure out what
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * has been changed!
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_MODE	(1 << 0)
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_UID	(1 << 1)
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_GID	(1 << 2)
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_SIZE	(1 << 3)
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_ATIME	(1 << 4)
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_MTIME	(1 << 5)
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_CTIME	(1 << 6)
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_ATIME_SET	(1 << 7)
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_MTIME_SET	(1 << 8)
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_FORCE	(1 << 9) /* Not a change, but a change it */
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_KILL_SUID	(1 << 11)
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_KILL_SGID	(1 << 12)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_FILE	(1 << 13)
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_KILL_PRIV	(1 << 14)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_OPEN	(1 << 15) /* Truncating from open(O_TRUNC) */
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_TIMES_SET	(1 << 16)
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_TOUCH	(1 << 17)
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define ATTR_DELEG	(1 << 18) /* Delegated attrs. Don't break write delegations */
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * Whiteout is represented by a char device.  The following constants define the
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * mode and device number to use.
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define WHITEOUT_MODE 0
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define WHITEOUT_DEV 0
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			   		     iattr  						*
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct iattr {
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int	ia_valid;
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	umode_t		ia_mode;
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ARM GAS  /tmp/ccRdDVeE.s 			page 16
+
+
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		kuid_t		ia_uid;
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		vfsuid_t	ia_vfsuid;
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		kgid_t		ia_gid;
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		vfsgid_t	ia_vfsgid;
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t		ia_size;
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct timespec64 ia_atime;
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct timespec64 ia_mtime;
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct timespec64 ia_ctime;
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct file	*ia_file;
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			     address_space  						*
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_ra_state {
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	pgoff_t start;
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int size;
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int async_size;
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int ra_pages;
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int mmap_miss;
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t prev_pos;
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct iov_iter {
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u8 iter_type;
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	bool nofault;
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	bool data_source;
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	size_t iov_offset;
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/*
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * Hack alert: overlay ubuf_iovec with iovec + count, so
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * that the members resolve correctly regardless of the type
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * of iterator used. This means that you can use:
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 *
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * &iter->__ubuf_iovec or iter->__iov
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 *
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * interchangably for the user_backed cases, hence simplifying
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * some of the cases that need to deal with both.
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		/*
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		 * This really should be a const, but we cannot do that without
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		 * also modifying any of the zero-filling iter init functions.
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		 * Leave it non-const for now, but it should be treated as such.
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		 */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		struct iovec __ubuf_iovec;
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		struct {
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			union {
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				/* use iter_iov() to get the current vec */
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				const struct iovec *__iov;
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				const struct kvec *kvec;
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				const struct bio_vec *bvec;
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				const struct folio_queue *folioq;
+ARM GAS  /tmp/ccRdDVeE.s 			page 17
+
+
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				struct xarray *xarray;
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				void __user *ubuf;
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			};
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			size_t count;
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		};
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		unsigned long nr_segs;
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		u8 folioq_slot;
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		loff_t xarray_start;
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct address_space_operations {
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*writepage)(struct page *page, struct writeback_control *wbc);
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*read_folio)(struct file *, struct folio *);
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* Write back some dirty pages from this mapping. */
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*writepages)(struct address_space *, struct writeback_control *);
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* Mark a folio dirty.  Return true if this dirtied it */
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	bool (*dirty_folio)(struct address_space *, struct folio *);
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*readahead)(struct readahead_control *);
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*write_begin)(struct file *, struct address_space *mapping,
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				loff_t pos, unsigned len,
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				struct folio **foliop, void **fsdata);
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*write_end)(struct file *, struct address_space *mapping,
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				loff_t pos, unsigned len, unsigned copied,
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 				struct folio *folio, void *fsdata);
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* Unfortunately this kludge is needed for FIBMAP. Don't use it */
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	sector_t (*bmap)(struct address_space *, sector_t);
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	bool (*release_folio)(struct folio *, gfp_t);
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*free_folio)(struct folio *folio);
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/*
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * migrate the contents of a folio to the specified target. If
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * migrate_mode is MIGRATE_ASYNC, it must not block.
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 */
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*migrate_folio)(struct address_space *, struct folio *dst,
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			struct folio *src, enum migrate_mode);
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*launder_folio)(struct folio *);
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	bool (*is_partially_uptodate) (struct folio *, size_t from,
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			size_t count);
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*is_dirty_writeback) (struct folio *, bool *dirty, bool *wb);
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*error_remove_folio)(struct address_space *, struct folio *);
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* swapfile support */
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	// int (*swap_activate)(struct swap_info_struct *sis, struct file *file,
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	// 			sector_t *span);
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	// void (*swap_deactivate)(struct file *file);
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	// int (*swap_rw)(struct kiocb *iocb, struct iov_iter *iter);
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ARM GAS  /tmp/ccRdDVeE.s 			page 18
+
+
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  struct address_space {
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct inode		*host;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct xarray		i_pages;
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	gfp_t			gfp_mask;
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	atomic_t		i_mmap_writable;
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #ifdef CONFIG_READ_ONLY_THP_FOR_FS
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* number of thp, only for non-shmem files */
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	atomic_t		nr_thps;
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct rb_root_cached	i_mmap;
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long		nrpages;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	pgoff_t			writeback_index;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct address_space_operations *a_ops;
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long		flags;
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	errseq_t		wb_err;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	spinlock_t		i_private_lock;
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head	i_private_list;
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void *			i_private_data;
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** } __attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			   		  file struct						*
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct io_uring {
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct io_uring_cmd {
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct fs_context {
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_lease{
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_lock {
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct vm_area_struct{
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct pipe_inode_info{
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct readahead_control{
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct fileattr {
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct fiemap_extent_info {
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ARM GAS  /tmp/ccRdDVeE.s 			page 19
+
+
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct delayed_call {
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	uint8_t 	magic;
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file {
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mutex					f_ref;
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mutex					f_lock;
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	fmode_t							f_mode;
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct file_operations	*f_op;                            
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	//	struct address_space			*f_mapping;
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void							*private_data;
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct inode					*f_inode;
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int					f_flags;
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int					f_iocb_flags;
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	char *						    f_path;
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		struct mutex				f_pos_lock;
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		u64							f_pipe;
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t							f_pos;   //用于目录遍历
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void *							f_private;
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	spinlock_t                      f_slock;
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** }__attribute__((aligned(sizeof(long)))) __randomize_layout;	
+ 385:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 386:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 387:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 388:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 389:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			   		  inode struct						*
+ 390:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 391:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 392:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 393:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_FASTPERM	0x0001
+ 394:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_LOOKUP	0x0002
+ 395:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_NOFOLLOW	0x0004
+ 396:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_XATTR	0x0008
+ 397:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_DEFAULT_READLINK	0x0010
+ 398:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define IOP_MGTIME	0x0020
+ 399:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 400:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+ 401:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * Keep mostly read-only and often accessed (especially for
+ 402:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * the RCU path lookup and 'stat' data) fields at the beginning
+ 403:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * of the 'struct inode'
+ 404:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+ 405:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 406:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct inode {
+ 407:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	umode_t            i_mode;   
+ 408:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 409:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned short     		i_opflags;     /* inode 操作标志对应IOP宏 */
+ARM GAS  /tmp/ccRdDVeE.s 			page 20
+
+
+ 410:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	kuid_t             i_uid;         /* 文件所有者用户ID */
+ 411:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	kgid_t             i_gid;         /* 文件所有者组ID */
+ 412:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 413:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int       i_flags;    
+ 414:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct inode_operations *i_op;     
+ 415:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct super_block            *i_sb;       
+ 416:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct address_space	      *i_mapping;   
+ 417:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	dev_t             i_rdev;       
+ 418:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t            i_size;        
+ 419:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	time64_t          i_atime_sec;   
+ 420:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	time64_t          i_mtime_sec;   
+ 421:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	time64_t          i_ctime_sec;    
+ 422:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u32               i_atime_nsec;   
+ 423:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u32               i_mtime_nsec;   
+ 424:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u32               i_ctime_nsec;  
+ 425:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned short    i_bytes;
+ 426:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u32			i_state;
+ 427:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct hlist_node	i_hash;
+ 428:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head	i_io_list;	/* backing dev IO list */
+ 429:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	spinlock_t	        i_lock;	/* i_blocks, i_bytes, maybe i_size */
+ 430:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head	i_sb_list;
+ 431:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head	i_dentry;
+ 432:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	atomic_t		i_count;
+ 433:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
+ 434:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*free_inode)(struct inode *);
+ 435:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void			*i_private; /* fs or device private pointer */
+ 436:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** }__attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 437:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 438:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 439:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 440:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			   inode inode_operations					*
+ 441:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 442:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 443:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 444:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct mnt_idmap {void * no_data;};
+ 445:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 446:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct inode_operations {
+ 447:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct dentry  	 *(*lookup) 	   (struct inode *    ,struct dentry *, unsigned int);
+ 448:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const char 	     *(*get_link) 	   (struct dentry *   , struct inode *, struct delayed_call *);
+ 449:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*permission)    (struct mnt_idmap *, struct inode *, int);
+ 450:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct posix_acl *(*get_inode_acl) (struct inode *	  , int, bool);
+ 451:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*readlink) 	   (struct dentry *   , char __user * ,int);
+ 452:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*create) 	   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t, bool);
+ 453:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*link) 		   (struct dentry *   ,struct inode * ,struct dentry *);
+ 454:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*unlink) 	   (struct inode *	  ,struct dentry * );
+ 455:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*symlink) 	   (struct mnt_idmap *, struct inode *,struct dentry *,const char *);
+ 456:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*mkdir) 		   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t);
+ 457:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*rmdir)		   (struct inode *	  ,struct dentry * );
+ 458:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*mknod) 		   (struct mnt_idmap *, struct inode *,struct dentry *,umode_t,dev_t);
+ 459:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*rename) 	   (struct mnt_idmap *, struct inode *, struct dentry *,struct inode *, struct
+ 460:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*setattr)	   (struct mnt_idmap *, struct dentry*, struct iattr *);
+ 461:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*getattr) 	   (struct mnt_idmap *, const struct path *,struct kstat *, u32, unsigned int
+ 462:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t 		  (*listxattr) 	   (struct dentry *	  , char *		  , size_t);
+ 463:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*fiemap)		   (struct inode *	  , struct fiemap_extent_info *, u64 start,u64 len);
+ 464:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*update_time)   (struct inode *    , int);
+ 465:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*atomic_open)   (struct inode *    , struct dentry*,struct file *, unsigned open_flag,um
+ 466:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*tmpfile)	   (struct mnt_idmap *, struct inode *,struct file *, umode_t);
+ARM GAS  /tmp/ccRdDVeE.s 			page 21
+
+
+ 467:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct posix_acl *(*get_acl)	   (struct mnt_idmap *, struct dentry*,int);
+ 468:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*set_acl)	   (struct mnt_idmap *, struct dentry*,struct posix_acl *, int);
+ 469:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*fileattr_set)  (struct mnt_idmap *idmap,struct dentry *dentry, struct fileattr *fa);
+ 470:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int 			  (*fileattr_get)  (struct dentry *dentry  , struct fileattr *fa);
+ 471:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct offset_ctx*(*get_offset_ctx)(struct inode *inode);
+ 472:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 473:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 474:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 475:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 476:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			       file_operations						*
+ 477:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 478:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 479:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 480:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct kiocb {
+ 481:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct file		*ki_filp;
+ 482:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t			ki_pos;
+ 483:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*ki_complete)(struct kiocb *iocb, long ret);
+ 484:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void			*private;
+ 485:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int			ki_flags;
+ 486:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u16			ki_ioprio; /* See linux/ioprio.h */
+ 487:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 488:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	//	struct wait_page_queue	*ki_waitq;
+ 489:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		ssize_t (*dio_complete)(void *data);
+ 490:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 491:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 492:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 493:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dir_context;
+ 494:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef bool (*filldir_t)(struct dir_context *, const char *, int, loff_t, u64,
+ 495:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			 unsigned);
+ 496:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 497:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dir_context {
+ 498:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	filldir_t actor;
+ 499:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t pos;
+ 500:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 501:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 502:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 503:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** static inline bool dir_emit(struct dir_context *ctx,
+ 504:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			    const char *name, int namelen,
+ 505:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 			    u64 ino, unsigned type)
+ 506:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** {
+ 507:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	return ctx->actor(ctx, name, namelen, ctx->pos, ino, type);
+ 508:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** }
+ 509:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 510:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct poll_table_struct;
+ 511:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef void (*poll_queue_proc)(struct file *, wait_queue_head_t *, struct poll_table_struct *);
+ 512:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef struct poll_table_struct {
+ 513:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	poll_queue_proc _qproc;
+ 514:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	__poll_t _key;
+ 515:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** } poll_table;
+ 516:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 517:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 518:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 519:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef unsigned int __bitwise fop_flags_t;
+ 520:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef void *fl_owner_t;
+ 521:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 522:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_operations {
+ 523:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void *owner;
+ARM GAS  /tmp/ccRdDVeE.s 			page 22
+
+
+ 524:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	fop_flags_t fop_flags;
+ 525:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t (*llseek) (struct file *, loff_t, int);
+ 526:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+ 527:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+ 528:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
+ 529:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
+ 530:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,unsigned int flags);
+ 531:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*iterate_shared) (struct file *, struct dir_context *);
+ 532:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
+ 533:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+ 534:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+ 535:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** int (*mmap) (struct file *, struct vm_area_struct *);
+ 536:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*open) (struct inode *, struct file *);
+ 537:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*flush) (struct file *, fl_owner_t id);
+ 538:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*release) (struct inode *, struct file *);
+ 539:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*fsync) (struct file *, loff_t, loff_t, int datasync);
+ 540:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*fasync) (int, struct file *, int);
+ 541:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*lock) (struct file *, int, struct file_lock *);
+ 542:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, uns
+ 543:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*check_flags)(int);
+ 544:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*flock) (struct file *, int, struct file_lock *);
+ 545:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+ 546:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
+ 547:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*splice_eof)(struct file *file);
+ 548:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*setlease)(struct file *, int, struct file_lease **, void **);
+ 549:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	long (*fallocate)(struct file *file, int mode, loff_t offset,loff_t len);
+ 550:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*show_fdinfo)(struct seq_file *m, struct file *f);
+ 551:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #ifndef CONFIG_MMU
+ 552:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned (*mmap_capabilities)(struct file *);
+ 553:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #endif
+ 554:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*copy_file_range)(struct file *, loff_t, struct file *,loff_t, size_t, unsigned int);
+ 555:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t (*remap_file_range)(struct file *file_in, loff_t pos_in,struct file *file_out, loff_t pos_o
+ 556:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*fadvise)(struct file *, loff_t, loff_t, int);
+ 557:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*uring_cmd)(struct io_uring_cmd *ioucmd, unsigned int issue_flags);
+ 558:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,unsigned int poll_flags);
+ 559:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 560:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 561:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 562:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 563:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 564:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			       super_block							*
+ 565:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 566:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 567:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 568:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct rcu_sync {
+ 569:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int			gp_state;
+ 570:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int			gp_count;
+ 571:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	wait_queue_head_t	gp_wait;
+ 572:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 573:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct rcu_head		cb_head;
+ 574:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 575:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 576:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct rcuwait {
+ 577:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	//struct task_struct __rcu *task;
+ 578:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 579:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 580:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct percpu_rw_semaphore {
+ARM GAS  /tmp/ccRdDVeE.s 			page 23
+
+
+ 581:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct rcu_sync		rss;
+ 582:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int __percpu	*read_count;
+ 583:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct rcuwait		writer;
+ 584:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	wait_queue_head_t	waiters;
+ 585:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	atomic_t		block;
+ 586:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 587:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lockdep_map	dep_map;
+ 588:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #endif
+ 589:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 590:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 591:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+ 592:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
+ 593:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * represented in both.
+ 594:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+ 595:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_RDONLY       BIT(0)	/* Mount read-only */
+ 596:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
+ 597:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NODEV        BIT(2)	/* Disallow access to device special files */
+ 598:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NOEXEC       BIT(3)	/* Disallow program execution */
+ 599:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
+ 600:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
+ 601:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
+ 602:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NOATIME      BIT(10)	/* Do not update access times. */
+ 603:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
+ 604:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_SILENT       BIT(15)
+ 605:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_POSIXACL     BIT(16)	/* Supports POSIX ACLs */
+ 606:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_INLINECRYPT  BIT(17)	/* Use blk-crypto for encrypted files */
+ 607:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
+ 608:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
+ 609:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
+ 610:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 611:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* These sb flags are internal to the kernel */
+ 612:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_DEAD         BIT(21)
+ 613:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_DYING        BIT(24)
+ 614:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_SUBMOUNT     BIT(26)
+ 615:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_FORCE        BIT(27)
+ 616:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NOSEC        BIT(28)
+ 617:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_BORN         BIT(29)
+ 618:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_ACTIVE       BIT(30)
+ 619:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_NOUSER       BIT(31)
+ 620:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 621:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* These flags relate to encoding and casefolding */
+ 622:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_ENC_STRICT_MODE_FL	(1 << 0)
+ 623:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 624:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define sb_has_strict_encoding(sb) \
+ 625:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	(sb->s_encoding_flags & SB_ENC_STRICT_MODE_FL)
+ 626:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 627:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*
+ 628:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *	Umount options
+ 629:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  */
+ 630:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 631:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MNT_FORCE	0x00000001	/* Attempt to forcibily umount */
+ 632:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MNT_DETACH	0x00000002	/* Just detach from the tree */
+ 633:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define MNT_EXPIRE	0x00000004	/* Mark for expiry */
+ 634:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define UMOUNT_NOFOLLOW	0x00000008	/* Don't follow symlink on umount */
+ 635:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define UMOUNT_UNUSED	0x80000000	/* Flag guaranteed to be unused */
+ 636:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 637:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* sb->s_iflags */
+ARM GAS  /tmp/ccRdDVeE.s 			page 24
+
+
+ 638:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_CGROUPWB	0x00000001	/* cgroup-aware writeback enabled */
+ 639:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_NOEXEC	0x00000002	/* Ignore executables on this fs */
+ 640:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_NODEV	0x00000004	/* Ignore devices on this fs */
+ 641:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_STABLE_WRITES 0x00000008	/* don't modify blks until WB is done */
+ 642:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 643:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* sb->s_iflags to limit user namespace mounts */
+ 644:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_USERNS_VISIBLE		0x00000010 /* fstype already mounted */
+ 645:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_IMA_UNVERIFIABLE_SIGNATURE	0x00000020
+ 646:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_UNTRUSTED_MOUNTER		0x00000040
+ 647:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_EVM_HMAC_UNSUPPORTED	0x00000080
+ 648:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 649:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
+ 650:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
+ 651:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_TS_EXPIRY_WARNED 0x00000400 /* warned about timestamp range expiry */
+ 652:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_RETIRED	0x00000800	/* superblock shouldn't be reused */
+ 653:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
+ 654:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
+ 655:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 656:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 657:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** enum {
+ 658:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	SB_UNFROZEN = 0,		/* FS is unfrozen */
+ 659:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	SB_FREEZE_WRITE	= 1,		/* Writes, dir ops, ioctls frozen */
+ 660:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	SB_FREEZE_PAGEFAULT = 2,	/* Page faults stopped as well */
+ 661:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	SB_FREEZE_FS = 3,		/* For internal FS use (e.g. to stop
+ 662:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 					 	* internal threads if needed) */
+ 663:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	SB_FREEZE_COMPLETE = 4,		/* ->freeze_fs finished successfully */
+ 664:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 665:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 666:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define SB_FREEZE_LEVELS (SB_FREEZE_COMPLETE - 1)
+ 667:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 668:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct sb_writers {
+ 669:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned short			frozen;		/* Is sb frozen? */
+ 670:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int				freeze_kcount;	/* How many kernel freeze requests? */
+ 671:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int				freeze_ucount;	/* How many userspace freeze requests? */
+ 672:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct percpu_rw_semaphore	rw_sem[SB_FREEZE_LEVELS];
+ 673:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 674:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 675:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define	UUID_STRING_LEN		36
+ 676:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 677:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 678:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 679:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct super_block 
+ 680:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** { 
+ 681:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head				s_list;		/* Keep this first */
+ 682:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****     dev_t							s_dev;		/* search index; _not_ kdev_t */
+ 683:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long					s_blocksize;
+ 684:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****     const struct super_operations	*s_op;
+ 685:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct dquot_operations	*dq_op;
+ 686:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 687:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct dentry		*s_root;      //superblock的根目录结点
+ 688:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct block_device	*s_bdev; 
+ 689:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct hlist_node	s_instances;
+ 690:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head	s_mounts;
+ 691:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void			   *s_fs_info;	/* Filesystem private info */
+ 692:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	char			    s_sysfs_name[UUID_STRING_LEN + 1];
+ 693:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned int		s_max_links;
+ 694:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mutex            		s_vfs_rename_mutex;	/* Kludge */
+ARM GAS  /tmp/ccRdDVeE.s 			page 25
+
+
+ 695:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct dentry_operations *s_d_op; /* default d_op for dentries */
+ 696:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct hlist_head s_pins;
+ 697:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 698:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 699:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 700:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 701:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 702:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			       super_operations						*
+ 703:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 704:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 705:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 706:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct seq_operations ;
+ 707:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct seq_file {
+ 708:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	char *buf;
+ 709:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	size_t size;
+ 710:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	size_t from;
+ 711:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	size_t count;
+ 712:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	size_t pad_until;
+ 713:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t index;
+ 714:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t read_pos;
+ 715:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mutex lock;
+ 716:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct seq_operations *op;
+ 717:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int poll_event;
+ 718:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct file *file;
+ 719:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void *private;
+ 720:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 721:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 722:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct seq_operations {
+ 723:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void * (*start) (struct seq_file *m, loff_t *pos);
+ 724:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*stop) (struct seq_file *m, void *v);
+ 725:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void * (*next) (struct seq_file *m, void *v, loff_t *pos);
+ 726:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*show) (struct seq_file *m, void *v);
+ 727:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 728:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 729:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** enum freeze_holder {
+ 730:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	FREEZE_HOLDER_KERNEL	= (1U << 0),
+ 731:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	FREEZE_HOLDER_USERSPACE	= (1U << 1),
+ 732:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	FREEZE_MAY_NEST		= (1U << 2),
+ 733:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 734:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 735:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct writeback_control {
+ 736:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long nr_to_write;
+ 737:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 738:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 739:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 740:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct shrink_control {
+ 741:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	gfp_t gfp_mask;
+ 742:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int nid;
+ 743:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long nr_to_scan;
+ 744:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long nr_scanned;
+ 745:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****     //struct mem_cgroup *memcg;
+ 746:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 747:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 748:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct super_operations {
+ 749:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****    	struct inode *(*alloc_inode)(struct super_block *sb);
+ 750:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*destroy_inode)       (struct inode *);
+ 751:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*free_inode)          (struct inode *);
+ARM GAS  /tmp/ccRdDVeE.s 			page 26
+
+
+ 752:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****    	void (*dirty_inode)         (struct inode *, int flags);
+ 753:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*write_inode)         (struct inode *, struct writeback_control *wbc);
+ 754:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*drop_inode)          (struct inode *);
+ 755:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*evict_inode)         (struct inode *);
+ 756:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*put_super)           (struct super_block *);
+ 757:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*sync_fs)             (struct super_block *sb, int wait);
+ 758:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*freeze_super)        (struct super_block *, enum freeze_holder who);
+ 759:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*freeze_fs)           (struct super_block *);
+ 760:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*thaw_super)          (struct super_block *, enum freeze_holder who);
+ 761:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*unfreeze_fs)         (struct super_block *);
+ 762:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*statfs)              (struct dentry *, struct kstatfs *);
+ 763:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*remount_fs)          (struct super_block *, int *, char *);
+ 764:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*umount_begin)        (struct super_block *);
+ 765:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*show_options)        (struct seq_file *, struct dentry *);
+ 766:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*show_devname)        (struct seq_file *, struct dentry *);
+ 767:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*show_path)           (struct seq_file *, struct dentry *);
+ 768:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int  (*show_stats)          (struct seq_file *, struct dentry *);
+ 769:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 770:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #ifdef CONFIG_QUOTA
+ 771:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*quota_read)(struct super_block *, int, char *, size_t, loff_t);
+ 772:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	ssize_t (*quota_write)(struct super_block *, int, const char *, size_t, loff_t);
+ 773:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct dquot __rcu **(*get_dquots)(struct inode *);
+ 774:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #endif
+ 775:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 776:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	long (*nr_cached_objects)(struct super_block *,struct shrink_control *);
+ 777:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	long (*free_cached_objects)(struct super_block *,struct shrink_control *);
+ 778:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*shutdown)(struct super_block *sb);
+ 779:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 780:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 781:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 782:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 783:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 784:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 785:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			       dquot_operations						*
+ 786:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 787:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 788:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 789:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef __kernel_uid32_t 	qid_t; /* Type in which we store ids in memory */
+ 790:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** typedef long long 			qsize_t;	/* Type in which we store sizes */
+ 791:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 792:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #undef USRQUOTA
+ 793:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #undef GRPQUOTA
+ 794:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #undef PRJQUOTA
+ 795:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** enum quota_type {
+ 796:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	USRQUOTA = 0,		/* element used for user quotas */
+ 797:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	GRPQUOTA = 1,		/* element used for group quotas */
+ 798:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	PRJQUOTA = 2,		/* element used for project quotas */
+ 799:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 800:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 801:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct kqid {			/* Type in which we store the quota identifier */
+ 802:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	union {
+ 803:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		kuid_t uid;
+ 804:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		kgid_t gid;
+ 805:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		kprojid_t projid;
+ 806:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	};
+ 807:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	enum quota_type type;  /* USRQUOTA (uid) or GRPQUOTA (gid) or PRJQUOTA (projid) */
+ 808:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ARM GAS  /tmp/ccRdDVeE.s 			page 27
+
+
+ 809:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 810:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct mem_dqblk {
+ 811:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_bhardlimit;	/* absolute limit on disk blks alloc */
+ 812:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_bsoftlimit;	/* preferred limit on disk blks */
+ 813:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_curspace;	/* current used space */
+ 814:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_rsvspace;   /* current reserved space for delalloc*/
+ 815:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_ihardlimit;	/* absolute limit on allocated inodes */
+ 816:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_isoftlimit;	/* preferred inode limit */
+ 817:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t dqb_curinodes;	/* current # allocated inodes */
+ 818:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	time64_t dqb_btime;	/* time limit for excessive disk use */
+ 819:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	time64_t dqb_itime;	/* time limit for excessive inode use */
+ 820:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 821:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 822:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dquot {
+ 823:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct hlist_node dq_hash;	/* Hash list in memory [dq_list_lock] */
+ 824:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head dq_inuse;	/* List of all quotas [dq_list_lock] */
+ 825:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head dq_free;	/* Free list element [dq_list_lock] */
+ 826:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct list_head dq_dirty;	/* List of dirty dquots [dq_list_lock] */
+ 827:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mutex dq_lock;		/* dquot IO lock */
+ 828:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** //	spinlock_t dq_dqb_lock;		/* Lock protecting dq_dqb changes */
+ 829:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	atomic_t dq_count;		/* Use count */
+ 830:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct super_block *dq_sb;	/* superblock this applies to */
+ 831:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct kqid dq_id;		/* ID this applies to (uid, gid, projid) */
+ 832:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	loff_t dq_off;			/* Offset of dquot on disk [dq_lock, stable once set] */
+ 833:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned long dq_flags;		/* See DQ_* */
+ 834:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct mem_dqblk dq_dqb;	/* Diskquota usage [dq_dqb_lock] */
+ 835:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 836:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 837:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Operations which must be implemented by each quota format */
+ 838:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 839:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct quota_format_ops {
+ 840:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*check_quota_file)(struct super_block *sb, int type);	/* Detect whether file is in our format
+ 841:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*read_file_info)(struct super_block *sb, int type);	/* Read main info about file - called on 
+ 842:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*write_file_info)(struct super_block *sb, int type);	/* Write main info about file */
+ 843:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*free_file_info)(struct super_block *sb, int type);	/* Called on quotaoff() */
+ 844:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*read_dqblk)(struct dquot *dquot);		/* Read structure for one user */
+ 845:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*commit_dqblk)(struct dquot *dquot);	/* Write structure for one user */
+ 846:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*release_dqblk)(struct dquot *dquot);	/* Called when last reference to dquot is being dropped
+ 847:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*get_next_id)(struct super_block *sb, struct kqid *qid);	/* Get next ID with existing structu
+ 848:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 849:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 850:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct dquot_operations {
+ 851:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*write_dquot) (struct dquot *);		/* Ordinary dquot write */
+ 852:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct dquot *(*alloc_dquot)(struct super_block *, int);	/* Allocate memory for new dquot */
+ 853:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*destroy_dquot)(struct dquot *);		/* Free memory for dquot */
+ 854:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*acquire_dquot) (struct dquot *);		/* Quota is going to be created on disk */
+ 855:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*release_dquot) (struct dquot *);		/* Quota is going to be deleted from disk */
+ 856:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*mark_dirty) (struct dquot *);		/* Dquot is marked dirty */
+ 857:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*write_info) (struct super_block *, int);	/* Write of quota "superblock" */
+ 858:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* get reserved quota for delayed alloc, value returned is managed by
+ 859:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	 * quota code only */
+ 860:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	qsize_t *(*get_reserved_space) (struct inode *);
+ 861:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*get_projid) (struct inode *, kprojid_t *);/* Get project ID */
+ 862:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* Get number of inodes that were charged for a given inode */
+ 863:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*get_inode_usage) (struct inode *, qsize_t *);
+ 864:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	/* Get next ID with active quota structure */
+ 865:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*get_next_id) (struct super_block *sb, struct kqid *qid);
+ARM GAS  /tmp/ccRdDVeE.s 			page 28
+
+
+ 866:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 867:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 868:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /********************************************************
+ 869:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 														*
+ 870:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  * 			       file_system_type						*
+ 871:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****  *														* 
+ 872:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** *********************************************************/
+ 873:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 874:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct fs_parameter_spec {
+ 875:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const char		*name;
+ 876:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** //	fs_param_type		*type;	/* The desired parameter type */
+ 877:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	u8			opt;	/* Option number (returned by fs_parse()) */
+ 878:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	unsigned short		flags;
+ 879:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define fs_param_neg_with_no	0x0002	/* "noxxx" is negative param */
+ 880:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define fs_param_can_be_empty	0x0004	/* "xxx=" is allowed */
+ 881:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define fs_param_deprecated	0x0008	/* The param is deprecated */
+ 882:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const void		*data;
+ 883:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 884:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 885:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 886:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** struct file_system_type {
+ 887:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const char *name;
+ 888:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int fs_flags;
+ 889:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_REQUIRES_DEV		1 
+ 890:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_BINARY_MOUNTDATA	2
+ 891:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_HAS_SUBTYPE		4
+ 892:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_USERNS_MOUNT		8	/* Can be mounted by userns root */
+ 893:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_DISALLOW_NOTIFY_PERM	16	/* Disable fanotify permission events */
+ 894:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_ALLOW_IDMAP         32      /* FS has been updated to handle vfs idmappings. */
+ 895:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_MGTIME		64	/* FS uses multigrain timestamps */
+ 896:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define FS_RENAME_DOES_D_MOVE	32768	/* FS will handle d_move() during rename() internally. */
+ 897:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	int (*init_fs_context)(struct fs_context *);
+ 898:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct fs_parameter_spec *parameters;
+ 899:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct dentry *(*mount) (struct file_system_type *, int,
+ 900:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		       const char *, void *);
+ 901:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void (*kill_sb) (struct super_block *);
+ 902:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	void *owner;
+ 903:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct file_system_type * next;
+ 904:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct hlist_head fs_supers;
+ 905:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 906:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key s_lock_key;
+ 907:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key s_umount_key;
+ 908:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key s_vfs_rename_key;
+ 909:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key s_writers_key[SB_FREEZE_LEVELS];
+ 910:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key i_lock_key;
+ 911:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key i_mutex_key;
+ 912:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key invalidate_lock_key;
+ 913:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	struct lock_class_key i_mutex_dir_key;
+ 914:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** };
+ 915:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 916:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 917:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 918:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int register_filesystem(struct file_system_type *);
+ 919:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int unregister_filesystem(struct file_system_type *);
+ 920:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern struct file_system_type *lookup_fs_type(const char *name);
+ 921:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 922:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*--------------------------------------------------------------------------*/
+ARM GAS  /tmp/ccRdDVeE.s 			page 29
+
+
+ 923:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** static inline bool is_sync_kiocb(struct kiocb *kiocb){
+ 924:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	return kiocb->ki_complete == NULL;
+ 925:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** }
+ 926:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** static inline struct inode *file_inode(const struct file *f){
+ 927:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	return f->f_inode;
+ 928:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** }
+ 929:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /*--------------------------------------------------------------------------*/
+ 930:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 931:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int remove_dentry(char* path);
+ 932:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern struct file *filp_open(const char * path, int flags, umode_t mode);
+ 933:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern ssize_t kernel_read(struct file *file, void * buf, size_t count, loff_t *ppos);
+ 934:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern ssize_t kernel_write(struct file *file,const void * buf, size_t count, loff_t *ppos);
+ 935:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern long vfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+ 936:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int file_close(struct file *file, fl_owner_t id);
+ 937:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 938:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 939:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 940:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* fs/char_dev.c */
+ 941:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define CHRDEV_MAJOR_MAX 512
+ 942:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Marks the bottom of the first segment of free char majors */
+ 943:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_END 234
+ 944:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** /* Marks the top and bottom of the second segment of free char majors */
+ 945:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_EXT_START 511
+ 946:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** #define CHRDEV_MAJOR_DYN_EXT_END 384
+ 947:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 948:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 949:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 950:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int alloc_chrdev_region(dev_t *, unsigned, unsigned, const char *);
+ 951:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int register_chrdev_region(dev_t, unsigned, const char *);
+ 952:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern int __register_chrdev(unsigned int major, unsigned int baseminor,
+ 953:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****     unsigned int count, const char *name,
+ 954:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h ****     const struct file_operations *fops);
+ 955:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern void __unregister_chrdev(unsigned int major, unsigned int baseminor,
+ 956:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 		unsigned int count, const char *name);
+ 957:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** extern void unregister_chrdev_region(dev_t, unsigned);
+ 958:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 
+ 959:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** static inline int register_chrdev(unsigned int major, const char *name,
+ 432              		.loc 2 959 19 view .LVU100
+ 433              	.LBB14:
+ 960:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** 	const struct file_operations *fops)
+ 961:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** {
+ 962:/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h **** return __register_chrdev(major, 0, 256, name, fops);
+ 434              		.loc 2 962 1 view .LVU101
+ 435              		.loc 2 962 8 is_stmt 0 view .LVU102
+ 436 0008 174C     		ldr	r4, .L42
+ 437 000a 184B     		ldr	r3, .L42+4
+ 438 000c 0093     		str	r3, [sp]
+ 439 000e 2346     		mov	r3, r4
+ 440 0010 4FF48072 		mov	r2, #256
+ 441 0014 0021     		movs	r1, #0
+ 442 0016 0846     		mov	r0, r1
+ 443 0018 FFF7FEFF 		bl	__register_chrdev
+ 444              	.LVL21:
+ 445 001c 0546     		mov	r5, r0
+ 446              	.LVL22:
+ 447              		.loc 2 962 8 view .LVU103
+ 448              	.LBE14:
+ARM GAS  /tmp/ccRdDVeE.s 			page 30
+
+
+ 449              	.LBE13:
+ 218:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     pr_info("register spi device %d",major);
+ 450              		.loc 1 218 5 is_stmt 1 view .LVU104
+ 451 001e 0246     		mov	r2, r0
+ 452 0020 1349     		ldr	r1, .L42+8
+ 453 0022 0620     		movs	r0, #6
+ 454              	.LVL23:
+ 455              		.loc 1 218 5 is_stmt 0 view .LVU105
+ 456 0024 FFF7FEFF 		bl	printk
+ 457              	.LVL24:
+ 219:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 220:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     struct class * spi_class = class_create(THIS_MODULE,"spidev1");
+ 458              		.loc 1 220 5 is_stmt 1 view .LVU106
+ 459              		.loc 1 220 32 is_stmt 0 view .LVU107
+ 460 0028 2146     		mov	r1, r4
+ 461 002a 0020     		movs	r0, #0
+ 462 002c FFF7FEFF 		bl	class_create
+ 463              	.LVL25:
+ 464 0030 0446     		mov	r4, r0
+ 465              	.LVL26:
+ 221:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(IS_ERR(spi_class)){
+ 466              		.loc 1 221 5 is_stmt 1 view .LVU108
+ 467              	.LBB15:
+ 468              	.LBI15:
+ 469              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+ARM GAS  /tmp/ccRdDVeE.s 			page 31
+
+
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 470              		.loc 3 75 33 view .LVU109
+ 471              	.LBB16:
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 472              		.loc 3 77 2 view .LVU110
+ 473              		.loc 3 77 2 is_stmt 0 view .LVU111
+ 474              	.LBE16:
+ 475              	.LBE15:
+ 476              		.loc 1 221 7 discriminator 1 view .LVU112
+ 477 0032 10F5805F 		cmn	r0, #4096
+ 478 0036 0DD8     		bhi	.L40
+ 479              	.LVL27:
+ 480              	.L37:
+ 222:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     pr_info("can not create spi class\n");
+ARM GAS  /tmp/ccRdDVeE.s 			page 32
+
+
+ 223:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 224:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     struct device * spi_dev = device_create(spi_class,NULL,major,NULL,"spidev1");
+ 481              		.loc 1 224 5 is_stmt 1 view .LVU113
+ 482              		.loc 1 224 31 is_stmt 0 view .LVU114
+ 483 0038 0B4B     		ldr	r3, .L42
+ 484 003a 0093     		str	r3, [sp]
+ 485 003c 0023     		movs	r3, #0
+ 486 003e 2A46     		mov	r2, r5
+ 487 0040 1946     		mov	r1, r3
+ 488 0042 2046     		mov	r0, r4
+ 489 0044 FFF7FEFF 		bl	device_create
+ 490              	.LVL28:
+ 225:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(IS_ERR(spi_dev)){
+ 491              		.loc 1 225 5 is_stmt 1 view .LVU115
+ 492              	.LBB17:
+ 493              	.LBI17:
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 494              		.loc 3 75 33 view .LVU116
+ 495              	.LBB18:
+ 496              		.loc 3 77 2 view .LVU117
+ 497              		.loc 3 77 2 is_stmt 0 view .LVU118
+ 498              	.LBE18:
+ 499              	.LBE17:
+ 500              		.loc 1 225 7 discriminator 1 view .LVU119
+ 501 0048 10F5805F 		cmn	r0, #4096
+ 502 004c 07D8     		bhi	.L41
+ 503              	.LVL29:
+ 504              	.L38:
+ 226:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("can not create spi device\n");
+ 227:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 228:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 0;
+ 505              		.loc 1 228 5 is_stmt 1 view .LVU120
+ 229:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 230:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****  }
+ 506              		.loc 1 230 2 is_stmt 0 view .LVU121
+ 507 004e 0020     		movs	r0, #0
+ 508 0050 03B0     		add	sp, sp, #12
+ 509              	.LCFI4:
+ 510              		.cfi_remember_state
+ 511              		.cfi_def_cfa_offset 12
+ 512              		@ sp needed
+ 513 0052 30BD     		pop	{r4, r5, pc}
+ 514              	.LVL30:
+ 515              	.L40:
+ 516              	.LCFI5:
+ 517              		.cfi_restore_state
+ 222:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 518              		.loc 1 222 5 is_stmt 1 view .LVU122
+ 519 0054 0749     		ldr	r1, .L42+12
+ 520 0056 0620     		movs	r0, #6
+ 521              	.LVL31:
+ 222:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 522              		.loc 1 222 5 is_stmt 0 view .LVU123
+ 523 0058 FFF7FEFF 		bl	printk
+ 524              	.LVL32:
+ 525 005c ECE7     		b	.L37
+ 526              	.LVL33:
+ARM GAS  /tmp/ccRdDVeE.s 			page 33
+
+
+ 527              	.L41:
+ 226:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("can not create spi device\n");
+ 528              		.loc 1 226 9 is_stmt 1 view .LVU124
+ 529 005e 0649     		ldr	r1, .L42+16
+ 530 0060 0620     		movs	r0, #6
+ 531              	.LVL34:
+ 226:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("can not create spi device\n");
+ 532              		.loc 1 226 9 is_stmt 0 view .LVU125
+ 533 0062 FFF7FEFF 		bl	printk
+ 534              	.LVL35:
+ 535 0066 F2E7     		b	.L38
+ 536              	.L43:
+ 537              		.align	2
+ 538              	.L42:
+ 539 0068 00000000 		.word	.LC1
+ 540 006c 00000000 		.word	spi_fops
+ 541 0070 08000000 		.word	.LC2
+ 542 0074 20000000 		.word	.LC3
+ 543 0078 3C000000 		.word	.LC4
+ 544              		.cfi_endproc
+ 545              	.LFE1040:
+ 547              		.section	.text.get_spi_speed,"ax",%progbits
+ 548              		.align	1
+ 549              		.global	get_spi_speed
+ 550              		.syntax unified
+ 551              		.thumb
+ 552              		.thumb_func
+ 554              	get_spi_speed:
+ 555              	.LVL36:
+ 556              	.LFB1035:
+ 104:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     unsigned int pclk2 = 168000000 / 2; // 默认核心频率是168MHz
+ 557              		.loc 1 104 1 is_stmt 1 view -0
+ 558              		.cfi_startproc
+ 559              		@ args = 0, pretend = 0, frame = 0
+ 560              		@ frame_needed = 0, uses_anonymous_args = 0
+ 561              		@ link register save eliminated.
+ 105:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/2 )   return 0;
+ 562              		.loc 1 105 5 view .LVU127
+ 106:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/4 )   return 1;
+ 563              		.loc 1 106 5 view .LVU128
+ 106:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/4 )   return 1;
+ 564              		.loc 1 106 7 is_stmt 0 view .LVU129
+ 565 0000 124B     		ldr	r3, .L53
+ 566 0002 9842     		cmp	r0, r3
+ 567 0004 13D8     		bhi	.L46
+ 107:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/8 )   return 2;
+ 568              		.loc 1 107 5 is_stmt 1 view .LVU130
+ 107:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/8 )   return 2;
+ 569              		.loc 1 107 7 is_stmt 0 view .LVU131
+ 570 0006 124B     		ldr	r3, .L53+4
+ 571 0008 9842     		cmp	r0, r3
+ 572 000a 12D8     		bhi	.L47
+ 108:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/16 )  return 3;
+ 573              		.loc 1 108 5 is_stmt 1 view .LVU132
+ 108:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/16 )  return 3;
+ 574              		.loc 1 108 7 is_stmt 0 view .LVU133
+ 575 000c 114B     		ldr	r3, .L53+8
+ARM GAS  /tmp/ccRdDVeE.s 			page 34
+
+
+ 576 000e 9842     		cmp	r0, r3
+ 577 0010 11D2     		bcs	.L48
+ 109:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/32 )  return 4;
+ 578              		.loc 1 109 5 is_stmt 1 view .LVU134
+ 109:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/32 )  return 4;
+ 579              		.loc 1 109 7 is_stmt 0 view .LVU135
+ 580 0012 114B     		ldr	r3, .L53+12
+ 581 0014 9842     		cmp	r0, r3
+ 582 0016 10D8     		bhi	.L49
+ 110:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/64 )  return 5;
+ 583              		.loc 1 110 5 is_stmt 1 view .LVU136
+ 110:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/64 )  return 5;
+ 584              		.loc 1 110 7 is_stmt 0 view .LVU137
+ 585 0018 104B     		ldr	r3, .L53+16
+ 586 001a 9842     		cmp	r0, r3
+ 587 001c 0FD8     		bhi	.L50
+ 111:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/128 ) return 6;
+ 588              		.loc 1 111 5 is_stmt 1 view .LVU138
+ 111:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/128 ) return 6;
+ 589              		.loc 1 111 7 is_stmt 0 view .LVU139
+ 590 001e 104B     		ldr	r3, .L53+20
+ 591 0020 9842     		cmp	r0, r3
+ 592 0022 0ED8     		bhi	.L51
+ 112:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 7;
+ 593              		.loc 1 112 5 is_stmt 1 view .LVU140
+ 112:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 7;
+ 594              		.loc 1 112 7 is_stmt 0 view .LVU141
+ 595 0024 0F4B     		ldr	r3, .L53+24
+ 596 0026 9842     		cmp	r0, r3
+ 597 0028 0DD8     		bhi	.L52
+ 113:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 598              		.loc 1 113 12 view .LVU142
+ 599 002a 0720     		movs	r0, #7
+ 600              	.LVL37:
+ 113:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** }
+ 601              		.loc 1 113 12 view .LVU143
+ 602 002c 7047     		bx	lr
+ 603              	.LVL38:
+ 604              	.L46:
+ 106:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/4 )   return 1;
+ 605              		.loc 1 106 36 discriminator 1 view .LVU144
+ 606 002e 0020     		movs	r0, #0
+ 607              	.LVL39:
+ 106:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/4 )   return 1;
+ 608              		.loc 1 106 36 discriminator 1 view .LVU145
+ 609 0030 7047     		bx	lr
+ 610              	.LVL40:
+ 611              	.L47:
+ 107:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/8 )   return 2;
+ 612              		.loc 1 107 36 discriminator 1 view .LVU146
+ 613 0032 0120     		movs	r0, #1
+ 614              	.LVL41:
+ 107:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/8 )   return 2;
+ 615              		.loc 1 107 36 discriminator 1 view .LVU147
+ 616 0034 7047     		bx	lr
+ 617              	.LVL42:
+ 618              	.L48:
+ARM GAS  /tmp/ccRdDVeE.s 			page 35
+
+
+ 108:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/16 )  return 3;
+ 619              		.loc 1 108 36 discriminator 1 view .LVU148
+ 620 0036 0220     		movs	r0, #2
+ 621              	.LVL43:
+ 108:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/16 )  return 3;
+ 622              		.loc 1 108 36 discriminator 1 view .LVU149
+ 623 0038 7047     		bx	lr
+ 624              	.LVL44:
+ 625              	.L49:
+ 109:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/32 )  return 4;
+ 626              		.loc 1 109 36 discriminator 1 view .LVU150
+ 627 003a 0320     		movs	r0, #3
+ 628              	.LVL45:
+ 109:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/32 )  return 4;
+ 629              		.loc 1 109 36 discriminator 1 view .LVU151
+ 630 003c 7047     		bx	lr
+ 631              	.LVL46:
+ 632              	.L50:
+ 110:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/64 )  return 5;
+ 633              		.loc 1 110 36 discriminator 1 view .LVU152
+ 634 003e 0420     		movs	r0, #4
+ 635              	.LVL47:
+ 110:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/64 )  return 5;
+ 636              		.loc 1 110 36 discriminator 1 view .LVU153
+ 637 0040 7047     		bx	lr
+ 638              	.LVL48:
+ 639              	.L51:
+ 111:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/128 ) return 6;
+ 640              		.loc 1 111 36 discriminator 1 view .LVU154
+ 641 0042 0520     		movs	r0, #5
+ 642              	.LVL49:
+ 111:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if(speed >= pclk2/128 ) return 6;
+ 643              		.loc 1 111 36 discriminator 1 view .LVU155
+ 644 0044 7047     		bx	lr
+ 645              	.LVL50:
+ 646              	.L52:
+ 112:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     return 7;
+ 647              		.loc 1 112 36 discriminator 1 view .LVU156
+ 648 0046 0620     		movs	r0, #6
+ 649              	.LVL51:
+ 114:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 650              		.loc 1 114 1 view .LVU157
+ 651 0048 7047     		bx	lr
+ 652              	.L54:
+ 653 004a 00BF     		.align	2
+ 654              	.L53:
+ 655 004c 7FDE8002 		.word	41999999
+ 656 0050 3F6F4001 		.word	20999999
+ 657 0054 A037A000 		.word	10500000
+ 658 0058 CF1B5000 		.word	5249999
+ 659 005c E70D2800 		.word	2624999
+ 660 0060 F3061400 		.word	1312499
+ 661 0064 79030A00 		.word	656249
+ 662              		.cfi_endproc
+ 663              	.LFE1035:
+ 665              		.section	.rodata.spi_unlocked_ioctl.str1.4,"aMS",%progbits,1
+ 666              		.align	2
+ARM GAS  /tmp/ccRdDVeE.s 			page 36
+
+
+ 667              	.LC5:
+ 668 0000 61726720 		.ascii	"arg is null\000"
+ 668      6973206E 
+ 668      756C6C00 
+ 669              		.section	.text.spi_unlocked_ioctl,"ax",%progbits
+ 670              		.align	1
+ 671              		.global	spi_unlocked_ioctl
+ 672              		.syntax unified
+ 673              		.thumb
+ 674              		.thumb_func
+ 676              	spi_unlocked_ioctl:
+ 677              	.LVL52:
+ 678              	.LFB1039:
+ 188:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if (arg==NULL){
+ 679              		.loc 1 188 1 is_stmt 1 view -0
+ 680              		.cfi_startproc
+ 681              		@ args = 0, pretend = 0, frame = 0
+ 682              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     if (arg==NULL){
+ 683              		.loc 1 188 1 is_stmt 0 view .LVU159
+ 684 0000 10B5     		push	{r4, lr}
+ 685              	.LCFI6:
+ 686              		.cfi_def_cfa_offset 8
+ 687              		.cfi_offset 4, -8
+ 688              		.cfi_offset 14, -4
+ 189:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("arg is null");
+ 689              		.loc 1 189 5 is_stmt 1 view .LVU160
+ 189:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         pr_info("arg is null");
+ 690              		.loc 1 189 8 is_stmt 0 view .LVU161
+ 691 0002 72B1     		cbz	r2, .L60
+ 692 0004 1446     		mov	r4, r2
+ 193:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     switch(cmd)
+ 693              		.loc 1 193 5 is_stmt 1 view .LVU162
+ 694              	.LVL53:
+ 194:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     {
+ 695              		.loc 1 194 5 view .LVU163
+ 696 0006 0129     		cmp	r1, #1
+ 697 0008 12D1     		bne	.L58
+ 198:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return spi_device_swap(spi->tx_buf, spi->rx_buf, spi->len);
+ 698              		.loc 1 198 13 view .LVU164
+ 198:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return spi_device_swap(spi->tx_buf, spi->rx_buf, spi->len);
+ 699              		.loc 1 198 27 is_stmt 0 view .LVU165
+ 700 000a D068     		ldr	r0, [r2, #12]	@ unaligned
+ 701              	.LVL54:
+ 198:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return spi_device_swap(spi->tx_buf, spi->rx_buf, spi->len);
+ 702              		.loc 1 198 27 view .LVU166
+ 703 000c FFF7FEFF 		bl	get_spi_speed
+ 704              	.LVL55:
+ 198:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****             return spi_device_swap(spi->tx_buf, spi->rx_buf, spi->len);
+ 705              		.loc 1 198 13 discriminator 1 view .LVU167
+ 706 0010 C0B2     		uxtb	r0, r0
+ 707 0012 FFF7FEFF 		bl	SPI1_SetSpeed
+ 708              	.LVL56:
+ 199:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         default:
+ 709              		.loc 1 199 13 is_stmt 1 view .LVU168
+ 199:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         default:
+ 710              		.loc 1 199 20 is_stmt 0 view .LVU169
+ARM GAS  /tmp/ccRdDVeE.s 			page 37
+
+
+ 711 0016 A268     		ldr	r2, [r4, #8]	@ unaligned
+ 712 0018 6168     		ldr	r1, [r4, #4]	@ unaligned
+ 713 001a 2068     		ldr	r0, [r4]	@ unaligned
+ 714 001c FFF7FEFF 		bl	spi_device_swap
+ 715              	.LVL57:
+ 716              	.L55:
+ 204:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c **** 
+ 717              		.loc 1 204 1 view .LVU170
+ 718 0020 10BD     		pop	{r4, pc}
+ 719              	.LVL58:
+ 720              	.L60:
+ 190:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         return -EINVAL;
+ 721              		.loc 1 190 9 is_stmt 1 view .LVU171
+ 722 0022 0549     		ldr	r1, .L61
+ 723              	.LVL59:
+ 190:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         return -EINVAL;
+ 724              		.loc 1 190 9 is_stmt 0 view .LVU172
+ 725 0024 0620     		movs	r0, #6
+ 726              	.LVL60:
+ 190:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****         return -EINVAL;
+ 727              		.loc 1 190 9 view .LVU173
+ 728 0026 FFF7FEFF 		bl	printk
+ 729              	.LVL61:
+ 191:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     } 
+ 730              		.loc 1 191 9 is_stmt 1 view .LVU174
+ 191:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     } 
+ 731              		.loc 1 191 16 is_stmt 0 view .LVU175
+ 732 002a 6FF01500 		mvn	r0, #21
+ 733 002e F7E7     		b	.L55
+ 734              	.LVL62:
+ 735              	.L58:
+ 201:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 736              		.loc 1 201 20 view .LVU176
+ 737 0030 6FF01500 		mvn	r0, #21
+ 738              	.LVL63:
+ 201:/mnt/c/Users/31740/Desktop/newcore/drivers/spi/stm32f4_spi.c ****     }
+ 739              		.loc 1 201 20 view .LVU177
+ 740 0034 F4E7     		b	.L55
+ 741              	.L62:
+ 742 0036 00BF     		.align	2
+ 743              	.L61:
+ 744 0038 00000000 		.word	.LC5
+ 745              		.cfi_endproc
+ 746              	.LFE1039:
+ 748              		.section	.deviceinitcall,"aw"
+ 749              		.align	2
+ 752              	_initcall_spi1_device_init:
+ 753 0000 00000000 		.word	spi1_device_init
+ 754              		.section	.data.spi_fops,"aw"
+ 755              		.align	2
+ 758              	spi_fops:
+ 759 0000 00000000 		.word	0
+ 760 0004 00000000 		.space	36
+ 760      00000000 
+ 760      00000000 
+ 760      00000000 
+ 760      00000000 
+ARM GAS  /tmp/ccRdDVeE.s 			page 38
+
+
+ 761 0028 00000000 		.word	spi_unlocked_ioctl
+ 762 002c 00000000 		.space	8
+ 762      00000000 
+ 763 0034 00000000 		.word	spi_dev_open
+ 764 0038 00000000 		.space	80
+ 764      00000000 
+ 764      00000000 
+ 764      00000000 
+ 764      00000000 
+ 765              		.text
+ 766              	.Letext0:
+ 767              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 768              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 769              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/types.h"
+ 770              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 771              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/include/linux/init.h"
+ 772              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/errseq.h"
+ 773              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 774              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h"
+ 775              		.file 12 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types_raw.h"
+ 776              		.file 13 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types.h"
+ 777              		.file 14 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rbtree_types.h"
+ 778              		.file 15 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uidgid_types.h"
+ 779              		.file 16 "/mnt/c/Users/31740/Desktop/newcore/include/linux/projid.h"
+ 780              		.file 17 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mnt_idmapping.h"
+ 781              		.file 18 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mutex.h"
+ 782              		.file 19 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uio.h"
+ 783              		.file 20 "/mnt/c/Users/31740/Desktop/newcore/include/linux/wait.h"
+ 784              		.file 21 "/mnt/c/Users/31740/Desktop/newcore/include/linux/xarray.h"
+ 785              		.file 22 "/mnt/c/Users/31740/Desktop/newcore/include/linux/migrate_mode.h"
+ 786              		.file 23 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rw_hint.h"
+ 787              		.file 24 "/mnt/c/Users/31740/Desktop/newcore/include/linux/reciprocal_div.h"
+ 788              		.file 25 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+ 789              		.file 26 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mm_type.h"
+ 790              		.file 27 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bvec.h"
+ 791              		.file 28 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk_types.h"
+ 792              		.file 29 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blkdev.h"
+ 793              		.file 30 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bio.h"
+ 794              		.file 31 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool_super_haper.h"
+ 795              		.file 32 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool.h"
+ 796              		.file 33 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockdep_types.h"
+ 797              		.file 34 "/mnt/c/Users/31740/Desktop/newcore/include/linux/workqueue_types.h"
+ 798              		.file 35 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk-mq.h"
+ 799              		.file 36 "/mnt/c/Users/31740/Desktop/newcore/include/linux/dcache.h"
+ 800              		.file 37 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/pr.h"
+ 801              		.file 38 "/mnt/c/Users/31740/Desktop/newcore/include/linux/pr.h"
+ 802              		.file 39 "/mnt/c/Users/31740/Desktop/newcore/include/linux/hdreg.h"
+ 803              		.file 40 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockref.h"
+ 804              		.file 41 "/mnt/c/Users/31740/Desktop/newcore/include/linux/path.h"
+ 805              		.file 42 "/mnt/c/Users/31740/Desktop/newcore/include/linux/statfs.h"
+ 806              		.file 43 "/mnt/c/Users/31740/Desktop/newcore/include/linux/stat.h"
+ 807              		.file 44 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spi/spi.h"
+ 808              		.file 45 "/mnt/c/Users/31740/Desktop/newcore/include/linux/device.h"
+ 809              		.file 46 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ARM GAS  /tmp/ccRdDVeE.s 			page 39
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f4_spi.c
+     /tmp/ccRdDVeE.s:21     .text.SPI1_Init:00000000 $t
+     /tmp/ccRdDVeE.s:26     .text.SPI1_Init:00000000 SPI1_Init
+     /tmp/ccRdDVeE.s:130    .text.SPI1_Init:000000a4 $d
+     /tmp/ccRdDVeE.s:137    .text.SPI1_SetSpeed:00000000 $t
+     /tmp/ccRdDVeE.s:142    .text.SPI1_SetSpeed:00000000 SPI1_SetSpeed
+     /tmp/ccRdDVeE.s:166    .text.SPI1_SetSpeed:00000014 $d
+     /tmp/ccRdDVeE.s:171    .text.SPI1_ReadWriteByte:00000000 $t
+     /tmp/ccRdDVeE.s:176    .text.SPI1_ReadWriteByte:00000000 SPI1_ReadWriteByte
+     /tmp/ccRdDVeE.s:216    .text.SPI1_ReadWriteByte:00000020 $d
+     /tmp/ccRdDVeE.s:221    .text.spi_device_swap:00000000 $t
+     /tmp/ccRdDVeE.s:226    .text.spi_device_swap:00000000 spi_device_swap
+     /tmp/ccRdDVeE.s:349    .rodata.spi_dev_open.str1.4:00000000 $d
+     /tmp/ccRdDVeE.s:353    .text.spi_dev_open:00000000 $t
+     /tmp/ccRdDVeE.s:358    .text.spi_dev_open:00000000 spi_dev_open
+     /tmp/ccRdDVeE.s:387    .text.spi_dev_open:00000010 $d
+     /tmp/ccRdDVeE.s:392    .rodata.spi1_device_init.str1.4:00000000 $d
+     /tmp/ccRdDVeE.s:405    .text.spi1_device_init:00000000 $t
+     /tmp/ccRdDVeE.s:410    .text.spi1_device_init:00000000 spi1_device_init
+     /tmp/ccRdDVeE.s:539    .text.spi1_device_init:00000068 $d
+     /tmp/ccRdDVeE.s:758    .data.spi_fops:00000000 spi_fops
+     /tmp/ccRdDVeE.s:548    .text.get_spi_speed:00000000 $t
+     /tmp/ccRdDVeE.s:554    .text.get_spi_speed:00000000 get_spi_speed
+     /tmp/ccRdDVeE.s:655    .text.get_spi_speed:0000004c $d
+     /tmp/ccRdDVeE.s:666    .rodata.spi_unlocked_ioctl.str1.4:00000000 $d
+     /tmp/ccRdDVeE.s:670    .text.spi_unlocked_ioctl:00000000 $t
+     /tmp/ccRdDVeE.s:676    .text.spi_unlocked_ioctl:00000000 spi_unlocked_ioctl
+     /tmp/ccRdDVeE.s:744    .text.spi_unlocked_ioctl:00000038 $d
+     /tmp/ccRdDVeE.s:749    .deviceinitcall:00000000 $d
+     /tmp/ccRdDVeE.s:752    .deviceinitcall:00000000 _initcall_spi1_device_init
+     /tmp/ccRdDVeE.s:755    .data.spi_fops:00000000 $d
+
+UNDEFINED SYMBOLS
+printk
+__register_chrdev
+class_create
+device_create

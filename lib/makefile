@@ -1,7 +1,9 @@
 # include ./lib/asm-generic/Makefile
-include ./lib/fdt/makefile
+include $(BASE_DIR)/lib/fdt/makefile
+include $(BASE_DIR)/lib/script/makefile
+include $(BASE_DIR)/lib/sys/makefile
 
 C_SOURCES    += \
-		$(wildcard ./lib/*.c)
+		$(wildcard $(BASE_DIR)/lib/*.c)
 
 

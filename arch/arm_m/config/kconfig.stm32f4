@@ -12,8 +12,7 @@ menu "Linker Script Config"
         help
             Set the size of the flash space  (in KiB).
     endmenu
-    
-    
+        
     menu "RAM Config" 
     config LD_RAM_START_ADDRESS
         hex "RAM Start Address"
@@ -25,26 +24,11 @@ menu "Linker Script Config"
         default 128
         help
             Set the size of the RAM space  (in KiB).
-    endmenu    
-    
-    menu "CCMRAM Config"
-    config LD_CCMRAM_START_ADDRESS
-        hex "CCM RAM Start Address"
-        default 0x10000000
-        help
-            Set the start address of the CCM RAM memory.
-    config LD_KERNEL_MAIN_HEAP_SIZE
-        int "CCMRAM Size (KiB)"
-        default 64
-        help
-            Set the size of the CCMRAM space  (in KiB).
-            A value of 0 means no space is reserved for heap in CCMRAM.
-    endmenu
-
+    endmenu   
 endmenu
 
-source "arch/arm_m/kernel/kconfig"
 
+source "arch/arm_m/kernel/kconfig"
 source "kconfig"
 
 

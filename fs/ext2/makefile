@@ -1,2 +1,2 @@
 C_SOURCES    += \
-		$(wildcard ./fs/ext2/*.c)
+		$(wildcard $(BASE_DIR)/fs/ext2/*.c)

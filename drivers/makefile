@@ -1,12 +1,12 @@
-include ./drivers/clock/makefile
-include ./drivers/tty/makefile
-include ./drivers/gpio/makefile
-include ./drivers/spi/makefile
-include ./drivers/tick/makefile
+include $(BASE_DIR)/drivers/clock/makefile
+include $(BASE_DIR)/drivers/tty/makefile
+include $(BASE_DIR)/drivers/gpio/makefile
+include $(BASE_DIR)/drivers/spi/makefile
+include $(BASE_DIR)/drivers/tick/makefile
 
 
 C_SOURCES    += \
-		$(wildcard ./drivers/*.c)
+		$(wildcard $(BASE_DIR)/drivers/*.c)
 
 
-include ./drivers/storage/makefile
+include $(BASE_DIR)/drivers/storage/makefile

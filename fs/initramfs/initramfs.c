@@ -8,6 +8,11 @@
 #include <linux/slab.h>
 #include <linux/init.h>
 #include <linux/mm_type.h>
+#include <linux/initramfs.h>
+
+
+
+
 
 #define MAGIC 12345678
 struct initramfs_inode {
@@ -19,9 +24,11 @@ struct initramfs_inode {
     struct list_head        list_node;             // 挂在superblock的inode链表
     struct list_head        dentry_list_head;      // 如果这是目录项，这里存储inode下的所有dentry链表头
     spinlock_t              lock;
+    uint8_t                 mode;
     struct block_initramice *binitram;
     struct initramfs_superblock *sb;
     struct page *i_page;
+    uint32_t                size;
 };
 
 struct initramfs_dentry {
@@ -38,6 +45,29 @@ struct initramfs_superblock {
 };
 
 
+
+
+void initram_fs_mount_file(struct inode *inode,__file_data *filedata)
+{
+    struct initramfs_inode *init_ram_fs_inode = inode->i_private;
+    if(init_ram_fs_inode->i_page != NULL){
+        pr_info("can not mount file:%s file is using\n",filedata->path);
+        return;
+    }
+    struct page* file_data_page = virt_to_page(filedata->data);
+    if(file_data_page == NULL){
+        pr_info("can not mount file:%s no memory\n",filedata->path);
+        return;
+    }
+    get_page(file_data_page);
+    struct initramfs_inode *p_inode = inode->i_private;
+    p_inode->i_page = file_data_page;
+    p_inode->size   = filedata->length;
+    p_inode->mode   = READONLY;
+    inode->i_size   = filedata->length;
+}
+
+
 static int initramfs_open(struct inode *inode, struct file *file){
     return 0;
 }
@@ -46,13 +76,17 @@ static int initramfs_release(struct inode *inode, struct file *file){
 }
 static int initramfs_read(struct file *file, char __user * data, size_t size, loff_t *offset){
     struct initramfs_inode *p_inode = file->f_inode->i_private;
-    if(p_inode->i_page == NULL)    return 0;
-    if(((loff_t)*offset + size) > PAGE_SIZE)   return 0;
+    if(p_inode->i_page == NULL) 
+    return 0;
+    if(((loff_t)*offset + size) > p_inode->size) 
+    {
+        pr_info("read to many fata\n");
+        return 0;
+    }
     char* page_data = kmap(p_inode->i_page);
     if (!page_data)
         return -ENOMEM;
     int ret = copy_to_user(data,page_data + (loff_t)*offset,size);
-    kunmap(p_inode->i_page);
     if (ret)
         return -EFAULT;
     *offset += size;
@@ -62,12 +96,17 @@ static int initramfs_read(struct file *file, char __user * data, size_t size, lo
 static int initramfs_write(struct file *file, char __user * data, size_t size, loff_t *offset)
 {
     struct initramfs_inode *p_inode = file->f_inode->i_private;
+    if(p_inode->mode = READONLY){
+        pr_err("this file is read only\n");
+        return 0;
+    }
     if(p_inode->i_page == NULL){
         p_inode->i_page = alloc_page(GFP_KERNEL);
         if(IS_ERR(p_inode->i_page)){
             p_inode->i_page = NULL;
             return -ENOMEM;
         }      
+        p_inode->size = PAGE_SIZE;
         file->f_inode->i_bytes = PAGE_SIZE;
         get_page(p_inode->i_page);
     }
@@ -84,13 +123,38 @@ static int initramfs_write(struct file *file, char __user * data, size_t size, l
 }
 
 
+static int initramfs_iterate(struct file *file, struct dir_context *ctx)
+{
+    struct initramfs_inode *inode = file->private_data;
+    struct initramfs_dentry *pos;
+    loff_t curr = 0;
+    if ((inode->i_mode & S_IFMT) != S_IFDIR)
+        return -ENOTDIR;
+
+    spin_lock(&inode->lock);
+    list_for_each_entry(pos, &inode->dentry_list_head, list_node) {
+        if (curr++ < ctx->pos)
+            continue;
+
+        if (!dir_emit(ctx, pos->name, strlen(pos->name),
+                      curr,  // inode number 可为 0 或 pos->target_inode->major
+                      (pos->target_inode->i_mode & S_IFDIR) ? DT_DIR : DT_REG)) {
+            break;  // 缓冲区满了
+        }
+        ctx->pos++;
+    }
+    spin_unlock(&inode->lock);
+    return 0;
+}
+
 
 static struct file_operations initramfs_file_fops = {
     .owner = THIS_MODULE,
     .open = initramfs_open,
     .release = initramfs_release,
     .read  = initramfs_read,
-    .write = initramfs_write
+    .write = initramfs_write,
+    .iterate_shared = initramfs_iterate
 };
 
 static struct initramfs_inode *initramfs_create_empty_inode(struct initramfs_superblock *sb,struct file_operations *fop, uint32_t major) //普通地创建一个inode
@@ -108,7 +172,7 @@ static struct initramfs_inode *initramfs_create_empty_inode(struct initramfs_sup
     spin_lock_init(&initram_inode->lock);
     INIT_LIST_HEAD(&initram_inode->list_node);
     INIT_LIST_HEAD(&initram_inode->dentry_list_head);
-    
+    initram_inode->mode = READABLE; //默认为可写，如果要改为只读，请后期修改
     spin_lock(&sb->lock);
     list_add(&initram_inode->list_node,&sb->inode_list_head);
     spin_unlock(&sb->lock);
@@ -140,9 +204,7 @@ static struct initramfs_dentry* initramfs_create_dentry(struct initramfs_inode* 
     new_dentry->target_inode = target_inode;
     INIT_LIST_HEAD(&new_dentry->list_node);
     
-
     atomic_inc (&target_inode->dentry_count);      //增加引用计数
-    
     
     spin_lock   (&parent_dentry_inode->lock);
     list_add    (&new_dentry->list_node,&parent_dentry_inode->dentry_list_head);
@@ -253,12 +315,6 @@ static struct initramfs_dentry* initramfs_lookup(struct initramfs_inode* dentry_
     spin_unlock(&dentry_inode->lock);
     return NULL;
 }
-
-
-
-
-
-
 
 
 
@@ -375,6 +431,7 @@ static struct inode *  initramfs_get_inode(struct initramfs_inode * initram_node
     inode->i_fop     = initram_node->i_fop;
     inode->i_op      = &initramfs_inode_operation;
     inode->i_private = initram_node;
+    inode->i_size    = initram_node->size;
     return inode;
 }
 
@@ -577,6 +634,10 @@ static int  initramfs_getattr (struct mnt_idmap *dmp, const struct path * path,s
 static struct dentry_operations initramfs_dentry_operation = {
     .d_release = initramfs_release_dentry,
 };
+\
+
+
+
 
 static int __init initramfs_ops_init(void){
     register_filesystem(&fs_type);

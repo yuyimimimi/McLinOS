@@ -1,2 +1,2 @@
 C_SOURCES    += \
-		$(wildcard ./fs/pipefs/*.c)
+		$(wildcard $(BASE_DIR)/fs/pipefs/*.c)

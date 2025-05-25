@@ -141,6 +141,7 @@ static void free_memory(struct haper2* haper, struct memory_block* block){
 		new_block = free_block(new_block);
 	}
 }
+
 static void * memory_block_laterator(struct haper2* haper, memory_block_operation_t operation,void *data){ 
 	if(haper == NULL) return 0;
 	struct memory_block* curr = haper->start_addr;
@@ -240,6 +241,7 @@ static int free_haper_block(struct haper2* haper, void* ptr){ //安全地释放�
 	spin_unlock(&haper->lock);
 	return 0;
 }
+
 static struct haper_print_block{
 	int count;
 	void (*printdata)(char *data,...);
@@ -281,7 +283,7 @@ static void* check_blocks(struct haper2* haper,struct memory_block* block, int* 
 		flag[0] = 1;
 		return 0;              //标记并直接终止遍历
 	}
-	return 1; //继续遍历
+	return (void*)1; //继续遍历
 }
 static int check_blocks_completeness(struct haper2* haper)
 {
@@ -290,7 +292,5 @@ static int check_blocks_completeness(struct haper2* haper)
 	memory_block_laterator(haper,check_blocks,&flag);
 	return flag;
 }
-
-
 
 #endif

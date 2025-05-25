@@ -1,0 +1,147 @@
+ARM GAS  /tmp/ccwNghEL.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"cortexmirq.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c"
+  20              		.section	.text.IRQ_Generic_Handler,"ax",%progbits
+  21              		.align	1
+  22              		.global	IRQ_Generic_Handler
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	IRQ_Generic_Handler:
+  28              	.LFB0:
+   1:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** extern void C_IRQ_Dispatcher(int irq_number);
+   2:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** void IRQ_Generic_Handler(void)
+   3:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** {
+  29              		.loc 1 3 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   4:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****      int irq_number;
+  38              		.loc 1 4 6 view .LVU1
+   5:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile (
+  39              		.loc 1 5 5 view .LVU2
+  40              		.syntax unified
+  41              	@ 5 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c" 1
+  42 0002 EFF30580 		MRS r0, IPSR
+  43 0006 A0F11000 		SUB r0, r0, #16
+  44              		
+  45              	@ 0 "" 2
+  46              	.LVL0:
+   6:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****         "MRS %0, IPSR\n\t"   // 读 IPSR 到 irq_number
+   7:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****         "SUB %0, %0, #16\n\t"
+   8:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****         : "=r" (irq_number)
+   9:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****     );
+  10:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****     C_IRQ_Dispatcher(irq_number);
+  47              		.loc 1 10 5 view .LVU3
+  48              		.thumb
+ARM GAS  /tmp/ccwNghEL.s 			page 2
+
+
+  49              		.syntax unified
+  50 000a FFF7FEFF 		bl	C_IRQ_Dispatcher
+  51              	.LVL1:
+  11:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** }
+  52              		.loc 1 11 1 is_stmt 0 view .LVU4
+  53 000e 08BD     		pop	{r3, pc}
+  54              		.cfi_endproc
+  55              	.LFE0:
+  57              		.section	.text.__enable_irq,"ax",%progbits
+  58              		.align	1
+  59              		.global	__enable_irq
+  60              		.syntax unified
+  61              		.thumb
+  62              		.thumb_func
+  64              	__enable_irq:
+  65              	.LFB1:
+  12:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  13:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  14:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** void __enable_irq(){
+  66              		.loc 1 14 20 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  15:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile ("cpsie i");
+  71              		.loc 1 15 5 view .LVU6
+  72              		.syntax unified
+  73              	@ 15 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c" 1
+  74 0000 62B6     		cpsie i
+  75              	@ 0 "" 2
+  16:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** }
+  76              		.loc 1 16 1 is_stmt 0 view .LVU7
+  77              		.thumb
+  78              		.syntax unified
+  79 0002 7047     		bx	lr
+  80              		.cfi_endproc
+  81              	.LFE1:
+  83              		.section	.text.__disble_irq,"ax",%progbits
+  84              		.align	1
+  85              		.global	__disble_irq
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	__disble_irq:
+  91              	.LFB2:
+  17:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  18:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** void __disble_irq(){
+  92              		.loc 1 18 20 is_stmt 1 view -0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  19:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile ("cpsid i");
+  97              		.loc 1 19 5 view .LVU9
+  98              		.syntax unified
+  99              	@ 19 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c" 1
+ 100 0000 72B6     		cpsid i
+ARM GAS  /tmp/ccwNghEL.s 			page 3
+
+
+ 101              	@ 0 "" 2
+  20:/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/kernel/irq/cortexmirq.c **** }
+ 102              		.loc 1 20 1 is_stmt 0 view .LVU10
+ 103              		.thumb
+ 104              		.syntax unified
+ 105 0002 7047     		bx	lr
+ 106              		.cfi_endproc
+ 107              	.LFE2:
+ 109              		.text
+ 110              	.Letext0:
+ARM GAS  /tmp/ccwNghEL.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 cortexmirq.c
+     /tmp/ccwNghEL.s:21     .text.IRQ_Generic_Handler:00000000 $t
+     /tmp/ccwNghEL.s:27     .text.IRQ_Generic_Handler:00000000 IRQ_Generic_Handler
+     /tmp/ccwNghEL.s:58     .text.__enable_irq:00000000 $t
+     /tmp/ccwNghEL.s:64     .text.__enable_irq:00000000 __enable_irq
+     /tmp/ccwNghEL.s:84     .text.__disble_irq:00000000 $t
+     /tmp/ccwNghEL.s:90     .text.__disble_irq:00000000 __disble_irq
+
+UNDEFINED SYMBOLS
+C_IRQ_Dispatcher

@@ -1,0 +1,157 @@
+ARM GAS  /tmp/ccOEKGQy.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"ompiler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c"
+  20              		.section	.text.ftrace_likely_update,"ax",%progbits
+  21              		.align	1
+  22              		.weak	ftrace_likely_update
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	ftrace_likely_update:
+  28              	.LVL0:
+  29              	.LFB1:
+   1:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+   3:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #include <linux/compiler.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #ifndef __CHECKER__
+   6:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+   7:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #define  __weak __attribute__((weak))
+   8:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** // Minimal definition for struct ftrace_likely_data
+  10:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** struct ftrace_likely_data {
+  11:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     void *func;
+  12:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     const char *file;
+  13:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     int line;
+  14:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     unsigned int miss_hit[2];
+  15:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** };
+  16:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** void __weak ftrace_likely_update(struct ftrace_likely_data *f, int val,
+  18:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****                                  int expect, int is_constant)
+  19:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** {
+  30              		.loc 1 19 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  20:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     // Minimal implementation: do nothing
+  21:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** }
+  35              		.loc 1 21 1 view .LVU1
+  36 0000 7047     		bx	lr
+  37              		.cfi_endproc
+ARM GAS  /tmp/ccOEKGQy.s 			page 2
+
+
+  38              	.LFE1:
+  40              		.section	.text.__kcsan_disable_current,"ax",%progbits
+  41              		.align	1
+  42              		.weak	__kcsan_disable_current
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	__kcsan_disable_current:
+  48              	.LFB2:
+  22:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** // Weak symbols for KCSAN functions, so they can be overridden by KCSAN
+  24:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** void  __weak  __kcsan_disable_current(void)
+  25:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** {
+  49              		.loc 1 25 1 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+  26:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     // Minimal implementation: do nothing
+  27:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** }
+  54              		.loc 1 27 1 view .LVU3
+  55 0000 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE2:
+  59              		.section	.text.__kcsan_enable_current,"ax",%progbits
+  60              		.align	1
+  61              		.weak	__kcsan_enable_current
+  62              		.syntax unified
+  63              		.thumb
+  64              		.thumb_func
+  66              	__kcsan_enable_current:
+  67              	.LFB3:
+  28:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  29:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** void __weak  __kcsan_enable_current(void)
+  30:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** {
+  68              		.loc 1 30 1 view -0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+  31:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     // Minimal implementation: do nothing
+  32:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** }
+  73              		.loc 1 32 1 view .LVU5
+  74 0000 7047     		bx	lr
+  75              		.cfi_endproc
+  76              	.LFE3:
+  78              		.section	.text.annotate_unreachable,"ax",%progbits
+  79              		.align	1
+  80              		.weak	annotate_unreachable
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	annotate_unreachable:
+  86              	.LFB4:
+  33:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** // Minimal implementation for mb() if not defined elsewhere
+  35:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #ifndef mb
+ARM GAS  /tmp/ccOEKGQy.s 			page 3
+
+
+  36:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #define mb() __asm__ __volatile__("": : :"memory")
+  37:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** #endif
+  38:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  39:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** void __weak  annotate_unreachable(void)
+  41:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** {
+  87              		.loc 1 41 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  42:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c ****     // Minimal implementation: do nothing
+  43:/mnt/c/Users/31740/Desktop/newcore/lib/ompiler.c **** }
+  92              		.loc 1 43 1 view .LVU7
+  93 0000 7047     		bx	lr
+  94              		.cfi_endproc
+  95              	.LFE4:
+  97              		.text
+  98              	.Letext0:
+ARM GAS  /tmp/ccOEKGQy.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ompiler.c
+     /tmp/ccOEKGQy.s:21     .text.ftrace_likely_update:00000000 $t
+     /tmp/ccOEKGQy.s:27     .text.ftrace_likely_update:00000000 ftrace_likely_update
+     /tmp/ccOEKGQy.s:41     .text.__kcsan_disable_current:00000000 $t
+     /tmp/ccOEKGQy.s:47     .text.__kcsan_disable_current:00000000 __kcsan_disable_current
+     /tmp/ccOEKGQy.s:60     .text.__kcsan_enable_current:00000000 $t
+     /tmp/ccOEKGQy.s:66     .text.__kcsan_enable_current:00000000 __kcsan_enable_current
+     /tmp/ccOEKGQy.s:79     .text.annotate_unreachable:00000000 $t
+     /tmp/ccOEKGQy.s:85     .text.annotate_unreachable:00000000 annotate_unreachable
+
+NO UNDEFINED SYMBOLS

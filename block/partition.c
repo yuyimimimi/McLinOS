@@ -126,7 +126,7 @@ static struct mbr_partition * get_empty_MBR_Table(struct partition *partition,in
 
 static void MBR_partition_table_create(struct mbr_partition * mbr_partition,uint8_t type,uint32_t start_address,uint32_t size, uint8_t flag)
 {
-    printk("creating new mbr partition: boot_ind = %d, start_address = %d, size = %d,sys_ind = %d\n\r",type,start_address,size,flag);
+    printk(KERN_INFO "creating new mbr partition: boot_ind = %d, start_address = %d, size = %d,sys_ind = %d\n\r",type,start_address,size,flag);
 
     mbr_partition->boot_ind     = type; 
 
@@ -156,7 +156,7 @@ static uint32_t get_mbr_partition_start_address(struct partition *partition,int 
     
     struct mbr_partition *mbr_partition = &partition->mbr_partition[number];
     if(check_empty_MBR_Table(partition,number) == 1){
-         printk("This is a empty partition table slot\n\r");
+         printk(KERN_INFO "This is a empty partition table slot\n\r");
          return INVALID_PARTITION;
     }
     return mbr_partition->start_lba;
@@ -298,21 +298,21 @@ static int mbr_partition_table_update(struct block_device *device,struct partiti
 static int mbr_table_delete(struct block_device *device,struct partition *partition,int number,enum block_device_flags_t flags)
 {
     if(device == NULL || partition == NULL) {
-        printk("This device has not init\n\r");
+        printk(KERN_INFO"This device has not init\n\r");
         return -1;
     }
     if(flags != BLOCK_DEVICE_FLAG_MBR && flags!= BLOCK_DEVICE_FLAG_PROTECTIVE_MBR){
-        printk("It's not a mbr device\n\r");
+        printk(KERN_INFO"It's not a mbr device\n\r");
         return -1;
     }
     if(number < 0 || number > 3){
-        printk("partition number is out of range\n\r");
+        printk(KERN_INFO"partition number is out of range\n\r");
         return -1;
     }
     if(mbr_partition_table_load(device,partition) < 0) return -1;           //读取mbr分区表
     struct mbr_partition *mbr_partition = &partition->mbr_partition[number];
     if(check_empty_MBR_Table(partition,number) == 1){
-        printk("This is a empty partition table slot\n\r");
+        printk(KERN_INFO"This is a empty partition table slot\n\r");
         return -1;
     }
     else
@@ -514,7 +514,7 @@ struct partition* get_partition_from_device(struct block_device *bdev){
     if(device_partition == NULL) return -ENOMEM;
     if(mbr_partition_table_load(bdev,device_partition) < 0){
         kfree(device_partition);
-        return -EIO;
+        return (struct partition*)-EIO;
     }
     return device_partition;
 }
@@ -572,6 +572,7 @@ uint32_t get_partiton_data(struct partition* partition,int number,uint32_t flag)
         return get_mbr_partition_size(partition,number);
     if(flag == mbr_partiton_magic)
         return get_mbr_partition_type(partition,number);
+    return 0;
 }
 EXPORT_SYMBOL(get_partiton_data);
 

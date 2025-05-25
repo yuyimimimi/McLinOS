@@ -1,0 +1,3287 @@
+ARM GAS  /tmp/ccVZjAAt.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"char_device.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c"
+  20              		.section	.text.sized_strscpy,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	sized_strscpy:
+  27              	.LVL0:
+  28              	.LFB242:
+  29              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #ifndef _LINUX_STRING_H_
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #define _LINUX_STRING_H_ 
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/args.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/array_size.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/compiler.h>	/* for inline */
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/types.h>	/* for size_t */
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/stddef.h>	/* for NULL */
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/err.h>		/* for ERR_PTR() */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/errno.h>	/* for E2BIG */
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/overflow.h>	/* for check_mul_overflow() */
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <linux/stdarg.h>
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** #include <uapi/linux/string.h>
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** extern char *strndup_user(const char __user *, long);
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** extern void *memdup_user(const void __user *, size_t) __realloc_size(2);
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** extern void *vmemdup_user(const void __user *, size_t) __realloc_size(2);
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** extern void *memdup_user_nul(const void __user *, size_t);
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** static ssize_t sized_strscpy(char *dest, const char *src, size_t slen) {
+  30              		.loc 2 24 72 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+ARM GAS  /tmp/ccVZjAAt.s 			page 2
+
+
+  35              		.loc 2 24 72 is_stmt 0 view .LVU1
+  36 0000 10B4     		push	{r4}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 4, -4
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     size_t i;
+  40              		.loc 2 25 5 is_stmt 1 view .LVU2
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** 
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     for (i = 0;  i < slen && src[i] != '\0'; i++) {
+  41              		.loc 2 27 5 view .LVU3
+  42              	.LVL1:
+  43              		.loc 2 27 12 is_stmt 0 view .LVU4
+  44 0002 0023     		movs	r3, #0
+  45              		.loc 2 27 5 view .LVU5
+  46 0004 01E0     		b	.L2
+  47              	.LVL2:
+  48              	.L4:
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         dest[i] = src[i];
+  49              		.loc 2 28 9 is_stmt 1 view .LVU6
+  50              		.loc 2 28 17 is_stmt 0 view .LVU7
+  51 0006 C454     		strb	r4, [r0, r3]
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         dest[i] = src[i];
+  52              		.loc 2 27 47 is_stmt 1 discriminator 4 view .LVU8
+  53 0008 0133     		adds	r3, r3, #1
+  54              	.LVL3:
+  55              	.L2:
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         dest[i] = src[i];
+  56              		.loc 2 27 27 discriminator 1 view .LVU9
+  57 000a 9342     		cmp	r3, r2
+  58 000c 02D2     		bcs	.L3
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         dest[i] = src[i];
+  59              		.loc 2 27 33 is_stmt 0 discriminator 3 view .LVU10
+  60 000e CC5C     		ldrb	r4, [r1, r3]	@ zero_extendqisi2
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         dest[i] = src[i];
+  61              		.loc 2 27 27 discriminator 3 view .LVU11
+  62 0010 002C     		cmp	r4, #0
+  63 0012 F8D1     		bne	.L4
+  64              	.L3:
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     }
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     dest[i] = '\0';  
+  65              		.loc 2 30 5 is_stmt 1 view .LVU12
+  66              		.loc 2 30 13 is_stmt 0 view .LVU13
+  67 0014 0024     		movs	r4, #0
+  68 0016 C454     		strb	r4, [r0, r3]
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     if (i == slen || src[i] == '\0') {
+  69              		.loc 2 31 5 is_stmt 1 view .LVU14
+  70              		.loc 2 31 8 is_stmt 0 view .LVU15
+  71 0018 9342     		cmp	r3, r2
+  72 001a 01D0     		beq	.L5
+  73              		.loc 2 31 25 discriminator 1 view .LVU16
+  74 001c CA5C     		ldrb	r2, [r1, r3]	@ zero_extendqisi2
+  75              	.LVL4:
+  76              		.loc 2 31 19 discriminator 1 view .LVU17
+  77 001e 1AB9     		cbnz	r2, .L7
+  78              	.L5:
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****         return i; 
+  79              		.loc 2 32 9 is_stmt 1 view .LVU18
+ARM GAS  /tmp/ccVZjAAt.s 			page 3
+
+
+  80              		.loc 2 32 16 is_stmt 0 view .LVU19
+  81 0020 1846     		mov	r0, r3
+  82              	.LVL5:
+  83              	.L1:
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     }
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h ****     return -1;
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** }
+  84              		.loc 2 35 1 view .LVU20
+  85 0022 5DF8044B 		ldr	r4, [sp], #4
+  86              	.LCFI1:
+  87              		.cfi_remember_state
+  88              		.cfi_restore 4
+  89              		.cfi_def_cfa_offset 0
+  90 0026 7047     		bx	lr
+  91              	.LVL6:
+  92              	.L7:
+  93              	.LCFI2:
+  94              		.cfi_restore_state
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** }
+  95              		.loc 2 34 12 view .LVU21
+  96 0028 4FF0FF30 		mov	r0, #-1
+  97              	.LVL7:
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/string.h **** }
+  98              		.loc 2 34 12 view .LVU22
+  99 002c F9E7     		b	.L1
+ 100              		.cfi_endproc
+ 101              	.LFE242:
+ 103              		.section	.text.find_dynamic_major,"ax",%progbits
+ 104              		.align	1
+ 105              		.syntax unified
+ 106              		.thumb
+ 107              		.thumb_func
+ 109              	find_dynamic_major:
+ 110              	.LFB1034:
+   1:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/list.h>
+   3:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/fs.h>
+   4:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/slab.h>
+   5:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/init.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/fs.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/kdev_t.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/slab.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/string.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/cdev.h>
+  11:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/major.h>
+  12:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/errno.h>
+  13:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/module.h>
+  14:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #include <linux/mutex.h>
+  15:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  16:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  17:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** #define CHRDEV_MAJOR_HASH_SIZE 127
+  18:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  19:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static DEFINE_MUTEX(chrdevs_lock);
+  20:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  21:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static struct char_device_struct 
+  22:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+  23:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct char_device_struct *next; 
+ARM GAS  /tmp/ccVZjAAt.s 			page 4
+
+
+  24:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     unsigned int major; 
+  25:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     unsigned int baseminor; 
+  26:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     int minorct;
+  27:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     char name[64]; 
+  28:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct cdev *cdev; /* will die */ 
+  29:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** } *chrdevs[CHRDEV_MAJOR_HASH_SIZE];
+  30:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  31:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  32:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static inline int major_to_index(unsigned major)
+  33:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return major % CHRDEV_MAJOR_HASH_SIZE;
+  35:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+  36:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  37:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  38:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static int find_dynamic_major(void)
+  39:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 111              		.loc 1 39 1 is_stmt 1 view -0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		@ link register save eliminated.
+  40:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i;
+ 116              		.loc 1 40 2 view .LVU24
+  41:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd;
+ 117              		.loc 1 41 2 view .LVU25
+  42:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (i = ARRAY_SIZE(chrdevs)-1; i >= CHRDEV_MAJOR_DYN_END; i--) {
+ 118              		.loc 1 42 2 view .LVU26
+ 119              	.LVL8:
+ 120              	.LBB67:
+ 121              		.loc 1 42 36 discriminator 1 view .LVU27
+ 122              	.LBE67:
+  43:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (chrdevs[i] == NULL)
+  44:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			return i;
+  45:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+  46:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (i = CHRDEV_MAJOR_DYN_EXT_START;
+ 123              		.loc 1 46 2 view .LVU28
+ 124              		.loc 1 46 9 is_stmt 0 view .LVU29
+ 125 0000 40F2FF10 		movw	r0, #511
+ 126              	.LVL9:
+ 127              	.L10:
+  47:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	     i >= CHRDEV_MAJOR_DYN_EXT_END; i--) {
+ 128              		.loc 1 47 9 is_stmt 1 discriminator 1 view .LVU30
+ 129 0004 B0F5C07F 		cmp	r0, #384
+ 130 0008 16DB     		blt	.L16
+  48:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		for (cd = chrdevs[major_to_index(i)]; cd; cd = cd->next)
+ 131              		.loc 1 48 3 view .LVU31
+ 132              		.loc 1 48 21 is_stmt 0 view .LVU32
+ 133 000a 0146     		mov	r1, r0
+ 134              	.LVL10:
+ 135              	.LBB68:
+ 136              	.LBI68:
+  32:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 137              		.loc 1 32 19 is_stmt 1 view .LVU33
+ 138              	.LBB69:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 139              		.loc 1 34 2 view .LVU34
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ARM GAS  /tmp/ccVZjAAt.s 			page 5
+
+
+ 140              		.loc 1 34 15 is_stmt 0 view .LVU35
+ 141 000c 0C4B     		ldr	r3, .L18
+ 142 000e A3FB0023 		umull	r2, r3, r3, r0
+ 143 0012 C21A     		subs	r2, r0, r3
+ 144 0014 03EB5203 		add	r3, r3, r2, lsr #1
+ 145 0018 9B09     		lsrs	r3, r3, #6
+ 146 001a C3EBC313 		rsb	r3, r3, r3, lsl #7
+ 147 001e C31A     		subs	r3, r0, r3
+ 148              	.LVL11:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 149              		.loc 1 34 15 view .LVU36
+ 150              	.LBE69:
+ 151              	.LBE68:
+ 152              		.loc 1 48 11 discriminator 1 view .LVU37
+ 153 0020 084A     		ldr	r2, .L18+4
+ 154 0022 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 155              	.LVL12:
+ 156              	.L11:
+ 157              		.loc 1 48 41 is_stmt 1 discriminator 1 view .LVU38
+ 158 0026 23B1     		cbz	r3, .L17
+  49:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			if (cd->major == i)
+ 159              		.loc 1 49 4 view .LVU39
+ 160              		.loc 1 49 10 is_stmt 0 view .LVU40
+ 161 0028 5A68     		ldr	r2, [r3, #4]
+ 162              		.loc 1 49 7 view .LVU41
+ 163 002a 9142     		cmp	r1, r2
+ 164 002c 02D0     		beq	.L12
+  48:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			if (cd->major == i)
+ 165              		.loc 1 48 48 is_stmt 1 discriminator 2 view .LVU42
+ 166 002e 1B68     		ldr	r3, [r3]
+ 167              	.LVL13:
+  48:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			if (cd->major == i)
+ 168              		.loc 1 48 48 is_stmt 0 discriminator 2 view .LVU43
+ 169 0030 F9E7     		b	.L11
+ 170              	.L17:
+  48:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			if (cd->major == i)
+ 171              		.loc 1 48 48 discriminator 2 view .LVU44
+ 172 0032 7047     		bx	lr
+ 173              	.L12:
+  50:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 				break;
+  51:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd == NULL)
+ 174              		.loc 1 51 3 is_stmt 1 view .LVU45
+  47:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		for (cd = chrdevs[major_to_index(i)]; cd; cd = cd->next)
+ 175              		.loc 1 47 39 view .LVU46
+ 176 0034 0138     		subs	r0, r0, #1
+ 177              	.LVL14:
+  47:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		for (cd = chrdevs[major_to_index(i)]; cd; cd = cd->next)
+ 178              		.loc 1 47 39 is_stmt 0 view .LVU47
+ 179 0036 E5E7     		b	.L10
+ 180              	.LVL15:
+ 181              	.L16:
+  52:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			return i;
+  53:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+  54:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return -EBUSY;
+ 182              		.loc 1 54 9 view .LVU48
+ 183 0038 6FF00F00 		mvn	r0, #15
+ 184              	.LVL16:
+ARM GAS  /tmp/ccVZjAAt.s 			page 6
+
+
+  55:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 185              		.loc 1 55 1 view .LVU49
+ 186 003c 7047     		bx	lr
+ 187              	.L19:
+ 188 003e 00BF     		.align	2
+ 189              	.L18:
+ 190 0040 11080402 		.word	33818641
+ 191 0044 00000000 		.word	chrdevs
+ 192              		.cfi_endproc
+ 193              	.LFE1034:
+ 195              		.section	.text.__unregister_chrdev_region,"ax",%progbits
+ 196              		.align	1
+ 197              		.syntax unified
+ 198              		.thumb
+ 199              		.thumb_func
+ 201              	__unregister_chrdev_region:
+ 202              	.LVL17:
+ 203              	.LFB1036:
+  56:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  58:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  59:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static struct char_device_struct *
+  60:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** __register_chrdev_region(unsigned int major, unsigned int baseminor,
+  61:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			   int minorct, const char *name)
+  62:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+  63:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd, *curr, *prev = NULL;
+  64:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int ret;
+  65:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i;
+  66:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (major >= CHRDEV_MAJOR_MAX) {
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" major requested (%u) is greater than the maximum (%u)\n",
+  69:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+  70:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		return ERR_PTR(-EINVAL);
+  71:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+  72:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  73:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (minorct > MINORMASK + 1 - baseminor) {
+  74:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" minor range requested (%u-%u) is out of range of maximum range (%u-%u) for 
+  75:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			name, baseminor, baseminor + minorct - 1, 0, MINORMASK);
+  76:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		return ERR_PTR(-EINVAL);
+  77:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+  78:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  79:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd = kzalloc(sizeof(struct char_device_struct), GFP_KERNEL);
+  80:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (cd == NULL)
+  81:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		return ERR_PTR(-ENOMEM);
+  82:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  83:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_lock(&chrdevs_lock);
+  84:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+  85:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (major == 0) {
+  86:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		ret = find_dynamic_major();
+  87:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (ret < 0) {
+  88:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			pr_err("CHRDEV \"%s\" dynamic allocation region is full\n",
+  89:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       name);
+  90:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			goto out;
+  91:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		}
+  92:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		major = ret;
+  93:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+  94:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ARM GAS  /tmp/ccVZjAAt.s 			page 7
+
+
+  95:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	ret = -EBUSY;
+  96:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	i = major_to_index(major);
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (curr = chrdevs[i]; curr; prev = curr, curr = curr->next) {
+  98:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+  99:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 100:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 101:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major > major)
+ 102:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 103:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->baseminor + curr->minorct <= baseminor)
+ 105:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 106:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 107:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->baseminor >= baseminor + minorct)
+ 108:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 109:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 110:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		goto out;
+ 111:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 112:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 113:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->major = major;
+ 114:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->baseminor = baseminor;
+ 115:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->minorct = minorct;
+ 116:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	strscpy(cd->name, name, sizeof(cd->name));
+ 117:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 118:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (!prev) {
+ 119:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd->next = curr;
+ 120:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		chrdevs[i] = cd;
+ 121:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	} else {
+ 122:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd->next = prev->next;
+ 123:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		prev->next = cd;
+ 124:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 125:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 126:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_unlock(&chrdevs_lock);
+ 127:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return cd;
+ 128:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out:
+ 129:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_unlock(&chrdevs_lock);
+ 130:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	kfree(cd);
+ 131:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return ERR_PTR(ret);
+ 132:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 133:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 134:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 135:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** static struct char_device_struct *
+ 136:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** __unregister_chrdev_region(unsigned major, unsigned baseminor, int minorct)
+ 137:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 204              		.loc 1 137 1 is_stmt 1 view -0
+ 205              		.cfi_startproc
+ 206              		@ args = 0, pretend = 0, frame = 0
+ 207              		@ frame_needed = 0, uses_anonymous_args = 0
+ 208              		@ link register save eliminated.
+ 209              		.loc 1 137 1 is_stmt 0 view .LVU51
+ 210 0000 8446     		mov	ip, r0
+ 138:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd = NULL, **cp;
+ 211              		.loc 1 138 2 is_stmt 1 view .LVU52
+ 212              	.LVL18:
+ 139:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i = major_to_index(major);
+ 213              		.loc 1 139 2 view .LVU53
+ 214              	.LBB70:
+ 215              	.LBI70:
+ARM GAS  /tmp/ccVZjAAt.s 			page 8
+
+
+  32:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 216              		.loc 1 32 19 view .LVU54
+ 217              	.LBB71:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 218              		.loc 1 34 2 view .LVU55
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 219              		.loc 1 34 15 is_stmt 0 view .LVU56
+ 220 0002 1548     		ldr	r0, .L33
+ 221              	.LVL19:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 222              		.loc 1 34 15 view .LVU57
+ 223 0004 A0FB0C30 		umull	r3, r0, r0, ip
+ 224 0008 ACEB0003 		sub	r3, ip, r0
+ 225 000c 00EB5300 		add	r0, r0, r3, lsr #1
+ 226 0010 8009     		lsrs	r0, r0, #6
+ 227 0012 C0EBC010 		rsb	r0, r0, r0, lsl #7
+ 228 0016 ACEB0000 		sub	r0, ip, r0
+ 229              	.LVL20:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 230              		.loc 1 34 15 view .LVU58
+ 231              	.LBE71:
+ 232              	.LBE70:
+ 140:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 141:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_lock(&chrdevs_lock);
+ 233              		.loc 1 141 2 is_stmt 1 view .LVU59
+ 142:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (cp = &chrdevs[i]; *cp; cp = &(*cp)->next)
+ 234              		.loc 1 142 2 view .LVU60
+ 235              		.loc 1 142 10 is_stmt 0 view .LVU61
+ 236 001a 104B     		ldr	r3, .L33+4
+ 237 001c 03EB8003 		add	r3, r3, r0, lsl #2
+ 238              	.LVL21:
+ 239              		.loc 1 142 25 is_stmt 1 discriminator 1 view .LVU62
+ 240 0020 1868     		ldr	r0, [r3]
+ 241              	.LVL22:
+ 242              		.loc 1 142 25 is_stmt 0 discriminator 1 view .LVU63
+ 243 0022 98B1     		cbz	r0, .L32
+ 137:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd = NULL, **cp;
+ 244              		.loc 1 137 1 view .LVU64
+ 245 0024 10B4     		push	{r4}
+ 246              	.LCFI3:
+ 247              		.cfi_def_cfa_offset 4
+ 248              		.cfi_offset 4, -4
+ 249 0026 02E0     		b	.L24
+ 250              	.L22:
+ 251              		.loc 1 142 33 is_stmt 1 discriminator 2 view .LVU65
+ 252 0028 0346     		mov	r3, r0
+ 253              	.LVL23:
+ 254              		.loc 1 142 25 discriminator 1 view .LVU66
+ 255 002a 0068     		ldr	r0, [r0]
+ 256 002c 40B1     		cbz	r0, .L23
+ 257              	.L24:
+ 143:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if ((*cp)->major == major &&
+ 258              		.loc 1 143 3 view .LVU67
+ 259              		.loc 1 143 6 is_stmt 0 view .LVU68
+ 260 002e 4468     		ldr	r4, [r0, #4]
+ 261 0030 6445     		cmp	r4, ip
+ 262 0032 F9D1     		bne	.L22
+ARM GAS  /tmp/ccVZjAAt.s 			page 9
+
+
+ 263              		.loc 1 143 29 discriminator 1 view .LVU69
+ 264 0034 8468     		ldr	r4, [r0, #8]
+ 265 0036 8C42     		cmp	r4, r1
+ 266 0038 F6D1     		bne	.L22
+ 144:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		    (*cp)->baseminor == baseminor &&
+ 267              		.loc 1 144 37 view .LVU70
+ 268 003a C468     		ldr	r4, [r0, #12]
+ 269 003c 9442     		cmp	r4, r2
+ 270 003e F3D1     		bne	.L22
+ 271              	.L23:
+ 145:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		    (*cp)->minorct == minorct)
+ 146:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 147:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (*cp) {
+ 272              		.loc 1 147 2 is_stmt 1 view .LVU71
+ 273              		.loc 1 147 5 is_stmt 0 view .LVU72
+ 274 0040 08B1     		cbz	r0, .L20
+ 148:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = *cp;
+ 275              		.loc 1 148 3 is_stmt 1 view .LVU73
+ 276              	.LVL24:
+ 149:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		*cp = cd->next;
+ 277              		.loc 1 149 3 view .LVU74
+ 278              		.loc 1 149 11 is_stmt 0 view .LVU75
+ 279 0042 0268     		ldr	r2, [r0]
+ 280              	.LVL25:
+ 281              		.loc 1 149 7 view .LVU76
+ 282 0044 1A60     		str	r2, [r3]
+ 150:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 151:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_unlock(&chrdevs_lock);
+ 283              		.loc 1 151 2 is_stmt 1 view .LVU77
+ 152:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return cd;
+ 284              		.loc 1 152 2 view .LVU78
+ 285              	.LVL26:
+ 286              	.L20:
+ 153:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 287              		.loc 1 153 1 is_stmt 0 view .LVU79
+ 288 0046 5DF8044B 		ldr	r4, [sp], #4
+ 289              	.LCFI4:
+ 290              		.cfi_restore 4
+ 291              		.cfi_def_cfa_offset 0
+ 292 004a 7047     		bx	lr
+ 293              	.LVL27:
+ 294              	.L32:
+ 147:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = *cp;
+ 295              		.loc 1 147 2 is_stmt 1 view .LVU80
+ 147:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = *cp;
+ 296              		.loc 1 147 5 is_stmt 0 view .LVU81
+ 297 004c 10B1     		cbz	r0, .L30
+ 148:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		*cp = cd->next;
+ 298              		.loc 1 148 3 is_stmt 1 view .LVU82
+ 299              	.LVL28:
+ 149:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 300              		.loc 1 149 3 view .LVU83
+ 149:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 301              		.loc 1 149 11 is_stmt 0 view .LVU84
+ 302 004e 0268     		ldr	r2, [r0]
+ 303              	.LVL29:
+ 149:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ARM GAS  /tmp/ccVZjAAt.s 			page 10
+
+
+ 304              		.loc 1 149 7 view .LVU85
+ 305 0050 1A60     		str	r2, [r3]
+ 151:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return cd;
+ 306              		.loc 1 151 2 is_stmt 1 view .LVU86
+ 152:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 307              		.loc 1 152 2 view .LVU87
+ 308 0052 7047     		bx	lr
+ 309              	.LVL30:
+ 310              	.L30:
+ 311              		.loc 1 153 1 is_stmt 0 view .LVU88
+ 312 0054 7047     		bx	lr
+ 313              	.L34:
+ 314 0056 00BF     		.align	2
+ 315              	.L33:
+ 316 0058 11080402 		.word	33818641
+ 317 005c 00000000 		.word	chrdevs
+ 318              		.cfi_endproc
+ 319              	.LFE1036:
+ 321              		.section	.text.cdev_add,"ax",%progbits
+ 322              		.align	1
+ 323              		.global	cdev_add
+ 324              		.syntax unified
+ 325              		.thumb
+ 326              		.thumb_func
+ 328              	cdev_add:
+ 329              	.LVL31:
+ 330              	.LFB1043:
+ 154:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 155:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 156:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 157:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * register_chrdev_region() - register a range of device numbers
+ 158:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @from: the first in the desired range of device numbers; must include
+ 159:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *        the major number.
+ 160:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of consecutive device numbers required
+ 161:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @name: the name of the device or driver.
+ 162:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 163:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Return value is zero on success, a negative error code on failure.
+ 164:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 165:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** int register_chrdev_region(dev_t from, unsigned count, const char *name)
+ 166:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 167:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd;
+ 168:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t to = from + count;
+ 169:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 170:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (n = from; n < to; n = next) {
+ 172:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 173:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 174:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 175:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = __register_chrdev_region(MAJOR(n), MINOR(n),
+ 176:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       next - n, name);
+ 177:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (IS_ERR(cd))
+ 178:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			goto fail;
+ 179:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 180:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return 0;
+ 181:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** fail:
+ 182:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	to = n;
+ 183:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (n = from; n < to; n = next) {
+ARM GAS  /tmp/ccVZjAAt.s 			page 11
+
+
+ 184:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 185:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 186:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 187:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return PTR_ERR(cd);
+ 188:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 189:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 190:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 191:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * alloc_chrdev_region() - register a range of char device numbers
+ 192:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @dev: output parameter for first assigned number
+ 193:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @baseminor: first of the requested range of minor numbers
+ 194:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of minor numbers required
+ 195:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @name: the name of the associated device or driver
+ 196:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 197:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Allocates a range of char device numbers.  The major number will be
+ 198:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * chosen dynamically, and returned (along with the first minor number)
+ 199:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * in @dev.  Returns zero or a negative error code.
+ 200:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 201:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count,
+ 202:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     const char *name)
+ 203:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 204:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ 205:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cd = __register_chrdev_region(0, baseminor, count, name);
+ 206:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (IS_ERR(cd))
+ 207:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return PTR_ERR(cd);
+ 208:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** *dev = MKDEV(cd->major, cd->baseminor);
+ 209:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return 0;
+ 210:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 211:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 212:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 213:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * __register_chrdev() - create and register a cdev occupying a range of minors
+ 214:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @major: major device number or 0 for dynamic allocation
+ 215:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @baseminor: first of the requested range of minor numbers
+ 216:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of minor numbers required
+ 217:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @name: name of this range of devices
+ 218:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @fops: file operations associated with this devices
+ 219:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 220:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * If @major == 0 this functions will dynamically allocate a major and return
+ 221:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * its number.
+ 222:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 223:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * If @major > 0 this function will attempt to reserve a device with the given
+ 224:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * major number and will return zero on success.
+ 225:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 226:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Returns a -ve errno on failure.
+ 227:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 228:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * The name of this device has nothing to do with the name of the device in
+ 229:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * /dev. It only helps to keep track of the different owners of devices. If
+ 230:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * your module name has only one type of devices it's ok to use e.g. the name
+ 231:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * of the module here.
+ 232:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 233:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** int __register_chrdev(unsigned int major, unsigned int baseminor,
+ 234:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     unsigned int count, const char *name,
+ 235:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     const struct file_operations *fops)
+ 236:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 237:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct char_device_struct *cd;
+ 238:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct cdev *cdev;
+ 239:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     int err = -ENOMEM;
+ 240:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ARM GAS  /tmp/ccVZjAAt.s 			page 12
+
+
+ 241:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cd = __register_chrdev_region(major, baseminor, count, name);
+ 242:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (IS_ERR(cd))
+ 243:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return PTR_ERR(cd);
+ 244:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev = cdev_alloc();
+ 246:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (!cdev)
+ 247:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out2;
+ 248:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 249:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev->owner = fops->owner;
+ 250:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev->ops = fops;
+ 251:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     // kobject_set_name(&cdev->kobj, "%s", name);
+ 252:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 253:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 254:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     err = cdev_add(cdev, MKDEV(cd->major, baseminor), count);
+ 255:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (err)
+ 256:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out;
+ 257:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cd->cdev = cdev;
+ 259:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return major ? 0 : cd->major;
+ 261:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out:
+ 262:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     //kobject_put(&cdev->kobj);
+ 263:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out2:
+ 264:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     kfree(__unregister_chrdev_region(cd->major, baseminor, count));
+ 265:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return err;
+ 266:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 267:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 268:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 269:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * unregister_chrdev_region() - unregister a range of device numbers
+ 270:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @from: the first in the range of numbers to unregister
+ 271:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of device numbers to unregister
+ 272:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 273:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * This function will unregister a range of @count device numbers,
+ 274:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * starting with @from.  The caller should normally be the one who
+ 275:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * allocated those numbers in the first place...
+ 276:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 277:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** void unregister_chrdev_region(dev_t from, unsigned count)
+ 278:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 279:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t to = from + count;
+ 280:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 281:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (n = from; n < to; n = next) {
+ 283:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 284:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 285:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 286:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 287:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 288:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 289:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 291:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * __unregister_chrdev - unregister and destroy a cdev
+ 292:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @major: major device number
+ 293:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @baseminor: first of the range of minor numbers
+ 294:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of minor numbers this cdev is occupying
+ 295:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @name: name of this range of devices
+ 296:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 297:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Unregister and destroy the cdev occupying the region described by
+ARM GAS  /tmp/ccVZjAAt.s 			page 13
+
+
+ 298:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @major, @baseminor and @count.  This function undoes what
+ 299:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * __register_chrdev() did.
+ 300:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 301:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** void __unregister_chrdev(unsigned int major, unsigned int baseminor,
+ 302:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     unsigned int count, const char *name)
+ 303:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 304:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ 305:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 306:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cd = __unregister_chrdev_region(major, baseminor, count);
+ 307:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (cd && cd->cdev)
+ 308:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cdev_del(cd->cdev);
+ 309:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** kfree(cd);
+ 310:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 311:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 312:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 313:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 314:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 315:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** void cdev_put(struct cdev *p)
+ 316:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 317:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (p) {
+ 318:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		struct module *owner = p->owner;
+ 319:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		//kobject_put(&p->kobj);
+ 320:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		//module_put(owner);
+ 321:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 322:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 323:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 324:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 325:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 326:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_add() - add a char device to the system
+ 327:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @p: the cdev structure for the device
+ 328:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @dev: the first device number for which this device is responsible
+ 329:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @count: the number of consecutive minor numbers corresponding to this
+ 330:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *         device
+ 331:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 332:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_add() adds the device represented by @p to the system, making it
+ 333:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * live immediately.  A negative error code is returned on failure.
+ 334:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 335:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** int cdev_add(struct cdev *p, dev_t dev, unsigned count)
+ 336:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 331              		.loc 1 336 1 is_stmt 1 view -0
+ 332              		.cfi_startproc
+ 333              		@ args = 0, pretend = 0, frame = 0
+ 334              		@ frame_needed = 0, uses_anonymous_args = 0
+ 335              		@ link register save eliminated.
+ 337:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int error;
+ 336              		.loc 1 337 2 view .LVU90
+ 338:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 339:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	p->dev = dev;
+ 337              		.loc 1 339 2 view .LVU91
+ 338              		.loc 1 339 9 is_stmt 0 view .LVU92
+ 339 0000 0161     		str	r1, [r0, #16]
+ 340:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	p->count = count;
+ 340              		.loc 1 340 2 is_stmt 1 view .LVU93
+ 341              		.loc 1 340 11 is_stmt 0 view .LVU94
+ 342 0002 4261     		str	r2, [r0, #20]
+ 341:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 342:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// if (WARN_ON(dev == WHITEOUT_DEV)) {
+ARM GAS  /tmp/ccVZjAAt.s 			page 14
+
+
+ 343:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// 	error = -EBUSY;
+ 344:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// 	return error;
+ 345:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     //     goto err;
+ 346:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// }
+ 347:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 348:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// error = kobj_map(cdev_map, dev, count, NULL,
+ 349:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// 		 exact_match, exact_lock, p);
+ 350:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// if (error)
+ 351:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// 	goto err;
+ 352:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 353:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// kobject_get(p->kobj.parent);
+ 354:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 355:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return 0;
+ 343              		.loc 1 355 2 is_stmt 1 view .LVU95
+ 356:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 357:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** // err:
+ 358:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** // 	kfree_const(p->kobj.name);
+ 359:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** // 	p->kobj.name = NULL;
+ 360:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** // 	return error;
+ 361:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 344              		.loc 1 361 1 is_stmt 0 view .LVU96
+ 345 0004 0020     		movs	r0, #0
+ 346              	.LVL32:
+ 347              		.loc 1 361 1 view .LVU97
+ 348 0006 7047     		bx	lr
+ 349              		.cfi_endproc
+ 350              	.LFE1043:
+ 352              		.section	.text.find_chrdev,"ax",%progbits
+ 353              		.align	1
+ 354              		.global	find_chrdev
+ 355              		.syntax unified
+ 356              		.thumb
+ 357              		.thumb_func
+ 359              	find_chrdev:
+ 360              	.LVL33:
+ 361              	.LFB1047:
+ 362:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 365:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 368:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_alloc() - allocate a cdev structure
+ 369:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 370:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Allocates and returns a cdev structure, or NULL on failure.
+ 371:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 372:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct cdev *cdev_alloc(void)
+ 373:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 374:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct cdev *p = kzalloc(sizeof(struct cdev), GFP_KERNEL);
+ 375:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (p) {
+ 376:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		INIT_LIST_HEAD(&p->list);
+ 377:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		// kobject_init(&p->kobj, &ktype_cdev_dynamic);
+ 378:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 379:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return p;
+ 380:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** } 
+ 381:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 382:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ARM GAS  /tmp/ccVZjAAt.s 			page 15
+
+
+ 383:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_init() - initialize a cdev structure
+ 384:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @cdev: the structure to initialize
+ 385:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @fops: the file_operations for this device
+ 386:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 387:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * Initializes @cdev, remembering @fops, making it ready to add to the
+ 388:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * system with cdev_add().
+ 389:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 390:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** void cdev_init(struct cdev *cdev, const struct file_operations *fops)
+ 391:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 392:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	memset(cdev, 0, sizeof *cdev);
+ 393:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	INIT_LIST_HEAD(&cdev->list);
+ 394:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// kobject_init(&cdev->kobj, &ktype_cdev_default);
+ 395:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cdev->ops = fops;
+ 396:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 397:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 398:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 399:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** /**
+ 400:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_del() - remove a cdev from the system
+ 401:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * @p: the cdev structure to be removed
+ 402:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 403:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * cdev_del() removes @p from the system, possibly freeing the structure
+ 404:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * itself.
+ 405:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  *
+ 406:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * NOTE: This guarantees that cdev device will no longer be able to be
+ 407:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * opened, however any cdevs already open will remain and their fops will
+ 408:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  * still be callable even after cdev_del returns.
+ 409:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****  */
+ 410:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** void cdev_del(struct cdev *p)
+ 411:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 412:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     kfree(p);
+ 413:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     // cdev_unmap(p->dev, p->count);
+ 414:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// kobject_put(&p->kobj);
+ 415:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 416:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 417:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 418:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 419:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 420:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 421:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct file_operations *find_chrdev(unsigned int major, unsigned int minor)
+ 422:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 362              		.loc 1 422 1 is_stmt 1 view -0
+ 363              		.cfi_startproc
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366              		@ link register save eliminated.
+ 367              		.loc 1 422 1 is_stmt 0 view .LVU99
+ 368 0000 0246     		mov	r2, r0
+ 423:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i = major_to_index(major);
+ 369              		.loc 1 423 2 is_stmt 1 view .LVU100
+ 370              	.LVL34:
+ 371              	.LBB72:
+ 372              	.LBI72:
+  32:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 373              		.loc 1 32 19 view .LVU101
+ 374              	.LBB73:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 375              		.loc 1 34 2 view .LVU102
+ARM GAS  /tmp/ccVZjAAt.s 			page 16
+
+
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 376              		.loc 1 34 15 is_stmt 0 view .LVU103
+ 377 0002 154B     		ldr	r3, .L51
+ 378 0004 A3FB0203 		umull	r0, r3, r3, r2
+ 379              	.LVL35:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 380              		.loc 1 34 15 view .LVU104
+ 381 0008 D01A     		subs	r0, r2, r3
+ 382 000a 03EB5003 		add	r3, r3, r0, lsr #1
+ 383 000e 9B09     		lsrs	r3, r3, #6
+ 384 0010 C3EBC313 		rsb	r3, r3, r3, lsl #7
+ 385 0014 D31A     		subs	r3, r2, r3
+ 386              	.LVL36:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 387              		.loc 1 34 15 view .LVU105
+ 388              	.LBE73:
+ 389              	.LBE72:
+ 424:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd;
+ 390              		.loc 1 424 2 is_stmt 1 view .LVU106
+ 425:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 426:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_lock(&chrdevs_lock);
+ 391              		.loc 1 426 2 view .LVU107
+ 427:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (cd = chrdevs[i]; cd; cd = cd->next) {
+ 392              		.loc 1 427 2 view .LVU108
+ 393              		.loc 1 427 10 is_stmt 0 view .LVU109
+ 394 0016 1148     		ldr	r0, .L51+4
+ 395 0018 50F82300 		ldr	r0, [r0, r3, lsl #2]
+ 396              	.LVL37:
+ 397              		.loc 1 427 2 view .LVU110
+ 398 001c 05E0     		b	.L42
+ 399              	.LVL38:
+ 400              	.L50:
+ 401              	.LCFI5:
+ 402              		.cfi_def_cfa_offset 4
+ 403              		.cfi_offset 4, -4
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->major != major)
+ 429:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->baseminor <= minor && minor < cd->baseminor + cd->minorct) {
+ 431:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 404              		.loc 1 431 4 is_stmt 1 view .LVU111
+ 432:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			return cd->cdev->ops;
+ 405              		.loc 1 432 4 view .LVU112
+ 406              		.loc 1 432 13 is_stmt 0 view .LVU113
+ 407 001e 036D     		ldr	r3, [r0, #80]
+ 408              		.loc 1 432 19 view .LVU114
+ 409 0020 5868     		ldr	r0, [r3, #4]
+ 410              	.LVL39:
+ 411              	.L36:
+ 433:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		}
+ 434:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 435:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	mutex_unlock(&chrdevs_lock);
+ 436:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return NULL;
+ 437:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 412              		.loc 1 437 1 view .LVU115
+ 413 0022 5DF8044B 		ldr	r4, [sp], #4
+ 414              	.LCFI6:
+ 415              		.cfi_restore 4
+ARM GAS  /tmp/ccVZjAAt.s 			page 17
+
+
+ 416              		.cfi_def_cfa_offset 0
+ 417 0026 7047     		bx	lr
+ 418              	.LVL40:
+ 419              	.L43:
+ 427:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->major != major)
+ 420              		.loc 1 427 31 is_stmt 1 discriminator 2 view .LVU116
+ 421 0028 0068     		ldr	r0, [r0]
+ 422              	.LVL41:
+ 423              	.L42:
+ 427:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->major != major)
+ 424              		.loc 1 427 24 discriminator 1 view .LVU117
+ 425 002a A0B1     		cbz	r0, .L49
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 426              		.loc 1 428 3 view .LVU118
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 427              		.loc 1 428 9 is_stmt 0 view .LVU119
+ 428 002c 4368     		ldr	r3, [r0, #4]
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 429              		.loc 1 428 6 view .LVU120
+ 430 002e 9342     		cmp	r3, r2
+ 431 0030 FAD1     		bne	.L43
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 432              		.loc 1 430 3 is_stmt 1 view .LVU121
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 433              		.loc 1 430 9 is_stmt 0 view .LVU122
+ 434 0032 8368     		ldr	r3, [r0, #8]
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 435              		.loc 1 430 6 view .LVU123
+ 436 0034 8B42     		cmp	r3, r1
+ 437 0036 F7D8     		bhi	.L43
+ 422:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i = major_to_index(major);
+ 438              		.loc 1 422 1 view .LVU124
+ 439 0038 10B4     		push	{r4}
+ 440              	.LCFI7:
+ 441              		.cfi_def_cfa_offset 4
+ 442              		.cfi_offset 4, -4
+ 443              	.L45:
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 444              		.loc 1 430 55 discriminator 1 view .LVU125
+ 445 003a C468     		ldr	r4, [r0, #12]
+ 446 003c 2344     		add	r3, r3, r4
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 447              		.loc 1 430 30 discriminator 1 view .LVU126
+ 448 003e 8B42     		cmp	r3, r1
+ 449 0040 EDD8     		bhi	.L50
+ 450              	.L38:
+ 427:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->major != major)
+ 451              		.loc 1 427 31 is_stmt 1 discriminator 2 view .LVU127
+ 452 0042 0068     		ldr	r0, [r0]
+ 453              	.LVL42:
+ 427:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (cd->major != major)
+ 454              		.loc 1 427 24 discriminator 1 view .LVU128
+ 455 0044 0028     		cmp	r0, #0
+ 456 0046 ECD0     		beq	.L36
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 457              		.loc 1 428 3 view .LVU129
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ARM GAS  /tmp/ccVZjAAt.s 			page 18
+
+
+ 458              		.loc 1 428 9 is_stmt 0 view .LVU130
+ 459 0048 4368     		ldr	r3, [r0, #4]
+ 428:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 460              		.loc 1 428 6 view .LVU131
+ 461 004a 9342     		cmp	r3, r2
+ 462 004c F9D1     		bne	.L38
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 463              		.loc 1 430 3 is_stmt 1 view .LVU132
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 464              		.loc 1 430 9 is_stmt 0 view .LVU133
+ 465 004e 8368     		ldr	r3, [r0, #8]
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 466              		.loc 1 430 6 view .LVU134
+ 467 0050 8B42     		cmp	r3, r1
+ 468 0052 F6D8     		bhi	.L38
+ 469 0054 F1E7     		b	.L45
+ 470              	.L49:
+ 471              	.LCFI8:
+ 472              		.cfi_def_cfa_offset 0
+ 473              		.cfi_restore 4
+ 430:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			mutex_unlock(&chrdevs_lock);
+ 474              		.loc 1 430 6 view .LVU135
+ 475 0056 7047     		bx	lr
+ 476              	.L52:
+ 477              		.align	2
+ 478              	.L51:
+ 479 0058 11080402 		.word	33818641
+ 480 005c 00000000 		.word	chrdevs
+ 481              		.cfi_endproc
+ 482              	.LFE1047:
+ 484              		.section	.text.kzalloc,"ax",%progbits
+ 485              		.align	1
+ 486              		.syntax unified
+ 487              		.thumb
+ 488              		.thumb_func
+ 490              	kzalloc:
+ 491              	.LVL43:
+ 492              	.LFB330:
+ 493              		.file 3 "/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/raid/pq.h>
+ARM GAS  /tmp/ccVZjAAt.s 			page 19
+
+
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+ARM GAS  /tmp/ccVZjAAt.s 			page 20
+
+
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ARM GAS  /tmp/ccVZjAAt.s 			page 21
+
+
+ 133:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ARM GAS  /tmp/ccVZjAAt.s 			page 22
+
+
+ 190:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ARM GAS  /tmp/ccVZjAAt.s 			page 23
+
+
+ 247:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ARM GAS  /tmp/ccVZjAAt.s 			page 24
+
+
+ 304:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ARM GAS  /tmp/ccVZjAAt.s 			page 25
+
+
+ 361:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 380:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 381:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 385:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 386:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 387:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 388:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 389:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static inline void *kmalloc_array(size_t n, size_t size, gfp_t flags){
+ 390:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return kmalloc(n * size, flags);
+ 391:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 392:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 393:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 394:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void kfree_array(void **ptr,int n){
+ 395:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	int i;
+ 396:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	if (ptr) {
+ 397:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		for (i = 0; i < n; i++) {
+ 398:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 			__sfree__(ptr[i]);
+ 399:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		}
+ 400:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 		__sfree__(ptr);
+ 401:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	}
+ 402:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 403:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 404:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static inline void* kmalloc_node_noprof(size_t size, gfp_t flags, int node)
+ 405:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** {
+ 406:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h ****     return kmalloc((u32)size,flags);
+ 407:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 408:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 409:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 
+ 410:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** static void inline *kzalloc(size_t size, gfp_t flags){
+ 494              		.loc 3 410 54 is_stmt 1 view -0
+ 495              		.cfi_startproc
+ 496              		@ args = 0, pretend = 0, frame = 0
+ 497              		@ frame_needed = 0, uses_anonymous_args = 0
+ 498              		.loc 3 410 54 is_stmt 0 view .LVU137
+ 499 0000 38B5     		push	{r3, r4, r5, lr}
+ 500              	.LCFI9:
+ARM GAS  /tmp/ccVZjAAt.s 			page 26
+
+
+ 501              		.cfi_def_cfa_offset 16
+ 502              		.cfi_offset 3, -16
+ 503              		.cfi_offset 4, -12
+ 504              		.cfi_offset 5, -8
+ 505              		.cfi_offset 14, -4
+ 506 0002 0546     		mov	r5, r0
+ 411:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	void* data = __smalloc__((u32)size,flags);
+ 507              		.loc 3 411 2 is_stmt 1 view .LVU138
+ 508              		.loc 3 411 15 is_stmt 0 view .LVU139
+ 509 0004 FFF7FEFF 		bl	__smalloc__
+ 510              	.LVL44:
+ 511              		.loc 3 411 15 view .LVU140
+ 512 0008 0446     		mov	r4, r0
+ 513              	.LVL45:
+ 412:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	memset(data,0,size);
+ 514              		.loc 3 412 2 is_stmt 1 view .LVU141
+ 515 000a 2A46     		mov	r2, r5
+ 516 000c 0021     		movs	r1, #0
+ 517 000e FFF7FEFF 		bl	memset
+ 518              	.LVL46:
+ 413:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	return data;
+ 519              		.loc 3 413 2 view .LVU142
+ 414:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 520              		.loc 3 414 1 is_stmt 0 view .LVU143
+ 521 0012 2046     		mov	r0, r4
+ 522 0014 38BD     		pop	{r3, r4, r5, pc}
+ 523              		.loc 3 414 1 view .LVU144
+ 524              		.cfi_endproc
+ 525              	.LFE330:
+ 527              		.section	.text.cdev_alloc,"ax",%progbits
+ 528              		.align	1
+ 529              		.global	cdev_alloc
+ 530              		.syntax unified
+ 531              		.thumb
+ 532              		.thumb_func
+ 534              	cdev_alloc:
+ 535              	.LFB1044:
+ 373:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct cdev *p = kzalloc(sizeof(struct cdev), GFP_KERNEL);
+ 536              		.loc 1 373 1 is_stmt 1 view -0
+ 537              		.cfi_startproc
+ 538              		@ args = 0, pretend = 0, frame = 0
+ 539              		@ frame_needed = 0, uses_anonymous_args = 0
+ 540 0000 08B5     		push	{r3, lr}
+ 541              	.LCFI10:
+ 542              		.cfi_def_cfa_offset 8
+ 543              		.cfi_offset 3, -8
+ 544              		.cfi_offset 14, -4
+ 374:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (p) {
+ 545              		.loc 1 374 2 view .LVU146
+ 374:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (p) {
+ 546              		.loc 1 374 19 is_stmt 0 view .LVU147
+ 547 0002 4FF44C61 		mov	r1, #3264
+ 548 0006 1820     		movs	r0, #24
+ 549 0008 FFF7FEFF 		bl	kzalloc
+ 550              	.LVL47:
+ 375:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		INIT_LIST_HEAD(&p->list);
+ 551              		.loc 1 375 2 is_stmt 1 view .LVU148
+ARM GAS  /tmp/ccVZjAAt.s 			page 27
+
+
+ 375:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		INIT_LIST_HEAD(&p->list);
+ 552              		.loc 1 375 5 is_stmt 0 view .LVU149
+ 553 000c 0346     		mov	r3, r0
+ 554 000e 18B1     		cbz	r0, .L55
+ 376:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		// kobject_init(&p->kobj, &ktype_cdev_dynamic);
+ 555              		.loc 1 376 3 is_stmt 1 view .LVU150
+ 556 0010 00F10802 		add	r2, r0, #8
+ 557              	.LVL48:
+ 558              	.LBB74:
+ 559              	.LBI74:
+ 560              		.file 4 "/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #define _LINUX_LIST_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/container_of.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/types.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/stddef.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/poison.h>
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/const.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <asm/barrier.h>
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #include <linux/rwonce.h>
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** /*
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  *
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * generate better code by using them directly rather than
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * using the generic single-entry routines.
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  */
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** #define LIST_HEAD(name) \
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** /**
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  *
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  * the result is an empty list.
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h ****  */
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+ 561              		.loc 4 35 20 view .LVU151
+ 562              	.LBB75:
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** {
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+ 563              		.loc 4 37 2 view .LVU152
+ 564              		.loc 4 37 2 view .LVU153
+ 565              	.LBB76:
+ 566              		.loc 4 37 2 view .LVU154
+ 567              		.loc 4 37 2 view .LVU155
+ 568              	.LBE76:
+ 569              		.loc 4 37 2 discriminator 2 view .LVU156
+ARM GAS  /tmp/ccVZjAAt.s 			page 28
+
+
+ 570              		.loc 4 37 2 discriminator 2 view .LVU157
+ 571              		.loc 4 37 2 discriminator 2 view .LVU158
+ 572 0014 8260     		str	r2, [r0, #8]
+ 573              		.loc 4 37 2 discriminator 2 view .LVU159
+ 574              		.loc 4 37 2 discriminator 2 view .LVU160
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 575              		.loc 4 38 2 view .LVU161
+ 576              		.loc 4 38 2 view .LVU162
+ 577              	.LBB77:
+ 578              		.loc 4 38 2 view .LVU163
+ 579              		.loc 4 38 2 view .LVU164
+ 580              	.LBE77:
+ 581              		.loc 4 38 2 discriminator 2 view .LVU165
+ 582              		.loc 4 38 2 discriminator 2 view .LVU166
+ 583              		.loc 4 38 2 discriminator 2 view .LVU167
+ 584 0016 C260     		str	r2, [r0, #12]
+ 585              		.loc 4 38 2 discriminator 2 view .LVU168
+ 586              		.loc 4 38 2 discriminator 2 view .LVU169
+ 587              	.LVL49:
+ 588              		.loc 4 38 2 is_stmt 0 discriminator 2 view .LVU170
+ 589              	.LBE75:
+ 590              	.LBE74:
+ 379:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** } 
+ 591              		.loc 1 379 2 is_stmt 1 view .LVU171
+ 592              	.L55:
+ 380:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 593              		.loc 1 380 1 is_stmt 0 view .LVU172
+ 594 0018 1846     		mov	r0, r3
+ 595              	.LVL50:
+ 380:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 596              		.loc 1 380 1 view .LVU173
+ 597 001a 08BD     		pop	{r3, pc}
+ 380:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 598              		.loc 1 380 1 view .LVU174
+ 599              		.cfi_endproc
+ 600              	.LFE1044:
+ 602              		.section	.text.cdev_init,"ax",%progbits
+ 603              		.align	1
+ 604              		.global	cdev_init
+ 605              		.syntax unified
+ 606              		.thumb
+ 607              		.thumb_func
+ 609              	cdev_init:
+ 610              	.LVL51:
+ 611              	.LFB1045:
+ 391:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	memset(cdev, 0, sizeof *cdev);
+ 612              		.loc 1 391 1 is_stmt 1 view -0
+ 613              		.cfi_startproc
+ 614              		@ args = 0, pretend = 0, frame = 0
+ 615              		@ frame_needed = 0, uses_anonymous_args = 0
+ 616              		@ link register save eliminated.
+ 392:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	INIT_LIST_HEAD(&cdev->list);
+ 617              		.loc 1 392 2 view .LVU176
+ 618 0000 0023     		movs	r3, #0
+ 619 0002 0360     		str	r3, [r0]	@ unaligned
+ 620 0004 4360     		str	r3, [r0, #4]	@ unaligned
+ 621 0006 8360     		str	r3, [r0, #8]	@ unaligned
+ARM GAS  /tmp/ccVZjAAt.s 			page 29
+
+
+ 622 0008 C360     		str	r3, [r0, #12]	@ unaligned
+ 623 000a 0361     		str	r3, [r0, #16]	@ unaligned
+ 624 000c 4361     		str	r3, [r0, #20]	@ unaligned
+ 393:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	// kobject_init(&cdev->kobj, &ktype_cdev_default);
+ 625              		.loc 1 393 2 view .LVU177
+ 626 000e 00F10803 		add	r3, r0, #8
+ 627              	.LVL52:
+ 628              	.LBB78:
+ 629              	.LBI78:
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** {
+ 630              		.loc 4 35 20 view .LVU178
+ 631              	.LBB79:
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 632              		.loc 4 37 2 view .LVU179
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 633              		.loc 4 37 2 view .LVU180
+ 634              	.LBB80:
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 635              		.loc 4 37 2 view .LVU181
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 636              		.loc 4 37 2 view .LVU182
+ 637              	.LBE80:
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 638              		.loc 4 37 2 discriminator 2 view .LVU183
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 639              		.loc 4 37 2 discriminator 2 view .LVU184
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 640              		.loc 4 37 2 discriminator 2 view .LVU185
+ 641 0012 8360     		str	r3, [r0, #8]
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 642              		.loc 4 37 2 discriminator 2 view .LVU186
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 643              		.loc 4 37 2 discriminator 2 view .LVU187
+ 644              		.loc 4 38 2 view .LVU188
+ 645              		.loc 4 38 2 view .LVU189
+ 646              	.LBB81:
+ 647              		.loc 4 38 2 view .LVU190
+ 648              		.loc 4 38 2 view .LVU191
+ 649              	.LBE81:
+ 650              		.loc 4 38 2 discriminator 2 view .LVU192
+ 651              		.loc 4 38 2 discriminator 2 view .LVU193
+ 652              		.loc 4 38 2 discriminator 2 view .LVU194
+ 653 0014 C360     		str	r3, [r0, #12]
+ 654              		.loc 4 38 2 discriminator 2 view .LVU195
+ 655              		.loc 4 38 2 discriminator 2 view .LVU196
+ 656              	.LVL53:
+ 657              		.loc 4 38 2 is_stmt 0 discriminator 2 view .LVU197
+ 658              	.LBE79:
+ 659              	.LBE78:
+ 395:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 660              		.loc 1 395 2 is_stmt 1 view .LVU198
+ 395:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 661              		.loc 1 395 12 is_stmt 0 view .LVU199
+ 662 0016 4160     		str	r1, [r0, #4]
+ 396:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 663              		.loc 1 396 1 view .LVU200
+ 664 0018 7047     		bx	lr
+ARM GAS  /tmp/ccVZjAAt.s 			page 30
+
+
+ 665              		.cfi_endproc
+ 666              	.LFE1045:
+ 668              		.section	.rodata.__register_chrdev_region.str1.4,"aMS",%progbits,1
+ 669              		.align	2
+ 670              	.LC0:
+ 671 0000 43485244 		.ascii	"CHRDEV \"%s\" major requested (%u) is greater than "
+ 671      45562022 
+ 671      25732220 
+ 671      6D616A6F 
+ 671      72207265 
+ 672 0031 74686520 		.ascii	"the maximum (%u)\012\000"
+ 672      6D617869 
+ 672      6D756D20 
+ 672      28257529 
+ 672      0A00
+ 673 0043 00       		.align	2
+ 674              	.LC1:
+ 675 0044 43485244 		.ascii	"CHRDEV \"%s\" minor range requested (%u-%u) is out "
+ 675      45562022 
+ 675      25732220 
+ 675      6D696E6F 
+ 675      72207261 
+ 676 0075 6F662072 		.ascii	"of range of maximum range (%u-%u) for a single majo"
+ 676      616E6765 
+ 676      206F6620 
+ 676      6D617869 
+ 676      6D756D20 
+ 677 00a8 720A00   		.ascii	"r\012\000"
+ 678 00ab 00       		.align	2
+ 679              	.LC2:
+ 680 00ac 43485244 		.ascii	"CHRDEV \"%s\" dynamic allocation region is full\012"
+ 680      45562022 
+ 680      25732220 
+ 680      64796E61 
+ 680      6D696320 
+ 681 00da 00       		.ascii	"\000"
+ 682              		.section	.text.__register_chrdev_region,"ax",%progbits
+ 683              		.align	1
+ 684              		.syntax unified
+ 685              		.thumb
+ 686              		.thumb_func
+ 688              	__register_chrdev_region:
+ 689              	.LVL54:
+ 690              	.LFB1035:
+  62:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd, *curr, *prev = NULL;
+ 691              		.loc 1 62 1 is_stmt 1 view -0
+ 692              		.cfi_startproc
+ 693              		@ args = 0, pretend = 0, frame = 0
+ 694              		@ frame_needed = 0, uses_anonymous_args = 0
+  62:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd, *curr, *prev = NULL;
+ 695              		.loc 1 62 1 is_stmt 0 view .LVU202
+ 696 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 697              	.LCFI11:
+ 698              		.cfi_def_cfa_offset 36
+ 699              		.cfi_offset 4, -36
+ 700              		.cfi_offset 5, -32
+ 701              		.cfi_offset 6, -28
+ARM GAS  /tmp/ccVZjAAt.s 			page 31
+
+
+ 702              		.cfi_offset 7, -24
+ 703              		.cfi_offset 8, -20
+ 704              		.cfi_offset 9, -16
+ 705              		.cfi_offset 10, -12
+ 706              		.cfi_offset 11, -8
+ 707              		.cfi_offset 14, -4
+ 708 0004 85B0     		sub	sp, sp, #20
+ 709              	.LCFI12:
+ 710              		.cfi_def_cfa_offset 56
+ 711 0006 0446     		mov	r4, r0
+ 712 0008 9946     		mov	r9, r3
+  63:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int ret;
+ 713              		.loc 1 63 2 is_stmt 1 view .LVU203
+ 714              	.LVL55:
+  64:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int i;
+ 715              		.loc 1 64 2 view .LVU204
+  65:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 716              		.loc 1 65 2 view .LVU205
+  67:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" major requested (%u) is greater than the maximum (%u)\n",
+ 717              		.loc 1 67 2 view .LVU206
+  67:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" major requested (%u) is greater than the maximum (%u)\n",
+ 718              		.loc 1 67 5 is_stmt 0 view .LVU207
+ 719 000a B0F5007F 		cmp	r0, #512
+ 720 000e 1ED2     		bcs	.L73
+ 721 0010 0F46     		mov	r7, r1
+ 722 0012 1646     		mov	r6, r2
+  73:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" minor range requested (%u-%u) is out of range of maximum range (%u-%u) for 
+ 723              		.loc 1 73 2 is_stmt 1 view .LVU208
+  73:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" minor range requested (%u-%u) is out of range of maximum range (%u-%u) for 
+ 724              		.loc 1 73 30 is_stmt 0 view .LVU209
+ 725 0014 C1F58013 		rsb	r3, r1, #1048576
+ 726              	.LVL56:
+  73:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		pr_err("CHRDEV \"%s\" minor range requested (%u-%u) is out of range of maximum range (%u-%u) for 
+ 727              		.loc 1 73 5 view .LVU210
+ 728 0018 9342     		cmp	r3, r2
+ 729 001a 24D3     		bcc	.L74
+  79:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (cd == NULL)
+ 730              		.loc 1 79 2 is_stmt 1 view .LVU211
+  79:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (cd == NULL)
+ 731              		.loc 1 79 7 is_stmt 0 view .LVU212
+ 732 001c 4FF44C61 		mov	r1, #3264
+ 733              	.LVL57:
+  79:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (cd == NULL)
+ 734              		.loc 1 79 7 view .LVU213
+ 735 0020 5420     		movs	r0, #84
+ 736              	.LVL58:
+  79:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (cd == NULL)
+ 737              		.loc 1 79 7 view .LVU214
+ 738 0022 FFF7FEFF 		bl	kzalloc
+ 739              	.LVL59:
+  80:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		return ERR_PTR(-ENOMEM);
+ 740              		.loc 1 80 2 is_stmt 1 view .LVU215
+  80:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		return ERR_PTR(-ENOMEM);
+ 741              		.loc 1 80 5 is_stmt 0 view .LVU216
+ 742 0026 8046     		mov	r8, r0
+ 743 0028 0028     		cmp	r0, #0
+ 744 002a 71D0     		beq	.L71
+ARM GAS  /tmp/ccVZjAAt.s 			page 32
+
+
+  83:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 745              		.loc 1 83 2 is_stmt 1 view .LVU217
+  85:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		ret = find_dynamic_major();
+ 746              		.loc 1 85 2 view .LVU218
+  85:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		ret = find_dynamic_major();
+ 747              		.loc 1 85 5 is_stmt 0 view .LVU219
+ 748 002c 74B3     		cbz	r4, .L75
+ 749              	.LVL60:
+ 750              	.L63:
+  95:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	i = major_to_index(major);
+ 751              		.loc 1 95 2 is_stmt 1 view .LVU220
+  96:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	for (curr = chrdevs[i]; curr; prev = curr, curr = curr->next) {
+ 752              		.loc 1 96 2 view .LVU221
+ 753              	.LBB82:
+ 754              	.LBI82:
+  32:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** {
+ 755              		.loc 1 32 19 view .LVU222
+ 756              	.LBB83:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 757              		.loc 1 34 2 view .LVU223
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 758              		.loc 1 34 15 is_stmt 0 view .LVU224
+ 759 002e 3A4D     		ldr	r5, .L78
+ 760 0030 A5FB0435 		umull	r3, r5, r5, r4
+ 761 0034 631B     		subs	r3, r4, r5
+ 762 0036 05EB5305 		add	r5, r5, r3, lsr #1
+ 763 003a AD09     		lsrs	r5, r5, #6
+ 764 003c C5EBC515 		rsb	r5, r5, r5, lsl #7
+ 765 0040 651B     		subs	r5, r4, r5
+ 766              	.LVL61:
+  34:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 767              		.loc 1 34 15 view .LVU225
+ 768              	.LBE83:
+ 769              	.LBE82:
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 770              		.loc 1 97 2 is_stmt 1 view .LVU226
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 771              		.loc 1 97 12 is_stmt 0 view .LVU227
+ 772 0042 364B     		ldr	r3, .L78+4
+ 773 0044 53F825A0 		ldr	r10, [r3, r5, lsl #2]
+ 774              	.LVL62:
+  63:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	int ret;
+ 775              		.loc 1 63 41 view .LVU228
+ 776 0048 4FF0000B 		mov	fp, #0
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 777              		.loc 1 97 2 view .LVU229
+ 778 004c 32E0     		b	.L66
+ 779              	.LVL63:
+ 780              	.L73:
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+ 781              		.loc 1 68 3 is_stmt 1 view .LVU230
+ 782 004e 40F2FF13 		movw	r3, #511
+ 783              	.LVL64:
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+ 784              		.loc 1 68 3 is_stmt 0 view .LVU231
+ 785 0052 0093     		str	r3, [sp]
+ 786 0054 0346     		mov	r3, r0
+ARM GAS  /tmp/ccVZjAAt.s 			page 33
+
+
+ 787 0056 4A46     		mov	r2, r9
+ 788              	.LVL65:
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+ 789              		.loc 1 68 3 view .LVU232
+ 790 0058 3149     		ldr	r1, .L78+8
+ 791              	.LVL66:
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+ 792              		.loc 1 68 3 view .LVU233
+ 793 005a 0320     		movs	r0, #3
+ 794              	.LVL67:
+  68:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		       name, major, CHRDEV_MAJOR_MAX-1);
+ 795              		.loc 1 68 3 view .LVU234
+ 796 005c FFF7FEFF 		bl	printk
+ 797              	.LVL68:
+  70:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 798              		.loc 1 70 3 is_stmt 1 view .LVU235
+  70:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 799              		.loc 1 70 10 is_stmt 0 view .LVU236
+ 800 0060 6FF01508 		mvn	r8, #21
+ 801 0064 0EE0     		b	.L59
+ 802              	.LVL69:
+ 803              	.L74:
+  74:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			name, baseminor, baseminor + minorct - 1, 0, MINORMASK);
+ 804              		.loc 1 74 3 is_stmt 1 view .LVU237
+ 805 0066 0E44     		add	r6, r6, r1
+ 806 0068 2E4B     		ldr	r3, .L78+12
+ 807 006a 0293     		str	r3, [sp, #8]
+ 808 006c 0023     		movs	r3, #0
+ 809 006e 0193     		str	r3, [sp, #4]
+ 810 0070 013E     		subs	r6, r6, #1
+ 811 0072 0096     		str	r6, [sp]
+ 812 0074 0B46     		mov	r3, r1
+ 813 0076 4A46     		mov	r2, r9
+ 814              	.LVL70:
+  74:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			name, baseminor, baseminor + minorct - 1, 0, MINORMASK);
+ 815              		.loc 1 74 3 is_stmt 0 view .LVU238
+ 816 0078 2B49     		ldr	r1, .L78+16
+ 817              	.LVL71:
+  74:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			name, baseminor, baseminor + minorct - 1, 0, MINORMASK);
+ 818              		.loc 1 74 3 view .LVU239
+ 819 007a 0320     		movs	r0, #3
+ 820              	.LVL72:
+  74:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			name, baseminor, baseminor + minorct - 1, 0, MINORMASK);
+ 821              		.loc 1 74 3 view .LVU240
+ 822 007c FFF7FEFF 		bl	printk
+ 823              	.LVL73:
+  76:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 824              		.loc 1 76 3 is_stmt 1 view .LVU241
+  76:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 825              		.loc 1 76 10 is_stmt 0 view .LVU242
+ 826 0080 6FF01508 		mvn	r8, #21
+ 827              	.LVL74:
+ 828              	.L59:
+ 132:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 829              		.loc 1 132 1 view .LVU243
+ 830 0084 4046     		mov	r0, r8
+ 831 0086 05B0     		add	sp, sp, #20
+ARM GAS  /tmp/ccVZjAAt.s 			page 34
+
+
+ 832              	.LCFI13:
+ 833              		.cfi_remember_state
+ 834              		.cfi_def_cfa_offset 36
+ 835              		@ sp needed
+ 836 0088 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 837              	.LVL75:
+ 838              	.L75:
+ 839              	.LCFI14:
+ 840              		.cfi_restore_state
+  86:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (ret < 0) {
+ 841              		.loc 1 86 3 is_stmt 1 view .LVU244
+  86:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (ret < 0) {
+ 842              		.loc 1 86 9 is_stmt 0 view .LVU245
+ 843 008c FFF7FEFF 		bl	find_dynamic_major
+ 844              	.LVL76:
+  87:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			pr_err("CHRDEV \"%s\" dynamic allocation region is full\n",
+ 845              		.loc 1 87 3 is_stmt 1 view .LVU246
+  87:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			pr_err("CHRDEV \"%s\" dynamic allocation region is full\n",
+ 846              		.loc 1 87 6 is_stmt 0 view .LVU247
+ 847 0090 041E     		subs	r4, r0, #0
+ 848              	.LVL77:
+  87:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			pr_err("CHRDEV \"%s\" dynamic allocation region is full\n",
+ 849              		.loc 1 87 6 view .LVU248
+ 850 0092 CCDA     		bge	.L63
+  88:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       name);
+ 851              		.loc 1 88 4 is_stmt 1 view .LVU249
+ 852 0094 4A46     		mov	r2, r9
+ 853 0096 2549     		ldr	r1, .L78+20
+ 854 0098 0320     		movs	r0, #3
+ 855              	.LVL78:
+  88:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       name);
+ 856              		.loc 1 88 4 is_stmt 0 view .LVU250
+ 857 009a FFF7FEFF 		bl	printk
+ 858              	.LVL79:
+  90:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		}
+ 859              		.loc 1 90 4 is_stmt 1 view .LVU251
+ 860 009e 01E0     		b	.L65
+ 861              	.LVL80:
+ 862              	.L76:
+  95:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	i = major_to_index(major);
+ 863              		.loc 1 95 6 is_stmt 0 view .LVU252
+ 864 00a0 6FF00F04 		mvn	r4, #15
+ 865              	.LVL81:
+ 866              	.L65:
+ 129:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	kfree(cd);
+ 867              		.loc 1 129 2 is_stmt 1 view .LVU253
+ 130:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	return ERR_PTR(ret);
+ 868              		.loc 1 130 2 view .LVU254
+ 869              	.LBB84:
+ 870              	.LBI84:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 871              		.loc 3 383 20 view .LVU255
+ 872              	.LBB85:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 873              		.loc 3 384 2 view .LVU256
+ 874 00a4 4046     		mov	r0, r8
+ 875 00a6 FFF7FEFF 		bl	__sfree__
+ARM GAS  /tmp/ccVZjAAt.s 			page 35
+
+
+ 876              	.LVL82:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 877              		.loc 3 384 2 is_stmt 0 view .LVU257
+ 878              	.LBE85:
+ 879              	.LBE84:
+ 131:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 880              		.loc 1 131 2 is_stmt 1 view .LVU258
+ 881              	.LBB86:
+ 882              	.LBI86:
+ 883              		.file 5 "/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h"
+   1:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+ARM GAS  /tmp/ccVZjAAt.s 			page 36
+
+
+  48:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+ 884              		.loc 5 49 35 view .LVU259
+ 885              	.LBB87:
+  50:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (void *) error;
+ 886              		.loc 5 51 2 view .LVU260
+ 887              		.loc 5 51 9 is_stmt 0 view .LVU261
+ 888 00aa A046     		mov	r8, r4
+ 889              	.LVL83:
+ 890              		.loc 5 51 9 view .LVU262
+ 891              	.LBE87:
+ 892              	.LBE86:
+ 131:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 893              		.loc 1 131 9 view .LVU263
+ 894 00ac EAE7     		b	.L59
+ 895              	.LVL84:
+ 896              	.L67:
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 897              		.loc 1 97 43 is_stmt 1 discriminator 2 view .LVU264
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 898              		.loc 1 97 37 is_stmt 0 discriminator 2 view .LVU265
+ 899 00ae D346     		mov	fp, r10
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 900              		.loc 1 97 50 discriminator 2 view .LVU266
+ 901 00b0 DAF800A0 		ldr	r10, [r10]
+ 902              	.LVL85:
+ 903              	.L66:
+  97:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (curr->major < major)
+ 904              		.loc 1 97 26 is_stmt 1 discriminator 1 view .LVU267
+ 905 00b4 BAF1000F 		cmp	r10, #0
+ 906 00b8 0ED0     		beq	.L68
+  98:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 907              		.loc 1 98 3 view .LVU268
+  98:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 908              		.loc 1 98 11 is_stmt 0 view .LVU269
+ 909 00ba DAF80430 		ldr	r3, [r10, #4]
+  98:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 910              		.loc 1 98 6 view .LVU270
+ 911 00be A342     		cmp	r3, r4
+ 912 00c0 F5D3     		bcc	.L67
+ 101:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 913              		.loc 1 101 3 is_stmt 1 view .LVU271
+ 101:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 914              		.loc 1 101 6 is_stmt 0 view .LVU272
+ 915 00c2 09D8     		bhi	.L68
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 916              		.loc 1 104 3 is_stmt 1 view .LVU273
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 917              		.loc 1 104 11 is_stmt 0 view .LVU274
+ 918 00c4 DAF80820 		ldr	r2, [r10, #8]
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 919              		.loc 1 104 29 view .LVU275
+ 920 00c8 DAF80C30 		ldr	r3, [r10, #12]
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 921              		.loc 1 104 23 view .LVU276
+ 922 00cc 1344     		add	r3, r3, r2
+ARM GAS  /tmp/ccVZjAAt.s 			page 37
+
+
+ 104:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			continue;
+ 923              		.loc 1 104 6 view .LVU277
+ 924 00ce BB42     		cmp	r3, r7
+ 925 00d0 EDD9     		bls	.L67
+ 107:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 926              		.loc 1 107 3 is_stmt 1 view .LVU278
+ 107:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 927              		.loc 1 107 36 is_stmt 0 view .LVU279
+ 928 00d2 F319     		adds	r3, r6, r7
+ 107:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			break;
+ 929              		.loc 1 107 6 view .LVU280
+ 930 00d4 9A42     		cmp	r2, r3
+ 931 00d6 E3D3     		bcc	.L76
+ 932              	.L68:
+ 113:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->baseminor = baseminor;
+ 933              		.loc 1 113 2 is_stmt 1 view .LVU281
+ 113:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->baseminor = baseminor;
+ 934              		.loc 1 113 12 is_stmt 0 view .LVU282
+ 935 00d8 C8F80440 		str	r4, [r8, #4]
+ 114:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->minorct = minorct;
+ 936              		.loc 1 114 2 is_stmt 1 view .LVU283
+ 114:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	cd->minorct = minorct;
+ 937              		.loc 1 114 16 is_stmt 0 view .LVU284
+ 938 00dc C8F80870 		str	r7, [r8, #8]
+ 115:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	strscpy(cd->name, name, sizeof(cd->name));
+ 939              		.loc 1 115 2 is_stmt 1 view .LVU285
+ 115:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	strscpy(cd->name, name, sizeof(cd->name));
+ 940              		.loc 1 115 14 is_stmt 0 view .LVU286
+ 941 00e0 C8F80C60 		str	r6, [r8, #12]
+ 116:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 942              		.loc 1 116 2 is_stmt 1 view .LVU287
+ 943 00e4 4022     		movs	r2, #64
+ 944 00e6 4946     		mov	r1, r9
+ 945 00e8 08F11000 		add	r0, r8, #16
+ 946 00ec FFF7FEFF 		bl	sized_strscpy
+ 947              	.LVL86:
+ 118:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd->next = curr;
+ 948              		.loc 1 118 2 view .LVU288
+ 118:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd->next = curr;
+ 949              		.loc 1 118 5 is_stmt 0 view .LVU289
+ 950 00f0 BBF1000F 		cmp	fp, #0
+ 951 00f4 06D0     		beq	.L77
+ 122:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		prev->next = cd;
+ 952              		.loc 1 122 3 is_stmt 1 view .LVU290
+ 122:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		prev->next = cd;
+ 953              		.loc 1 122 18 is_stmt 0 view .LVU291
+ 954 00f6 DBF80030 		ldr	r3, [fp]
+ 122:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		prev->next = cd;
+ 955              		.loc 1 122 12 view .LVU292
+ 956 00fa C8F80030 		str	r3, [r8]
+ 123:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 957              		.loc 1 123 3 is_stmt 1 view .LVU293
+ 123:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 958              		.loc 1 123 14 is_stmt 0 view .LVU294
+ 959 00fe CBF80080 		str	r8, [fp]
+ 960 0102 BFE7     		b	.L59
+ 961              	.L77:
+ARM GAS  /tmp/ccVZjAAt.s 			page 38
+
+
+ 119:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		chrdevs[i] = cd;
+ 962              		.loc 1 119 3 is_stmt 1 view .LVU295
+ 119:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		chrdevs[i] = cd;
+ 963              		.loc 1 119 12 is_stmt 0 view .LVU296
+ 964 0104 C8F800A0 		str	r10, [r8]
+ 120:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	} else {
+ 965              		.loc 1 120 3 is_stmt 1 view .LVU297
+ 120:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	} else {
+ 966              		.loc 1 120 14 is_stmt 0 view .LVU298
+ 967 0108 044B     		ldr	r3, .L78+4
+ 968 010a 43F82580 		str	r8, [r3, r5, lsl #2]
+ 969 010e B9E7     		b	.L59
+ 970              	.LVL87:
+ 971              	.L71:
+  81:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 972              		.loc 1 81 10 view .LVU299
+ 973 0110 6FF00B08 		mvn	r8, #11
+ 974 0114 B6E7     		b	.L59
+ 975              	.L79:
+ 976 0116 00BF     		.align	2
+ 977              	.L78:
+ 978 0118 11080402 		.word	33818641
+ 979 011c 00000000 		.word	chrdevs
+ 980 0120 00000000 		.word	.LC0
+ 981 0124 FFFF0F00 		.word	1048575
+ 982 0128 44000000 		.word	.LC1
+ 983 012c AC000000 		.word	.LC2
+ 984              		.cfi_endproc
+ 985              	.LFE1035:
+ 987              		.section	.text.alloc_chrdev_region,"ax",%progbits
+ 988              		.align	1
+ 989              		.global	alloc_chrdev_region
+ 990              		.syntax unified
+ 991              		.thumb
+ 992              		.thumb_func
+ 994              	alloc_chrdev_region:
+ 995              	.LVL88:
+ 996              	.LFB1038:
+ 203:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ 997              		.loc 1 203 1 is_stmt 1 view -0
+ 998              		.cfi_startproc
+ 999              		@ args = 0, pretend = 0, frame = 0
+ 1000              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ 1001              		.loc 1 203 1 is_stmt 0 view .LVU301
+ 1002 0000 10B5     		push	{r4, lr}
+ 1003              	.LCFI15:
+ 1004              		.cfi_def_cfa_offset 8
+ 1005              		.cfi_offset 4, -8
+ 1006              		.cfi_offset 14, -4
+ 1007 0002 0446     		mov	r4, r0
+ 204:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cd = __register_chrdev_region(0, baseminor, count, name);
+ 1008              		.loc 1 204 1 is_stmt 1 view .LVU302
+ 205:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (IS_ERR(cd))
+ 1009              		.loc 1 205 1 view .LVU303
+ 205:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (IS_ERR(cd))
+ 1010              		.loc 1 205 6 is_stmt 0 view .LVU304
+ARM GAS  /tmp/ccVZjAAt.s 			page 39
+
+
+ 1011 0004 0020     		movs	r0, #0
+ 1012              	.LVL89:
+ 205:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (IS_ERR(cd))
+ 1013              		.loc 1 205 6 view .LVU305
+ 1014 0006 FFF7FEFF 		bl	__register_chrdev_region
+ 1015              	.LVL90:
+ 205:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (IS_ERR(cd))
+ 1016              		.loc 1 205 6 view .LVU306
+ 1017 000a 0346     		mov	r3, r0
+ 1018              	.LVL91:
+ 206:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return PTR_ERR(cd);
+ 1019              		.loc 1 206 1 is_stmt 1 view .LVU307
+ 1020              	.LBB88:
+ 1021              	.LBI88:
+  52:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 1022              		.loc 5 75 33 view .LVU308
+ 1023              	.LBB89:
+  76:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 1024              		.loc 5 77 2 view .LVU309
+ 1025              		.loc 5 77 9 is_stmt 0 view .LVU310
+ 1026 000c 10F5805F 		cmn	r0, #4096
+ 1027 0010 94BF     		ite	ls
+ 1028 0012 0020     		movls	r0, #0
+ 1029              	.LVL92:
+ 1030              		.loc 5 77 9 view .LVU311
+ 1031 0014 0120     		movhi	r0, #1
+ 1032              	.LVL93:
+ 1033              		.loc 5 77 9 view .LVU312
+ 1034              	.LBE89:
+ 1035              	.LBE88:
+ 206:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return PTR_ERR(cd);
+ 1036              		.loc 1 206 4 discriminator 1 view .LVU313
+ 1037 0016 28B9     		cbnz	r0, .L84
+ARM GAS  /tmp/ccVZjAAt.s 			page 40
+
+
+ 208:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return 0;
+ 1038              		.loc 1 208 1 is_stmt 1 view .LVU314
+ 208:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return 0;
+ 1039              		.loc 1 208 8 is_stmt 0 view .LVU315
+ 1040 0018 5A68     		ldr	r2, [r3, #4]
+ 1041 001a 9B68     		ldr	r3, [r3, #8]
+ 1042              	.LVL94:
+ 208:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return 0;
+ 1043              		.loc 1 208 8 view .LVU316
+ 1044 001c 43EA0253 		orr	r3, r3, r2, lsl #20
+ 208:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** return 0;
+ 1045              		.loc 1 208 6 view .LVU317
+ 1046 0020 2360     		str	r3, [r4]
+ 209:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 1047              		.loc 1 209 1 is_stmt 1 view .LVU318
+ 1048              	.L80:
+ 210:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1049              		.loc 1 210 1 is_stmt 0 view .LVU319
+ 1050 0022 10BD     		pop	{r4, pc}
+ 1051              	.LVL95:
+ 1052              	.L84:
+ 207:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** *dev = MKDEV(cd->major, cd->baseminor);
+ 1053              		.loc 1 207 1 is_stmt 1 view .LVU320
+ 1054              	.LBB90:
+ 1055              	.LBI90:
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 1056              		.loc 5 62 33 view .LVU321
+ 1057              	.LBB91:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1058              		.loc 5 64 2 view .LVU322
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1059              		.loc 5 64 9 is_stmt 0 view .LVU323
+ 1060 0024 1846     		mov	r0, r3
+ 1061              	.LVL96:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1062              		.loc 5 64 9 view .LVU324
+ 1063              	.LBE91:
+ 1064              	.LBE90:
+ 207:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** *dev = MKDEV(cd->major, cd->baseminor);
+ 1065              		.loc 1 207 8 view .LVU325
+ 1066 0026 FCE7     		b	.L80
+ 1067              		.cfi_endproc
+ 1068              	.LFE1038:
+ 1070              		.section	.text.register_chrdev_region,"ax",%progbits
+ 1071              		.align	1
+ 1072              		.global	register_chrdev_region
+ 1073              		.syntax unified
+ 1074              		.thumb
+ 1075              		.thumb_func
+ 1077              	register_chrdev_region:
+ 1078              	.LVL97:
+ 1079              	.LFB1037:
+ 166:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd;
+ 1080              		.loc 1 166 1 is_stmt 1 view -0
+ 1081              		.cfi_startproc
+ 1082              		@ args = 0, pretend = 0, frame = 0
+ 1083              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccVZjAAt.s 			page 41
+
+
+ 166:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	struct char_device_struct *cd;
+ 1084              		.loc 1 166 1 is_stmt 0 view .LVU327
+ 1085 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 1086              	.LCFI16:
+ 1087              		.cfi_def_cfa_offset 32
+ 1088              		.cfi_offset 3, -32
+ 1089              		.cfi_offset 4, -28
+ 1090              		.cfi_offset 5, -24
+ 1091              		.cfi_offset 6, -20
+ 1092              		.cfi_offset 7, -16
+ 1093              		.cfi_offset 8, -12
+ 1094              		.cfi_offset 9, -8
+ 1095              		.cfi_offset 14, -4
+ 1096 0004 0546     		mov	r5, r0
+ 1097 0006 9146     		mov	r9, r2
+ 167:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t to = from + count;
+ 1098              		.loc 1 167 2 is_stmt 1 view .LVU328
+ 168:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 1099              		.loc 1 168 2 view .LVU329
+ 168:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 1100              		.loc 1 168 8 is_stmt 0 view .LVU330
+ 1101 0008 00EB0108 		add	r8, r0, r1
+ 1102              	.LVL98:
+ 169:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1103              		.loc 1 169 2 is_stmt 1 view .LVU331
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1104              		.loc 1 171 2 view .LVU332
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1105              		.loc 1 171 9 is_stmt 0 view .LVU333
+ 1106 000c 0446     		mov	r4, r0
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1107              		.loc 1 171 2 view .LVU334
+ 1108 000e 0AE0     		b	.L86
+ 1109              	.LVL99:
+ 1110              	.L87:
+ 175:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       next - n, name);
+ 1111              		.loc 1 175 3 is_stmt 1 view .LVU335
+ 175:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			       next - n, name);
+ 1112              		.loc 1 175 8 is_stmt 0 view .LVU336
+ 1113 0010 4B46     		mov	r3, r9
+ 1114 0012 3A1B     		subs	r2, r7, r4
+ 1115 0014 C4F31301 		ubfx	r1, r4, #0, #20
+ 1116 0018 FFF7FEFF 		bl	__register_chrdev_region
+ 1117              	.LVL100:
+ 1118 001c 0646     		mov	r6, r0
+ 1119              	.LVL101:
+ 177:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			goto fail;
+ 1120              		.loc 1 177 3 is_stmt 1 view .LVU337
+ 1121              	.LBB92:
+ 1122              	.LBI92:
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 1123              		.loc 5 75 33 view .LVU338
+ 1124              	.LBB93:
+ 1125              		.loc 5 77 2 view .LVU339
+ 1126              		.loc 5 77 2 is_stmt 0 view .LVU340
+ 1127              	.LBE93:
+ 1128              	.LBE92:
+ARM GAS  /tmp/ccVZjAAt.s 			page 42
+
+
+ 177:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			goto fail;
+ 1129              		.loc 1 177 6 discriminator 1 view .LVU341
+ 1130 001e 10F5805F 		cmn	r0, #4096
+ 1131 0022 18D8     		bhi	.L88
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1132              		.loc 1 171 27 discriminator 2 view .LVU342
+ 1133 0024 3C46     		mov	r4, r7
+ 1134              	.LVL102:
+ 1135              	.L86:
+ 171:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1136              		.loc 1 171 19 is_stmt 1 discriminator 1 view .LVU343
+ 1137 0026 4445     		cmp	r4, r8
+ 1138 0028 07D2     		bcs	.L94
+ 172:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1139              		.loc 1 172 3 view .LVU344
+ 172:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1140              		.loc 1 172 10 is_stmt 0 view .LVU345
+ 1141 002a 200D     		lsrs	r0, r4, #20
+ 1142 002c 461C     		adds	r6, r0, #1
+ 172:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1143              		.loc 1 172 8 view .LVU346
+ 1144 002e 3705     		lsls	r7, r6, #20
+ 1145              	.LVL103:
+ 173:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 1146              		.loc 1 173 3 is_stmt 1 view .LVU347
+ 173:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 1147              		.loc 1 173 6 is_stmt 0 view .LVU348
+ 1148 0030 B8EB065F 		cmp	r8, r6, lsl #20
+ 1149 0034 ECD2     		bcs	.L87
+ 174:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = __register_chrdev_region(MAJOR(n), MINOR(n),
+ 1150              		.loc 1 174 9 view .LVU349
+ 1151 0036 4746     		mov	r7, r8
+ 1152              	.LVL104:
+ 174:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		cd = __register_chrdev_region(MAJOR(n), MINOR(n),
+ 1153              		.loc 1 174 9 view .LVU350
+ 1154 0038 EAE7     		b	.L87
+ 1155              	.LVL105:
+ 1156              	.L94:
+ 180:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** fail:
+ 1157              		.loc 1 180 9 view .LVU351
+ 1158 003a 0020     		movs	r0, #0
+ 1159 003c 0EE0     		b	.L85
+ 1160              	.LVL106:
+ 1161              	.L91:
+ 184:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 1162              		.loc 1 184 3 is_stmt 1 view .LVU352
+ 184:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 1163              		.loc 1 184 10 is_stmt 0 view .LVU353
+ 1164 003e 280D     		lsrs	r0, r5, #20
+ 1165 0040 421C     		adds	r2, r0, #1
+ 184:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 1166              		.loc 1 184 8 view .LVU354
+ 1167 0042 1705     		lsls	r7, r2, #20
+ 1168              	.LVL107:
+ 185:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 1169              		.loc 1 185 3 is_stmt 1 view .LVU355
+ 185:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ARM GAS  /tmp/ccVZjAAt.s 			page 43
+
+
+ 1170              		.loc 1 185 9 is_stmt 0 view .LVU356
+ 1171 0044 C5EB0252 		rsb	r2, r5, r2, lsl #20
+ 1172 0048 C5F31301 		ubfx	r1, r5, #0, #20
+ 1173 004c FFF7FEFF 		bl	__unregister_chrdev_region
+ 1174              	.LVL108:
+ 1175              	.LBB94:
+ 1176              	.LBI94:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1177              		.loc 3 383 20 is_stmt 1 view .LVU357
+ 1178              	.LBB95:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1179              		.loc 3 384 2 view .LVU358
+ 1180 0050 FFF7FEFF 		bl	__sfree__
+ 1181              	.LVL109:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1182              		.loc 3 384 2 is_stmt 0 view .LVU359
+ 1183              	.LBE95:
+ 1184              	.LBE94:
+ 183:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1185              		.loc 1 183 27 is_stmt 1 discriminator 3 view .LVU360
+ 183:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1186              		.loc 1 183 27 is_stmt 0 discriminator 3 view .LVU361
+ 1187 0054 3D46     		mov	r5, r7
+ 1188              	.LVL110:
+ 1189              	.L88:
+ 1190              	.LDL1:
+ 183:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1191              		.loc 1 183 19 is_stmt 1 discriminator 1 view .LVU362
+ 1192 0056 AC42     		cmp	r4, r5
+ 1193 0058 F1D8     		bhi	.L91
+ 187:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 1194              		.loc 1 187 2 view .LVU363
+ 1195              	.LVL111:
+ 1196              	.LBB96:
+ 1197              	.LBI96:
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 1198              		.loc 5 62 33 view .LVU364
+ 1199              	.LBB97:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1200              		.loc 5 64 2 view .LVU365
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1201              		.loc 5 64 9 is_stmt 0 view .LVU366
+ 1202 005a 3046     		mov	r0, r6
+ 1203              	.LVL112:
+ 1204              	.L85:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1205              		.loc 5 64 9 view .LVU367
+ 1206              	.LBE97:
+ 1207              	.LBE96:
+ 188:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1208              		.loc 1 188 1 view .LVU368
+ 1209 005c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 188:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1210              		.loc 1 188 1 view .LVU369
+ 1211              		.cfi_endproc
+ 1212              	.LFE1037:
+ 1214              		.section	.text.__register_chrdev,"ax",%progbits
+ARM GAS  /tmp/ccVZjAAt.s 			page 44
+
+
+ 1215              		.align	1
+ 1216              		.global	__register_chrdev
+ 1217              		.syntax unified
+ 1218              		.thumb
+ 1219              		.thumb_func
+ 1221              	__register_chrdev:
+ 1222              	.LVL113:
+ 1223              	.LFB1039:
+ 236:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct char_device_struct *cd;
+ 1224              		.loc 1 236 1 is_stmt 1 view -0
+ 1225              		.cfi_startproc
+ 1226              		@ args = 4, pretend = 0, frame = 0
+ 1227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 236:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct char_device_struct *cd;
+ 1228              		.loc 1 236 1 is_stmt 0 view .LVU371
+ 1229 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 1230              	.LCFI17:
+ 1231              		.cfi_def_cfa_offset 32
+ 1232              		.cfi_offset 3, -32
+ 1233              		.cfi_offset 4, -28
+ 1234              		.cfi_offset 5, -24
+ 1235              		.cfi_offset 6, -20
+ 1236              		.cfi_offset 7, -16
+ 1237              		.cfi_offset 8, -12
+ 1238              		.cfi_offset 9, -8
+ 1239              		.cfi_offset 14, -4
+ 1240 0004 8046     		mov	r8, r0
+ 1241 0006 0E46     		mov	r6, r1
+ 1242 0008 1746     		mov	r7, r2
+ 1243 000a 089D     		ldr	r5, [sp, #32]
+ 237:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     struct cdev *cdev;
+ 1244              		.loc 1 237 5 is_stmt 1 view .LVU372
+ 238:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     int err = -ENOMEM;
+ 1245              		.loc 1 238 5 view .LVU373
+ 239:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1246              		.loc 1 239 5 view .LVU374
+ 1247              	.LVL114:
+ 241:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (IS_ERR(cd))
+ 1248              		.loc 1 241 5 view .LVU375
+ 241:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (IS_ERR(cd))
+ 1249              		.loc 1 241 10 is_stmt 0 view .LVU376
+ 1250 000c FFF7FEFF 		bl	__register_chrdev_region
+ 1251              	.LVL115:
+ 241:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (IS_ERR(cd))
+ 1252              		.loc 1 241 10 view .LVU377
+ 1253 0010 0446     		mov	r4, r0
+ 1254              	.LVL116:
+ 242:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return PTR_ERR(cd);
+ 1255              		.loc 1 242 5 is_stmt 1 view .LVU378
+ 1256              	.LBB98:
+ 1257              	.LBI98:
+  75:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 1258              		.loc 5 75 33 view .LVU379
+ 1259              	.LBB99:
+ 1260              		.loc 5 77 2 view .LVU380
+ 1261              		.loc 5 77 2 is_stmt 0 view .LVU381
+ 1262              	.LBE99:
+ARM GAS  /tmp/ccVZjAAt.s 			page 45
+
+
+ 1263              	.LBE98:
+ 242:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return PTR_ERR(cd);
+ 1264              		.loc 1 242 8 discriminator 1 view .LVU382
+ 1265 0012 10F5805F 		cmn	r0, #4096
+ 1266 0016 15D8     		bhi	.L101
+ 245:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (!cdev)
+ 1267              		.loc 1 245 5 is_stmt 1 view .LVU383
+ 245:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (!cdev)
+ 1268              		.loc 1 245 12 is_stmt 0 view .LVU384
+ 1269 0018 FFF7FEFF 		bl	cdev_alloc
+ 1270              	.LVL117:
+ 246:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out2;
+ 1271              		.loc 1 246 5 is_stmt 1 view .LVU385
+ 246:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out2;
+ 1272              		.loc 1 246 8 is_stmt 0 view .LVU386
+ 1273 001c 8146     		mov	r9, r0
+ 1274 001e 98B1     		cbz	r0, .L99
+ 249:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev->ops = fops;
+ 1275              		.loc 1 249 5 is_stmt 1 view .LVU387
+ 249:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev->ops = fops;
+ 1276              		.loc 1 249 23 is_stmt 0 view .LVU388
+ 1277 0020 2B68     		ldr	r3, [r5]
+ 249:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     cdev->ops = fops;
+ 1278              		.loc 1 249 17 view .LVU389
+ 1279 0022 0360     		str	r3, [r0]
+ 250:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     // kobject_set_name(&cdev->kobj, "%s", name);
+ 1280              		.loc 1 250 5 is_stmt 1 view .LVU390
+ 250:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     // kobject_set_name(&cdev->kobj, "%s", name);
+ 1281              		.loc 1 250 15 is_stmt 0 view .LVU391
+ 1282 0024 4560     		str	r5, [r0, #4]
+ 254:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (err)
+ 1283              		.loc 1 254 5 is_stmt 1 view .LVU392
+ 254:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (err)
+ 1284              		.loc 1 254 26 is_stmt 0 view .LVU393
+ 1285 0026 6168     		ldr	r1, [r4, #4]
+ 254:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     if (err)
+ 1286              		.loc 1 254 11 view .LVU394
+ 1287 0028 3A46     		mov	r2, r7
+ 1288 002a 46EA0151 		orr	r1, r6, r1, lsl #20
+ 1289 002e FFF7FEFF 		bl	cdev_add
+ 1290              	.LVL118:
+ 255:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out;
+ 1291              		.loc 1 255 5 is_stmt 1 view .LVU395
+ 255:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     goto out;
+ 1292              		.loc 1 255 8 is_stmt 0 view .LVU396
+ 1293 0032 0546     		mov	r5, r0
+ 1294 0034 50B9     		cbnz	r0, .L98
+ 258:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1295              		.loc 1 258 5 is_stmt 1 view .LVU397
+ 258:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1296              		.loc 1 258 14 is_stmt 0 view .LVU398
+ 1297 0036 C4F85090 		str	r9, [r4, #80]
+ 260:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out:
+ 1298              		.loc 1 260 5 is_stmt 1 view .LVU399
+ 260:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out:
+ 1299              		.loc 1 260 22 is_stmt 0 view .LVU400
+ 1300 003a B8F1000F 		cmp	r8, #0
+ARM GAS  /tmp/ccVZjAAt.s 			page 46
+
+
+ 1301 003e 0CD1     		bne	.L95
+ 260:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** out:
+ 1302              		.loc 1 260 26 discriminator 1 view .LVU401
+ 1303 0040 6568     		ldr	r5, [r4, #4]
+ 1304 0042 0AE0     		b	.L95
+ 1305              	.LVL119:
+ 1306              	.L101:
+ 243:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1307              		.loc 1 243 5 is_stmt 1 view .LVU402
+ 1308              	.LBB100:
+ 1309              	.LBI100:
+  62:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** {
+ 1310              		.loc 5 62 33 view .LVU403
+ 1311              	.LBB101:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1312              		.loc 5 64 2 view .LVU404
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1313              		.loc 5 64 9 is_stmt 0 view .LVU405
+ 1314 0044 0546     		mov	r5, r0
+ 1315              	.LVL120:
+  64:/mnt/c/Users/31740/Desktop/newcore/include/linux/err.h **** }
+ 1316              		.loc 5 64 9 view .LVU406
+ 1317              	.LBE101:
+ 1318              	.LBE100:
+ 243:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1319              		.loc 1 243 12 view .LVU407
+ 1320 0046 08E0     		b	.L95
+ 1321              	.LVL121:
+ 1322              	.L99:
+ 239:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1323              		.loc 1 239 9 view .LVU408
+ 1324 0048 6FF00B05 		mvn	r5, #11
+ 1325              	.LVL122:
+ 1326              	.L98:
+ 1327              	.LDL2:
+ 264:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return err;
+ 1328              		.loc 1 264 5 is_stmt 1 view .LVU409
+ 264:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     return err;
+ 1329              		.loc 1 264 11 is_stmt 0 view .LVU410
+ 1330 004c 3A46     		mov	r2, r7
+ 1331 004e 3146     		mov	r1, r6
+ 1332 0050 6068     		ldr	r0, [r4, #4]
+ 1333 0052 FFF7FEFF 		bl	__unregister_chrdev_region
+ 1334              	.LVL123:
+ 1335              	.LBB102:
+ 1336              	.LBI102:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1337              		.loc 3 383 20 is_stmt 1 view .LVU411
+ 1338              	.LBB103:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1339              		.loc 3 384 2 view .LVU412
+ 1340 0056 FFF7FEFF 		bl	__sfree__
+ 1341              	.LVL124:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1342              		.loc 3 384 2 is_stmt 0 view .LVU413
+ 1343              	.LBE103:
+ 1344              	.LBE102:
+ARM GAS  /tmp/ccVZjAAt.s 			page 47
+
+
+ 265:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 1345              		.loc 1 265 5 is_stmt 1 view .LVU414
+ 1346              	.L95:
+ 266:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1347              		.loc 1 266 1 is_stmt 0 view .LVU415
+ 1348 005a 2846     		mov	r0, r5
+ 1349 005c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 266:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1350              		.loc 1 266 1 view .LVU416
+ 1351              		.cfi_endproc
+ 1352              	.LFE1039:
+ 1354              		.section	.text.unregister_chrdev_region,"ax",%progbits
+ 1355              		.align	1
+ 1356              		.global	unregister_chrdev_region
+ 1357              		.syntax unified
+ 1358              		.thumb
+ 1359              		.thumb_func
+ 1361              	unregister_chrdev_region:
+ 1362              	.LVL125:
+ 1363              	.LFB1040:
+ 278:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t to = from + count;
+ 1364              		.loc 1 278 1 is_stmt 1 view -0
+ 1365              		.cfi_startproc
+ 1366              		@ args = 0, pretend = 0, frame = 0
+ 1367              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t to = from + count;
+ 1368              		.loc 1 278 1 is_stmt 0 view .LVU418
+ 1369 0000 38B5     		push	{r3, r4, r5, lr}
+ 1370              	.LCFI18:
+ 1371              		.cfi_def_cfa_offset 16
+ 1372              		.cfi_offset 3, -16
+ 1373              		.cfi_offset 4, -12
+ 1374              		.cfi_offset 5, -8
+ 1375              		.cfi_offset 14, -4
+ 1376 0002 0346     		mov	r3, r0
+ 279:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 1377              		.loc 1 279 2 is_stmt 1 view .LVU419
+ 279:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	dev_t n, next;
+ 1378              		.loc 1 279 8 is_stmt 0 view .LVU420
+ 1379 0004 4518     		adds	r5, r0, r1
+ 1380              	.LVL126:
+ 280:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1381              		.loc 1 280 2 is_stmt 1 view .LVU421
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1382              		.loc 1 282 2 view .LVU422
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1383              		.loc 1 282 2 is_stmt 0 view .LVU423
+ 1384 0006 07E0     		b	.L103
+ 1385              	.LVL127:
+ 1386              	.L104:
+ 286:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 1387              		.loc 1 286 3 is_stmt 1 view .LVU424
+ 286:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	}
+ 1388              		.loc 1 286 9 is_stmt 0 view .LVU425
+ 1389 0008 E21A     		subs	r2, r4, r3
+ 1390 000a C3F31301 		ubfx	r1, r3, #0, #20
+ 1391 000e FFF7FEFF 		bl	__unregister_chrdev_region
+ARM GAS  /tmp/ccVZjAAt.s 			page 48
+
+
+ 1392              	.LVL128:
+ 1393              	.LBB104:
+ 1394              	.LBI104:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1395              		.loc 3 383 20 is_stmt 1 view .LVU426
+ 1396              	.LBB105:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1397              		.loc 3 384 2 view .LVU427
+ 1398 0012 FFF7FEFF 		bl	__sfree__
+ 1399              	.LVL129:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1400              		.loc 3 384 2 is_stmt 0 view .LVU428
+ 1401              	.LBE105:
+ 1402              	.LBE104:
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1403              		.loc 1 282 27 is_stmt 1 discriminator 2 view .LVU429
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1404              		.loc 1 282 27 is_stmt 0 discriminator 2 view .LVU430
+ 1405 0016 2346     		mov	r3, r4
+ 1406              	.LVL130:
+ 1407              	.L103:
+ 282:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		next = MKDEV(MAJOR(n)+1, 0);
+ 1408              		.loc 1 282 19 is_stmt 1 discriminator 1 view .LVU431
+ 1409 0018 AB42     		cmp	r3, r5
+ 1410 001a 07D2     		bcs	.L108
+ 283:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1411              		.loc 1 283 3 view .LVU432
+ 283:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1412              		.loc 1 283 10 is_stmt 0 view .LVU433
+ 1413 001c 180D     		lsrs	r0, r3, #20
+ 1414 001e 421C     		adds	r2, r0, #1
+ 283:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		if (next > to)
+ 1415              		.loc 1 283 8 view .LVU434
+ 1416 0020 1405     		lsls	r4, r2, #20
+ 1417              	.LVL131:
+ 284:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 1418              		.loc 1 284 3 is_stmt 1 view .LVU435
+ 284:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 			next = to;
+ 1419              		.loc 1 284 6 is_stmt 0 view .LVU436
+ 1420 0022 B5EB025F 		cmp	r5, r2, lsl #20
+ 1421 0026 EFD2     		bcs	.L104
+ 285:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 1422              		.loc 1 285 9 view .LVU437
+ 1423 0028 2C46     		mov	r4, r5
+ 1424              	.LVL132:
+ 285:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
+ 1425              		.loc 1 285 9 view .LVU438
+ 1426 002a EDE7     		b	.L104
+ 1427              	.LVL133:
+ 1428              	.L108:
+ 288:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1429              		.loc 1 288 1 view .LVU439
+ 1430 002c 38BD     		pop	{r3, r4, r5, pc}
+ 288:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1431              		.loc 1 288 1 view .LVU440
+ 1432              		.cfi_endproc
+ 1433              	.LFE1040:
+ARM GAS  /tmp/ccVZjAAt.s 			page 49
+
+
+ 1435              		.section	.text.cdev_del,"ax",%progbits
+ 1436              		.align	1
+ 1437              		.global	cdev_del
+ 1438              		.syntax unified
+ 1439              		.thumb
+ 1440              		.thumb_func
+ 1442              	cdev_del:
+ 1443              	.LVL134:
+ 1444              	.LFB1046:
+ 411:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     kfree(p);
+ 1445              		.loc 1 411 1 is_stmt 1 view -0
+ 1446              		.cfi_startproc
+ 1447              		@ args = 0, pretend = 0, frame = 0
+ 1448              		@ frame_needed = 0, uses_anonymous_args = 0
+ 411:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     kfree(p);
+ 1449              		.loc 1 411 1 is_stmt 0 view .LVU442
+ 1450 0000 08B5     		push	{r3, lr}
+ 1451              	.LCFI19:
+ 1452              		.cfi_def_cfa_offset 8
+ 1453              		.cfi_offset 3, -8
+ 1454              		.cfi_offset 14, -4
+ 412:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c ****     // cdev_unmap(p->dev, p->count);
+ 1455              		.loc 1 412 5 is_stmt 1 view .LVU443
+ 1456              	.LVL135:
+ 1457              	.LBB106:
+ 1458              	.LBI106:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1459              		.loc 3 383 20 view .LVU444
+ 1460              	.LBB107:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1461              		.loc 3 384 2 view .LVU445
+ 1462 0002 FFF7FEFF 		bl	__sfree__
+ 1463              	.LVL136:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1464              		.loc 3 384 2 is_stmt 0 view .LVU446
+ 1465              	.LBE107:
+ 1466              	.LBE106:
+ 415:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1467              		.loc 1 415 1 view .LVU447
+ 1468 0006 08BD     		pop	{r3, pc}
+ 1469              		.cfi_endproc
+ 1470              	.LFE1046:
+ 1472              		.section	.text.__unregister_chrdev,"ax",%progbits
+ 1473              		.align	1
+ 1474              		.global	__unregister_chrdev
+ 1475              		.syntax unified
+ 1476              		.thumb
+ 1477              		.thumb_func
+ 1479              	__unregister_chrdev:
+ 1480              	.LVL137:
+ 1481              	.LFB1041:
+ 303:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ 1482              		.loc 1 303 1 is_stmt 1 view -0
+ 1483              		.cfi_startproc
+ 1484              		@ args = 0, pretend = 0, frame = 0
+ 1485              		@ frame_needed = 0, uses_anonymous_args = 0
+ 303:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** struct char_device_struct *cd;
+ARM GAS  /tmp/ccVZjAAt.s 			page 50
+
+
+ 1486              		.loc 1 303 1 is_stmt 0 view .LVU449
+ 1487 0000 10B5     		push	{r4, lr}
+ 1488              	.LCFI20:
+ 1489              		.cfi_def_cfa_offset 8
+ 1490              		.cfi_offset 4, -8
+ 1491              		.cfi_offset 14, -4
+ 304:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1492              		.loc 1 304 1 is_stmt 1 view .LVU450
+ 306:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (cd && cd->cdev)
+ 1493              		.loc 1 306 1 view .LVU451
+ 306:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** if (cd && cd->cdev)
+ 1494              		.loc 1 306 6 is_stmt 0 view .LVU452
+ 1495 0002 FFF7FEFF 		bl	__unregister_chrdev_region
+ 1496              	.LVL138:
+ 307:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cdev_del(cd->cdev);
+ 1497              		.loc 1 307 1 is_stmt 1 view .LVU453
+ 307:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cdev_del(cd->cdev);
+ 1498              		.loc 1 307 4 is_stmt 0 view .LVU454
+ 1499 0006 0446     		mov	r4, r0
+ 1500 0008 18B1     		cbz	r0, .L112
+ 307:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cdev_del(cd->cdev);
+ 1501              		.loc 1 307 13 discriminator 1 view .LVU455
+ 1502 000a 006D     		ldr	r0, [r0, #80]
+ 1503              	.LVL139:
+ 307:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** cdev_del(cd->cdev);
+ 1504              		.loc 1 307 8 discriminator 1 view .LVU456
+ 1505 000c 08B1     		cbz	r0, .L112
+ 308:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** kfree(cd);
+ 1506              		.loc 1 308 1 is_stmt 1 view .LVU457
+ 1507 000e FFF7FEFF 		bl	cdev_del
+ 1508              	.LVL140:
+ 1509              	.L112:
+ 309:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** }
+ 1510              		.loc 1 309 1 view .LVU458
+ 1511              	.LBB108:
+ 1512              	.LBI108:
+ 383:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1513              		.loc 3 383 20 view .LVU459
+ 1514              	.LBB109:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1515              		.loc 3 384 2 view .LVU460
+ 1516 0012 2046     		mov	r0, r4
+ 1517 0014 FFF7FEFF 		bl	__sfree__
+ 1518              	.LVL141:
+ 384:/mnt/c/Users/31740/Desktop/newcore/include/linux/slab.h **** }
+ 1519              		.loc 3 384 2 is_stmt 0 view .LVU461
+ 1520              	.LBE109:
+ 1521              	.LBE108:
+ 310:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1522              		.loc 1 310 1 view .LVU462
+ 1523 0018 10BD     		pop	{r4, pc}
+ 310:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1524              		.loc 1 310 1 view .LVU463
+ 1525              		.cfi_endproc
+ 1526              	.LFE1041:
+ 1528              		.section	.text.cdev_put,"ax",%progbits
+ 1529              		.align	1
+ARM GAS  /tmp/ccVZjAAt.s 			page 51
+
+
+ 1530              		.global	cdev_put
+ 1531              		.syntax unified
+ 1532              		.thumb
+ 1533              		.thumb_func
+ 1535              	cdev_put:
+ 1536              	.LVL142:
+ 1537              	.LFB1042:
+ 316:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 	if (p) {
+ 1538              		.loc 1 316 1 is_stmt 1 view -0
+ 1539              		.cfi_startproc
+ 1540              		@ args = 0, pretend = 0, frame = 0
+ 1541              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1542              		@ link register save eliminated.
+ 317:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		struct module *owner = p->owner;
+ 1543              		.loc 1 317 2 view .LVU465
+ 318:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 		//kobject_put(&p->kobj);
+ 1544              		.loc 1 318 3 view .LVU466
+ 322:/mnt/c/Users/31740/Desktop/newcore/fs/char_device.c **** 
+ 1545              		.loc 1 322 1 is_stmt 0 view .LVU467
+ 1546 0000 7047     		bx	lr
+ 1547              		.cfi_endproc
+ 1548              	.LFE1042:
+ 1550              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1551              		.align	2
+ 1552              	.LC3:
+ 1553 0000 5F5F756E 		.ascii	"__unregister_chrdev\000"
+ 1553      72656769 
+ 1553      73746572 
+ 1553      5F636872 
+ 1553      64657600 
+ 1554              		.align	2
+ 1555              	.LC4:
+ 1556 0014 00       		.ascii	"\000"
+ 1557              		.section	.export_table,"aw"
+ 1558              		.align	2
+ 1561              	__unregister_chrdev_export_struct:
+ 1562 0000 00000000 		.word	.LC3
+ 1563 0004 14000000 		.word	.LC4
+ 1564 0008 00000000 		.word	__unregister_chrdev
+ 1565              		.section	.rodata.str1.4
+ 1566 0015 000000   		.align	2
+ 1567              	.LC5:
+ 1568 0018 5F5F7265 		.ascii	"__register_chrdev\000"
+ 1568      67697374 
+ 1568      65725F63 
+ 1568      68726465 
+ 1568      7600
+ 1569              		.section	.export_table
+ 1570              		.align	2
+ 1573              	__register_chrdev_export_struct:
+ 1574 000c 18000000 		.word	.LC5
+ 1575 0010 14000000 		.word	.LC4
+ 1576 0014 00000000 		.word	__register_chrdev
+ 1577              		.section	.rodata.str1.4
+ 1578 002a 0000     		.align	2
+ 1579              	.LC6:
+ 1580 002c 63646576 		.ascii	"cdev_add\000"
+ARM GAS  /tmp/ccVZjAAt.s 			page 52
+
+
+ 1580      5F616464 
+ 1580      00
+ 1581              		.section	.export_table
+ 1582              		.align	2
+ 1585              	cdev_add_export_struct:
+ 1586 0018 2C000000 		.word	.LC6
+ 1587 001c 14000000 		.word	.LC4
+ 1588 0020 00000000 		.word	cdev_add
+ 1589              		.section	.rodata.str1.4
+ 1590 0035 000000   		.align	2
+ 1591              	.LC7:
+ 1592 0038 63646576 		.ascii	"cdev_del\000"
+ 1592      5F64656C 
+ 1592      00
+ 1593              		.section	.export_table
+ 1594              		.align	2
+ 1597              	cdev_del_export_struct:
+ 1598 0024 38000000 		.word	.LC7
+ 1599 0028 14000000 		.word	.LC4
+ 1600 002c 00000000 		.word	cdev_del
+ 1601              		.section	.rodata.str1.4
+ 1602 0041 000000   		.align	2
+ 1603              	.LC8:
+ 1604 0044 63646576 		.ascii	"cdev_alloc\000"
+ 1604      5F616C6C 
+ 1604      6F6300
+ 1605              		.section	.export_table
+ 1606              		.align	2
+ 1609              	cdev_alloc_export_struct:
+ 1610 0030 44000000 		.word	.LC8
+ 1611 0034 14000000 		.word	.LC4
+ 1612 0038 00000000 		.word	cdev_alloc
+ 1613              		.section	.rodata.str1.4
+ 1614 004f 00       		.align	2
+ 1615              	.LC9:
+ 1616 0050 63646576 		.ascii	"cdev_init\000"
+ 1616      5F696E69 
+ 1616      7400
+ 1617              		.section	.export_table
+ 1618              		.align	2
+ 1621              	cdev_init_export_struct:
+ 1622 003c 50000000 		.word	.LC9
+ 1623 0040 14000000 		.word	.LC4
+ 1624 0044 00000000 		.word	cdev_init
+ 1625              		.section	.rodata.str1.4
+ 1626 005a 0000     		.align	2
+ 1627              	.LC10:
+ 1628 005c 616C6C6F 		.ascii	"alloc_chrdev_region\000"
+ 1628      635F6368 
+ 1628      72646576 
+ 1628      5F726567 
+ 1628      696F6E00 
+ 1629              		.section	.export_table
+ 1630              		.align	2
+ 1633              	alloc_chrdev_region_export_struct:
+ 1634 0048 5C000000 		.word	.LC10
+ 1635 004c 14000000 		.word	.LC4
+ARM GAS  /tmp/ccVZjAAt.s 			page 53
+
+
+ 1636 0050 00000000 		.word	alloc_chrdev_region
+ 1637              		.section	.rodata.str1.4
+ 1638              		.align	2
+ 1639              	.LC11:
+ 1640 0070 756E7265 		.ascii	"unregister_chrdev_region\000"
+ 1640      67697374 
+ 1640      65725F63 
+ 1640      68726465 
+ 1640      765F7265 
+ 1641              		.section	.export_table
+ 1642              		.align	2
+ 1645              	unregister_chrdev_region_export_struct:
+ 1646 0054 70000000 		.word	.LC11
+ 1647 0058 14000000 		.word	.LC4
+ 1648 005c 00000000 		.word	unregister_chrdev_region
+ 1649              		.section	.rodata.str1.4
+ 1650 0089 000000   		.align	2
+ 1651              	.LC12:
+ 1652 008c 72656769 		.ascii	"register_chrdev_region\000"
+ 1652      73746572 
+ 1652      5F636872 
+ 1652      6465765F 
+ 1652      72656769 
+ 1653              		.section	.export_table
+ 1654              		.align	2
+ 1657              	register_chrdev_region_export_struct:
+ 1658 0060 8C000000 		.word	.LC12
+ 1659 0064 14000000 		.word	.LC4
+ 1660 0068 00000000 		.word	register_chrdev_region
+ 1661              		.section	.rodata.str1.4
+ 1662 00a3 00       		.align	2
+ 1663              	.LC13:
+ 1664 00a4 66696E64 		.ascii	"find_chrdev\000"
+ 1664      5F636872 
+ 1664      64657600 
+ 1665              		.section	.export_table
+ 1666              		.align	2
+ 1669              	find_chrdev_export_struct:
+ 1670 006c A4000000 		.word	.LC13
+ 1671 0070 14000000 		.word	.LC4
+ 1672 0074 00000000 		.word	find_chrdev
+ 1673              		.section	.bss.chrdevs,"aw",%nobits
+ 1674              		.align	2
+ 1677              	chrdevs:
+ 1678 0000 00000000 		.space	508
+ 1678      00000000 
+ 1678      00000000 
+ 1678      00000000 
+ 1678      00000000 
+ 1679              		.text
+ 1680              	.Letext0:
+ 1681              		.file 6 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/int-l64.h"
+ 1682              		.file 7 "/mnt/c/Users/31740/Desktop/newcore/include/asm-generic/posix_types.h"
+ 1683              		.file 8 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/types.h"
+ 1684              		.file 9 "/mnt/c/Users/31740/Desktop/newcore/include/linux/types.h"
+ 1685              		.file 10 "/mnt/c/Users/31740/Desktop/newcore/include/linux/export.h"
+ 1686              		.file 11 "/mnt/c/Users/31740/Desktop/newcore/include/linux/errseq.h"
+ARM GAS  /tmp/ccVZjAAt.s 			page 54
+
+
+ 1687              		.file 12 "/mnt/c/Users/31740/Desktop/newcore/include/linux/time64.h"
+ 1688              		.file 13 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/spinlock.h"
+ 1689              		.file 14 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types_raw.h"
+ 1690              		.file 15 "/mnt/c/Users/31740/Desktop/newcore/include/linux/spinlock_types.h"
+ 1691              		.file 16 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rbtree_types.h"
+ 1692              		.file 17 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uidgid_types.h"
+ 1693              		.file 18 "/mnt/c/Users/31740/Desktop/newcore/include/linux/projid.h"
+ 1694              		.file 19 "/mnt/c/Users/31740/Desktop/newcore/include/linux/fs.h"
+ 1695              		.file 20 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mnt_idmapping.h"
+ 1696              		.file 21 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mutex.h"
+ 1697              		.file 22 "/mnt/c/Users/31740/Desktop/newcore/include/linux/uio.h"
+ 1698              		.file 23 "/mnt/c/Users/31740/Desktop/newcore/include/linux/wait.h"
+ 1699              		.file 24 "/mnt/c/Users/31740/Desktop/newcore/include/linux/xarray.h"
+ 1700              		.file 25 "/mnt/c/Users/31740/Desktop/newcore/include/linux/migrate_mode.h"
+ 1701              		.file 26 "/mnt/c/Users/31740/Desktop/newcore/include/linux/rw_hint.h"
+ 1702              		.file 27 "/mnt/c/Users/31740/Desktop/newcore/include/linux/reciprocal_div.h"
+ 1703              		.file 28 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mm_type.h"
+ 1704              		.file 29 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bvec.h"
+ 1705              		.file 30 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk_types.h"
+ 1706              		.file 31 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blkdev.h"
+ 1707              		.file 32 "/mnt/c/Users/31740/Desktop/newcore/include/linux/bio.h"
+ 1708              		.file 33 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool_super_haper.h"
+ 1709              		.file 34 "/mnt/c/Users/31740/Desktop/newcore/include/linux/mempool.h"
+ 1710              		.file 35 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockdep_types.h"
+ 1711              		.file 36 "/mnt/c/Users/31740/Desktop/newcore/include/linux/workqueue_types.h"
+ 1712              		.file 37 "/mnt/c/Users/31740/Desktop/newcore/include/linux/blk-mq.h"
+ 1713              		.file 38 "/mnt/c/Users/31740/Desktop/newcore/include/linux/dcache.h"
+ 1714              		.file 39 "/mnt/c/Users/31740/Desktop/newcore/include/uapi/linux/pr.h"
+ 1715              		.file 40 "/mnt/c/Users/31740/Desktop/newcore/include/linux/pr.h"
+ 1716              		.file 41 "/mnt/c/Users/31740/Desktop/newcore/include/linux/hdreg.h"
+ 1717              		.file 42 "/mnt/c/Users/31740/Desktop/newcore/include/linux/lockref.h"
+ 1718              		.file 43 "/mnt/c/Users/31740/Desktop/newcore/include/linux/path.h"
+ 1719              		.file 44 "/mnt/c/Users/31740/Desktop/newcore/include/linux/statfs.h"
+ 1720              		.file 45 "/mnt/c/Users/31740/Desktop/newcore/include/linux/stat.h"
+ 1721              		.file 46 "/mnt/c/Users/31740/Desktop/newcore/include/linux/gfp_types.h"
+ 1722              		.file 47 "/mnt/c/Users/31740/Desktop/newcore/include/linux/cdev.h"
+ 1723              		.file 48 "/mnt/c/Users/31740/Desktop/newcore/arch/arm_m/include/asm/string.h"
+ 1724              		.file 49 "/mnt/c/Users/31740/Desktop/newcore/include/linux/printk.h"
+ 1725              		.file 50 "<built-in>"
+ARM GAS  /tmp/ccVZjAAt.s 			page 55
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 char_device.c
+     /tmp/ccVZjAAt.s:21     .text.sized_strscpy:00000000 $t
+     /tmp/ccVZjAAt.s:26     .text.sized_strscpy:00000000 sized_strscpy
+     /tmp/ccVZjAAt.s:104    .text.find_dynamic_major:00000000 $t
+     /tmp/ccVZjAAt.s:109    .text.find_dynamic_major:00000000 find_dynamic_major
+     /tmp/ccVZjAAt.s:190    .text.find_dynamic_major:00000040 $d
+     /tmp/ccVZjAAt.s:1677   .bss.chrdevs:00000000 chrdevs
+     /tmp/ccVZjAAt.s:196    .text.__unregister_chrdev_region:00000000 $t
+     /tmp/ccVZjAAt.s:201    .text.__unregister_chrdev_region:00000000 __unregister_chrdev_region
+     /tmp/ccVZjAAt.s:316    .text.__unregister_chrdev_region:00000058 $d
+     /tmp/ccVZjAAt.s:322    .text.cdev_add:00000000 $t
+     /tmp/ccVZjAAt.s:328    .text.cdev_add:00000000 cdev_add
+     /tmp/ccVZjAAt.s:353    .text.find_chrdev:00000000 $t
+     /tmp/ccVZjAAt.s:359    .text.find_chrdev:00000000 find_chrdev
+     /tmp/ccVZjAAt.s:479    .text.find_chrdev:00000058 $d
+     /tmp/ccVZjAAt.s:485    .text.kzalloc:00000000 $t
+     /tmp/ccVZjAAt.s:490    .text.kzalloc:00000000 kzalloc
+     /tmp/ccVZjAAt.s:528    .text.cdev_alloc:00000000 $t
+     /tmp/ccVZjAAt.s:534    .text.cdev_alloc:00000000 cdev_alloc
+     /tmp/ccVZjAAt.s:603    .text.cdev_init:00000000 $t
+     /tmp/ccVZjAAt.s:609    .text.cdev_init:00000000 cdev_init
+     /tmp/ccVZjAAt.s:669    .rodata.__register_chrdev_region.str1.4:00000000 $d
+     /tmp/ccVZjAAt.s:683    .text.__register_chrdev_region:00000000 $t
+     /tmp/ccVZjAAt.s:688    .text.__register_chrdev_region:00000000 __register_chrdev_region
+     /tmp/ccVZjAAt.s:978    .text.__register_chrdev_region:00000118 $d
+     /tmp/ccVZjAAt.s:988    .text.alloc_chrdev_region:00000000 $t
+     /tmp/ccVZjAAt.s:994    .text.alloc_chrdev_region:00000000 alloc_chrdev_region
+     /tmp/ccVZjAAt.s:1071   .text.register_chrdev_region:00000000 $t
+     /tmp/ccVZjAAt.s:1077   .text.register_chrdev_region:00000000 register_chrdev_region
+     /tmp/ccVZjAAt.s:1215   .text.__register_chrdev:00000000 $t
+     /tmp/ccVZjAAt.s:1221   .text.__register_chrdev:00000000 __register_chrdev
+     /tmp/ccVZjAAt.s:1355   .text.unregister_chrdev_region:00000000 $t
+     /tmp/ccVZjAAt.s:1361   .text.unregister_chrdev_region:00000000 unregister_chrdev_region
+     /tmp/ccVZjAAt.s:1436   .text.cdev_del:00000000 $t
+     /tmp/ccVZjAAt.s:1442   .text.cdev_del:00000000 cdev_del
+     /tmp/ccVZjAAt.s:1473   .text.__unregister_chrdev:00000000 $t
+     /tmp/ccVZjAAt.s:1479   .text.__unregister_chrdev:00000000 __unregister_chrdev
+     /tmp/ccVZjAAt.s:1529   .text.cdev_put:00000000 $t
+     /tmp/ccVZjAAt.s:1535   .text.cdev_put:00000000 cdev_put
+     /tmp/ccVZjAAt.s:1551   .rodata.str1.4:00000000 $d
+     /tmp/ccVZjAAt.s:1558   .export_table:00000000 $d
+     /tmp/ccVZjAAt.s:1561   .export_table:00000000 __unregister_chrdev_export_struct
+     /tmp/ccVZjAAt.s:1573   .export_table:0000000c __register_chrdev_export_struct
+     /tmp/ccVZjAAt.s:1585   .export_table:00000018 cdev_add_export_struct
+     /tmp/ccVZjAAt.s:1597   .export_table:00000024 cdev_del_export_struct
+     /tmp/ccVZjAAt.s:1609   .export_table:00000030 cdev_alloc_export_struct
+     /tmp/ccVZjAAt.s:1621   .export_table:0000003c cdev_init_export_struct
+     /tmp/ccVZjAAt.s:1633   .export_table:00000048 alloc_chrdev_region_export_struct
+     /tmp/ccVZjAAt.s:1645   .export_table:00000054 unregister_chrdev_region_export_struct
+     /tmp/ccVZjAAt.s:1657   .export_table:00000060 register_chrdev_region_export_struct
+     /tmp/ccVZjAAt.s:1669   .export_table:0000006c find_chrdev_export_struct
+     /tmp/ccVZjAAt.s:1674   .bss.chrdevs:00000000 $d
+
+UNDEFINED SYMBOLS
+__smalloc__
+memset
+ARM GAS  /tmp/ccVZjAAt.s 			page 56
+
+
+printk
+__sfree__

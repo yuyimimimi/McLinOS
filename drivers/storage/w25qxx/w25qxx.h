@@ -24,13 +24,13 @@ static int cs_pin_init(struct w25qxx_dev *w25qxx_dev,char *gpio_dev_name ,int pi
     
     w25qxx_dev->gpio_cs_dev = filp_open(gpio_dev_name, O_RDWR, 0);
     if(IS_ERR(w25qxx_dev->gpio_cs_dev)){
-        printk("open file failed\n\r");
+        pr_info("open file failed\n\r");
         return -1;
     }
-    printk("set cs ping use %d\n\r",pin_num);
+    pr_info("set cs ping use %d\n\r",pin_num);
     int i = vfs_ioctl(w25qxx_dev->gpio_cs_dev,GPIO_SET_PIN_NUMBER,pin_num);
     if(i < 0){
-        printk("set pin number failed\n\r");
+        pr_info("set pin number failed\n\r");
         return -1;
     }
     vfs_ioctl(w25qxx_dev->gpio_cs_dev,GPIO_OUTPUT   ,0);
@@ -42,7 +42,7 @@ static int spi_write_enable(struct w25qxx_dev *w25qxx_dev,char *name ,uint32_t s
 {
     w25qxx_dev->spi_dev = filp_open("/dev/spidev1", O_RDWR, 0);
     if(IS_ERR(w25qxx_dev->spi_dev)){
-        printk("open file failed\n\r");
+        pr_info("open file failed\n\r");
         return -1;
     }
     w25qxx_dev->xfer.speed_hz = speed;
@@ -57,12 +57,12 @@ static int w25qxx_device_init(struct w25qxx_dev *dev,char *spi_dev,int cs_pin_nu
 {
     dev->status = cs_pin_init(dev, "/dev/gpios",cs_pin_num);
     if(dev->status < 0){
-        printk("cs_pin_init failed\n\r");
+        pr_info("cs_pin_init failed\n\r");
         return -1;
     }
     dev->status = spi_write_enable(dev,spi_dev, 1000000);
     if(dev->status < 0){
-        printk("spi_write_enable failed\n\r");
+        pr_info("spi_write_enable failed\n\r");
         filp_close(dev->gpio_cs_dev, NULL);
         return -1;
     }
@@ -74,14 +74,14 @@ static int w25qxx_device_init(struct w25qxx_dev *dev,char *spi_dev,int cs_pin_nu
 static  void set_cs_pin_high(struct w25qxx_dev *w25qxx_dev){
     int ret = kernel_write(w25qxx_dev->gpio_cs_dev, "1", 1, 0);
     if(ret < 0){
-       printk("write error 1 \n\r");
+       pr_info("write error 1 \n\r");
     }
 }
 
 static  void set_cs_pin_low(struct w25qxx_dev *w25qxx_dev){
    int ret = kernel_write(w25qxx_dev->gpio_cs_dev, "0", 1, 0);
    if(ret < 0){
-      printk("write error 2 \n\r");
+      pr_info("write error 2 \n\r");
    }
 }
 
@@ -116,7 +116,7 @@ static int w25qxx_read_id(struct w25qxx_dev *dev)
     if(id[2]  >= 0x10 && id[2] <= 0x25){
         dev->size  = 1 << id[2];
     }
-    printk("FLASH JEDEC ID: 0x%02X 0x%02X 0x%02X ,Detected Flash Size: %d KB (%d MB)\r\n", id[0], id[1], id[2], dev->size / 1024, dev->size / (1024 * 1024));
+    pr_info("FLASH JEDEC ID: 0x%02X 0x%02X 0x%02X ,Detected Flash Size: %d KB (%d MB)\r\n", id[0], id[1], id[2], dev->size / 1024, dev->size / (1024 * 1024));
     u8 cmd[4] = {0x90,0x00,0x00,0x00};
     dev->send_start(dev);
     dev->send_data(dev,cmd,4);
@@ -130,7 +130,7 @@ struct w25qxx_dev *new_w25qxx_dev(char *spi_dev,int cs_pin_num)
 {
     struct w25qxx_dev *w25qxx_dev = kmalloc(sizeof(struct w25qxx_dev), GFP_KERNEL);
     if(w25qxx_dev == NULL){
-        printk("malloc failed\n\r");
+        pr_info("malloc failed\n\r");
         return NULL;
     }
     w25qxx_dev->send_data = w25qxx_send_data;

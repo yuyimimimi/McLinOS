@@ -13,6 +13,7 @@ enum rq_end_io_ret {
 	RQ_END_IO_FREE,
 };
 
+struct request;
 typedef enum rq_end_io_ret (rq_end_io_fn)(struct request *, blk_status_t);
 
 #define BLKDEV_MIN_RQ	4
@@ -246,10 +247,6 @@ static inline enum req_op req_op(const struct request *req)
 	return req->cmd_flags & REQ_OP_MASK;
 }
 
-static inline bool blk_rq_is_passthrough(struct request *rq)
-{
-	return blk_op_is_passthrough(rq->cmd_flags);
-}
 
 static inline unsigned short req_get_ioprio(struct request *req)
 {

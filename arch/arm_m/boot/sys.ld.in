@@ -1,9 +1,5 @@
-
-
-
   .init :
   {
-
       __start_initcallearly = .;
       KEEP(*(.initcallearly)) 
       __end_initcallearly = .;
@@ -93,3 +89,12 @@
     KEEP(*(.export_table))
     __export_table_end = .;
   } >FLASH
+
+  .initramfs :
+  {
+    __export_file_start = .;
+    KEEP(*(.init_ramfs_files))
+    __export_file_end = .;
+  } > FLASH
+
+

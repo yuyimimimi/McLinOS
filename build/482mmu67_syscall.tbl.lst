@@ -1,0 +1,183 @@
+ARM GAS  /tmp/ccpqs0T1.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"482mmu67_syscall.tbl.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "/mnt/c/Users/31740/Desktop/newcore/user/rootfs_file_out/482mmu67_syscall.tbl.c"
+  20              		.section	.rodata.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 2F657463 		.ascii	"/etc/syscall.tbl\000"
+  23      2F737973 
+  23      63616C6C 
+  23      2E74626C 
+  23      00
+  24              		.section	.init_ramfs_files,"aw"
+  25              		.align	2
+  28              	register_file_file_data:
+  29 0000 00000000 		.word	.LC0
+  30 0004 55030000 		.word	853
+  31 0008 00000000 		.word	filedata
+  32 000c 00       		.byte	0
+  33 000d 000000   		.space	3
+  34              		.section	.rodata.filedata,"a"
+  35              		.align	2
+  38              	filedata:
+  39 0000 23205350 		.ascii	"# SPDX-License-Identifier: GPL-2.0 WITH Linux-sysca"
+  39      44582D4C 
+  39      6963656E 
+  39      73652D49 
+  39      64656E74 
+  40 0033 6C6C2D6E 		.ascii	"ll-note\015\012#\015\012# Linux system call numbers"
+  40      6F74650D 
+  40      0A230D0A 
+  40      23204C69 
+  40      6E757820 
+  41 005a 20616E64 		.ascii	" and entry vectors\015\012#\015\012# The format is:"
+  41      20656E74 
+  41      72792076 
+  41      6563746F 
+  41      72730D0A 
+  42 0081 0D0A2320 		.ascii	"\015\012# <num>\011<abi>\011<name>\011\011\011[<ent"
+  42      3C6E756D 
+  42      3E093C61 
+  42      62693E09 
+ARM GAS  /tmp/ccpqs0T1.s 			page 2
+
+
+  42      3C6E616D 
+  43 009f 72792070 		.ascii	"ry point>\011\011\011[<oabi compat entry point>]]\015"
+  43      6F696E74 
+  43      3E090909 
+  43      5B3C6F61 
+  43      62692063 
+  44 00c8 0A230D0A 		.ascii	"\012#\015\012# Where abi is:\015\012#  common - for"
+  44      23205768 
+  44      65726520 
+  44      61626920 
+  44      69733A0D 
+  45 00ec 20737973 		.ascii	" system calls shared between oabi and eabi (may hav"
+  45      74656D20 
+  45      63616C6C 
+  45      73207368 
+  45      61726564 
+  46 011f 6520636F 		.ascii	"e compat)\015\012#  oabi   - for oabi-only system c"
+  46      6D706174 
+  46      290D0A23 
+  46      20206F61 
+  46      62692020 
+  47 014c 616C6C73 		.ascii	"alls (may have compat)\015\012#  eabi   - for eabi-"
+  47      20286D61 
+  47      79206861 
+  47      76652063 
+  47      6F6D7061 
+  48 0179 6F6E6C79 		.ascii	"only system calls\015\012#\015\012# For each syscal"
+  48      20737973 
+  48      74656D20 
+  48      63616C6C 
+  48      730D0A23 
+  49 01a0 6C206E75 		.ascii	"l number, \"common\" is mutually exclusive with oab"
+  49      6D626572 
+  49      2C202263 
+  49      6F6D6D6F 
+  49      6E222069 
+  50 01d1 6920616E 		.ascii	"i and eabi\015\012#\015\012\015\0120\011common\011r"
+  50      64206561 
+  50      62690D0A 
+  50      230D0A0D 
+  50      0A300963 
+  51 01ec 65737461 		.ascii	"estart_syscall\011sys_restart_syscall\015\0121\011c"
+  51      72745F73 
+  51      79736361 
+  51      6C6C0973 
+  51      79735F72 
+  52 0213 6F6D6D6F 		.ascii	"ommon\011exit\011\011\011sys_exit\015\012\015\0123\011"
+  52      6E096578 
+  52      69740909 
+  52      09737973 
+  52      5F657869 
+  53 022e 636F6D6D 		.ascii	"common\011read\011\011\011sys_read\015\0124\011comm"
+  53      6F6E0972 
+  53      65616409 
+  53      09097379 
+  53      735F7265 
+  54 024c 6F6E0977 		.ascii	"on\011write\011\011\011sys_write\015\0125\011common"
+ARM GAS  /tmp/ccpqs0T1.s 			page 3
+
+
+  54      72697465 
+  54      09090973 
+  54      79735F77 
+  54      72697465 
+  55 026a 096F7065 		.ascii	"\011open\011\011\011sys_open\015\0126\011common\011"
+  55      6E090909 
+  55      7379735F 
+  55      6F70656E 
+  55      0D0A3609 
+  56 0285 636C6F73 		.ascii	"close\011\011\011sys_close\015\012# 7 was sys_waitp"
+  56      65090909 
+  56      7379735F 
+  56      636C6F73 
+  56      650D0A23 
+  57 02a9 69640D0A 		.ascii	"id\015\012\015\012\015\01211\011common\011execve\011"
+  57      0D0A0D0A 
+  57      31310963 
+  57      6F6D6D6F 
+  57      6E096578 
+  58 02c2 09097379 		.ascii	"\011\011sys_execve\015\012\015\01239\011common\011m"
+  58      735F6578 
+  58      65637665 
+  58      0D0A0D0A 
+  58      33390963 
+  59 02dd 6B646972 		.ascii	"kdir\011\011\011sys_mkdir\015\012\015\012158\011com"
+  59      09090973 
+  59      79735F6D 
+  59      6B646972 
+  59      0D0A0D0A 
+  60 02f8 6D6F6E09 		.ascii	"mon\011sched_yield\011\011sys_sched_yield\015\012\015"
+  60      73636865 
+  60      645F7969 
+  60      656C6409 
+  60      09737973 
+  61 031b 0A313632 		.ascii	"\012162\011common\011nanosleep\011\011sys_nanosleep"
+  61      09636F6D 
+  61      6D6F6E09 
+  61      6E616E6F 
+  61      736C6565 
+  62 033f 5F74696D 		.ascii	"_time32\015\012\015\012end\015\012\015\012\015\012\015"
+  62      6533320D 
+  62      0A0D0A65 
+  62      6E640D0A 
+  62      0D0A0D0A 
+  63 0354 0A       		.ascii	"\012"
+  64              		.text
+  65              	.Letext0:
+  66              		.file 2 "/mnt/c/Users/31740/Desktop/newcore/include/linux/initramfs.h"
+ARM GAS  /tmp/ccpqs0T1.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 482mmu67_syscall.tbl.c
+     /tmp/ccpqs0T1.s:21     .rodata.str1.4:00000000 $d
+     /tmp/ccpqs0T1.s:25     .init_ramfs_files:00000000 $d
+     /tmp/ccpqs0T1.s:28     .init_ramfs_files:00000000 register_file_file_data
+     /tmp/ccpqs0T1.s:38     .rodata.filedata:00000000 filedata
+     /tmp/ccpqs0T1.s:35     .rodata.filedata:00000000 $d
+
+NO UNDEFINED SYMBOLS

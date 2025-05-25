@@ -5,18 +5,20 @@
 #include <linux/fs.h>
 #include <linux/gpio/gpio.h>
 #include <linux/kthread.h>
+#include <linux/loader.h>
+
 
 extern void SystemClock_Config(void);
-extern int __init devfs_ops_init(void);
 extern void uart1_device_init_function_from_dtb(void);
 extern size_t get_global_heap_size(void);
 extern int printk_service_init(void);
-extern int __init main_tty_dev_init(void);
-void base_out_opt_device_init(void);
+extern int  main_tty_dev_init(void);
+extern void base_out_opt_device_init(void);
 extern int gpio_subsystem_init(void);
 extern void SysTick_init(void);
-
-
+extern void sys_expand_heap_init(void);
+extern void sys_heap_init(void);
+extern void IRQ_int_router(void);
 
 static void do_initcallearly(void){
     for (initcall_t *fn = __start_initcallearly; fn != __end_initcallearly; fn++) 
@@ -99,7 +101,8 @@ void print_GCC_Message(){
 
 
 static void device_tree_init(){
-    if(__dtb_file_start_address == __dtb_file_end_address || fdt_check_header(__dtb_file_start_address)!= 0){while(1){}}
+    if((&__dtb_file_start_address[0] == &__dtb_file_end_address[0]) || (fdt_check_header(__dtb_file_start_address)!= 0))
+    {while(1){}}
 }
 
 static void memory_init(void){
@@ -113,44 +116,30 @@ static  void printk_init()
     printk(KERN_INFO "printk init\n");
 }
 
-
-
-void gpio_test(void)
+int test_task(void)
 {
-    printk("GPIO test\n\r");
-    struct file *fp = filp_open("/dev/gpios", O_RDWR, 0);
-    if(IS_ERR(fp)){
-        printk("open file failed\n\r");
-        return;
-    }
-    int i = vfs_ioctl(fp,GPIO_SET_PIN_NUMBER,18);
-    if(i < 0){
-        printk("set pin number failed\n\r");
-        return;
-    }
-    vfs_ioctl(fp,GPIO_OUTPUT,0);
-    while(1){
-        kernel_write(fp, "1", 1, 0);
-        kernel_write(fp, "0", 1, 0);        
-    }
+    return 1;
 }
 
-int Kernel_Init(void)
+
+
+int Kernel_Init(void* argv)
 {
 
     do_archinitcall();
     do_arch_initcall_sync();
+
     do_subsysinitcall();
     do_subsys_initcall_sync();
     
     do_deviceinitcall();
     do_device_initcall_sync();
+    
     do_lateinitcall();
     do_late_initcall_sync();
 
-   // gpio_test(); 
-
-    pr_info("system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+    printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+    return 0;
 }
 
 
@@ -164,12 +153,14 @@ int Kernel_Start(void)
 
     device_tree_init();
     memory_init();  
+    IRQ_int_router();
 
     base_out_opt_device_init();  
     print_GCC_Message();
     
+    pr_info("device tree init\n");
     SysTick_init();
-    pr_info("system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+    printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
 
     do_fsinitcall();
     do_fs_initcall_sync();
@@ -182,12 +173,11 @@ int Kernel_Start(void)
     do_core_initcall_sync();
     
     kthread_run(Kernel_Init,NULL,"kernel_init");
-    pr_info("create task kernel_init\n");
 
     do_postcoreinitcall();
     do_postcore_initcall_sync();
-
-
+ 
     while(1){}
     return 0;
 }
+

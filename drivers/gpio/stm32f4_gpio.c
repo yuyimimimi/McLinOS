@@ -161,9 +161,9 @@ void print_gpio_number(uint16_t pin) {
             buf[0] = '1';
             buf[1] = '0' + (pin_num - 10);
         }       
-        printk("%s%s%s", prefix, buf, suffix);
+        pr_info("%s%s%s", prefix, buf, suffix);
     } else {
-        printk("error pin number: %d%s", pin, suffix);
+        pr_info("error pin number: %d%s", pin, suffix);
     }
 }
 
@@ -173,9 +173,9 @@ void print_gpio_type(GPIO_TypeDef *type) {
     
     if(type >= GPIOA && type <= GPIOK) {
         char port = 'A' + ((uint32_t)type - (uint32_t)GPIOA) / 0x400;
-        printk("%s%c%s", prefix, port, suffix);
+        pr_info("%s%c%s", prefix, port, suffix);
     } else {
-        printk("error gpio type%s", suffix);
+        pr_info("error gpio type%s", suffix);
     }
 }
 
@@ -322,7 +322,7 @@ static int gpio_open(struct inode *inode, struct file *file) {
     device->gpio_number = 0xffff;
     device->gpio_type = NULL;
     file->private_data = device;
-    printk("open gpios device\n\r");
+    pr_info("open gpios device\n\r");
     return 0;
 }
 
@@ -331,7 +331,7 @@ static int gpio_write(struct file *file, const char __user *buf, size_t len, lof
     struct gpio_device *device = file->private_data;
 
     if(device->gpio_number == 0xffff) {
-        printk("please use ioctl to set pin number first\n\r");
+        pr_info("please use ioctl to set pin number first\n\r");
         return -EINVAL;
     }
 
@@ -342,7 +342,7 @@ static int gpio_write(struct file *file, const char __user *buf, size_t len, lof
         GPIO_SetBits(device->gpio_type, device->gpio_number);
     }
     else {
-        printk("error input\n\r");
+        pr_info("error input\n\r");
         return -EINVAL;
     }
 
@@ -352,17 +352,17 @@ static int gpio_write(struct file *file, const char __user *buf, size_t len, lof
 static int gpio_read(struct file *file, char __user *buf, size_t len, loff_t *offset) {
     struct gpio_device *device = file->private_data;
     if(device->gpio_number == 0xffff) {
-        printk("please use ioctl to set pin number first\n\r");
+        pr_info("please use ioctl to set pin number first\n\r");
         return -EINVAL;
     }
     int value = GPIO_ReadInputDataBit(device->gpio_type, device->gpio_number);
     if(value == 0) {
         copy_to_user(buf, "0", 1);
-        printk("gpio input value is 0\n\r");
+        pr_info("gpio input value is 0\n\r");
     }
     else {
         copy_to_user(buf, "1", 1);
-        printk("gpio input value is 1\n\r");
+        pr_info("gpio input value is 1\n\r");
     }
     return len;
 }
@@ -377,7 +377,7 @@ static int gpio_release(struct inode *inode, struct file *file) {
 static long compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
     struct gpio_device *device = file->private_data;
     if(cmd != GPIO_SET_PIN_NUMBER && device->gpio_number == 0xffff) {
-        printk("please set pin number first\n\r");
+        pr_info("please set pin number first\n\r");
         return -EINVAL;
     }
 
@@ -388,11 +388,11 @@ static long compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
     switch(cmd) {
         case GPIO_SET_PIN_NUMBER:
             if(gpio_type == NULL) {
-                printk("gpio type is not useful\n\r");
+                pr_info("gpio type is not useful\n\r");
                 return -EINVAL;
             }
             if(APB_RCC_Source == 0xffffffff) {
-                printk("APB_RCC_Source is not useful\n\r");
+                pr_info("APB_RCC_Source is not useful\n\r");
                 return -EINVAL;
             }
             print_gpio_number(pin_number);
@@ -444,14 +444,14 @@ static long compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             device->GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
             device->GPIO_InitStructure.GPIO_AF = af;
             GPIO_Init(gpio_type, &device->GPIO_InitStructure);
-            printk("Set pin AF to %d\n\r", af);
+            pr_info("Set pin AF to %d\n\r", af);
             return 0;
         }
             
         case GPIO_GET_AF: {
             // 获取当前复用功能
             uint8_t af = GPIO_GetAF(gpio_type, pin_number);
-            printk("Current pin AF: %d\n\r", af);
+            pr_info("Current pin AF: %d\n\r", af);
             return af; // 返回当前AF值
         }
             

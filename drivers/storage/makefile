@@ -1,1 +1,1 @@
-include ./drivers/storage/w25qxx/makefile
+include $(BASE_DIR)/drivers/storage/w25qxx/makefile

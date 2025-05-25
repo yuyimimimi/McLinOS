@@ -1,5 +1,5 @@
 
 C_SOURCES    += \
-		$(wildcard ./lib/fdt/*.c)
+		$(wildcard $(BASE_DIR)/lib/fdt/*.c)
 	
 	

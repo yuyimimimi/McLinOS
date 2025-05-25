@@ -1,2 +1,2 @@
 C_SOURCES    += \
-		$(wildcard ./drivers/storage/w25qxx/*.c)
+		$(wildcard $(BASE_DIR)/drivers/storage/w25qxx/*.c)
