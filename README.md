@@ -7,7 +7,8 @@
 内核最小flash要求:60kb ram需求 40kb(需要通过kconfig进行裁剪)
 
 架构图:
-![image](https://github.com/user-attachments/assets/f76c9287-fc10-4d67-b57d-7d0b8404dfc8)
+![image](https://github.com/user-attachments/assets/48daf958-3b1d-46b4-8db9-042537d7472e)
+
 
 
 
