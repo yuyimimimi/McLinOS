@@ -15,7 +15,7 @@
 编译步骤：
 1.你需要先下载本项目源代码。使用linux终端或wsl打开
 
-2.在根目录下支持sudo apt install make 下载make工具
+2.在根目录下支持``` sudo apt install make``` 下载make工具
 
 3.之后你需要下载自己对应平台的gcc编译器
 
