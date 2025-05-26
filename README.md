@@ -1,4 +1,4 @@
-# Experimental Microkernel OS Project
+#  Microkernel OS Project
 
 这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)
 
@@ -7,6 +7,12 @@
 本内核模仿linux内核。提供类unix操作系统的功能
 
 内核空间中你可以使用/linux/xx.h 进行程序的开发。注意内核空间无c语言标准库支持
+
+架构图:
+![image](https://github.com/user-attachments/assets/f76c9287-fc10-4d67-b57d-7d0b8404dfc8)
+
+
+
 
 编译步骤：
 1.你需要先下载本项目源代码。使用linux终端或wsl打开
