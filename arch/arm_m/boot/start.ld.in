@@ -1,2 +1,0 @@
-ENTRY(Reset_Handler)                    //固定使用Reset_Handler启动
-_estack = ORIGIN(RAM) + LENGTH(RAM);
