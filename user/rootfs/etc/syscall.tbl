@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
+#
+# Linux system call numbers and entry vectors
+#
+# The format is:
+# <num>	<abi>	<name>			[<entry point>			[<oabi compat entry point>]]
+#
+# Where abi is:
+#  common - for system calls shared between oabi and eabi (may have compat)
+#  oabi   - for oabi-only system calls (may have compat)
+#  eabi   - for eabi-only system calls
+#
+# For each syscall number, "common" is mutually exclusive with oabi and eabi
+#
+
+0	common	restart_syscall	sys_restart_syscall
+1	common	exit			sys_exit
+
+3	common	read			sys_read
+4	common	write			sys_write
+5	common	open			sys_open
+6	common	close			sys_close
+# 7 was sys_waitpid
+
+
+11	common	execve			sys_execve
+
+39	common	mkdir			sys_mkdir
+54	common	ioctl			sys_ioctl
+
+158	common	sched_yield		sys_sched_yield
+
+162	common	nanosleep		sys_nanosleep_time32
+
+end
+
+
+

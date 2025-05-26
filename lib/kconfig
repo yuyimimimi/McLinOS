@@ -1,0 +1,76 @@
+menu " Library Configuration "
+
+  menu "printk"
+    config PRINTTK_USE_TTY_DEVICE
+        string "printk use device"
+        default "/dev/ttyS0"
+        help
+          Set system log out put Device.
+  endmenu
+  
+  menu "system tick"
+  config SYSTEM_TICK_FREQUENCY
+      int "SYSTEM TICK (HZ)"
+      default 500
+      help
+        Set the tick frequency
+  endmenu  
+
+
+  menu "Sched Support"
+
+    config Preemptive
+      bool "Enable Preemptive"
+      default y
+      help
+        Enable or disable Preemptive sched support
+  
+    config time_loop
+      bool "Enable time_loop"
+      default n
+      help
+        Enable or disable time_loop sched support
+  endmenu    
+
+
+  menu "CRC Configuration"
+
+    config CRC4
+      bool "Enable crc4"
+      default n
+      help
+        Enable or disable crc4 support
+
+    config CRC7
+      bool "Enable crc7"
+      default n
+      help
+        Enable or disable crc7 support
+
+    config CRC8
+      bool "Enable crc8"
+      default n
+      help
+        Enable or disable crc8 support
+
+    config CRC16
+      bool "Enable crc16"
+      default n
+      help
+        Enable or disable crc16 support
+  
+    config CRC32
+      bool "Enable crc32"
+      default n
+      help
+        Enable or disable crc32 support
+
+  endmenu    
+
+
+
+  
+
+endmenu
+
+

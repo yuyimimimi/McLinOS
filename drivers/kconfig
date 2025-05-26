@@ -1,0 +1,38 @@
+
+menu "Device Drivers"
+
+  menu "tty"
+  config UART1_SPEED
+      int "UART1 baud rate"
+      default 115200
+      help
+        Set the baud rate for UART1.
+  endmenu
+  
+
+  menu "SPI Flash"
+  config W25QXX_SPI_FLASH
+      bool "Enable W25QXX SPI Flash"
+      default y
+      help
+        Enable or disable the W25QXX SPI Flash support.
+  
+  config W25QXX_SPI_FLASH_CS_PIN
+      int "W25QXX CS Pin (GPIO number)"
+      default 4
+      help
+        Set the GPIO pin number for the Chip Select (CS) of the SPI Flash.
+  
+  config W25QXX_SPI_FLASH_SPI_DEVICE
+      string "W25QXX SPI device path"
+      default "/dev/spidev1"
+      help
+        Set the device path for the W25QXX SPI Flash.
+  endmenu
+  
+endmenu
+  
+
+  
+
+

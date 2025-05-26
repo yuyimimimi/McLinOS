@@ -1,0 +1,10 @@
+menu "pipe config"
+    
+    config PIPE_FILE_SYSTEM_NODE_BUFFER_SIZE
+        int "pipe buffer size config(byte) "
+        default 1024
+        help
+          Set pipe buffer size.
+
+endmenu
+

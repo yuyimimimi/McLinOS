@@ -1,0 +1,57 @@
+menu "Kernel Memory Pool"
+
+menu "MAIN_HEAP"
+config KERNEL_MAIN_HEAP_SIZE
+    int "main heap size (kb)"
+    default 120
+    help
+      Set the size of the heap space in kb.
+endmenu    
+
+menu "EXPAND_HEAP 1"
+
+config EXPAND_HEAP_1_RUN_TASK
+    bool "Enable expand heap for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap for task run stack.
+
+config EXPAND_HEAP_1_START_ADDR
+    hex "Expand heap start address"
+    default 0x10000000
+    help
+      Define the start address for the expanded heap.
+
+config EXPAND_HEAP_1_SIZE
+    int "Expand heap size (kb)"
+    default 0
+    help
+      Set the size of the heap space in kb.
+      
+endmenu
+
+
+menu "EXPAND_HEAP 2"
+
+config EXPAND_HEAP_2_TASK_RUN
+    bool "Enable expand heap2 for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap2 for task run stack.
+
+config EXPAND_HEAP_2_START_ADDR
+    hex "Expand heap2 start address"
+    default 0x70000000
+    help
+      Define the start address for the second expanded heap.
+
+config EXPAND_HEAP_2_SIZE
+    int "Expand heap2 size (kb)"
+    default 0
+    help
+      Set the size of the second expanded heap space.
+
+endmenu
+
+endmenu
+
