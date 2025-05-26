@@ -4,7 +4,7 @@
 
 本内核模仿linux内核。提供类unix操作系统的功能
 
-内核最小flash要求:50kb ram需求 30kb(需要通过kconfig进行裁剪)
+内核最小flash要求:60kb ram需求 40kb(需要通过kconfig进行裁剪)
 
 架构图:
 ![image](https://github.com/user-attachments/assets/f76c9287-fc10-4d67-b57d-7d0b8404dfc8)
