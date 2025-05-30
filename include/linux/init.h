@@ -96,15 +96,6 @@ static void do_##name(void) \
 
 
 
-int add_function(char *name, char *help, shell_func_t func);
-#define function_add(name, help, func) \
-    static int __add_function_##func##__COUNTER__ (void) { \
-        return add_function(name, help, func); \
-    } late_initcall( __add_function_##func##__COUNTER__); \
-
-
-
-
 #ifdef MODULE
 extern struct module __this_module;
 #define THIS_MODULE (&__this_module)
