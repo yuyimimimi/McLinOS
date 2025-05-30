@@ -3,8 +3,6 @@
 #define  _INIT_H_
 
 
-typedef   int (*shell_func_t)(int argc, char *argv[]);
-
 #define __init __attribute__((__section__(".init.text")))
 #define __weak __attribute__((weak))
 #define __used __attribute__((__used__))
