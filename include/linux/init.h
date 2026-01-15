@@ -1,4 +1,3 @@
-
 #ifndef  _INIT_H_
 #define  _INIT_H_
 
@@ -49,14 +48,6 @@ extern initcall_t __start_late_initcall_sync[];
 extern initcall_t __end_late_initcall_sync[];
 
 
-
-
-
-
-
-
-
-
 #define __define_initcall(fn, prio) \
    static initcall_t __attribute__((__section__(prio))) \
     __used  _initcall_##fn  = fn              \
@@ -67,8 +58,6 @@ static void do_##name(void) \
     for (initcall_t *fn = __start_##name; fn != __end_##name; fn++)  \
         (*fn)();    \
 }                  \
-
-
 
 
 #define pure_initcall(fn)            __define_initcall(fn, ".pureinitcall")
@@ -93,7 +82,6 @@ static void do_##name(void) \
 #define __exitcall(fn)		        
 
 #define early_initcall(fn)           __define_initcall(fn, ".initcallearly")
-
 
 
 #ifdef MODULE

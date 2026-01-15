@@ -6,9 +6,6 @@
 #include <linux/module.h>
 #include <linux/mm.h>
 
-
-
-
 struct quest_lock {
     struct task_struct * task;
     spinlock_t lock;
@@ -90,12 +87,18 @@ static int thread_b_fn(void *argv){
     }
 }
 
-static int task_test()
+static int __init task_test()
 {
     quest_lock_init(&shared_lock);
     thread_a = kthread_run(thread_a_fn,NULL,"tese_a");
     thread_b = kthread_run(thread_b_fn,NULL,"tese_b");
 }
+static void __exit task_exit()
+{
+    return;
+}
+
+
 
 module_init(task_test);
-
+module_exit(task_exit);

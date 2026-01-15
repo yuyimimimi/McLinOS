@@ -1,0 +1,310 @@
+ARM GAS  /tmp/ccpiR354.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"port.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c"
+  21              		.section	.text.main_tty_dev_init,"ax",%progbits
+  22              		.align	1
+  23              		.weak	main_tty_dev_init
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	main_tty_dev_init:
+  29              	.LFB148:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** #include <generated/autoconf.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** int __weak main_tty_dev_init(void){
+  30              		.loc 1 3 35 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c ****     return 0;
+  35              		.loc 1 4 5 view .LVU1
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** }
+  36              		.loc 1 5 1 is_stmt 0 view .LVU2
+  37 0000 0020     		movs	r0, #0
+  38 0002 7047     		bx	lr
+  39              		.cfi_endproc
+  40              	.LFE148:
+  42              		.section	.text.early_printk,"ax",%progbits
+  43              		.align	1
+  44              		.weak	early_printk
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  49              	early_printk:
+  50              	.LVL0:
+  51              	.LFB149:
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak early_printk(const char *fmt, ...){}
+  52              		.loc 1 6 47 is_stmt 1 view -0
+  53              		.cfi_startproc
+  54              		@ args = 4, pretend = 16, frame = 0
+ARM GAS  /tmp/ccpiR354.s 			page 2
+
+
+  55              		@ frame_needed = 0, uses_anonymous_args = 1
+  56              		@ link register save eliminated.
+  57              		.loc 1 6 47 is_stmt 0 view .LVU4
+  58 0000 0FB4     		push	{r0, r1, r2, r3}
+  59              	.LCFI0:
+  60              		.cfi_def_cfa_offset 16
+  61              		.cfi_offset 0, -16
+  62              		.cfi_offset 1, -12
+  63              		.cfi_offset 2, -8
+  64              		.cfi_offset 3, -4
+  65              		.loc 1 6 48 is_stmt 1 view .LVU5
+  66 0002 04B0     		add	sp, sp, #16
+  67              	.LCFI1:
+  68              		.cfi_restore 3
+  69              		.cfi_restore 2
+  70              		.cfi_restore 1
+  71              		.cfi_restore 0
+  72              		.cfi_def_cfa_offset 0
+  73 0004 7047     		bx	lr
+  74              		.cfi_endproc
+  75              	.LFE149:
+  77              		.section	.text.base_out_opt_device_init,"ax",%progbits
+  78              		.align	1
+  79              		.weak	base_out_opt_device_init
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	base_out_opt_device_init:
+  85              	.LFB150:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak base_out_opt_device_init(){}
+  86              		.loc 1 7 39 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  91              		.loc 1 7 40 view .LVU7
+  92 0000 7047     		bx	lr
+  93              		.cfi_endproc
+  94              	.LFE150:
+  96              		.section	.text.SysTick_init,"ax",%progbits
+  97              		.align	1
+  98              		.weak	SysTick_init
+  99              		.syntax unified
+ 100              		.thumb
+ 101              		.thumb_func
+ 103              	SysTick_init:
+ 104              	.LFB151:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak SysTick_init(void){}
+ 105              		.loc 1 8 31 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+ 110              		.loc 1 8 32 view .LVU9
+ 111 0000 7047     		bx	lr
+ 112              		.cfi_endproc
+ 113              	.LFE151:
+ARM GAS  /tmp/ccpiR354.s 			page 3
+
+
+ 115              		.section	.text.__get_task_using_cpu_core,"ax",%progbits
+ 116              		.align	1
+ 117              		.weak	__get_task_using_cpu_core
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	__get_task_using_cpu_core:
+ 123              	.LFB152:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** int __weak __get_task_using_cpu_core(void){ 
+ 124              		.loc 1 9 43 view -0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128              		@ link register save eliminated.
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c ****     return 0;
+ 129              		.loc 1 10 5 view .LVU11
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** }
+ 130              		.loc 1 11 1 is_stmt 0 view .LVU12
+ 131 0000 0020     		movs	r0, #0
+ 132 0002 7047     		bx	lr
+ 133              		.cfi_endproc
+ 134              	.LFE152:
+ 136              		.section	.text.arch_init,"ax",%progbits
+ 137              		.align	1
+ 138              		.weak	arch_init
+ 139              		.syntax unified
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	arch_init:
+ 144              	.LFB153:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak  arch_init(void) {}
+ 145              		.loc 1 12 30 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150              		.loc 1 12 31 view .LVU14
+ 151 0000 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE153:
+ 155              		.section	.text.clean_interrupt_flag,"ax",%progbits
+ 156              		.align	1
+ 157              		.weak	clean_interrupt_flag
+ 158              		.syntax unified
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	clean_interrupt_flag:
+ 163              	.LVL1:
+ 164              	.LFB154:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak  clean_interrupt_flag(uint32_t flag){}
+ 165              		.loc 1 13 49 view -0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169              		@ link register save eliminated.
+ 170              		.loc 1 13 50 view .LVU16
+ 171 0000 7047     		bx	lr
+ARM GAS  /tmp/ccpiR354.s 			page 4
+
+
+ 172              		.cfi_endproc
+ 173              	.LFE154:
+ 175              		.section	.text.ktime_get,"ax",%progbits
+ 176              		.align	1
+ 177              		.weak	ktime_get
+ 178              		.syntax unified
+ 179              		.thumb
+ 180              		.thumb_func
+ 182              	ktime_get:
+ 183              	.LFB233:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** #include <linux/time64.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** #include <linux/sched.h>
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** unsigned int HZ = CONFIG_SYSTEM_TIMER_HZ;
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** time64_t __weak ktime_get(){return 0;}
+ 184              		.loc 1 19 28 view -0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		@ link register save eliminated.
+ 189              		.loc 1 19 29 view .LVU18
+ 190              		.loc 1 19 38 is_stmt 0 view .LVU19
+ 191 0000 0020     		movs	r0, #0
+ 192 0002 7047     		bx	lr
+ 193              		.cfi_endproc
+ 194              	.LFE233:
+ 196              		.section	.text.msp_init,"ax",%progbits
+ 197              		.align	1
+ 198              		.weak	msp_init
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	msp_init:
+ 204              	.LFB234:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak msp_init(){}
+ 205              		.loc 1 20 23 is_stmt 1 view -0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 0
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		@ link register save eliminated.
+ 210              		.loc 1 20 24 view .LVU21
+ 211 0000 7047     		bx	lr
+ 212              		.cfi_endproc
+ 213              	.LFE234:
+ 215              		.section	.text.call_mulit_core_scheduler,"ax",%progbits
+ 216              		.align	1
+ 217              		.weak	call_mulit_core_scheduler
+ 218              		.syntax unified
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	call_mulit_core_scheduler:
+ 223              	.LVL2:
+ 224              	.LFB235:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** void __weak call_mulit_core_scheduler(int cpu_number){
+ 225              		.loc 1 22 54 view -0
+ARM GAS  /tmp/ccpiR354.s 			page 5
+
+
+ 226              		.cfi_startproc
+ 227              		@ args = 0, pretend = 0, frame = 0
+ 228              		@ frame_needed = 0, uses_anonymous_args = 0
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c ****     if(cpu_number == 0)
+ 229              		.loc 1 23 5 view .LVU23
+ 230              		.loc 1 23 7 is_stmt 0 view .LVU24
+ 231 0000 00B1     		cbz	r0, .L17
+ 232 0002 7047     		bx	lr
+ 233              	.L17:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c ****     if(cpu_number == 0)
+ 234              		.loc 1 22 54 view .LVU25
+ 235 0004 08B5     		push	{r3, lr}
+ 236              	.LCFI2:
+ 237              		.cfi_def_cfa_offset 8
+ 238              		.cfi_offset 3, -8
+ 239              		.cfi_offset 14, -4
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c ****     i_sched();
+ 240              		.loc 1 24 5 is_stmt 1 view .LVU26
+ 241 0006 FFF7FEFF 		bl	i_sched
+ 242              	.LVL3:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/port.c **** }...
+ 243              		.loc 1 25 1 is_stmt 0 view .LVU27
+ 244 000a 08BD     		pop	{r3, pc}
+ 245              		.cfi_endproc
+ 246              	.LFE235:
+ 248              		.global	HZ
+ 249              		.section	.data.HZ,"aw"
+ 250              		.align	2
+ 253              	HZ:
+ 254 0000 40420F00 		.word	1000000
+ 255              		.text
+ 256              	.Letext0:
+ 257              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 258              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 259              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 260              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time.h"
+ 261              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ARM GAS  /tmp/ccpiR354.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 port.c
+     /tmp/ccpiR354.s:22     .text.main_tty_dev_init:00000000 $t
+     /tmp/ccpiR354.s:28     .text.main_tty_dev_init:00000000 main_tty_dev_init
+     /tmp/ccpiR354.s:43     .text.early_printk:00000000 $t
+     /tmp/ccpiR354.s:49     .text.early_printk:00000000 early_printk
+     /tmp/ccpiR354.s:78     .text.base_out_opt_device_init:00000000 $t
+     /tmp/ccpiR354.s:84     .text.base_out_opt_device_init:00000000 base_out_opt_device_init
+     /tmp/ccpiR354.s:97     .text.SysTick_init:00000000 $t
+     /tmp/ccpiR354.s:103    .text.SysTick_init:00000000 SysTick_init
+     /tmp/ccpiR354.s:116    .text.__get_task_using_cpu_core:00000000 $t
+     /tmp/ccpiR354.s:122    .text.__get_task_using_cpu_core:00000000 __get_task_using_cpu_core
+     /tmp/ccpiR354.s:137    .text.arch_init:00000000 $t
+     /tmp/ccpiR354.s:143    .text.arch_init:00000000 arch_init
+     /tmp/ccpiR354.s:156    .text.clean_interrupt_flag:00000000 $t
+     /tmp/ccpiR354.s:162    .text.clean_interrupt_flag:00000000 clean_interrupt_flag
+     /tmp/ccpiR354.s:176    .text.ktime_get:00000000 $t
+     /tmp/ccpiR354.s:182    .text.ktime_get:00000000 ktime_get
+     /tmp/ccpiR354.s:197    .text.msp_init:00000000 $t
+     /tmp/ccpiR354.s:203    .text.msp_init:00000000 msp_init
+     /tmp/ccpiR354.s:216    .text.call_mulit_core_scheduler:00000000 $t
+     /tmp/ccpiR354.s:222    .text.call_mulit_core_scheduler:00000000 call_mulit_core_scheduler
+     /tmp/ccpiR354.s:253    .data.HZ:00000000 HZ
+     /tmp/ccpiR354.s:250    .data.HZ:00000000 $d
+
+UNDEFINED SYMBOLS
+i_sched

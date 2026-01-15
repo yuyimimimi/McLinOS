@@ -1,0 +1,139 @@
+ARM GAS  /tmp/ccfAf7fH.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"timer.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c"
+  21              		.section	.text.time_us_64,"ax",%progbits
+  22              		.align	1
+  23              		.global	time_us_64
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	time_us_64:
+  29              	.LFB245:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** #include <linux/init.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** #include <linux/module.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** uint64_t time_us_64() {
+  30              		.loc 1 9 23 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.L2:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     volatile uint32_t *timer_base = (volatile uint32_t *)0x400b0000u;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     uint32_t hi, lo;
+  36              		.loc 1 11 5 view .LVU1
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     do {
+  37              		.loc 1 12 5 view .LVU2
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****         hi = timer_base[0x24 / 4];  // TIMERAWH
+  38              		.loc 1 13 9 view .LVU3
+  39              		.loc 1 13 12 is_stmt 0 view .LVU4
+  40 0000 044B     		ldr	r3, .L3
+  41 0002 5A6A     		ldr	r2, [r3, #36]
+  42              	.LVL0:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****         lo = timer_base[0x28 / 4];  // TIMERAWL
+  43              		.loc 1 14 9 is_stmt 1 view .LVU5
+  44              		.loc 1 14 12 is_stmt 0 view .LVU6
+ARM GAS  /tmp/ccfAf7fH.s 			page 2
+
+
+  45 0004 986A     		ldr	r0, [r3, #40]
+  46              	.LVL1:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     } while (timer_base[0x24 / 4] != hi);  // 检查高32位是否变化
+  47              		.loc 1 15 35 is_stmt 1 discriminator 1 view .LVU7
+  48              		.loc 1 15 24 is_stmt 0 discriminator 1 view .LVU8
+  49 0006 5B6A     		ldr	r3, [r3, #36]
+  50              		.loc 1 15 35 discriminator 1 view .LVU9
+  51 0008 9342     		cmp	r3, r2
+  52 000a F9D1     		bne	.L2
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     return ((uint64_t)hi << 32) | lo;
+  53              		.loc 1 16 5 is_stmt 1 view .LVU10
+  54              		.loc 1 16 26 is_stmt 0 view .LVU11
+  55 000c 2023     		movs	r3, #32
+  56 000e 9A40     		lsls	r2, r2, r3
+  57              	.LVL2:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** }
+  58              		.loc 1 17 1 view .LVU12
+  59 0010 1043     		orrs	r0, r0, r2
+  60              	.LVL3:
+  61              		.loc 1 17 1 view .LVU13
+  62 0012 7047     		bx	lr
+  63              	.L4:
+  64              		.align	2
+  65              	.L3:
+  66 0014 00000B40 		.word	1074462720
+  67              		.cfi_endproc
+  68              	.LFE245:
+  70              		.section	.text.ktime_get,"ax",%progbits
+  71              		.align	1
+  72              		.global	ktime_get
+  73              		.syntax unified
+  74              		.thumb
+  75              		.thumb_func
+  77              	ktime_get:
+  78              	.LFB246:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** 
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** time64_t  ktime_get(){
+  79              		.loc 1 19 22 is_stmt 1 view -0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI0:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c ****     return time_us_64();
+  88              		.loc 1 20 5 view .LVU15
+  89              		.loc 1 20 12 is_stmt 0 view .LVU16
+  90 0002 FFF7FEFF 		bl	time_us_64
+  91              	.LVL4:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/drivers/timer/rp2350/timer.c **** }
+  92              		.loc 1 21 1 view .LVU17
+  93 0006 08BD     		pop	{r3, pc}
+  94              		.cfi_endproc
+  95              	.LFE246:
+  97              		.text
+ARM GAS  /tmp/ccfAf7fH.s 			page 3
+
+
+  98              	.Letext0:
+  99              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 100              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 101              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ARM GAS  /tmp/ccfAf7fH.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer.c
+     /tmp/ccfAf7fH.s:22     .text.time_us_64:00000000 $t
+     /tmp/ccfAf7fH.s:28     .text.time_us_64:00000000 time_us_64
+     /tmp/ccfAf7fH.s:66     .text.time_us_64:00000014 $d
+     /tmp/ccfAf7fH.s:71     .text.ktime_get:00000000 $t
+     /tmp/ccfAf7fH.s:77     .text.ktime_get:00000000 ktime_get
+
+NO UNDEFINED SYMBOLS

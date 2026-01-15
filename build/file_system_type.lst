@@ -1,0 +1,457 @@
+ARM GAS  /tmp/cc26fPOi.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"file_system_type.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c"
+  21              		.section	.text.unregister_filesystem,"ax",%progbits
+  22              		.align	1
+  23              		.global	unregister_filesystem
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	unregister_filesystem:
+  29              	.LVL0:
+  30              	.LFB1033:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** #include<linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** #include <linux/list.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** #include <linux/fs.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** #include <linux/string.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** struct file_system_type *fs_t = NULL;
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** int register_filesystem(struct file_system_type *ft)
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** {
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     if(ft == NULL) return -1;
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     pr_info("register file system: %s\n",ft->name);
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     struct file_system_type **p;
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     for (p = &fs_t; *p; p = &(*p)->next) {
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return -EEXIST; 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     }
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     ft->next = fs_t;
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     fs_t = ft;
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     return 0;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** }
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** EXPORT_SYMBOL(register_filesystem);
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** int unregister_filesystem(struct file_system_type *ft)
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** {
+  31              		.loc 1 25 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cc26fPOi.s 			page 2
+
+
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     struct file_system_type **p;
+  36              		.loc 1 26 5 view .LVU1
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     for (p = &fs_t; *p; p = &(*p)->next) {
+  37              		.loc 1 27 5 view .LVU2
+  38              		.loc 1 27 12 is_stmt 0 view .LVU3
+  39 0000 074A     		ldr	r2, .L7
+  40              		.loc 1 27 5 view .LVU4
+  41 0002 01E0     		b	.L2
+  42              	.LVL1:
+  43              	.L3:
+  44              		.loc 1 27 27 is_stmt 1 discriminator 2 view .LVU5
+  45 0004 03F11C02 		add	r2, r3, #28
+  46              	.LVL2:
+  47              	.L2:
+  48              		.loc 1 27 21 discriminator 1 view .LVU6
+  49 0008 1368     		ldr	r3, [r2]
+  50 000a 2BB1     		cbz	r3, .L6
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (*p == ft) {
+  51              		.loc 1 28 9 view .LVU7
+  52              		.loc 1 28 12 is_stmt 0 view .LVU8
+  53 000c 8342     		cmp	r3, r0
+  54 000e F9D1     		bne	.L3
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             *p = ft->next; 
+  55              		.loc 1 29 13 is_stmt 1 view .LVU9
+  56              		.loc 1 29 20 is_stmt 0 view .LVU10
+  57 0010 C369     		ldr	r3, [r0, #28]
+  58              		.loc 1 29 16 view .LVU11
+  59 0012 1360     		str	r3, [r2]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return 0;
+  60              		.loc 1 30 13 is_stmt 1 view .LVU12
+  61              		.loc 1 30 20 is_stmt 0 view .LVU13
+  62 0014 0020     		movs	r0, #0
+  63              	.LVL3:
+  64              		.loc 1 30 20 view .LVU14
+  65 0016 7047     		bx	lr
+  66              	.LVL4:
+  67              	.L6:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         }
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     }
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     return -EINVAL;
+  68              		.loc 1 33 12 view .LVU15
+  69 0018 6FF01500 		mvn	r0, #21
+  70              	.LVL5:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** }
+  71              		.loc 1 34 1 view .LVU16
+  72 001c 7047     		bx	lr
+  73              	.L8:
+  74 001e 00BF     		.align	2
+  75              	.L7:
+  76 0020 00000000 		.word	fs_t
+  77              		.cfi_endproc
+  78              	.LFE1033:
+  80              		.section	.rodata.register_filesystem.str1.4,"aMS",%progbits,1
+  81              		.align	2
+  82              	.LC0:
+ARM GAS  /tmp/cc26fPOi.s 			page 3
+
+
+  83 0000 72656769 		.ascii	"register file system: %s\012\000"
+  83      73746572 
+  83      2066696C 
+  83      65207379 
+  83      7374656D 
+  84              		.section	.text.register_filesystem,"ax",%progbits
+  85              		.align	1
+  86              		.global	register_filesystem
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	register_filesystem:
+  92              	.LVL6:
+  93              	.LFB1032:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     if(ft == NULL) return -1;
+  94              		.loc 1 10 1 is_stmt 1 view -0
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 0
+  97              		@ frame_needed = 0, uses_anonymous_args = 0
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     pr_info("register file system: %s\n",ft->name);
+  98              		.loc 1 11 5 view .LVU18
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     pr_info("register file system: %s\n",ft->name);
+  99              		.loc 1 11 7 is_stmt 0 view .LVU19
+ 100 0000 D0B1     		cbz	r0, .L13
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     if(ft == NULL) return -1;
+ 101              		.loc 1 10 1 view .LVU20
+ 102 0002 38B5     		push	{r3, r4, r5, lr}
+ 103              	.LCFI0:
+ 104              		.cfi_def_cfa_offset 16
+ 105              		.cfi_offset 3, -16
+ 106              		.cfi_offset 4, -12
+ 107              		.cfi_offset 5, -8
+ 108              		.cfi_offset 14, -4
+ 109 0004 0546     		mov	r5, r0
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     struct file_system_type **p;
+ 110              		.loc 1 12 5 is_stmt 1 view .LVU21
+ 111 0006 0268     		ldr	r2, [r0]
+ 112 0008 0D49     		ldr	r1, .L21
+ 113 000a 0620     		movs	r0, #6
+ 114              	.LVL7:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     struct file_system_type **p;
+ 115              		.loc 1 12 5 is_stmt 0 view .LVU22
+ 116 000c FFF7FEFF 		bl	printk
+ 117              	.LVL8:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     for (p = &fs_t; *p; p = &(*p)->next) {
+ 118              		.loc 1 13 5 is_stmt 1 view .LVU23
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ 119              		.loc 1 14 5 view .LVU24
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ 120              		.loc 1 14 12 is_stmt 0 view .LVU25
+ 121 0010 0C4C     		ldr	r4, .L21+4
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ 122              		.loc 1 14 5 view .LVU26
+ 123 0012 00E0     		b	.L11
+ 124              	.LVL9:
+ 125              	.L20:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ARM GAS  /tmp/cc26fPOi.s 			page 4
+
+
+ 126              		.loc 1 14 27 is_stmt 1 discriminator 2 view .LVU27
+ 127 0014 1C34     		adds	r4, r4, #28
+ 128              	.LVL10:
+ 129              	.L11:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ 130              		.loc 1 14 21 discriminator 1 view .LVU28
+ 131 0016 2468     		ldr	r4, [r4]
+ 132              	.LVL11:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp((*p)->name, ft->name) == 0)
+ 133              		.loc 1 14 21 is_stmt 0 discriminator 1 view .LVU29
+ 134 0018 44B1     		cbz	r4, .L19
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return -EEXIST; 
+ 135              		.loc 1 15 9 is_stmt 1 view .LVU30
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return -EEXIST; 
+ 136              		.loc 1 15 13 is_stmt 0 view .LVU31
+ 137 001a 2968     		ldr	r1, [r5]
+ 138 001c 2068     		ldr	r0, [r4]
+ 139 001e FFF7FEFF 		bl	strcmp
+ 140              	.LVL12:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return -EEXIST; 
+ 141              		.loc 1 15 12 discriminator 1 view .LVU32
+ 142 0022 0028     		cmp	r0, #0
+ 143 0024 F6D1     		bne	.L20
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     }
+ 144              		.loc 1 16 20 view .LVU33
+ 145 0026 6FF01000 		mvn	r0, #16
+ 146 002a 04E0     		b	.L9
+ 147              	.L19:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     fs_t = ft;
+ 148              		.loc 1 18 5 is_stmt 1 view .LVU34
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     fs_t = ft;
+ 149              		.loc 1 18 14 is_stmt 0 view .LVU35
+ 150 002c 054B     		ldr	r3, .L21+4
+ 151 002e 1A68     		ldr	r2, [r3]
+ 152 0030 EA61     		str	r2, [r5, #28]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     return 0;
+ 153              		.loc 1 19 5 is_stmt 1 view .LVU36
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     return 0;
+ 154              		.loc 1 19 10 is_stmt 0 view .LVU37
+ 155 0032 1D60     		str	r5, [r3]
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** }
+ 156              		.loc 1 20 5 is_stmt 1 view .LVU38
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** }
+ 157              		.loc 1 20 12 is_stmt 0 view .LVU39
+ 158 0034 0020     		movs	r0, #0
+ 159              	.L9:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** EXPORT_SYMBOL(register_filesystem);
+ 160              		.loc 1 21 1 view .LVU40
+ 161 0036 38BD     		pop	{r3, r4, r5, pc}
+ 162              	.LVL13:
+ 163              	.L13:
+ 164              	.LCFI1:
+ 165              		.cfi_def_cfa_offset 0
+ 166              		.cfi_restore 3
+ 167              		.cfi_restore 4
+ 168              		.cfi_restore 5
+ 169              		.cfi_restore 14
+ARM GAS  /tmp/cc26fPOi.s 			page 5
+
+
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     pr_info("register file system: %s\n",ft->name);
+ 170              		.loc 1 11 27 discriminator 1 view .LVU41
+ 171 0038 4FF0FF30 		mov	r0, #-1
+ 172              	.LVL14:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** EXPORT_SYMBOL(register_filesystem);
+ 173              		.loc 1 21 1 view .LVU42
+ 174 003c 7047     		bx	lr
+ 175              	.L22:
+ 176 003e 00BF     		.align	2
+ 177              	.L21:
+ 178 0040 00000000 		.word	.LC0
+ 179 0044 00000000 		.word	fs_t
+ 180              		.cfi_endproc
+ 181              	.LFE1032:
+ 183              		.section	.text.lookup_fs_type,"ax",%progbits
+ 184              		.align	1
+ 185              		.global	lookup_fs_type
+ 186              		.syntax unified
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	lookup_fs_type:
+ 191              	.LVL15:
+ 192              	.LFB1034:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** EXPORT_SYMBOL(unregister_filesystem);
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** struct file_system_type *lookup_fs_type(const char *name)
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** {
+ 193              		.loc 1 38 1 is_stmt 1 view -0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 197              		.loc 1 38 1 is_stmt 0 view .LVU44
+ 198 0000 38B5     		push	{r3, r4, r5, lr}
+ 199              	.LCFI2:
+ 200              		.cfi_def_cfa_offset 16
+ 201              		.cfi_offset 3, -16
+ 202              		.cfi_offset 4, -12
+ 203              		.cfi_offset 5, -8
+ 204              		.cfi_offset 14, -4
+ 205 0002 0546     		mov	r5, r0
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     struct file_system_type *p;
+ 206              		.loc 1 39 5 is_stmt 1 view .LVU45
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     for (p = fs_t; p; p = p->next) {
+ 207              		.loc 1 41 5 view .LVU46
+ 208              		.loc 1 41 12 is_stmt 0 view .LVU47
+ 209 0004 064B     		ldr	r3, .L29
+ 210 0006 1C68     		ldr	r4, [r3]
+ 211              	.LVL16:
+ 212              		.loc 1 41 5 view .LVU48
+ 213 0008 00E0     		b	.L24
+ 214              	.LVL17:
+ 215              	.L28:
+ 216              		.loc 1 41 25 is_stmt 1 discriminator 2 view .LVU49
+ 217 000a E469     		ldr	r4, [r4, #28]
+ 218              	.LVL18:
+ 219              	.L24:
+ARM GAS  /tmp/cc26fPOi.s 			page 6
+
+
+ 220              		.loc 1 41 20 discriminator 1 view .LVU50
+ 221 000c 2CB1     		cbz	r4, .L23
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****         if (strcmp(p->name, name) == 0)
+ 222              		.loc 1 42 9 view .LVU51
+ 223              		.loc 1 42 13 is_stmt 0 view .LVU52
+ 224 000e 2946     		mov	r1, r5
+ 225 0010 2068     		ldr	r0, [r4]
+ 226 0012 FFF7FEFF 		bl	strcmp
+ 227              	.LVL19:
+ 228              		.loc 1 42 12 discriminator 1 view .LVU53
+ 229 0016 0028     		cmp	r0, #0
+ 230 0018 F7D1     		bne	.L28
+ 231              	.L23:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****             return p;
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     }
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c ****     return NULL;
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/fs/file_system_type.c **** }
+ 232              		.loc 1 46 1 view .LVU54
+ 233 001a 2046     		mov	r0, r4
+ 234 001c 38BD     		pop	{r3, r4, r5, pc}
+ 235              	.LVL20:
+ 236              	.L30:
+ 237              		.loc 1 46 1 view .LVU55
+ 238 001e 00BF     		.align	2
+ 239              	.L29:
+ 240 0020 00000000 		.word	fs_t
+ 241              		.cfi_endproc
+ 242              	.LFE1034:
+ 244              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 245              		.align	2
+ 246              	.LC1:
+ 247 0000 6C6F6F6B 		.ascii	"lookup_fs_type\000"
+ 247      75705F66 
+ 247      735F7479 
+ 247      706500
+ 248 000f 00       		.align	2
+ 249              	.LC2:
+ 250 0010 00       		.ascii	"\000"
+ 251              		.section	.export_table,"aw"
+ 252              		.align	2
+ 255              	lookup_fs_type_export_struct:
+ 256 0000 00000000 		.word	.LC1
+ 257 0004 10000000 		.word	.LC2
+ 258 0008 00000000 		.word	lookup_fs_type
+ 259              		.section	.rodata.str1.4
+ 260 0011 000000   		.align	2
+ 261              	.LC3:
+ 262 0014 756E7265 		.ascii	"unregister_filesystem\000"
+ 262      67697374 
+ 262      65725F66 
+ 262      696C6573 
+ 262      79737465 
+ 263              		.section	.export_table
+ 264              		.align	2
+ 267              	unregister_filesystem_export_struct:
+ 268 000c 14000000 		.word	.LC3
+ 269 0010 10000000 		.word	.LC2
+ARM GAS  /tmp/cc26fPOi.s 			page 7
+
+
+ 270 0014 00000000 		.word	unregister_filesystem
+ 271              		.section	.rodata.str1.4
+ 272 002a 0000     		.align	2
+ 273              	.LC4:
+ 274 002c 72656769 		.ascii	"register_filesystem\000"
+ 274      73746572 
+ 274      5F66696C 
+ 274      65737973 
+ 274      74656D00 
+ 275              		.section	.export_table
+ 276              		.align	2
+ 279              	register_filesystem_export_struct:
+ 280 0018 2C000000 		.word	.LC4
+ 281 001c 10000000 		.word	.LC2
+ 282 0020 00000000 		.word	register_filesystem
+ 283              		.global	fs_t
+ 284              		.section	.bss.fs_t,"aw",%nobits
+ 285              		.align	2
+ 288              	fs_t:
+ 289 0000 00000000 		.space	4
+ 290              		.text
+ 291              	.Letext0:
+ 292              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 293              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 294              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/types.h"
+ 295              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 296              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 297              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/errseq.h"
+ 298              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 299              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 300              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockdep_types.h"
+ 301              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 302              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 303              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rbtree_types.h"
+ 304              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uidgid_types.h"
+ 305              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/projid.h"
+ 306              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/fs.h"
+ 307              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mnt_idmapping.h"
+ 308              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 309              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uio.h"
+ 310              		.file 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/wait.h"
+ 311              		.file 21 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/xarray.h"
+ 312              		.file 22 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/migrate_mode.h"
+ 313              		.file 23 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rw_hint.h"
+ 314              		.file 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/reciprocal_div.h"
+ 315              		.file 25 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+ 316              		.file 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mm_type.h"
+ 317              		.file 27 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bvec.h"
+ 318              		.file 28 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk_types.h"
+ 319              		.file 29 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blkdev.h"
+ 320              		.file 30 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bio.h"
+ 321              		.file 31 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool_super_haper.h"
+ 322              		.file 32 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool.h"
+ 323              		.file 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/workqueue_types.h"
+ 324              		.file 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk-mq.h"
+ 325              		.file 35 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/dcache.h"
+ 326              		.file 36 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/pr.h"
+ARM GAS  /tmp/cc26fPOi.s 			page 8
+
+
+ 327              		.file 37 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/pr.h"
+ 328              		.file 38 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/hdreg.h"
+ 329              		.file 39 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ 330              		.file 40 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/path.h"
+ 331              		.file 41 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/statfs.h"
+ 332              		.file 42 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stat.h"
+ 333              		.file 43 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 334              		.file 44 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/cc26fPOi.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 file_system_type.c
+     /tmp/cc26fPOi.s:22     .text.unregister_filesystem:00000000 $t
+     /tmp/cc26fPOi.s:28     .text.unregister_filesystem:00000000 unregister_filesystem
+     /tmp/cc26fPOi.s:76     .text.unregister_filesystem:00000020 $d
+     /tmp/cc26fPOi.s:288    .bss.fs_t:00000000 fs_t
+     /tmp/cc26fPOi.s:81     .rodata.register_filesystem.str1.4:00000000 $d
+     /tmp/cc26fPOi.s:85     .text.register_filesystem:00000000 $t
+     /tmp/cc26fPOi.s:91     .text.register_filesystem:00000000 register_filesystem
+     /tmp/cc26fPOi.s:178    .text.register_filesystem:00000040 $d
+     /tmp/cc26fPOi.s:184    .text.lookup_fs_type:00000000 $t
+     /tmp/cc26fPOi.s:190    .text.lookup_fs_type:00000000 lookup_fs_type
+     /tmp/cc26fPOi.s:240    .text.lookup_fs_type:00000020 $d
+     /tmp/cc26fPOi.s:245    .rodata.str1.4:00000000 $d
+     /tmp/cc26fPOi.s:252    .export_table:00000000 $d
+     /tmp/cc26fPOi.s:255    .export_table:00000000 lookup_fs_type_export_struct
+     /tmp/cc26fPOi.s:267    .export_table:0000000c unregister_filesystem_export_struct
+     /tmp/cc26fPOi.s:279    .export_table:00000018 register_filesystem_export_struct
+     /tmp/cc26fPOi.s:285    .bss.fs_t:00000000 $d
+
+UNDEFINED SYMBOLS
+printk
+strcmp

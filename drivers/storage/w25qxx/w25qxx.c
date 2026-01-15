@@ -116,6 +116,7 @@ static u8 *device_data;
 
 static int __init w25qxx_init(void)
 {
+    pr_info("w25qxx driver  init\n");
     w25qxx_buffer = vmalloc(4096);
     if(w25qxx_buffer == NULL) {
         pr_info(KERN_ERR "Failed to allocate buffer\n");

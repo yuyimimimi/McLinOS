@@ -1,0 +1,367 @@
+ARM GAS  /tmp/ccmaSWBv.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"fdt_strerror.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c"
+  21              		.section	.rodata.fdt_strerror.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 3C76616C 		.ascii	"<valid offset/length>\000"
+  24      6964206F 
+  24      66667365 
+  24      742F6C65 
+  24      6E677468 
+  25 0016 0000     		.align	2
+  26              	.LC1:
+  27 0018 3C6E6F20 		.ascii	"<no error>\000"
+  27      6572726F 
+  27      723E00
+  28 0023 00       		.align	2
+  29              	.LC2:
+  30 0024 3C756E6B 		.ascii	"<unknown error>\000"
+  30      6E6F776E 
+  30      20657272 
+  30      6F723E00 
+  31              		.section	.text.fdt_strerror,"ax",%progbits
+  32              		.align	1
+  33              		.global	fdt_strerror
+  34              		.syntax unified
+  35              		.thumb
+  36              		.thumb_func
+  38              	fdt_strerror:
+  39              	.LVL0:
+  40              	.LFB75:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** // SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c ****  * libfdt - Flat Device Tree manipulation
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c ****  *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c ****  */
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #include <linux/libfdt_env.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #include <linux/fdt.h>
+ARM GAS  /tmp/ccmaSWBv.s 			page 2
+
+
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #include <linux/libfdt.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #include "libfdt_internal.h"
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** struct fdt_errtabent {
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	const char *str;
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** };
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #define FDT_ERRTABENT(val) \
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	[(val)] = { .str = #val, }
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** static struct fdt_errtabent fdt_errtable[] = {
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_NOTFOUND),
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_EXISTS),
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_NOSPACE),
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADOFFSET),
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADPATH),
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADPHANDLE),
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADSTATE),
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_TRUNCATED),
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADMAGIC),
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADVERSION),
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADSTRUCTURE),
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADLAYOUT),
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_INTERNAL),
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADNCELLS),
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADVALUE),
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADOVERLAY),
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_NOPHANDLES),
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_BADFLAGS),
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	FDT_ERRTABENT(FDT_ERR_ALIGNMENT),
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** };
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** #define FDT_ERRTABSIZE	((int)(sizeof(fdt_errtable) / sizeof(fdt_errtable[0])))
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** const char *fdt_strerror(int errval)
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** {
+  41              		.loc 1 48 1 view -0
+  42              		.cfi_startproc
+  43              		@ args = 0, pretend = 0, frame = 0
+  44              		@ frame_needed = 0, uses_anonymous_args = 0
+  45              		@ link register save eliminated.
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	if (errval > 0)
+  46              		.loc 1 49 2 view .LVU1
+  47              		.loc 1 49 5 is_stmt 0 view .LVU2
+  48 0000 0028     		cmp	r0, #0
+  49              		.loc 1 49 5 view .LVU3
+  50 0002 0ADC     		bgt	.L3
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 		return "<valid offset/length>";
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (errval == 0)
+  51              		.loc 1 51 7 is_stmt 1 view .LVU4
+  52              		.loc 1 51 10 is_stmt 0 view .LVU5
+  53 0004 58B1     		cbz	r0, .L4
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 		return "<no error>";
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (-errval < FDT_ERRTABSIZE) {
+ARM GAS  /tmp/ccmaSWBv.s 			page 3
+
+
+  54              		.loc 1 53 7 is_stmt 1 view .LVU6
+  55              		.loc 1 53 10 is_stmt 0 view .LVU7
+  56 0006 10F1130F 		cmn	r0, #19
+  57 000a 0ADB     		blt	.L5
+  58              	.LBB2:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 		const char *s = fdt_errtable[-errval].str;
+  59              		.loc 1 54 3 is_stmt 1 view .LVU8
+  60              		.loc 1 54 32 is_stmt 0 view .LVU9
+  61 000c 4042     		rsbs	r0, r0, #0
+  62              	.LVL1:
+  63              		.loc 1 54 15 view .LVU10
+  64 000e 064B     		ldr	r3, .L6
+  65 0010 53F82000 		ldr	r0, [r3, r0, lsl #2]
+  66              	.LVL2:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 		if (s)
+  67              		.loc 1 56 3 is_stmt 1 view .LVU11
+  68              		.loc 1 56 6 is_stmt 0 view .LVU12
+  69 0014 30B9     		cbnz	r0, .L1
+  70              	.LBE2:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 			return s;
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	}
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	return "<unknown error>";
+  71              		.loc 1 60 9 view .LVU13
+  72 0016 0548     		ldr	r0, .L6+4
+  73              	.LVL3:
+  74              		.loc 1 60 9 view .LVU14
+  75 0018 7047     		bx	lr
+  76              	.LVL4:
+  77              	.L3:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (errval == 0)
+  78              		.loc 1 50 10 view .LVU15
+  79 001a 0548     		ldr	r0, .L6+8
+  80              	.LVL5:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (errval == 0)
+  81              		.loc 1 50 10 view .LVU16
+  82 001c 7047     		bx	lr
+  83              	.LVL6:
+  84              	.L4:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (-errval < FDT_ERRTABSIZE) {
+  85              		.loc 1 52 10 view .LVU17
+  86 001e 0548     		ldr	r0, .L6+12
+  87              	.LVL7:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** 	else if (-errval < FDT_ERRTABSIZE) {
+  88              		.loc 1 52 10 view .LVU18
+  89 0020 7047     		bx	lr
+  90              	.LVL8:
+  91              	.L5:
+  92              		.loc 1 60 9 view .LVU19
+  93 0022 0248     		ldr	r0, .L6+4
+  94              	.LVL9:
+  95              	.L1:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_strerror.c **** }
+  96              		.loc 1 61 1 view .LVU20
+  97 0024 7047     		bx	lr
+  98              	.L7:
+ARM GAS  /tmp/ccmaSWBv.s 			page 4
+
+
+  99 0026 00BF     		.align	2
+ 100              	.L6:
+ 101 0028 00000000 		.word	fdt_errtable
+ 102 002c 24000000 		.word	.LC2
+ 103 0030 00000000 		.word	.LC0
+ 104 0034 18000000 		.word	.LC1
+ 105              		.cfi_endproc
+ 106              	.LFE75:
+ 108              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 109              		.align	2
+ 110              	.LC3:
+ 111 0000 4644545F 		.ascii	"FDT_ERR_NOTFOUND\000"
+ 111      4552525F 
+ 111      4E4F5446 
+ 111      4F554E44 
+ 111      00
+ 112 0011 000000   		.align	2
+ 113              	.LC4:
+ 114 0014 4644545F 		.ascii	"FDT_ERR_EXISTS\000"
+ 114      4552525F 
+ 114      45584953 
+ 114      545300
+ 115 0023 00       		.align	2
+ 116              	.LC5:
+ 117 0024 4644545F 		.ascii	"FDT_ERR_NOSPACE\000"
+ 117      4552525F 
+ 117      4E4F5350 
+ 117      41434500 
+ 118              		.align	2
+ 119              	.LC6:
+ 120 0034 4644545F 		.ascii	"FDT_ERR_BADOFFSET\000"
+ 120      4552525F 
+ 120      4241444F 
+ 120      46465345 
+ 120      5400
+ 121 0046 0000     		.align	2
+ 122              	.LC7:
+ 123 0048 4644545F 		.ascii	"FDT_ERR_BADPATH\000"
+ 123      4552525F 
+ 123      42414450 
+ 123      41544800 
+ 124              		.align	2
+ 125              	.LC8:
+ 126 0058 4644545F 		.ascii	"FDT_ERR_BADPHANDLE\000"
+ 126      4552525F 
+ 126      42414450 
+ 126      48414E44 
+ 126      4C4500
+ 127 006b 00       		.align	2
+ 128              	.LC9:
+ 129 006c 4644545F 		.ascii	"FDT_ERR_BADSTATE\000"
+ 129      4552525F 
+ 129      42414453 
+ 129      54415445 
+ 129      00
+ 130 007d 000000   		.align	2
+ 131              	.LC10:
+ARM GAS  /tmp/ccmaSWBv.s 			page 5
+
+
+ 132 0080 4644545F 		.ascii	"FDT_ERR_TRUNCATED\000"
+ 132      4552525F 
+ 132      5452554E 
+ 132      43415445 
+ 132      4400
+ 133 0092 0000     		.align	2
+ 134              	.LC11:
+ 135 0094 4644545F 		.ascii	"FDT_ERR_BADMAGIC\000"
+ 135      4552525F 
+ 135      4241444D 
+ 135      41474943 
+ 135      00
+ 136 00a5 000000   		.align	2
+ 137              	.LC12:
+ 138 00a8 4644545F 		.ascii	"FDT_ERR_BADVERSION\000"
+ 138      4552525F 
+ 138      42414456 
+ 138      45525349 
+ 138      4F4E00
+ 139 00bb 00       		.align	2
+ 140              	.LC13:
+ 141 00bc 4644545F 		.ascii	"FDT_ERR_BADSTRUCTURE\000"
+ 141      4552525F 
+ 141      42414453 
+ 141      54525543 
+ 141      54555245 
+ 142 00d1 000000   		.align	2
+ 143              	.LC14:
+ 144 00d4 4644545F 		.ascii	"FDT_ERR_BADLAYOUT\000"
+ 144      4552525F 
+ 144      4241444C 
+ 144      41594F55 
+ 144      5400
+ 145 00e6 0000     		.align	2
+ 146              	.LC15:
+ 147 00e8 4644545F 		.ascii	"FDT_ERR_INTERNAL\000"
+ 147      4552525F 
+ 147      494E5445 
+ 147      524E414C 
+ 147      00
+ 148 00f9 000000   		.align	2
+ 149              	.LC16:
+ 150 00fc 4644545F 		.ascii	"FDT_ERR_BADNCELLS\000"
+ 150      4552525F 
+ 150      4241444E 
+ 150      43454C4C 
+ 150      5300
+ 151 010e 0000     		.align	2
+ 152              	.LC17:
+ 153 0110 4644545F 		.ascii	"FDT_ERR_BADVALUE\000"
+ 153      4552525F 
+ 153      42414456 
+ 153      414C5545 
+ 153      00
+ 154 0121 000000   		.align	2
+ 155              	.LC18:
+ 156 0124 4644545F 		.ascii	"FDT_ERR_BADOVERLAY\000"
+ARM GAS  /tmp/ccmaSWBv.s 			page 6
+
+
+ 156      4552525F 
+ 156      4241444F 
+ 156      5645524C 
+ 156      415900
+ 157 0137 00       		.align	2
+ 158              	.LC19:
+ 159 0138 4644545F 		.ascii	"FDT_ERR_NOPHANDLES\000"
+ 159      4552525F 
+ 159      4E4F5048 
+ 159      414E444C 
+ 159      455300
+ 160 014b 00       		.align	2
+ 161              	.LC20:
+ 162 014c 4644545F 		.ascii	"FDT_ERR_BADFLAGS\000"
+ 162      4552525F 
+ 162      42414446 
+ 162      4C414753 
+ 162      00
+ 163 015d 000000   		.align	2
+ 164              	.LC21:
+ 165 0160 4644545F 		.ascii	"FDT_ERR_ALIGNMENT\000"
+ 165      4552525F 
+ 165      414C4947 
+ 165      4E4D454E 
+ 165      5400
+ 166              		.section	.rodata.fdt_errtable,"a"
+ 167              		.align	2
+ 170              	fdt_errtable:
+ 171 0000 00000000 		.space	4
+ 172 0004 00000000 		.word	.LC3
+ 173 0008 14000000 		.word	.LC4
+ 174 000c 24000000 		.word	.LC5
+ 175 0010 34000000 		.word	.LC6
+ 176 0014 48000000 		.word	.LC7
+ 177 0018 58000000 		.word	.LC8
+ 178 001c 6C000000 		.word	.LC9
+ 179 0020 80000000 		.word	.LC10
+ 180 0024 94000000 		.word	.LC11
+ 181 0028 A8000000 		.word	.LC12
+ 182 002c BC000000 		.word	.LC13
+ 183 0030 D4000000 		.word	.LC14
+ 184 0034 E8000000 		.word	.LC15
+ 185 0038 FC000000 		.word	.LC16
+ 186 003c 10010000 		.word	.LC17
+ 187 0040 24010000 		.word	.LC18
+ 188 0044 38010000 		.word	.LC19
+ 189 0048 4C010000 		.word	.LC20
+ 190 004c 60010000 		.word	.LC21
+ 191              		.text
+ 192              	.Letext0:
+ARM GAS  /tmp/ccmaSWBv.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fdt_strerror.c
+     /tmp/ccmaSWBv.s:22     .rodata.fdt_strerror.str1.4:00000000 $d
+     /tmp/ccmaSWBv.s:32     .text.fdt_strerror:00000000 $t
+     /tmp/ccmaSWBv.s:38     .text.fdt_strerror:00000000 fdt_strerror
+     /tmp/ccmaSWBv.s:101    .text.fdt_strerror:00000028 $d
+     /tmp/ccmaSWBv.s:170    .rodata.fdt_errtable:00000000 fdt_errtable
+     /tmp/ccmaSWBv.s:109    .rodata.str1.4:00000000 $d
+     /tmp/ccmaSWBv.s:167    .rodata.fdt_errtable:00000000 $d
+
+NO UNDEFINED SYMBOLS

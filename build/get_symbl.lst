@@ -1,0 +1,268 @@
+ARM GAS  /tmp/ccu0DbPu.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"get_symbl.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c"
+  21              		.section	.text.find_table_by_fnname,"ax",%progbits
+  22              		.align	1
+  23              		.global	find_table_by_fnname
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	find_table_by_fnname:
+  29              	.LVL0:
+  30              	.LFB269:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** #include <linux/module.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** #include <linux/export.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** #include <linux/string.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct __export_table_start[];
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct __export_table_end[];
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct* __boot_export_table_start;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** extern struct export_node_struct* __boot_export_table_end;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** void* find_table_by_fnname(char *name)
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** {
+  31              		.loc 1 13 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 13 1 is_stmt 0 view .LVU1
+  36 0000 38B5     		push	{r3, r4, r5, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 3, -16
+  40              		.cfi_offset 4, -12
+  41              		.cfi_offset 5, -8
+  42              		.cfi_offset 14, -4
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     if(name == NULL) return 0;
+  43              		.loc 1 14 5 is_stmt 1 view .LVU2
+  44              		.loc 1 14 7 is_stmt 0 view .LVU3
+ARM GAS  /tmp/ccu0DbPu.s 			page 2
+
+
+  45 0002 0546     		mov	r5, r0
+  46 0004 80B1     		cbz	r0, .L1
+  47              	.LBB2:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     for (struct export_node_struct *index =__export_table_start; index < __export_table_end; index+
+  48              		.loc 1 15 37 view .LVU4
+  49 0006 094C     		ldr	r4, .L9
+  50 0008 00E0     		b	.L3
+  51              	.LVL1:
+  52              	.L4:
+  53              		.loc 1 15 99 is_stmt 1 discriminator 2 view .LVU5
+  54 000a 0C34     		adds	r4, r4, #12
+  55              	.LVL2:
+  56              	.L3:
+  57              		.loc 1 15 72 discriminator 1 view .LVU6
+  58 000c 084B     		ldr	r3, .L9+4
+  59 000e 9C42     		cmp	r4, r3
+  60 0010 09D2     		bcs	.L8
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     {
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****        if(index->export_node_name != NULL )
+  61              		.loc 1 17 8 view .LVU7
+  62              		.loc 1 17 16 is_stmt 0 view .LVU8
+  63 0012 2068     		ldr	r0, [r4]
+  64              		.loc 1 17 10 view .LVU9
+  65 0014 0028     		cmp	r0, #0
+  66 0016 F8D0     		beq	.L4
+  67              	.LBB3:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****        {
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            int i = strcmp(index->export_node_name,name);        
+  68              		.loc 1 19 12 is_stmt 1 view .LVU10
+  69              		.loc 1 19 20 is_stmt 0 view .LVU11
+  70 0018 2946     		mov	r1, r5
+  71 001a FFF7FEFF 		bl	strcmp
+  72              	.LVL3:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            if(i == 0){
+  73              		.loc 1 20 12 is_stmt 1 view .LVU12
+  74              		.loc 1 20 14 is_stmt 0 view .LVU13
+  75 001e 0028     		cmp	r0, #0
+  76 0020 F3D1     		bne	.L4
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****              return index->export_node_fn_address;
+  77              		.loc 1 21 14 is_stmt 1 view .LVU14
+  78              		.loc 1 21 26 is_stmt 0 view .LVU15
+  79 0022 A068     		ldr	r0, [r4, #8]
+  80              	.LVL4:
+  81              		.loc 1 21 26 view .LVU16
+  82 0024 00E0     		b	.L1
+  83              	.LVL5:
+  84              	.L8:
+  85              		.loc 1 21 26 view .LVU17
+  86              	.LBE3:
+  87              	.LBE2:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            }
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****         }
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     }
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     return NULL;
+  88              		.loc 1 25 12 view .LVU18
+  89 0026 0020     		movs	r0, #0
+  90              	.LVL6:
+ARM GAS  /tmp/ccu0DbPu.s 			page 3
+
+
+  91              	.L1:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** }
+  92              		.loc 1 26 1 view .LVU19
+  93 0028 38BD     		pop	{r3, r4, r5, pc}
+  94              	.LVL7:
+  95              	.L10:
+  96              		.loc 1 26 1 view .LVU20
+  97 002a 00BF     		.align	2
+  98              	.L9:
+  99 002c 00000000 		.word	__export_table_start
+ 100 0030 00000000 		.word	__export_table_end
+ 101              		.cfi_endproc
+ 102              	.LFE269:
+ 104              		.section	.text.find_symbol_by_fnname_from_bootloader,"ax",%progbits
+ 105              		.align	1
+ 106              		.global	find_symbol_by_fnname_from_bootloader
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	find_symbol_by_fnname_from_bootloader:
+ 112              	.LVL8:
+ 113              	.LFB270:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** 
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** 
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** void* find_symbol_by_fnname_from_bootloader(char *name)
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** {
+ 114              		.loc 1 30 1 is_stmt 1 view -0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		.loc 1 30 1 is_stmt 0 view .LVU22
+ 119 0000 38B5     		push	{r3, r4, r5, lr}
+ 120              	.LCFI1:
+ 121              		.cfi_def_cfa_offset 16
+ 122              		.cfi_offset 3, -16
+ 123              		.cfi_offset 4, -12
+ 124              		.cfi_offset 5, -8
+ 125              		.cfi_offset 14, -4
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     if(name == NULL) return 0;
+ 126              		.loc 1 31 5 is_stmt 1 view .LVU23
+ 127              		.loc 1 31 7 is_stmt 0 view .LVU24
+ 128 0002 0546     		mov	r5, r0
+ 129 0004 90B1     		cbz	r0, .L11
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     for (struct export_node_struct *index =__boot_export_table_start; index < __boot_export_table_e
+ 130              		.loc 1 32 5 is_stmt 1 view .LVU25
+ 131              	.LBB4:
+ 132              		.loc 1 32 10 view .LVU26
+ 133              		.loc 1 32 37 is_stmt 0 view .LVU27
+ 134 0006 0A4B     		ldr	r3, .L19
+ 135 0008 1C68     		ldr	r4, [r3]
+ 136              	.LVL9:
+ 137              		.loc 1 32 5 view .LVU28
+ 138 000a 00E0     		b	.L13
+ 139              	.LVL10:
+ 140              	.L14:
+ 141              		.loc 1 32 109 is_stmt 1 discriminator 2 view .LVU29
+ 142 000c 0C34     		adds	r4, r4, #12
+ARM GAS  /tmp/ccu0DbPu.s 			page 4
+
+
+ 143              	.LVL11:
+ 144              	.L13:
+ 145              		.loc 1 32 77 discriminator 1 view .LVU30
+ 146 000e 094B     		ldr	r3, .L19+4
+ 147 0010 1B68     		ldr	r3, [r3]
+ 148 0012 A342     		cmp	r3, r4
+ 149 0014 09D9     		bls	.L18
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     {
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****        if(index->export_node_name != NULL )
+ 150              		.loc 1 34 8 view .LVU31
+ 151              		.loc 1 34 16 is_stmt 0 view .LVU32
+ 152 0016 2068     		ldr	r0, [r4]
+ 153              		.loc 1 34 10 view .LVU33
+ 154 0018 0028     		cmp	r0, #0
+ 155 001a F7D0     		beq	.L14
+ 156              	.LBB5:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****        {
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            int i = strcmp(index->export_node_name,name);        
+ 157              		.loc 1 36 12 is_stmt 1 view .LVU34
+ 158              		.loc 1 36 20 is_stmt 0 view .LVU35
+ 159 001c 2946     		mov	r1, r5
+ 160 001e FFF7FEFF 		bl	strcmp
+ 161              	.LVL12:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            if(i == 0){
+ 162              		.loc 1 37 12 is_stmt 1 view .LVU36
+ 163              		.loc 1 37 14 is_stmt 0 view .LVU37
+ 164 0022 0028     		cmp	r0, #0
+ 165 0024 F2D1     		bne	.L14
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****              return index->export_node_fn_address;
+ 166              		.loc 1 38 14 is_stmt 1 view .LVU38
+ 167              		.loc 1 38 26 is_stmt 0 view .LVU39
+ 168 0026 A068     		ldr	r0, [r4, #8]
+ 169              	.LVL13:
+ 170              		.loc 1 38 26 view .LVU40
+ 171 0028 00E0     		b	.L11
+ 172              	.LVL14:
+ 173              	.L18:
+ 174              		.loc 1 38 26 view .LVU41
+ 175              	.LBE5:
+ 176              	.LBE4:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****            }
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****         }
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     }
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c ****     return NULL;
+ 177              		.loc 1 42 12 view .LVU42
+ 178 002a 0020     		movs	r0, #0
+ 179              	.LVL15:
+ 180              	.L11:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/symbol_table/get_symbl.c **** }
+ 181              		.loc 1 43 1 view .LVU43
+ 182 002c 38BD     		pop	{r3, r4, r5, pc}
+ 183              	.LVL16:
+ 184              	.L20:
+ 185              		.loc 1 43 1 view .LVU44
+ 186 002e 00BF     		.align	2
+ 187              	.L19:
+ 188 0030 00000000 		.word	__boot_export_table_start
+ARM GAS  /tmp/ccu0DbPu.s 			page 5
+
+
+ 189 0034 00000000 		.word	__boot_export_table_end
+ 190              		.cfi_endproc
+ 191              	.LFE270:
+ 193              		.text
+ 194              	.Letext0:
+ 195              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 196              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ARM GAS  /tmp/ccu0DbPu.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 get_symbl.c
+     /tmp/ccu0DbPu.s:22     .text.find_table_by_fnname:00000000 $t
+     /tmp/ccu0DbPu.s:28     .text.find_table_by_fnname:00000000 find_table_by_fnname
+     /tmp/ccu0DbPu.s:99     .text.find_table_by_fnname:0000002c $d
+     /tmp/ccu0DbPu.s:105    .text.find_symbol_by_fnname_from_bootloader:00000000 $t
+     /tmp/ccu0DbPu.s:111    .text.find_symbol_by_fnname_from_bootloader:00000000 find_symbol_by_fnname_from_bootloader
+     /tmp/ccu0DbPu.s:188    .text.find_symbol_by_fnname_from_bootloader:00000030 $d
+
+UNDEFINED SYMBOLS
+strcmp
+__export_table_start
+__export_table_end
+__boot_export_table_start
+__boot_export_table_end

@@ -1,0 +1,598 @@
+ARM GAS  /tmp/cc0zl7U9.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"lockref.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c"
+  21              		.section	.text.spin_lock,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	spin_lock:
+  28              	.LVL0:
+  29              	.LFB112:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/types.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <asm/irqflags.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct* get_current_task(void);
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void __delay(uint32_t time);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_lock(spinlock_t* lock);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_unlock(spinlock_t* lock);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     lock->flag = 0;
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {  
+  31              		.loc 2 22 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 2 22 1 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+ARM GAS  /tmp/cc0zl7U9.s 			page 2
+
+
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 3, -8
+  40              		.cfi_offset 14, -4
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_lock(lock);
+  41              		.loc 2 23 5 is_stmt 1 view .LVU2
+  42 0002 FFF7FEFF 		bl	_spin_lock
+  43              	.LVL1:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  44              		.loc 2 24 1 is_stmt 0 view .LVU3
+  45 0006 08BD     		pop	{r3, pc}
+  46              		.cfi_endproc
+  47              	.LFE112:
+  49              		.section	.text.spin_unlock,"ax",%progbits
+  50              		.align	1
+  51              		.syntax unified
+  52              		.thumb
+  53              		.thumb_func
+  55              	spin_unlock:
+  56              	.LVL2:
+  57              	.LFB113:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {
+  58              		.loc 2 26 1 is_stmt 1 view -0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		.loc 2 26 1 is_stmt 0 view .LVU5
+  63 0000 08B5     		push	{r3, lr}
+  64              	.LCFI1:
+  65              		.cfi_def_cfa_offset 8
+  66              		.cfi_offset 3, -8
+  67              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_unlock(lock);
+  68              		.loc 2 27 5 is_stmt 1 view .LVU6
+  69 0002 FFF7FEFF 		bl	_spin_unlock
+  70              	.LVL3:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  71              		.loc 2 28 1 is_stmt 0 view .LVU7
+  72 0006 08BD     		pop	{r3, pc}
+  73              		.cfi_endproc
+  74              	.LFE113:
+  76              		.section	.text.lockref_get,"ax",%progbits
+  77              		.align	1
+  78              		.global	lockref_get
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  83              	lockref_get:
+  84              	.LVL4:
+  85              	.LFB232:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** #include <linux/lockref.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** #include <linux/kernel.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** #include <linux/spinlock.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+ARM GAS  /tmp/cc0zl7U9.s 			page 3
+
+
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 递增引用计数
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** void lockref_get(struct lockref *lr)
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+  86              		.loc 1 10 1 is_stmt 1 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		.loc 1 10 1 is_stmt 0 view .LVU9
+  91 0000 10B5     		push	{r4, lr}
+  92              	.LCFI2:
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 4, -8
+  95              		.cfi_offset 14, -4
+  96 0002 0446     		mov	r4, r0
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+  97              		.loc 1 11 5 is_stmt 1 view .LVU10
+  98 0004 FFF7FEFF 		bl	spin_lock
+  99              	.LVL5:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     lr->count++;
+ 100              		.loc 1 12 5 view .LVU11
+ 101              		.loc 1 12 7 is_stmt 0 view .LVU12
+ 102 0008 2369     		ldr	r3, [r4, #16]
+ 103              		.loc 1 12 14 view .LVU13
+ 104 000a 0133     		adds	r3, r3, #1
+ 105 000c 2361     		str	r3, [r4, #16]
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 106              		.loc 1 13 5 is_stmt 1 view .LVU14
+ 107 000e 2046     		mov	r0, r4
+ 108 0010 FFF7FEFF 		bl	spin_unlock
+ 109              	.LVL6:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 110              		.loc 1 14 1 is_stmt 0 view .LVU15
+ 111 0014 10BD     		pop	{r4, pc}
+ 112              		.loc 1 14 1 view .LVU16
+ 113              		.cfi_endproc
+ 114              	.LFE232:
+ 116              		.section	.text.lockref_put_return,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	lockref_put_return
+ 119              		.syntax unified
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	lockref_put_return:
+ 124              	.LVL7:
+ 125              	.LFB233:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 递减引用计数，返回新值
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** int lockref_put_return(struct lockref *lr)
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 126              		.loc 1 20 1 is_stmt 1 view -0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		.loc 1 20 1 is_stmt 0 view .LVU18
+ARM GAS  /tmp/cc0zl7U9.s 			page 4
+
+
+ 131 0000 38B5     		push	{r3, r4, r5, lr}
+ 132              	.LCFI3:
+ 133              		.cfi_def_cfa_offset 16
+ 134              		.cfi_offset 3, -16
+ 135              		.cfi_offset 4, -12
+ 136              		.cfi_offset 5, -8
+ 137              		.cfi_offset 14, -4
+ 138 0002 0446     		mov	r4, r0
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     int ret;
+ 139              		.loc 1 21 5 is_stmt 1 view .LVU19
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 140              		.loc 1 22 5 view .LVU20
+ 141 0004 FFF7FEFF 		bl	spin_lock
+ 142              	.LVL8:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     lr->count--;
+ 143              		.loc 1 23 5 view .LVU21
+ 144              		.loc 1 23 7 is_stmt 0 view .LVU22
+ 145 0008 2569     		ldr	r5, [r4, #16]
+ 146              		.loc 1 23 14 view .LVU23
+ 147 000a 013D     		subs	r5, r5, #1
+ 148 000c 2561     		str	r5, [r4, #16]
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     ret = lr->count;
+ 149              		.loc 1 24 5 is_stmt 1 view .LVU24
+ 150              	.LVL9:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 151              		.loc 1 25 5 view .LVU25
+ 152 000e 2046     		mov	r0, r4
+ 153 0010 FFF7FEFF 		bl	spin_unlock
+ 154              	.LVL10:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     return ret;
+ 155              		.loc 1 26 5 view .LVU26
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 156              		.loc 1 27 1 is_stmt 0 view .LVU27
+ 157 0014 2846     		mov	r0, r5
+ 158 0016 38BD     		pop	{r3, r4, r5, pc}
+ 159              		.loc 1 27 1 view .LVU28
+ 160              		.cfi_endproc
+ 161              	.LFE233:
+ 163              		.section	.text.lockref_get_not_zero,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	lockref_get_not_zero
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	lockref_get_not_zero:
+ 171              	.LVL11:
+ 172              	.LFB234:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 如果 count != 0，则递增，返回1，否则返回0
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** int lockref_get_not_zero(struct lockref *lr)
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 173              		.loc 1 33 1 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/cc0zl7U9.s 			page 5
+
+
+ 177              		.loc 1 33 1 is_stmt 0 view .LVU30
+ 178 0000 38B5     		push	{r3, r4, r5, lr}
+ 179              	.LCFI4:
+ 180              		.cfi_def_cfa_offset 16
+ 181              		.cfi_offset 3, -16
+ 182              		.cfi_offset 4, -12
+ 183              		.cfi_offset 5, -8
+ 184              		.cfi_offset 14, -4
+ 185 0002 0446     		mov	r4, r0
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     int ret = 0;
+ 186              		.loc 1 34 5 is_stmt 1 view .LVU31
+ 187              	.LVL12:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 188              		.loc 1 35 5 view .LVU32
+ 189 0004 FFF7FEFF 		bl	spin_lock
+ 190              	.LVL13:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     if (lr->count != 0) {
+ 191              		.loc 1 36 5 view .LVU33
+ 192              		.loc 1 36 11 is_stmt 0 view .LVU34
+ 193 0008 2569     		ldr	r5, [r4, #16]
+ 194              		.loc 1 36 8 view .LVU35
+ 195 000a 15B1     		cbz	r5, .L10
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         lr->count++;
+ 196              		.loc 1 37 9 is_stmt 1 view .LVU36
+ 197              		.loc 1 37 18 is_stmt 0 view .LVU37
+ 198 000c 0135     		adds	r5, r5, #1
+ 199 000e 2561     		str	r5, [r4, #16]
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         ret = 1;
+ 200              		.loc 1 38 9 is_stmt 1 view .LVU38
+ 201              	.LVL14:
+ 202              		.loc 1 38 13 is_stmt 0 view .LVU39
+ 203 0010 0125     		movs	r5, #1
+ 204              	.LVL15:
+ 205              	.L10:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     }
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 206              		.loc 1 40 5 is_stmt 1 view .LVU40
+ 207 0012 2046     		mov	r0, r4
+ 208 0014 FFF7FEFF 		bl	spin_unlock
+ 209              	.LVL16:
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     return ret;
+ 210              		.loc 1 41 5 view .LVU41
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 211              		.loc 1 42 1 is_stmt 0 view .LVU42
+ 212 0018 2846     		mov	r0, r5
+ 213 001a 38BD     		pop	{r3, r4, r5, pc}
+ 214              		.loc 1 42 1 view .LVU43
+ 215              		.cfi_endproc
+ 216              	.LFE234:
+ 218              		.section	.text.lockref_put_not_zero,"ax",%progbits
+ 219              		.align	1
+ 220              		.global	lockref_put_not_zero
+ 221              		.syntax unified
+ 222              		.thumb
+ 223              		.thumb_func
+ 225              	lockref_put_not_zero:
+ 226              	.LVL17:
+ARM GAS  /tmp/cc0zl7U9.s 			page 6
+
+
+ 227              	.LFB235:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 如果 count != 0，递减，返回1，否则返回0
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** int lockref_put_not_zero(struct lockref *lr)
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 228              		.loc 1 48 1 is_stmt 1 view -0
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232              		.loc 1 48 1 is_stmt 0 view .LVU45
+ 233 0000 38B5     		push	{r3, r4, r5, lr}
+ 234              	.LCFI5:
+ 235              		.cfi_def_cfa_offset 16
+ 236              		.cfi_offset 3, -16
+ 237              		.cfi_offset 4, -12
+ 238              		.cfi_offset 5, -8
+ 239              		.cfi_offset 14, -4
+ 240 0002 0446     		mov	r4, r0
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     int ret = 0;
+ 241              		.loc 1 49 5 is_stmt 1 view .LVU46
+ 242              	.LVL18:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 243              		.loc 1 50 5 view .LVU47
+ 244 0004 FFF7FEFF 		bl	spin_lock
+ 245              	.LVL19:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     if (lr->count != 0) {
+ 246              		.loc 1 51 5 view .LVU48
+ 247              		.loc 1 51 11 is_stmt 0 view .LVU49
+ 248 0008 2569     		ldr	r5, [r4, #16]
+ 249              		.loc 1 51 8 view .LVU50
+ 250 000a 15B1     		cbz	r5, .L13
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         lr->count--;
+ 251              		.loc 1 52 9 is_stmt 1 view .LVU51
+ 252              		.loc 1 52 18 is_stmt 0 view .LVU52
+ 253 000c 013D     		subs	r5, r5, #1
+ 254 000e 2561     		str	r5, [r4, #16]
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         ret = 1;
+ 255              		.loc 1 53 9 is_stmt 1 view .LVU53
+ 256              	.LVL20:
+ 257              		.loc 1 53 13 is_stmt 0 view .LVU54
+ 258 0010 0125     		movs	r5, #1
+ 259              	.LVL21:
+ 260              	.L13:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     }
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 261              		.loc 1 55 5 is_stmt 1 view .LVU55
+ 262 0012 2046     		mov	r0, r4
+ 263 0014 FFF7FEFF 		bl	spin_unlock
+ 264              	.LVL22:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     return ret;
+ 265              		.loc 1 56 5 view .LVU56
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 266              		.loc 1 57 1 is_stmt 0 view .LVU57
+ 267 0018 2846     		mov	r0, r5
+ 268 001a 38BD     		pop	{r3, r4, r5, pc}
+ARM GAS  /tmp/cc0zl7U9.s 			page 7
+
+
+ 269              		.loc 1 57 1 view .LVU58
+ 270              		.cfi_endproc
+ 271              	.LFE235:
+ 273              		.section	.text.lockref_put_or_lock,"ax",%progbits
+ 274              		.align	1
+ 275              		.global	lockref_put_or_lock
+ 276              		.syntax unified
+ 277              		.thumb
+ 278              		.thumb_func
+ 280              	lockref_put_or_lock:
+ 281              	.LVL23:
+ 282              	.LFB236:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 如果递减后为0，保持锁定返回1，否则解锁返回0
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** int lockref_put_or_lock(struct lockref *lr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 283              		.loc 1 63 1 is_stmt 1 view -0
+ 284              		.cfi_startproc
+ 285              		@ args = 0, pretend = 0, frame = 0
+ 286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287              		.loc 1 63 1 is_stmt 0 view .LVU60
+ 288 0000 10B5     		push	{r4, lr}
+ 289              	.LCFI6:
+ 290              		.cfi_def_cfa_offset 8
+ 291              		.cfi_offset 4, -8
+ 292              		.cfi_offset 14, -4
+ 293 0002 0446     		mov	r4, r0
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     int ret = 0;
+ 294              		.loc 1 64 5 is_stmt 1 view .LVU61
+ 295              	.LVL24:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 296              		.loc 1 65 5 view .LVU62
+ 297 0004 FFF7FEFF 		bl	spin_lock
+ 298              	.LVL25:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     lr->count--;
+ 299              		.loc 1 66 5 view .LVU63
+ 300              		.loc 1 66 7 is_stmt 0 view .LVU64
+ 301 0008 2369     		ldr	r3, [r4, #16]
+ 302              		.loc 1 66 14 view .LVU65
+ 303 000a 013B     		subs	r3, r3, #1
+ 304 000c 2361     		str	r3, [r4, #16]
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     if (lr->count == 0) {
+ 305              		.loc 1 67 5 is_stmt 1 view .LVU66
+ 306              		.loc 1 67 8 is_stmt 0 view .LVU67
+ 307 000e 0BB9     		cbnz	r3, .L19
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         ret = 1;  // 不解锁，调用者负责释放
+ 308              		.loc 1 68 13 view .LVU68
+ 309 0010 0120     		movs	r0, #1
+ 310              	.LVL26:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     } else {
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         spin_unlock(&lr->lock);
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     }
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     return ret;
+ 311              		.loc 1 72 5 is_stmt 1 view .LVU69
+ 312              	.L15:
+ARM GAS  /tmp/cc0zl7U9.s 			page 8
+
+
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 313              		.loc 1 73 1 is_stmt 0 view .LVU70
+ 314 0012 10BD     		pop	{r4, pc}
+ 315              	.LVL27:
+ 316              	.L19:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     }
+ 317              		.loc 1 70 9 is_stmt 1 view .LVU71
+ 318 0014 2046     		mov	r0, r4
+ 319 0016 FFF7FEFF 		bl	spin_unlock
+ 320              	.LVL28:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 321              		.loc 1 64 9 is_stmt 0 view .LVU72
+ 322 001a 0020     		movs	r0, #0
+ 323 001c F9E7     		b	.L15
+ 324              		.cfi_endproc
+ 325              	.LFE236:
+ 327              		.section	.text.lockref_mark_dead,"ax",%progbits
+ 328              		.align	1
+ 329              		.global	lockref_mark_dead
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 334              	lockref_mark_dead:
+ 335              	.LVL29:
+ 336              	.LFB237:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 标记对象死亡（count < 0）
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** void lockref_mark_dead(struct lockref *lr)
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 337              		.loc 1 79 1 is_stmt 1 view -0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              		.loc 1 79 1 is_stmt 0 view .LVU74
+ 342 0000 10B5     		push	{r4, lr}
+ 343              	.LCFI7:
+ 344              		.cfi_def_cfa_offset 8
+ 345              		.cfi_offset 4, -8
+ 346              		.cfi_offset 14, -4
+ 347 0002 0446     		mov	r4, r0
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 348              		.loc 1 80 5 is_stmt 1 view .LVU75
+ 349 0004 FFF7FEFF 		bl	spin_lock
+ 350              	.LVL30:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     lr->count = -1;
+ 351              		.loc 1 81 5 view .LVU76
+ 352              		.loc 1 81 15 is_stmt 0 view .LVU77
+ 353 0008 4FF0FF33 		mov	r3, #-1
+ 354 000c 2361     		str	r3, [r4, #16]
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 355              		.loc 1 82 5 is_stmt 1 view .LVU78
+ 356 000e 2046     		mov	r0, r4
+ 357 0010 FFF7FEFF 		bl	spin_unlock
+ 358              	.LVL31:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ARM GAS  /tmp/cc0zl7U9.s 			page 9
+
+
+ 359              		.loc 1 83 1 is_stmt 0 view .LVU79
+ 360 0014 10BD     		pop	{r4, pc}
+ 361              		.loc 1 83 1 view .LVU80
+ 362              		.cfi_endproc
+ 363              	.LFE237:
+ 365              		.section	.text.lockref_get_not_dead,"ax",%progbits
+ 366              		.align	1
+ 367              		.global	lockref_get_not_dead
+ 368              		.syntax unified
+ 369              		.thumb
+ 370              		.thumb_func
+ 372              	lockref_get_not_dead:
+ 373              	.LVL32:
+ 374              	.LFB238:
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** 
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** /*
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  * 如果 count >= 0，递增返回1，否则返回0
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****  */
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** int lockref_get_not_dead(struct lockref *lr)
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** {
+ 375              		.loc 1 89 1 is_stmt 1 view -0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 0
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379              		.loc 1 89 1 is_stmt 0 view .LVU82
+ 380 0000 38B5     		push	{r3, r4, r5, lr}
+ 381              	.LCFI8:
+ 382              		.cfi_def_cfa_offset 16
+ 383              		.cfi_offset 3, -16
+ 384              		.cfi_offset 4, -12
+ 385              		.cfi_offset 5, -8
+ 386              		.cfi_offset 14, -4
+ 387 0002 0446     		mov	r4, r0
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     int ret = 0;
+ 388              		.loc 1 90 5 is_stmt 1 view .LVU83
+ 389              	.LVL33:
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 390              		.loc 1 91 5 view .LVU84
+ 391 0004 FFF7FEFF 		bl	spin_lock
+ 392              	.LVL34:
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     if (lr->count >= 0) {
+ 393              		.loc 1 92 5 view .LVU85
+ 394              		.loc 1 92 11 is_stmt 0 view .LVU86
+ 395 0008 2369     		ldr	r3, [r4, #16]
+ 396              		.loc 1 92 8 view .LVU87
+ 397 000a 002B     		cmp	r3, #0
+ 398 000c 07DB     		blt	.L24
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         lr->count++;
+ 399              		.loc 1 93 9 is_stmt 1 view .LVU88
+ 400              		.loc 1 93 18 is_stmt 0 view .LVU89
+ 401 000e 0133     		adds	r3, r3, #1
+ 402 0010 2361     		str	r3, [r4, #16]
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****         ret = 1;
+ 403              		.loc 1 94 9 is_stmt 1 view .LVU90
+ 404              	.LVL35:
+ 405              		.loc 1 94 13 is_stmt 0 view .LVU91
+ 406 0012 0125     		movs	r5, #1
+ARM GAS  /tmp/cc0zl7U9.s 			page 10
+
+
+ 407              	.LVL36:
+ 408              	.L23:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     }
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_unlock(&lr->lock);
+ 409              		.loc 1 96 5 is_stmt 1 view .LVU92
+ 410 0014 2046     		mov	r0, r4
+ 411 0016 FFF7FEFF 		bl	spin_unlock
+ 412              	.LVL37:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     return ret;
+ 413              		.loc 1 97 5 view .LVU93
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c **** }
+ 414              		.loc 1 98 1 is_stmt 0 view .LVU94
+ 415 001a 2846     		mov	r0, r5
+ 416 001c 38BD     		pop	{r3, r4, r5, pc}
+ 417              	.LVL38:
+ 418              	.L24:
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lockref.c ****     spin_lock(&lr->lock);
+ 419              		.loc 1 90 9 view .LVU95
+ 420 001e 0025     		movs	r5, #0
+ 421 0020 F8E7     		b	.L23
+ 422              		.cfi_endproc
+ 423              	.LFE238:
+ 425              		.text
+ 426              	.Letext0:
+ 427              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 428              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 429              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 430              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ARM GAS  /tmp/cc0zl7U9.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lockref.c
+     /tmp/cc0zl7U9.s:22     .text.spin_lock:00000000 $t
+     /tmp/cc0zl7U9.s:27     .text.spin_lock:00000000 spin_lock
+     /tmp/cc0zl7U9.s:50     .text.spin_unlock:00000000 $t
+     /tmp/cc0zl7U9.s:55     .text.spin_unlock:00000000 spin_unlock
+     /tmp/cc0zl7U9.s:77     .text.lockref_get:00000000 $t
+     /tmp/cc0zl7U9.s:83     .text.lockref_get:00000000 lockref_get
+     /tmp/cc0zl7U9.s:117    .text.lockref_put_return:00000000 $t
+     /tmp/cc0zl7U9.s:123    .text.lockref_put_return:00000000 lockref_put_return
+     /tmp/cc0zl7U9.s:164    .text.lockref_get_not_zero:00000000 $t
+     /tmp/cc0zl7U9.s:170    .text.lockref_get_not_zero:00000000 lockref_get_not_zero
+     /tmp/cc0zl7U9.s:219    .text.lockref_put_not_zero:00000000 $t
+     /tmp/cc0zl7U9.s:225    .text.lockref_put_not_zero:00000000 lockref_put_not_zero
+     /tmp/cc0zl7U9.s:274    .text.lockref_put_or_lock:00000000 $t
+     /tmp/cc0zl7U9.s:280    .text.lockref_put_or_lock:00000000 lockref_put_or_lock
+     /tmp/cc0zl7U9.s:328    .text.lockref_mark_dead:00000000 $t
+     /tmp/cc0zl7U9.s:334    .text.lockref_mark_dead:00000000 lockref_mark_dead
+     /tmp/cc0zl7U9.s:366    .text.lockref_get_not_dead:00000000 $t
+     /tmp/cc0zl7U9.s:372    .text.lockref_get_not_dead:00000000 lockref_get_not_dead
+
+UNDEFINED SYMBOLS
+_spin_lock
+_spin_unlock

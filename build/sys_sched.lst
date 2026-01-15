@@ -1,0 +1,134 @@
+ARM GAS  /tmp/ccArpKKg.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sys_sched.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c"
+  21              		.section	.text.sys_exit,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	sys_exit:
+  28              	.LFB109:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** #include <linux/sched.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** #include <linux/export.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** static void sys_exit(){
+  29              		.loc 1 4 23 view -0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c ****     exit();
+  39              		.loc 1 5 5 view .LVU1
+  40 0002 FFF7FEFF 		bl	exit
+  41              	.LVL0:
+  42              		.cfi_endproc
+  43              	.LFE109:
+  45              		.section	.text.sys_sched_yield,"ax",%progbits
+  46              		.align	1
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	sys_sched_yield:
+  52              	.LFB110:
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** }
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** EXPORT_SYMBOL(sys_exit);
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** 
+ARM GAS  /tmp/ccArpKKg.s 			page 2
+
+
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** static void sys_sched_yield()
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** {
+  53              		.loc 1 12 1 view -0
+  54              		.cfi_startproc
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57 0000 08B5     		push	{r3, lr}
+  58              	.LCFI1:
+  59              		.cfi_def_cfa_offset 8
+  60              		.cfi_offset 3, -8
+  61              		.cfi_offset 14, -4
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c ****     i_sched();
+  62              		.loc 1 13 5 view .LVU3
+  63 0002 FFF7FEFF 		bl	i_sched
+  64              	.LVL1:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_sched.c **** }
+  65              		.loc 1 14 1 is_stmt 0 view .LVU4
+  66 0006 08BD     		pop	{r3, pc}
+  67              		.cfi_endproc
+  68              	.LFE110:
+  70              		.section	.rodata.str1.4,"aMS",%progbits,1
+  71              		.align	2
+  72              	.LC0:
+  73 0000 7379735F 		.ascii	"sys_sched_yield\000"
+  73      73636865 
+  73      645F7969 
+  73      656C6400 
+  74              		.align	2
+  75              	.LC1:
+  76 0010 00       		.ascii	"\000"
+  77              		.section	.export_table,"aw"
+  78              		.align	2
+  81              	sys_sched_yield_export_struct:
+  82 0000 00000000 		.word	.LC0
+  83 0004 10000000 		.word	.LC1
+  84 0008 00000000 		.word	sys_sched_yield
+  85              		.section	.rodata.str1.4
+  86 0011 000000   		.align	2
+  87              	.LC2:
+  88 0014 7379735F 		.ascii	"sys_exit\000"
+  88      65786974 
+  88      00
+  89              		.section	.export_table
+  90              		.align	2
+  93              	sys_exit_export_struct:
+  94 000c 14000000 		.word	.LC2
+  95 0010 10000000 		.word	.LC1
+  96 0014 00000000 		.word	sys_exit
+  97              		.text
+  98              	.Letext0:
+  99              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 100              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ARM GAS  /tmp/ccArpKKg.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys_sched.c
+     /tmp/ccArpKKg.s:22     .text.sys_exit:00000000 $t
+     /tmp/ccArpKKg.s:27     .text.sys_exit:00000000 sys_exit
+     /tmp/ccArpKKg.s:46     .text.sys_sched_yield:00000000 $t
+     /tmp/ccArpKKg.s:51     .text.sys_sched_yield:00000000 sys_sched_yield
+     /tmp/ccArpKKg.s:71     .rodata.str1.4:00000000 $d
+     /tmp/ccArpKKg.s:78     .export_table:00000000 $d
+     /tmp/ccArpKKg.s:81     .export_table:00000000 sys_sched_yield_export_struct
+     /tmp/ccArpKKg.s:93     .export_table:0000000c sys_exit_export_struct
+
+UNDEFINED SYMBOLS
+exit
+i_sched

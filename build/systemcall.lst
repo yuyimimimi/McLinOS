@@ -1,0 +1,2416 @@
+ARM GAS  /tmp/ccOLEJfR.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"systemcall.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c"
+  21              		.section	.text.str_to_uint32,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	str_to_uint32:
+  28              	.LVL0:
+  29              	.LFB1039:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/sys_call.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <asm/sched.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/script.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/fs.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/module.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** #include <linux/init.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** extern void* find_table_by_fnname(char *name);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** typedef int (*syscall_func_t)(void*, void*, void*, void*, void*, void*);
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static syscall_func_t *syscall_table = NULL;
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static uint32_t        syscall_number = 0;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** int system_call(int sys_no,void* arg0,void* arg1,void* arg2,void* arg3,void* arg4,void* arg5)
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("syscall is not ready\n");
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return 0;
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(sys_no > syscall_number)
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        pr_err("unknown system call (%d)",sys_no);
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        return 0;
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     syscall_func_t func = syscall_table[sys_no];
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (!func) {
+ARM GAS  /tmp/ccOLEJfR.s 			page 2
+
+
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_info("unimplemented system call (%d)\n", sys_no);
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return -ENOSYS;
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return func(arg0, arg1, arg2, arg3, arg4, arg5);
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static char* goto_next_data_line(char *text_data)
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = text_data;
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_char(index,'\n','\0');//跳转到下级换行符
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return NULL;
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return index;
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** struct syscall{
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char number[8];
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char ABI   [32];
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char Name  [32];
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char EntryPoint[32];
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** };
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static int get_line_data(char *text_data ,struct syscall* syscall_data)
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int number = 0;
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = text_data;
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     number++;
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->number);
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     number++;
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->ABI);
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     number++;
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->Name);
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     number++;
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->EntryPoint);
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static char* get_next_line_data(char* text_data,struct syscall*syscall_data)
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *index = text_data;
+ARM GAS  /tmp/ccOLEJfR.s 			page 3
+
+
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_data_line(index);
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //if(index != NULL)
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_INFO "------------------------\nsyscall data:\n%s\n",index);
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int err = get_line_data(index, syscall_data);
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if( err == 0){
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         //printk(KERN_INFO "get syscall data\n");
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return index;
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //pr_err( "not get syscall data:%d\n",err);
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return NULL;
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static uint32_t str_to_uint32(const char *s) {
+  30              		.loc 1 99 46 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 99 46 is_stmt 0 view .LVU1
+  36 0000 0246     		mov	r2, r0
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     uint32_t result = 0;
+  37              		.loc 1 100 5 is_stmt 1 view .LVU2
+  38              	.LVL1:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (*s) {
+  39              		.loc 1 101 5 view .LVU3
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     uint32_t result = 0;
+  40              		.loc 1 100 14 is_stmt 0 view .LVU4
+  41 0002 0020     		movs	r0, #0
+  42              	.LVL2:
+  43              		.loc 1 101 11 view .LVU5
+  44 0004 06E0     		b	.L2
+  45              	.LVL3:
+  46              	.L3:
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         result = result * 10 + (*s - '0');
+  47              		.loc 1 102 9 is_stmt 1 view .LVU6
+  48              		.loc 1 102 25 is_stmt 0 view .LVU7
+  49 0006 00EB8000 		add	r0, r0, r0, lsl #2
+  50              	.LVL4:
+  51              		.loc 1 102 30 view .LVU8
+  52 000a 03EB4003 		add	r3, r3, r0, lsl #1
+  53              		.loc 1 102 16 view .LVU9
+  54 000e A3F13000 		sub	r0, r3, #48
+  55              	.LVL5:
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         s++;
+  56              		.loc 1 103 9 is_stmt 1 view .LVU10
+  57              		.loc 1 103 10 is_stmt 0 view .LVU11
+  58 0012 0132     		adds	r2, r2, #1
+  59              	.LVL6:
+  60              	.L2:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (*s) {
+  61              		.loc 1 101 12 is_stmt 1 view .LVU12
+  62 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  63 0016 002B     		cmp	r3, #0
+  64 0018 F5D1     		bne	.L3
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return result;
+  65              		.loc 1 105 5 view .LVU13
+ARM GAS  /tmp/ccOLEJfR.s 			page 4
+
+
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+  66              		.loc 1 106 1 is_stmt 0 view .LVU14
+  67 001a 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE1039:
+  71              		.section	.text.goto_next_char,"ax",%progbits
+  72              		.align	1
+  73              		.syntax unified
+  74              		.thumb
+  75              		.thumb_func
+  77              	goto_next_char:
+  78              	.LVL7:
+  79              	.LFB150:
+  80              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** #ifndef  __SCRIPT_H_
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** #define  __SCRIPT_H_
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** extern char* get_value_from_ini(char *text_data,char *grou,char* key,char* value); //获取ini格�
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** extern void preprocess_ini_data(char *data);                                       //通用数据�
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** extern char* __goto_next_string(char* data,char limit);
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** static char*  goto_next_string(char* data,char limit){
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****   return __goto_next_string(data,limit);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** extern int __copy_string_data(char* from,char* to);
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** static int copy_string_data(char* from,char* to){
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****    return __copy_string_data(from,to);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** extern char* __goto_next_char(char* data,char c,char limit);
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** static char* goto_next_char(char* data,char c,char limit){
+  81              		.loc 2 19 58 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		.loc 2 19 58 is_stmt 0 view .LVU16
+  86 0000 08B5     		push	{r3, lr}
+  87              	.LCFI0:
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 3, -8
+  90              		.cfi_offset 14, -4
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****     return __goto_next_char(data,c, limit);
+  91              		.loc 2 20 5 is_stmt 1 view .LVU17
+  92              		.loc 2 20 12 is_stmt 0 view .LVU18
+  93 0002 FFF7FEFF 		bl	__goto_next_char
+  94              	.LVL8:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+  95              		.loc 2 21 1 view .LVU19
+  96 0006 08BD     		pop	{r3, pc}
+  97              		.cfi_endproc
+  98              	.LFE150:
+ 100              		.section	.text.goto_next_string,"ax",%progbits
+ 101              		.align	1
+ 102              		.syntax unified
+ 103              		.thumb
+ARM GAS  /tmp/ccOLEJfR.s 			page 5
+
+
+ 104              		.thumb_func
+ 106              	goto_next_string:
+ 107              	.LVL9:
+ 108              	.LFB148:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****   return __goto_next_string(data,limit);
+ 109              		.loc 2 9 54 is_stmt 1 view -0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****   return __goto_next_string(data,limit);
+ 113              		.loc 2 9 54 is_stmt 0 view .LVU21
+ 114 0000 08B5     		push	{r3, lr}
+ 115              	.LCFI1:
+ 116              		.cfi_def_cfa_offset 8
+ 117              		.cfi_offset 3, -8
+ 118              		.cfi_offset 14, -4
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+ 119              		.loc 2 10 3 is_stmt 1 view .LVU22
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+ 120              		.loc 2 10 10 is_stmt 0 view .LVU23
+ 121 0002 FFF7FEFF 		bl	__goto_next_string
+ 122              	.LVL10:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+ 123              		.loc 2 11 1 view .LVU24
+ 124 0006 08BD     		pop	{r3, pc}
+ 125              		.cfi_endproc
+ 126              	.LFE148:
+ 128              		.section	.text.goto_next_data_line,"ax",%progbits
+ 129              		.align	1
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	goto_next_data_line:
+ 135              	.LVL11:
+ 136              	.LFB1036:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = text_data;
+ 137              		.loc 1 38 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = text_data;
+ 141              		.loc 1 38 1 is_stmt 0 view .LVU26
+ 142 0000 08B5     		push	{r3, lr}
+ 143              	.LCFI2:
+ 144              		.cfi_def_cfa_offset 8
+ 145              		.cfi_offset 3, -8
+ 146              		.cfi_offset 14, -4
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_char(index,'\n','\0');//跳转到下级换行符
+ 147              		.loc 1 39 5 is_stmt 1 view .LVU27
+ 148              	.LVL12:
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return NULL;
+ 149              		.loc 1 40 5 view .LVU28
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return NULL;
+ 150              		.loc 1 40 13 is_stmt 0 view .LVU29
+ 151 0002 0022     		movs	r2, #0
+ 152 0004 0A21     		movs	r1, #10
+ 153 0006 FFF7FEFF 		bl	goto_next_char
+ARM GAS  /tmp/ccOLEJfR.s 			page 6
+
+
+ 154              	.LVL13:
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 155              		.loc 1 41 5 is_stmt 1 view .LVU30
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 156              		.loc 1 41 7 is_stmt 0 view .LVU31
+ 157 000a 10B1     		cbz	r0, .L8
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return index;
+ 158              		.loc 1 42 5 is_stmt 1 view .LVU32
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return index;
+ 159              		.loc 1 42 13 is_stmt 0 view .LVU33
+ 160 000c 0021     		movs	r1, #0
+ 161 000e FFF7FEFF 		bl	goto_next_string
+ 162              	.LVL14:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 163              		.loc 1 43 5 is_stmt 1 view .LVU34
+ 164              	.L8:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 165              		.loc 1 44 1 is_stmt 0 view .LVU35
+ 166 0012 08BD     		pop	{r3, pc}
+ 167              		.cfi_endproc
+ 168              	.LFE1036:
+ 170              		.section	.text.copy_string_data,"ax",%progbits
+ 171              		.align	1
+ 172              		.syntax unified
+ 173              		.thumb
+ 174              		.thumb_func
+ 176              	copy_string_data:
+ 177              	.LVL15:
+ 178              	.LFB149:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****    return __copy_string_data(from,to);
+ 179              		.loc 2 14 49 is_stmt 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h ****    return __copy_string_data(from,to);
+ 183              		.loc 2 14 49 is_stmt 0 view .LVU37
+ 184 0000 08B5     		push	{r3, lr}
+ 185              	.LCFI3:
+ 186              		.cfi_def_cfa_offset 8
+ 187              		.cfi_offset 3, -8
+ 188              		.cfi_offset 14, -4
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+ 189              		.loc 2 15 4 is_stmt 1 view .LVU38
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** }
+ 190              		.loc 2 15 11 is_stmt 0 view .LVU39
+ 191 0002 FFF7FEFF 		bl	__copy_string_data
+ 192              	.LVL16:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h **** 
+ 193              		.loc 2 16 1 view .LVU40
+ 194 0006 08BD     		pop	{r3, pc}
+ 195              		.cfi_endproc
+ 196              	.LFE149:
+ 198              		.section	.text.get_line_data,"ax",%progbits
+ 199              		.align	1
+ 200              		.syntax unified
+ 201              		.thumb
+ 202              		.thumb_func
+ARM GAS  /tmp/ccOLEJfR.s 			page 7
+
+
+ 204              	get_line_data:
+ 205              	.LVL17:
+ 206              	.LFB1037:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int number = 0;
+ 207              		.loc 1 56 1 is_stmt 1 view -0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int number = 0;
+ 211              		.loc 1 56 1 is_stmt 0 view .LVU42
+ 212 0000 38B5     		push	{r3, r4, r5, lr}
+ 213              	.LCFI4:
+ 214              		.cfi_def_cfa_offset 16
+ 215              		.cfi_offset 3, -16
+ 216              		.cfi_offset 4, -12
+ 217              		.cfi_offset 5, -8
+ 218              		.cfi_offset 14, -4
+ 219 0002 0C46     		mov	r4, r1
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = text_data;
+ 220              		.loc 1 57 5 is_stmt 1 view .LVU43
+ 221              	.LVL18:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 222              		.loc 1 58 5 view .LVU44
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 223              		.loc 1 59 5 view .LVU45
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 224              		.loc 1 59 13 is_stmt 0 view .LVU46
+ 225 0004 0021     		movs	r1, #0
+ 226              	.LVL19:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 227              		.loc 1 59 13 view .LVU47
+ 228 0006 FFF7FEFF 		bl	goto_next_string
+ 229              	.LVL20:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 230              		.loc 1 60 5 is_stmt 1 view .LVU48
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 231              		.loc 1 60 7 is_stmt 0 view .LVU49
+ 232 000a 40B3     		cbz	r0, .L15
+ 233 000c 0546     		mov	r5, r0
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->number);
+ 234              		.loc 1 62 5 is_stmt 1 view .LVU50
+ 235              	.LVL21:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 236              		.loc 1 63 5 view .LVU51
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 237              		.loc 1 63 14 is_stmt 0 view .LVU52
+ 238 000e 2146     		mov	r1, r4
+ 239 0010 FFF7FEFF 		bl	copy_string_data
+ 240              	.LVL22:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 241              		.loc 1 64 5 is_stmt 1 view .LVU53
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 242              		.loc 1 64 13 is_stmt 0 view .LVU54
+ 243 0014 0021     		movs	r1, #0
+ 244 0016 2844     		add	r0, r0, r5
+ 245              	.LVL23:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ARM GAS  /tmp/ccOLEJfR.s 			page 8
+
+
+ 246              		.loc 1 64 13 view .LVU55
+ 247 0018 FFF7FEFF 		bl	goto_next_string
+ 248              	.LVL24:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 249              		.loc 1 65 5 is_stmt 1 view .LVU56
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 250              		.loc 1 65 7 is_stmt 0 view .LVU57
+ 251 001c 0546     		mov	r5, r0
+ 252 001e 00B3     		cbz	r0, .L16
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->ABI);
+ 253              		.loc 1 67 5 is_stmt 1 view .LVU58
+ 254              	.LVL25:
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 255              		.loc 1 68 5 view .LVU59
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 256              		.loc 1 68 14 is_stmt 0 view .LVU60
+ 257 0020 04F10801 		add	r1, r4, #8
+ 258 0024 FFF7FEFF 		bl	copy_string_data
+ 259              	.LVL26:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 260              		.loc 1 69 5 is_stmt 1 view .LVU61
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 261              		.loc 1 69 13 is_stmt 0 view .LVU62
+ 262 0028 0021     		movs	r1, #0
+ 263 002a 2844     		add	r0, r0, r5
+ 264              	.LVL27:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 265              		.loc 1 69 13 view .LVU63
+ 266 002c FFF7FEFF 		bl	goto_next_string
+ 267              	.LVL28:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 268              		.loc 1 70 5 is_stmt 1 view .LVU64
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 269              		.loc 1 70 7 is_stmt 0 view .LVU65
+ 270 0030 0546     		mov	r5, r0
+ 271 0032 C8B1     		cbz	r0, .L17
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->Name);
+ 272              		.loc 1 72 5 is_stmt 1 view .LVU66
+ 273              	.LVL29:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 274              		.loc 1 73 5 view .LVU67
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 275              		.loc 1 73 14 is_stmt 0 view .LVU68
+ 276 0034 04F12801 		add	r1, r4, #40
+ 277 0038 FFF7FEFF 		bl	copy_string_data
+ 278              	.LVL30:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 279              		.loc 1 74 5 is_stmt 1 view .LVU69
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 280              		.loc 1 74 13 is_stmt 0 view .LVU70
+ 281 003c 0021     		movs	r1, #0
+ 282 003e 2844     		add	r0, r0, r5
+ 283              	.LVL31:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 284              		.loc 1 74 13 view .LVU71
+ 285 0040 FFF7FEFF 		bl	goto_next_string
+ 286              	.LVL32:
+ARM GAS  /tmp/ccOLEJfR.s 			page 9
+
+
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 287              		.loc 1 75 5 is_stmt 1 view .LVU72
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 288              		.loc 1 75 7 is_stmt 0 view .LVU73
+ 289 0044 0546     		mov	r5, r0
+ 290 0046 90B1     		cbz	r0, .L18
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index += copy_string_data(index,syscall_data->EntryPoint);
+ 291              		.loc 1 77 5 is_stmt 1 view .LVU74
+ 292              	.LVL33:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 293              		.loc 1 78 5 view .LVU75
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_string(index,'\0');
+ 294              		.loc 1 78 14 is_stmt 0 view .LVU76
+ 295 0048 04F14801 		add	r1, r4, #72
+ 296 004c FFF7FEFF 		bl	copy_string_data
+ 297              	.LVL34:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 298              		.loc 1 79 5 is_stmt 1 view .LVU77
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 299              		.loc 1 79 13 is_stmt 0 view .LVU78
+ 300 0050 0021     		movs	r1, #0
+ 301 0052 2844     		add	r0, r0, r5
+ 302              	.LVL35:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL) return -number;
+ 303              		.loc 1 79 13 view .LVU79
+ 304 0054 FFF7FEFF 		bl	goto_next_string
+ 305              	.LVL36:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 306              		.loc 1 80 5 is_stmt 1 view .LVU80
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 307              		.loc 1 80 7 is_stmt 0 view .LVU81
+ 308 0058 60B1     		cbz	r0, .L19
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 309              		.loc 1 81 12 view .LVU82
+ 310 005a 0020     		movs	r0, #0
+ 311              	.LVL37:
+ 312              	.L13:
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 313              		.loc 1 82 1 view .LVU83
+ 314 005c 38BD     		pop	{r3, r4, r5, pc}
+ 315              	.LVL38:
+ 316              	.L15:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 317              		.loc 1 60 30 discriminator 1 view .LVU84
+ 318 005e 0020     		movs	r0, #0
+ 319              	.LVL39:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 320              		.loc 1 60 30 discriminator 1 view .LVU85
+ 321 0060 FCE7     		b	.L13
+ 322              	.LVL40:
+ 323              	.L16:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 324              		.loc 1 65 30 discriminator 1 view .LVU86
+ 325 0062 4FF0FF30 		mov	r0, #-1
+ 326              	.LVL41:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 327              		.loc 1 65 30 discriminator 1 view .LVU87
+ARM GAS  /tmp/ccOLEJfR.s 			page 10
+
+
+ 328 0066 F9E7     		b	.L13
+ 329              	.LVL42:
+ 330              	.L17:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 331              		.loc 1 70 30 discriminator 1 view .LVU88
+ 332 0068 6FF00100 		mvn	r0, #1
+ 333              	.LVL43:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 334              		.loc 1 70 30 discriminator 1 view .LVU89
+ 335 006c F6E7     		b	.L13
+ 336              	.LVL44:
+ 337              	.L18:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 338              		.loc 1 75 30 discriminator 1 view .LVU90
+ 339 006e 6FF00200 		mvn	r0, #2
+ 340              	.LVL45:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //printk(KERN_DEBUG "index:(%d):\n%s\n",number,index);
+ 341              		.loc 1 75 30 discriminator 1 view .LVU91
+ 342 0072 F3E7     		b	.L13
+ 343              	.LVL46:
+ 344              	.L19:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 345              		.loc 1 80 30 discriminator 1 view .LVU92
+ 346 0074 6FF00300 		mvn	r0, #3
+ 347              	.LVL47:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 348              		.loc 1 80 30 discriminator 1 view .LVU93
+ 349 0078 F0E7     		b	.L13
+ 350              		.cfi_endproc
+ 351              	.LFE1037:
+ 353              		.section	.text.get_next_line_data,"ax",%progbits
+ 354              		.align	1
+ 355              		.syntax unified
+ 356              		.thumb
+ 357              		.thumb_func
+ 359              	get_next_line_data:
+ 360              	.LVL48:
+ 361              	.LFB1038:
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *index = text_data;
+ 362              		.loc 1 85 1 is_stmt 1 view -0
+ 363              		.cfi_startproc
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *index = text_data;
+ 366              		.loc 1 85 1 is_stmt 0 view .LVU95
+ 367 0000 38B5     		push	{r3, r4, r5, lr}
+ 368              	.LCFI5:
+ 369              		.cfi_def_cfa_offset 16
+ 370              		.cfi_offset 3, -16
+ 371              		.cfi_offset 4, -12
+ 372              		.cfi_offset 5, -8
+ 373              		.cfi_offset 14, -4
+ 374 0002 0D46     		mov	r5, r1
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     index = goto_next_data_line(index);
+ 375              		.loc 1 86 5 is_stmt 1 view .LVU96
+ 376              	.LVL49:
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //if(index != NULL)
+ARM GAS  /tmp/ccOLEJfR.s 			page 11
+
+
+ 377              		.loc 1 87 5 view .LVU97
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //if(index != NULL)
+ 378              		.loc 1 87 13 is_stmt 0 view .LVU98
+ 379 0004 FFF7FEFF 		bl	goto_next_data_line
+ 380              	.LVL50:
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //if(index != NULL)
+ 381              		.loc 1 87 13 view .LVU99
+ 382 0008 0446     		mov	r4, r0
+ 383              	.LVL51:
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if( err == 0){
+ 384              		.loc 1 90 5 is_stmt 1 view .LVU100
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if( err == 0){
+ 385              		.loc 1 90 15 is_stmt 0 view .LVU101
+ 386 000a 2946     		mov	r1, r5
+ 387 000c FFF7FEFF 		bl	get_line_data
+ 388              	.LVL52:
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         //printk(KERN_INFO "get syscall data\n");
+ 389              		.loc 1 91 5 is_stmt 1 view .LVU102
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         //printk(KERN_INFO "get syscall data\n");
+ 390              		.loc 1 91 7 is_stmt 0 view .LVU103
+ 391 0010 08B9     		cbnz	r0, .L24
+ 392              	.LVL53:
+ 393              	.L21:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 394              		.loc 1 97 1 view .LVU104
+ 395 0012 2046     		mov	r0, r4
+ 396              	.LVL54:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 397              		.loc 1 97 1 view .LVU105
+ 398 0014 38BD     		pop	{r3, r4, r5, pc}
+ 399              	.LVL55:
+ 400              	.L24:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 401              		.loc 1 96 12 view .LVU106
+ 402 0016 0024     		movs	r4, #0
+ 403              	.LVL56:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 404              		.loc 1 96 12 view .LVU107
+ 405 0018 FBE7     		b	.L21
+ 406              		.cfi_endproc
+ 407              	.LFE1038:
+ 409              		.section	.text.get_syscall_numbers,"ax",%progbits
+ 410              		.align	1
+ 411              		.syntax unified
+ 412              		.thumb
+ 413              		.thumb_func
+ 415              	get_syscall_numbers:
+ 416              	.LVL57:
+ 417              	.LFB1040:
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static int get_syscall_numbers(char* text_data)
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+ 418              		.loc 1 109 1 is_stmt 1 view -0
+ 419              		.cfi_startproc
+ 420              		@ args = 0, pretend = 0, frame = 104
+ 421              		@ frame_needed = 0, uses_anonymous_args = 0
+ 422              		.loc 1 109 1 is_stmt 0 view .LVU109
+ARM GAS  /tmp/ccOLEJfR.s 			page 12
+
+
+ 423 0000 30B5     		push	{r4, r5, lr}
+ 424              	.LCFI6:
+ 425              		.cfi_def_cfa_offset 12
+ 426              		.cfi_offset 4, -12
+ 427              		.cfi_offset 5, -8
+ 428              		.cfi_offset 14, -4
+ 429 0002 9BB0     		sub	sp, sp, #108
+ 430              	.LCFI7:
+ 431              		.cfi_def_cfa_offset 120
+ 432 0004 0446     		mov	r4, r0
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *index = text_data;
+ 433              		.loc 1 110 5 is_stmt 1 view .LVU110
+ 434              	.LVL58:
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     struct syscall syscall_data;
+ 435              		.loc 1 111 5 view .LVU111
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     uint32_t number = 0;
+ 436              		.loc 1 112 5 view .LVU112
+ 437              		.loc 1 112 14 is_stmt 0 view .LVU113
+ 438 0006 0025     		movs	r5, #0
+ 439 0008 00E0     		b	.L26
+ 440              	.LVL59:
+ 441              	.L30:
+ 442              	.LBB16:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (1)
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        index = get_next_line_data(index,&syscall_data);
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        if(index == NULL){
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****             break;
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        }
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        else
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        {
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         uint32_t syscallnumber = str_to_uint32(syscall_data.number);
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(syscallnumber > number)
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         {
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****             number = syscallnumber;
+ 443              		.loc 1 124 20 view .LVU114
+ 444 000a 0546     		mov	r5, r0
+ 445              	.LVL60:
+ 446              	.L26:
+ 447              		.loc 1 124 20 view .LVU115
+ 448              	.LBE16:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (1)
+ 449              		.loc 1 113 5 is_stmt 1 view .LVU116
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        if(index == NULL){
+ 450              		.loc 1 115 8 view .LVU117
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        if(index == NULL){
+ 451              		.loc 1 115 16 is_stmt 0 view .LVU118
+ 452 000c 6946     		mov	r1, sp
+ 453 000e 2046     		mov	r0, r4
+ 454 0010 FFF7FEFF 		bl	get_next_line_data
+ 455              	.LVL61:
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****             break;
+ 456              		.loc 1 116 8 is_stmt 1 view .LVU119
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****             break;
+ 457              		.loc 1 116 10 is_stmt 0 view .LVU120
+ 458 0014 0446     		mov	r4, r0
+ 459 0016 28B1     		cbz	r0, .L27
+ARM GAS  /tmp/ccOLEJfR.s 			page 13
+
+
+ 460              	.LBB17:
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(syscallnumber > number)
+ 461              		.loc 1 121 9 is_stmt 1 view .LVU121
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(syscallnumber > number)
+ 462              		.loc 1 121 34 is_stmt 0 view .LVU122
+ 463 0018 6846     		mov	r0, sp
+ 464              	.LVL62:
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(syscallnumber > number)
+ 465              		.loc 1 121 34 view .LVU123
+ 466 001a FFF7FEFF 		bl	str_to_uint32
+ 467              	.LVL63:
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         {
+ 468              		.loc 1 122 9 is_stmt 1 view .LVU124
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         {
+ 469              		.loc 1 122 11 is_stmt 0 view .LVU125
+ 470 001e 8542     		cmp	r5, r0
+ 471 0020 F3D3     		bcc	.L30
+ 472 0022 F3E7     		b	.L26
+ 473              	.LVL64:
+ 474              	.L27:
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         {
+ 475              		.loc 1 122 11 view .LVU126
+ 476              	.LBE17:
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         }
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         //printk(KERN_INFO "\nsyscall number:%d\n",syscallnumber);
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         }
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return ++number;
+ 477              		.loc 1 129 5 is_stmt 1 view .LVU127
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 478              		.loc 1 130 1 is_stmt 0 view .LVU128
+ 479 0024 681C     		adds	r0, r5, #1
+ 480              	.LVL65:
+ 481              		.loc 1 130 1 view .LVU129
+ 482 0026 1BB0     		add	sp, sp, #108
+ 483              	.LCFI8:
+ 484              		.cfi_def_cfa_offset 12
+ 485              		@ sp needed
+ 486 0028 30BD     		pop	{r4, r5, pc}
+ 487              		.loc 1 130 1 view .LVU130
+ 488              		.cfi_endproc
+ 489              	.LFE1040:
+ 491              		.section	.rodata.load_syscall.str1.4,"aMS",%progbits,1
+ 492              		.align	2
+ 493              	.LC0:
+ 494 0000 63616E20 		.ascii	"can not get funcation for systemcall:%s\000"
+ 494      6E6F7420 
+ 494      67657420 
+ 494      66756E63 
+ 494      6174696F 
+ 495              		.section	.text.load_syscall,"ax",%progbits
+ 496              		.align	1
+ 497              		.syntax unified
+ 498              		.thumb
+ 499              		.thumb_func
+ 501              	load_syscall:
+ 502              	.LVL66:
+ARM GAS  /tmp/ccOLEJfR.s 			page 14
+
+
+ 503              	.LFB1041:
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static void load_syscall(struct syscall* syscall_data)
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+ 504              		.loc 1 133 1 is_stmt 1 view -0
+ 505              		.cfi_startproc
+ 506              		@ args = 0, pretend = 0, frame = 0
+ 507              		@ frame_needed = 0, uses_anonymous_args = 0
+ 508              		.loc 1 133 1 is_stmt 0 view .LVU132
+ 509 0000 38B5     		push	{r3, r4, r5, lr}
+ 510              	.LCFI9:
+ 511              		.cfi_def_cfa_offset 16
+ 512              		.cfi_offset 3, -16
+ 513              		.cfi_offset 4, -12
+ 514              		.cfi_offset 5, -8
+ 515              		.cfi_offset 14, -4
+ 516 0002 0446     		mov	r4, r0
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int number = str_to_uint32(syscall_data->number);
+ 517              		.loc 1 134 5 is_stmt 1 view .LVU133
+ 518              		.loc 1 134 18 is_stmt 0 view .LVU134
+ 519 0004 FFF7FEFF 		bl	str_to_uint32
+ 520              	.LVL67:
+ 521              		.loc 1 134 18 view .LVU135
+ 522 0008 0546     		mov	r5, r0
+ 523              	.LVL68:
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     void *fn = find_table_by_fnname(syscall_data->EntryPoint);
+ 524              		.loc 1 135 5 is_stmt 1 view .LVU136
+ 525              		.loc 1 135 49 is_stmt 0 view .LVU137
+ 526 000a 4834     		adds	r4, r4, #72
+ 527              	.LVL69:
+ 528              		.loc 1 135 16 view .LVU138
+ 529 000c 2046     		mov	r0, r4
+ 530              	.LVL70:
+ 531              		.loc 1 135 16 view .LVU139
+ 532 000e FFF7FEFF 		bl	find_table_by_fnname
+ 533              	.LVL71:
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(fn == NULL){
+ 534              		.loc 1 136 5 is_stmt 1 view .LVU140
+ 535              		.loc 1 136 7 is_stmt 0 view .LVU141
+ 536 0012 20B1     		cbz	r0, .L36
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not get funcation for systemcall:%s",syscall_data->EntryPoint);
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     syscall_table[number] = fn;
+ 537              		.loc 1 140 5 is_stmt 1 view .LVU142
+ 538              		.loc 1 140 18 is_stmt 0 view .LVU143
+ 539 0014 054A     		ldr	r2, .L37
+ 540 0016 1268     		ldr	r2, [r2]
+ 541              		.loc 1 140 27 view .LVU144
+ 542 0018 42F82500 		str	r0, [r2, r5, lsl #2]
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 543              		.loc 1 141 1 view .LVU145
+ 544 001c 38BD     		pop	{r3, r4, r5, pc}
+ 545              	.LVL72:
+ 546              	.L36:
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not get funcation for systemcall:%s",syscall_data->EntryPoint);
+ 547              		.loc 1 137 9 is_stmt 1 view .LVU146
+ARM GAS  /tmp/ccOLEJfR.s 			page 15
+
+
+ 548 001e 2246     		mov	r2, r4
+ 549 0020 0349     		ldr	r1, .L37+4
+ 550 0022 0320     		movs	r0, #3
+ 551              	.LVL73:
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not get funcation for systemcall:%s",syscall_data->EntryPoint);
+ 552              		.loc 1 137 9 is_stmt 0 view .LVU147
+ 553 0024 FFF7FEFF 		bl	printk
+ 554              	.LVL74:
+ 555              	.L34:
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 556              		.loc 1 138 9 is_stmt 1 view .LVU148
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 557              		.loc 1 138 19 view .LVU149
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 558              		.loc 1 138 15 view .LVU150
+ 559 0028 FEE7     		b	.L34
+ 560              	.L38:
+ 561 002a 00BF     		.align	2
+ 562              	.L37:
+ 563 002c 00000000 		.word	syscall_table
+ 564 0030 00000000 		.word	.LC0
+ 565              		.cfi_endproc
+ 566              	.LFE1041:
+ 568              		.section	.rodata.parse_syscall_table.str1.4,"aMS",%progbits,1
+ 569              		.align	2
+ 570              	.LC1:
+ 571 0000 6E6F2073 		.ascii	"no syscall dected\012\000"
+ 571      79736361 
+ 571      6C6C2064 
+ 571      65637465 
+ 571      640A00
+ 572 0013 00       		.align	2
+ 573              	.LC2:
+ 574 0014 63616E20 		.ascii	"can not alloc syscall table\012\000"
+ 574      6E6F7420 
+ 574      616C6C6F 
+ 574      63207379 
+ 574      7363616C 
+ 575              		.section	.text.parse_syscall_table,"ax",%progbits
+ 576              		.align	1
+ 577              		.syntax unified
+ 578              		.thumb
+ 579              		.thumb_func
+ 581              	parse_syscall_table:
+ 582              	.LVL75:
+ 583              	.LFB1042:
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static int parse_syscall_table(char *table_data)
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+ 584              		.loc 1 145 1 view -0
+ 585              		.cfi_startproc
+ 586              		@ args = 0, pretend = 0, frame = 104
+ 587              		@ frame_needed = 0, uses_anonymous_args = 0
+ 588              		.loc 1 145 1 is_stmt 0 view .LVU152
+ 589 0000 10B5     		push	{r4, lr}
+ 590              	.LCFI10:
+ARM GAS  /tmp/ccOLEJfR.s 			page 16
+
+
+ 591              		.cfi_def_cfa_offset 8
+ 592              		.cfi_offset 4, -8
+ 593              		.cfi_offset 14, -4
+ 594 0002 9AB0     		sub	sp, sp, #104
+ 595              	.LCFI11:
+ 596              		.cfi_def_cfa_offset 112
+ 597 0004 0446     		mov	r4, r0
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     //pr_info(table_data);
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     struct syscall syscall_data;
+ 598              		.loc 1 147 5 is_stmt 1 view .LVU153
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *index = table_data;
+ 599              		.loc 1 148 5 view .LVU154
+ 600              	.LVL76:
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     syscall_number = get_syscall_numbers(table_data);
+ 601              		.loc 1 149 5 view .LVU155
+ 602              		.loc 1 149 22 is_stmt 0 view .LVU156
+ 603 0006 FFF7FEFF 		bl	get_syscall_numbers
+ 604              	.LVL77:
+ 605              		.loc 1 149 20 discriminator 1 view .LVU157
+ 606 000a 144B     		ldr	r3, .L49
+ 607 000c 1860     		str	r0, [r3]
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_number == 0){
+ 608              		.loc 1 150 5 is_stmt 1 view .LVU158
+ 609              		.loc 1 150 7 is_stmt 0 view .LVU159
+ 610 000e 20B9     		cbnz	r0, .L40
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("no syscall dected\n");
+ 611              		.loc 1 151 9 is_stmt 1 view .LVU160
+ 612 0010 1349     		ldr	r1, .L49+4
+ 613 0012 0320     		movs	r0, #3
+ 614 0014 FFF7FEFF 		bl	printk
+ 615              	.LVL78:
+ 616              	.L41:
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}
+ 617              		.loc 1 152 9 view .LVU161
+ 618              		.loc 1 152 18 view .LVU162
+ 619              		.loc 1 152 14 view .LVU163
+ 620 0018 FEE7     		b	.L41
+ 621              	.L40:
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     syscall_table = kmalloc(sizeof(syscall_func_t)*syscall_number,GFP_KERNEL);
+ 622              		.loc 1 154 5 view .LVU164
+ 623              	.LVL79:
+ 624              	.LBB18:
+ 625              	.LBI18:
+ 626              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+ARM GAS  /tmp/ccOLEJfR.s 			page 17
+
+
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ARM GAS  /tmp/ccOLEJfR.s 			page 18
+
+
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ARM GAS  /tmp/ccOLEJfR.s 			page 19
+
+
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ARM GAS  /tmp/ccOLEJfR.s 			page 20
+
+
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ARM GAS  /tmp/ccOLEJfR.s 			page 21
+
+
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head full;
+ARM GAS  /tmp/ccOLEJfR.s 			page 22
+
+
+ 298:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ARM GAS  /tmp/ccOLEJfR.s 			page 23
+
+
+ 355:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 627              		.loc 3 379 21 view .LVU165
+ 628              	.LBB19:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 629              		.loc 3 380 2 view .LVU166
+ 630              		.loc 3 380 9 is_stmt 0 view .LVU167
+ 631 001a 4FF44C61 		mov	r1, #3264
+ 632 001e 8000     		lsls	r0, r0, #2
+ 633              	.LVL80:
+ 634              		.loc 3 380 9 view .LVU168
+ 635 0020 FFF7FEFF 		bl	__smalloc__
+ 636              	.LVL81:
+ 637              		.loc 3 380 9 view .LVU169
+ 638              	.LBE19:
+ 639              	.LBE18:
+ 640              		.loc 1 154 19 discriminator 1 view .LVU170
+ 641 0024 0F4B     		ldr	r3, .L49+8
+ 642 0026 1860     		str	r0, [r3]
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+ 643              		.loc 1 155 5 is_stmt 1 view .LVU171
+ 644              		.loc 1 155 7 is_stmt 0 view .LVU172
+ 645 0028 30B1     		cbz	r0, .L47
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not alloc syscall table\n");
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     memset(syscall_table,0,sizeof(syscall_func_t)*syscall_number);
+ 646              		.loc 1 159 5 is_stmt 1 view .LVU173
+ 647 002a 0C4B     		ldr	r3, .L49
+ 648 002c 1A68     		ldr	r2, [r3]
+ 649 002e 9200     		lsls	r2, r2, #2
+ 650 0030 0021     		movs	r1, #0
+ 651 0032 FFF7FEFF 		bl	memset
+ 652              	.LVL82:
+ARM GAS  /tmp/ccOLEJfR.s 			page 24
+
+
+ 653 0036 07E0     		b	.L45
+ 654              	.L47:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not alloc syscall table\n");
+ 655              		.loc 1 156 9 view .LVU174
+ 656 0038 0B49     		ldr	r1, .L49+12
+ 657 003a 0320     		movs	r0, #3
+ 658 003c FFF7FEFF 		bl	printk
+ 659              	.LVL83:
+ 660              	.L43:
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 661              		.loc 1 157 9 view .LVU175
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 662              		.loc 1 157 19 view .LVU176
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 663              		.loc 1 157 15 view .LVU177
+ 664 0040 FEE7     		b	.L43
+ 665              	.LVL84:
+ 666              	.L48:
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (1)
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         index = get_next_line_data(index,&syscall_data);
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(index == NULL)
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****            break;
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         else  
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         {
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****             load_syscall(&syscall_data);
+ 667              		.loc 1 167 13 view .LVU178
+ 668 0042 6846     		mov	r0, sp
+ 669              	.LVL85:
+ 670              		.loc 1 167 13 is_stmt 0 view .LVU179
+ 671 0044 FFF7FEFF 		bl	load_syscall
+ 672              	.LVL86:
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (1)
+ 673              		.loc 1 160 11 is_stmt 1 view .LVU180
+ 674              	.L45:
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     while (1)
+ 675              		.loc 1 160 5 view .LVU181
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(index == NULL)
+ 676              		.loc 1 162 9 view .LVU182
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         if(index == NULL)
+ 677              		.loc 1 162 17 is_stmt 0 view .LVU183
+ 678 0048 6946     		mov	r1, sp
+ 679 004a 2046     		mov	r0, r4
+ 680 004c FFF7FEFF 		bl	get_next_line_data
+ 681              	.LVL87:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****            break;
+ 682              		.loc 1 163 9 is_stmt 1 view .LVU184
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****            break;
+ 683              		.loc 1 163 11 is_stmt 0 view .LVU185
+ 684 0050 0446     		mov	r4, r0
+ 685 0052 0028     		cmp	r0, #0
+ 686 0054 F5D1     		bne	.L48
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         }
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 687              		.loc 1 170 5 is_stmt 1 view .LVU186
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ARM GAS  /tmp/ccOLEJfR.s 			page 25
+
+
+ 688              		.loc 1 171 1 is_stmt 0 view .LVU187
+ 689 0056 0020     		movs	r0, #0
+ 690              	.LVL88:
+ 691              		.loc 1 171 1 view .LVU188
+ 692 0058 1AB0     		add	sp, sp, #104
+ 693              	.LCFI12:
+ 694              		.cfi_def_cfa_offset 8
+ 695              		@ sp needed
+ 696 005a 10BD     		pop	{r4, pc}
+ 697              	.LVL89:
+ 698              	.L50:
+ 699              		.loc 1 171 1 view .LVU189
+ 700              		.align	2
+ 701              	.L49:
+ 702 005c 00000000 		.word	syscall_number
+ 703 0060 00000000 		.word	.LC1
+ 704 0064 00000000 		.word	syscall_table
+ 705 0068 14000000 		.word	.LC2
+ 706              		.cfi_endproc
+ 707              	.LFE1042:
+ 709              		.section	.rodata.syscall_init.str1.4,"aMS",%progbits,1
+ 710              		.align	2
+ 711              	.LC3:
+ 712 0000 73797374 		.ascii	"system call init\012\000"
+ 712      656D2063 
+ 712      616C6C20 
+ 712      696E6974 
+ 712      0A00
+ 713 0012 0000     		.align	2
+ 714              	.LC4:
+ 715 0014 2F626F6F 		.ascii	"/boot/config.txt\000"
+ 715      742F636F 
+ 715      6E666967 
+ 715      2E747874 
+ 715      00
+ 716 0025 000000   		.align	2
+ 717              	.LC5:
+ 718 0028 63616E20 		.ascii	"can not open file:/boot/config.txt\012\000"
+ 718      6E6F7420 
+ 718      6F70656E 
+ 718      2066696C 
+ 718      653A2F62 
+ 719              		.align	2
+ 720              	.LC6:
+ 721 004c 63616E6E 		.ascii	"cannot allocate memory for config\012\000"
+ 721      6F742061 
+ 721      6C6C6F63 
+ 721      61746520 
+ 721      6D656D6F 
+ 722 006f 00       		.align	2
+ 723              	.LC7:
+ 724 0070 53797363 		.ascii	"SyscallTable\000"
+ 724      616C6C54 
+ 724      61626C65 
+ 724      00
+ 725 007d 000000   		.align	2
+ 726              	.LC8:
+ARM GAS  /tmp/ccOLEJfR.s 			page 26
+
+
+ 727 0080 73797363 		.ascii	"syscall\000"
+ 727      616C6C00 
+ 728              		.align	2
+ 729              	.LC9:
+ 730 0088 63616E20 		.ascii	"can not get system call table file.please set it at"
+ 730      6E6F7420 
+ 730      67657420 
+ 730      73797374 
+ 730      656D2063 
+ 731 00bb 2066696C 		.ascii	" file system\012\000"
+ 731      65207379 
+ 731      7374656D 
+ 731      0A00
+ 732 00c9 000000   		.align	2
+ 733              	.LC10:
+ 734 00cc 63616E20 		.ascii	"can not open file:%s\000"
+ 734      6E6F7420 
+ 734      6F70656E 
+ 734      2066696C 
+ 734      653A2573 
+ 735 00e1 000000   		.align	2
+ 736              	.LC11:
+ 737 00e4 63616E6E 		.ascii	"cannot allocate memory for syscall table\012\000"
+ 737      6F742061 
+ 737      6C6C6F63 
+ 737      61746520 
+ 737      6D656D6F 
+ 738 010e 0000     		.align	2
+ 739              	.LC12:
+ 740 0110 6661696C 		.ascii	"failed to parse syscall table\012\000"
+ 740      65642074 
+ 740      6F207061 
+ 740      72736520 
+ 740      73797363 
+ 741 012f 00       		.align	2
+ 742              	.LC13:
+ 743 0130 73797363 		.ascii	"syscall table initialized with ( %u ) entries\012\000"
+ 743      616C6C20 
+ 743      7461626C 
+ 743      6520696E 
+ 743      69746961 
+ 744              		.section	.text.syscall_init,"ax",%progbits
+ 745              		.align	1
+ 746              		.syntax unified
+ 747              		.thumb
+ 748              		.thumb_func
+ 750              	syscall_init:
+ 751              	.LFB1043:
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** static int syscall_init()
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** {
+ 752              		.loc 1 178 1 is_stmt 1 view -0
+ 753              		.cfi_startproc
+ARM GAS  /tmp/ccOLEJfR.s 			page 27
+
+
+ 754              		@ args = 0, pretend = 0, frame = 72
+ 755              		@ frame_needed = 0, uses_anonymous_args = 0
+ 756 0000 70B5     		push	{r4, r5, r6, lr}
+ 757              	.LCFI13:
+ 758              		.cfi_def_cfa_offset 16
+ 759              		.cfi_offset 4, -16
+ 760              		.cfi_offset 5, -12
+ 761              		.cfi_offset 6, -8
+ 762              		.cfi_offset 14, -4
+ 763 0002 92B0     		sub	sp, sp, #72
+ 764              	.LCFI14:
+ 765              		.cfi_def_cfa_offset 88
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     pr_info("system call init\n");
+ 766              		.loc 1 179 5 view .LVU191
+ 767 0004 4549     		ldr	r1, .L70
+ 768 0006 0620     		movs	r0, #6
+ 769 0008 FFF7FEFF 		bl	printk
+ 770              	.LVL90:
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     struct file* f = filp_open("/boot/config.txt",O_RDWR,0);
+ 771              		.loc 1 181 5 view .LVU192
+ 772              		.loc 1 181 22 is_stmt 0 view .LVU193
+ 773 000c 0022     		movs	r2, #0
+ 774 000e 0221     		movs	r1, #2
+ 775 0010 4348     		ldr	r0, .L70+4
+ 776 0012 FFF7FEFF 		bl	filp_open
+ 777              	.LVL91:
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(IS_ERR(f)){
+ 778              		.loc 1 182 5 is_stmt 1 view .LVU194
+ 779              	.LBB20:
+ 780              	.LBI20:
+ 781              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+ARM GAS  /tmp/ccOLEJfR.s 			page 28
+
+
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 782              		.loc 4 75 33 view .LVU195
+ 783              	.LBB21:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 784              		.loc 4 77 2 view .LVU196
+ 785              		.loc 4 77 2 is_stmt 0 view .LVU197
+ 786              	.LBE21:
+ARM GAS  /tmp/ccOLEJfR.s 			page 29
+
+
+ 787              	.LBE20:
+ 788              		.loc 1 182 7 discriminator 1 view .LVU198
+ 789 0016 10F5805F 		cmn	r0, #4096
+ 790 001a 58D8     		bhi	.L65
+ 791 001c 0446     		mov	r4, r0
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not open file:/boot/config.txt\n");
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     int data_length = f->f_inode->i_size;
+ 792              		.loc 1 187 5 is_stmt 1 view .LVU199
+ 793              		.loc 1 187 24 is_stmt 0 view .LVU200
+ 794 001e C36A     		ldr	r3, [r0, #44]
+ 795              		.loc 1 187 33 view .LVU201
+ 796 0020 1E6A     		ldr	r6, [r3, #32]
+ 797              	.LVL92:
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char *file_data = kmalloc(data_length + 1,GFP_KERNEL);
+ 798              		.loc 1 188 5 is_stmt 1 view .LVU202
+ 799              	.LBB22:
+ 800              	.LBI22:
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 801              		.loc 3 379 21 view .LVU203
+ 802              	.LBB23:
+ 803              		.loc 3 380 2 view .LVU204
+ 804              		.loc 3 380 9 is_stmt 0 view .LVU205
+ 805 0022 4FF44C61 		mov	r1, #3264
+ 806 0026 701C     		adds	r0, r6, #1
+ 807              	.LVL93:
+ 808              		.loc 3 380 9 view .LVU206
+ 809 0028 FFF7FEFF 		bl	__smalloc__
+ 810              	.LVL94:
+ 811              		.loc 3 380 9 view .LVU207
+ 812              	.LBE23:
+ 813              	.LBE22:
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (!file_data) {
+ 814              		.loc 1 189 5 is_stmt 1 view .LVU208
+ 815              		.loc 1 189 8 is_stmt 0 view .LVU209
+ 816 002c 0546     		mov	r5, r0
+ 817 002e 0028     		cmp	r0, #0
+ 818 0030 52D0     		beq	.L66
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("cannot allocate memory for config\n");
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}                                   //系统调用是必须有的，所以如果�
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     loff_t offset = 0;
+ 819              		.loc 1 194 5 is_stmt 1 view .LVU210
+ 820              		.loc 1 194 12 is_stmt 0 view .LVU211
+ 821 0032 0022     		movs	r2, #0
+ 822 0034 0023     		movs	r3, #0
+ 823 0036 CDE91023 		strd	r2, [sp, #64]
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     kernel_read(f,file_data,data_length,&offset);
+ 824              		.loc 1 195 5 is_stmt 1 view .LVU212
+ 825 003a 10AB     		add	r3, sp, #64
+ 826 003c 3246     		mov	r2, r6
+ 827 003e 0146     		mov	r1, r0
+ 828 0040 2046     		mov	r0, r4
+ 829              	.LVL95:
+ARM GAS  /tmp/ccOLEJfR.s 			page 30
+
+
+ 830              		.loc 1 195 5 is_stmt 0 view .LVU213
+ 831 0042 FFF7FEFF 		bl	kernel_read
+ 832              	.LVL96:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     filp_close(f,0);
+ 833              		.loc 1 196 5 is_stmt 1 view .LVU214
+ 834 0046 0021     		movs	r1, #0
+ 835 0048 2046     		mov	r0, r4
+ 836 004a FFF7FEFF 		bl	filp_close
+ 837              	.LVL97:
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     file_data[data_length] = '\0';
+ 838              		.loc 1 198 5 view .LVU215
+ 839              		.loc 1 198 28 is_stmt 0 view .LVU216
+ 840 004e 0024     		movs	r4, #0
+ 841              	.LVL98:
+ 842              		.loc 1 198 28 view .LVU217
+ 843 0050 AC55     		strb	r4, [r5, r6]
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     preprocess_ini_data(file_data);
+ 844              		.loc 1 199 5 is_stmt 1 view .LVU218
+ 845 0052 2846     		mov	r0, r5
+ 846 0054 FFF7FEFF 		bl	preprocess_ini_data
+ 847              	.LVL99:
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char data[64];
+ 848              		.loc 1 201 5 view .LVU219
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     data[64] = '\0';
+ 849              		.loc 1 202 5 view .LVU220
+ 850              		.loc 1 202 14 is_stmt 0 view .LVU221
+ 851 0058 8DF84040 		strb	r4, [sp, #64]
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     char* index = get_value_from_ini(file_data,"syscall","SyscallTable",data);
+ 852              		.loc 1 203 5 is_stmt 1 view .LVU222
+ 853              		.loc 1 203 19 is_stmt 0 view .LVU223
+ 854 005c 6B46     		mov	r3, sp
+ 855 005e 314A     		ldr	r2, .L70+8
+ 856 0060 3149     		ldr	r1, .L70+12
+ 857 0062 2846     		mov	r0, r5
+ 858 0064 FFF7FEFF 		bl	get_value_from_ini
+ 859              	.LVL100:
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(index == NULL){
+ 860              		.loc 1 204 5 is_stmt 1 view .LVU224
+ 861              		.loc 1 204 7 is_stmt 0 view .LVU225
+ 862 0068 0028     		cmp	r0, #0
+ 863 006a 3AD0     		beq	.L67
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not get system call table file.please set it at file system\n");
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                                           
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     kfree(file_data);
+ 864              		.loc 1 208 5 is_stmt 1 view .LVU226
+ 865              	.LVL101:
+ 866              	.LBB24:
+ 867              	.LBI24:
+ 381:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 868              		.loc 3 383 20 view .LVU227
+ 869              	.LBB25:
+ 384:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ARM GAS  /tmp/ccOLEJfR.s 			page 31
+
+
+ 870              		.loc 3 384 2 view .LVU228
+ 871 006c 2846     		mov	r0, r5
+ 872              	.LVL102:
+ 873              		.loc 3 384 2 is_stmt 0 view .LVU229
+ 874 006e FFF7FEFF 		bl	__sfree__
+ 875              	.LVL103:
+ 876              		.loc 3 384 2 view .LVU230
+ 877              	.LBE25:
+ 878              	.LBE24:
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     f = filp_open(data,O_RDWR,0);
+ 879              		.loc 1 211 5 is_stmt 1 view .LVU231
+ 880              		.loc 1 211 9 is_stmt 0 view .LVU232
+ 881 0072 0022     		movs	r2, #0
+ 882 0074 0221     		movs	r1, #2
+ 883 0076 6846     		mov	r0, sp
+ 884 0078 FFF7FEFF 		bl	filp_open
+ 885              	.LVL104:
+ 886 007c 0446     		mov	r4, r0
+ 887              	.LVL105:
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(IS_ERR(f)){
+ 888              		.loc 1 212 5 is_stmt 1 view .LVU233
+ 889              	.LBB26:
+ 890              	.LBI26:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+ 891              		.loc 4 75 33 view .LVU234
+ 892              	.LBB27:
+ 893              		.loc 4 77 2 view .LVU235
+ 894              		.loc 4 77 2 is_stmt 0 view .LVU236
+ 895              	.LBE27:
+ 896              	.LBE26:
+ 897              		.loc 1 212 7 discriminator 1 view .LVU237
+ 898 007e 10F5805F 		cmn	r0, #4096
+ 899 0082 33D8     		bhi	.L68
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("can not open file:%s",data);
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                          
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     data_length = f->f_inode->i_size;
+ 900              		.loc 1 216 5 is_stmt 1 view .LVU238
+ 901              		.loc 1 216 20 is_stmt 0 view .LVU239
+ 902 0084 C36A     		ldr	r3, [r0, #44]
+ 903              		.loc 1 216 29 view .LVU240
+ 904 0086 1E6A     		ldr	r6, [r3, #32]
+ 905              	.LVL106:
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     file_data = kmalloc(data_length + 1,GFP_KERNEL);
+ 906              		.loc 1 217 5 is_stmt 1 view .LVU241
+ 907              	.LBB28:
+ 908              	.LBI28:
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 909              		.loc 3 379 21 view .LVU242
+ 910              	.LBB29:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 911              		.loc 3 380 2 view .LVU243
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 912              		.loc 3 380 9 is_stmt 0 view .LVU244
+ 913 0088 4FF44C61 		mov	r1, #3264
+ARM GAS  /tmp/ccOLEJfR.s 			page 32
+
+
+ 914 008c 701C     		adds	r0, r6, #1
+ 915              	.LVL107:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 916              		.loc 3 380 9 view .LVU245
+ 917 008e FFF7FEFF 		bl	__smalloc__
+ 918              	.LVL108:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 919              		.loc 3 380 9 view .LVU246
+ 920              	.LBE29:
+ 921              	.LBE28:
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (!file_data) {
+ 922              		.loc 1 218 5 is_stmt 1 view .LVU247
+ 923              		.loc 1 218 8 is_stmt 0 view .LVU248
+ 924 0092 0546     		mov	r5, r0
+ 925 0094 80B3     		cbz	r0, .L69
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("cannot allocate memory for syscall table\n");
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     offset = 0;
+ 926              		.loc 1 222 5 is_stmt 1 view .LVU249
+ 927              		.loc 1 222 12 is_stmt 0 view .LVU250
+ 928 0096 0022     		movs	r2, #0
+ 929 0098 0023     		movs	r3, #0
+ 930 009a CDE91023 		strd	r2, [sp, #64]
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     kernel_read(f,file_data,data_length-1,&offset);
+ 931              		.loc 1 223 5 is_stmt 1 view .LVU251
+ 932 009e 10AB     		add	r3, sp, #64
+ 933 00a0 721E     		subs	r2, r6, #1
+ 934 00a2 0146     		mov	r1, r0
+ 935 00a4 2046     		mov	r0, r4
+ 936              	.LVL109:
+ 937              		.loc 1 223 5 is_stmt 0 view .LVU252
+ 938 00a6 FFF7FEFF 		bl	kernel_read
+ 939              	.LVL110:
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     filp_close(f,0);
+ 940              		.loc 1 224 5 is_stmt 1 view .LVU253
+ 941 00aa 0021     		movs	r1, #0
+ 942 00ac 2046     		mov	r0, r4
+ 943 00ae FFF7FEFF 		bl	filp_close
+ 944              	.LVL111:
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     file_data[data_length] = '\0';
+ 945              		.loc 1 226 5 view .LVU254
+ 946              		.loc 1 226 28 is_stmt 0 view .LVU255
+ 947 00b2 0023     		movs	r3, #0
+ 948 00b4 AB55     		strb	r3, [r5, r6]
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     preprocess_ini_data(file_data);
+ 949              		.loc 1 227 5 is_stmt 1 view .LVU256
+ 950 00b6 2846     		mov	r0, r5
+ 951 00b8 FFF7FEFF 		bl	preprocess_ini_data
+ 952              	.LVL112:
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (parse_syscall_table(file_data) != 0) {
+ 953              		.loc 1 229 5 view .LVU257
+ 954              		.loc 1 229 9 is_stmt 0 view .LVU258
+ 955 00bc 2846     		mov	r0, r5
+ 956 00be FFF7FEFF 		bl	parse_syscall_table
+ARM GAS  /tmp/ccOLEJfR.s 			page 33
+
+
+ 957              	.LVL113:
+ 958              		.loc 1 229 8 discriminator 1 view .LVU259
+ 959 00c2 F0B1     		cbz	r0, .L62
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("failed to parse syscall table\n");
+ 960              		.loc 1 230 9 is_stmt 1 view .LVU260
+ 961 00c4 1949     		ldr	r1, .L70+16
+ 962 00c6 0320     		movs	r0, #3
+ 963 00c8 FFF7FEFF 		bl	printk
+ 964              	.LVL114:
+ 965              	.L63:
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 966              		.loc 1 231 9 view .LVU261
+ 967              		.loc 1 231 19 view .LVU262
+ 968              		.loc 1 231 15 view .LVU263
+ 969 00cc FEE7     		b	.L63
+ 970              	.LVL115:
+ 971              	.L65:
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 972              		.loc 1 183 9 view .LVU264
+ 973 00ce 1849     		ldr	r1, .L70+20
+ 974 00d0 0320     		movs	r0, #3
+ 975              	.LVL116:
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}
+ 976              		.loc 1 183 9 is_stmt 0 view .LVU265
+ 977 00d2 FFF7FEFF 		bl	printk
+ 978              	.LVL117:
+ 979              	.L53:
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 980              		.loc 1 184 9 is_stmt 1 view .LVU266
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 981              		.loc 1 184 19 view .LVU267
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 982              		.loc 1 184 15 view .LVU268
+ 983 00d6 FEE7     		b	.L53
+ 984              	.LVL118:
+ 985              	.L66:
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}                                   //系统调用是必须有的，所以如果�
+ 986              		.loc 1 190 9 view .LVU269
+ 987 00d8 1649     		ldr	r1, .L70+24
+ 988 00da 0320     		movs	r0, #3
+ 989              	.LVL119:
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}                                   //系统调用是必须有的，所以如果�
+ 990              		.loc 1 190 9 is_stmt 0 view .LVU270
+ 991 00dc FFF7FEFF 		bl	printk
+ 992              	.LVL120:
+ 993              	.L55:
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 994              		.loc 1 191 9 is_stmt 1 view .LVU271
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 995              		.loc 1 191 18 view .LVU272
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 996              		.loc 1 191 14 view .LVU273
+ 997 00e0 FEE7     		b	.L55
+ 998              	.LVL121:
+ 999              	.L67:
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                                           
+ 1000              		.loc 1 205 9 view .LVU274
+ARM GAS  /tmp/ccOLEJfR.s 			page 34
+
+
+ 1001 00e2 1549     		ldr	r1, .L70+28
+ 1002 00e4 0320     		movs	r0, #3
+ 1003              	.LVL122:
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                                           
+ 1004              		.loc 1 205 9 is_stmt 0 view .LVU275
+ 1005 00e6 FFF7FEFF 		bl	printk
+ 1006              	.LVL123:
+ 1007              	.L57:
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1008              		.loc 1 206 9 is_stmt 1 view .LVU276
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1009              		.loc 1 206 19 view .LVU277
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1010              		.loc 1 206 15 view .LVU278
+ 1011 00ea FEE7     		b	.L57
+ 1012              	.LVL124:
+ 1013              	.L68:
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                          
+ 1014              		.loc 1 213 9 view .LVU279
+ 1015 00ec 6A46     		mov	r2, sp
+ 1016 00ee 1349     		ldr	r1, .L70+32
+ 1017 00f0 0320     		movs	r0, #3
+ 1018              	.LVL125:
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while (1){}                          
+ 1019              		.loc 1 213 9 is_stmt 0 view .LVU280
+ 1020 00f2 FFF7FEFF 		bl	printk
+ 1021              	.LVL126:
+ 1022              	.L59:
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1023              		.loc 1 214 9 is_stmt 1 view .LVU281
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1024              		.loc 1 214 19 view .LVU282
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1025              		.loc 1 214 15 view .LVU283
+ 1026 00f6 FEE7     		b	.L59
+ 1027              	.LVL127:
+ 1028              	.L69:
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}
+ 1029              		.loc 1 219 9 view .LVU284
+ 1030 00f8 1149     		ldr	r1, .L70+36
+ 1031 00fa 0320     		movs	r0, #3
+ 1032              	.LVL128:
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         while(1){}
+ 1033              		.loc 1 219 9 is_stmt 0 view .LVU285
+ 1034 00fc FFF7FEFF 		bl	printk
+ 1035              	.LVL129:
+ 1036              	.L61:
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1037              		.loc 1 220 9 is_stmt 1 view .LVU286
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1038              		.loc 1 220 18 view .LVU287
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1039              		.loc 1 220 14 view .LVU288
+ 1040 0100 FEE7     		b	.L61
+ 1041              	.L62:
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     kfree(file_data);
+ARM GAS  /tmp/ccOLEJfR.s 			page 35
+
+
+ 1042              		.loc 1 233 5 view .LVU289
+ 1043              	.LVL130:
+ 1044              	.LBB30:
+ 1045              	.LBI30:
+ 383:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1046              		.loc 3 383 20 view .LVU290
+ 1047              	.LBB31:
+ 1048              		.loc 3 384 2 view .LVU291
+ 1049 0102 2846     		mov	r0, r5
+ 1050 0104 FFF7FEFF 		bl	__sfree__
+ 1051              	.LVL131:
+ 1052              		.loc 3 384 2 is_stmt 0 view .LVU292
+ 1053              	.LBE31:
+ 1054              	.LBE30:
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     printk(KERN_DEBUG "syscall table initialized with ( %u ) entries\n", syscall_number);    
+ 1055              		.loc 1 235 5 is_stmt 1 view .LVU293
+ 1056 0108 0E4B     		ldr	r3, .L70+40
+ 1057 010a 1A68     		ldr	r2, [r3]
+ 1058 010c 0E49     		ldr	r1, .L70+44
+ 1059 010e 0720     		movs	r0, #7
+ 1060 0110 FFF7FEFF 		bl	printk
+ 1061              	.LVL132:
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     return 0;
+ 1062              		.loc 1 236 5 view .LVU294
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 1063              		.loc 1 237 1 is_stmt 0 view .LVU295
+ 1064 0114 0020     		movs	r0, #0
+ 1065 0116 12B0     		add	sp, sp, #72
+ 1066              	.LCFI15:
+ 1067              		.cfi_def_cfa_offset 16
+ 1068              		@ sp needed
+ 1069 0118 70BD     		pop	{r4, r5, r6, pc}
+ 1070              	.LVL133:
+ 1071              	.L71:
+ 1072              		.loc 1 237 1 view .LVU296
+ 1073 011a 00BF     		.align	2
+ 1074              	.L70:
+ 1075 011c 00000000 		.word	.LC3
+ 1076 0120 14000000 		.word	.LC4
+ 1077 0124 70000000 		.word	.LC7
+ 1078 0128 80000000 		.word	.LC8
+ 1079 012c 10010000 		.word	.LC12
+ 1080 0130 28000000 		.word	.LC5
+ 1081 0134 4C000000 		.word	.LC6
+ 1082 0138 88000000 		.word	.LC9
+ 1083 013c CC000000 		.word	.LC10
+ 1084 0140 E4000000 		.word	.LC11
+ 1085 0144 00000000 		.word	syscall_number
+ 1086 0148 30010000 		.word	.LC13
+ 1087              		.cfi_endproc
+ 1088              	.LFE1043:
+ 1090              		.section	.rodata.system_call.str1.4,"aMS",%progbits,1
+ 1091              		.align	2
+ 1092              	.LC14:
+ 1093 0000 73797363 		.ascii	"syscall is not ready\012\000"
+ 1093      616C6C20 
+ARM GAS  /tmp/ccOLEJfR.s 			page 36
+
+
+ 1093      6973206E 
+ 1093      6F742072 
+ 1093      65616479 
+ 1094 0016 0000     		.align	2
+ 1095              	.LC15:
+ 1096 0018 756E6B6E 		.ascii	"unknown system call (%d)\000"
+ 1096      6F776E20 
+ 1096      73797374 
+ 1096      656D2063 
+ 1096      616C6C20 
+ 1097 0031 000000   		.align	2
+ 1098              	.LC16:
+ 1099 0034 756E696D 		.ascii	"unimplemented system call (%d)\012\000"
+ 1099      706C656D 
+ 1099      656E7465 
+ 1099      64207379 
+ 1099      7374656D 
+ 1100              		.section	.text.system_call,"ax",%progbits
+ 1101              		.align	1
+ 1102              		.global	system_call
+ 1103              		.syntax unified
+ 1104              		.thumb
+ 1105              		.thumb_func
+ 1107              	system_call:
+ 1108              	.LVL134:
+ 1109              	.LFB1035:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+ 1110              		.loc 1 18 1 is_stmt 1 view -0
+ 1111              		.cfi_startproc
+ 1112              		@ args = 12, pretend = 0, frame = 0
+ 1113              		@ frame_needed = 0, uses_anonymous_args = 0
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+ 1114              		.loc 1 18 1 is_stmt 0 view .LVU298
+ 1115 0000 10B5     		push	{r4, lr}
+ 1116              	.LCFI16:
+ 1117              		.cfi_def_cfa_offset 8
+ 1118              		.cfi_offset 4, -8
+ 1119              		.cfi_offset 14, -4
+ 1120 0002 82B0     		sub	sp, sp, #8
+ 1121              	.LCFI17:
+ 1122              		.cfi_def_cfa_offset 16
+ 1123 0004 8446     		mov	ip, r0
+ 1124 0006 0846     		mov	r0, r1
+ 1125              	.LVL135:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+ 1126              		.loc 1 18 1 view .LVU299
+ 1127 0008 1146     		mov	r1, r2
+ 1128              	.LVL136:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if(syscall_table == NULL){
+ 1129              		.loc 1 18 1 view .LVU300
+ 1130 000a 1A46     		mov	r2, r3
+ 1131              	.LVL137:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("syscall is not ready\n");
+ 1132              		.loc 1 19 5 is_stmt 1 view .LVU301
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("syscall is not ready\n");
+ 1133              		.loc 1 19 22 is_stmt 0 view .LVU302
+ 1134 000c 134B     		ldr	r3, .L81
+ARM GAS  /tmp/ccOLEJfR.s 			page 37
+
+
+ 1135              	.LVL138:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("syscall is not ready\n");
+ 1136              		.loc 1 19 22 view .LVU303
+ 1137 000e 1B68     		ldr	r3, [r3]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_err("syscall is not ready\n");
+ 1138              		.loc 1 19 7 view .LVU304
+ 1139 0010 73B1     		cbz	r3, .L78
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+ 1140              		.loc 1 23 5 is_stmt 1 view .LVU305
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+ 1141              		.loc 1 23 15 is_stmt 0 view .LVU306
+ 1142 0012 134C     		ldr	r4, .L81+4
+ 1143 0014 2468     		ldr	r4, [r4]
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     {
+ 1144              		.loc 1 23 7 view .LVU307
+ 1145 0016 A445     		cmp	ip, r4
+ 1146 0018 10D8     		bhi	.L79
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (!func) {
+ 1147              		.loc 1 28 5 is_stmt 1 view .LVU308
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     if (!func) {
+ 1148              		.loc 1 28 20 is_stmt 0 view .LVU309
+ 1149 001a 53F82C40 		ldr	r4, [r3, ip, lsl #2]
+ 1150              	.LVL139:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_info("unimplemented system call (%d)\n", sys_no);
+ 1151              		.loc 1 29 5 is_stmt 1 view .LVU310
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         pr_info("unimplemented system call (%d)\n", sys_no);
+ 1152              		.loc 1 29 8 is_stmt 0 view .LVU311
+ 1153 001e A4B1     		cbz	r4, .L80
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 1154              		.loc 1 33 5 is_stmt 1 view .LVU312
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** }
+ 1155              		.loc 1 33 12 is_stmt 0 view .LVU313
+ 1156 0020 069B     		ldr	r3, [sp, #24]
+ 1157 0022 0193     		str	r3, [sp, #4]
+ 1158 0024 059B     		ldr	r3, [sp, #20]
+ 1159 0026 0093     		str	r3, [sp]
+ 1160 0028 049B     		ldr	r3, [sp, #16]
+ 1161 002a A047     		blx	r4
+ 1162              	.LVL140:
+ 1163              	.L72:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c **** 
+ 1164              		.loc 1 34 1 view .LVU314
+ 1165 002c 02B0     		add	sp, sp, #8
+ 1166              	.LCFI18:
+ 1167              		.cfi_remember_state
+ 1168              		.cfi_def_cfa_offset 8
+ 1169              		@ sp needed
+ 1170 002e 10BD     		pop	{r4, pc}
+ 1171              	.LVL141:
+ 1172              	.L78:
+ 1173              	.LCFI19:
+ 1174              		.cfi_restore_state
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return 0;
+ 1175              		.loc 1 20 9 is_stmt 1 view .LVU315
+ 1176 0030 0C49     		ldr	r1, .L81+8
+ 1177              	.LVL142:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return 0;
+ARM GAS  /tmp/ccOLEJfR.s 			page 38
+
+
+ 1178              		.loc 1 20 9 is_stmt 0 view .LVU316
+ 1179 0032 0320     		movs	r0, #3
+ 1180              	.LVL143:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return 0;
+ 1181              		.loc 1 20 9 view .LVU317
+ 1182 0034 FFF7FEFF 		bl	printk
+ 1183              	.LVL144:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1184              		.loc 1 21 9 is_stmt 1 view .LVU318
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1185              		.loc 1 21 16 is_stmt 0 view .LVU319
+ 1186 0038 0020     		movs	r0, #0
+ 1187 003a F7E7     		b	.L72
+ 1188              	.LVL145:
+ 1189              	.L79:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        return 0;
+ 1190              		.loc 1 25 8 is_stmt 1 view .LVU320
+ 1191 003c 6246     		mov	r2, ip
+ 1192              	.LVL146:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        return 0;
+ 1193              		.loc 1 25 8 is_stmt 0 view .LVU321
+ 1194 003e 0A49     		ldr	r1, .L81+12
+ 1195              	.LVL147:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        return 0;
+ 1196              		.loc 1 25 8 view .LVU322
+ 1197 0040 0320     		movs	r0, #3
+ 1198              	.LVL148:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****        return 0;
+ 1199              		.loc 1 25 8 view .LVU323
+ 1200 0042 FFF7FEFF 		bl	printk
+ 1201              	.LVL149:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1202              		.loc 1 26 8 is_stmt 1 view .LVU324
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1203              		.loc 1 26 15 is_stmt 0 view .LVU325
+ 1204 0046 0020     		movs	r0, #0
+ 1205 0048 F0E7     		b	.L72
+ 1206              	.LVL150:
+ 1207              	.L80:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return -ENOSYS;
+ 1208              		.loc 1 30 9 is_stmt 1 view .LVU326
+ 1209 004a 6246     		mov	r2, ip
+ 1210              	.LVL151:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return -ENOSYS;
+ 1211              		.loc 1 30 9 is_stmt 0 view .LVU327
+ 1212 004c 0749     		ldr	r1, .L81+16
+ 1213              	.LVL152:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return -ENOSYS;
+ 1214              		.loc 1 30 9 view .LVU328
+ 1215 004e 0620     		movs	r0, #6
+ 1216              	.LVL153:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****         return -ENOSYS;
+ 1217              		.loc 1 30 9 view .LVU329
+ 1218 0050 FFF7FEFF 		bl	printk
+ 1219              	.LVL154:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1220              		.loc 1 31 9 is_stmt 1 view .LVU330
+ARM GAS  /tmp/ccOLEJfR.s 			page 39
+
+
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/ipc/systemcall.c ****     }
+ 1221              		.loc 1 31 16 is_stmt 0 view .LVU331
+ 1222 0054 6FF04D00 		mvn	r0, #77
+ 1223 0058 E8E7     		b	.L72
+ 1224              	.L82:
+ 1225 005a 00BF     		.align	2
+ 1226              	.L81:
+ 1227 005c 00000000 		.word	syscall_table
+ 1228 0060 00000000 		.word	syscall_number
+ 1229 0064 00000000 		.word	.LC14
+ 1230 0068 18000000 		.word	.LC15
+ 1231 006c 34000000 		.word	.LC16
+ 1232              		.cfi_endproc
+ 1233              	.LFE1035:
+ 1235              		.section	.coreinitcall,"aw"
+ 1236              		.align	2
+ 1239              	_initcall_syscall_init:
+ 1240 0000 00000000 		.word	syscall_init
+ 1241              		.section	.bss.syscall_number,"aw",%nobits
+ 1242              		.align	2
+ 1245              	syscall_number:
+ 1246 0000 00000000 		.space	4
+ 1247              		.section	.bss.syscall_table,"aw",%nobits
+ 1248              		.align	2
+ 1251              	syscall_table:
+ 1252 0000 00000000 		.space	4
+ 1253              		.text
+ 1254              	.Letext0:
+ 1255              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 1256              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 1257              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/types.h"
+ 1258              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 1259              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/init.h"
+ 1260              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/errseq.h"
+ 1261              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 1262              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 1263              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 1264              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 1265              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rbtree_types.h"
+ 1266              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uidgid_types.h"
+ 1267              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/projid.h"
+ 1268              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/fs.h"
+ 1269              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mnt_idmapping.h"
+ 1270              		.file 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 1271              		.file 21 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uio.h"
+ 1272              		.file 22 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/wait.h"
+ 1273              		.file 23 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/xarray.h"
+ 1274              		.file 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/migrate_mode.h"
+ 1275              		.file 25 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rw_hint.h"
+ 1276              		.file 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/reciprocal_div.h"
+ 1277              		.file 27 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mm_type.h"
+ 1278              		.file 28 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bvec.h"
+ 1279              		.file 29 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk_types.h"
+ 1280              		.file 30 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blkdev.h"
+ 1281              		.file 31 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bio.h"
+ 1282              		.file 32 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool_super_haper.h"
+ 1283              		.file 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool.h"
+ARM GAS  /tmp/ccOLEJfR.s 			page 40
+
+
+ 1284              		.file 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockdep_types.h"
+ 1285              		.file 35 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/workqueue_types.h"
+ 1286              		.file 36 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk-mq.h"
+ 1287              		.file 37 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/dcache.h"
+ 1288              		.file 38 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/pr.h"
+ 1289              		.file 39 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/pr.h"
+ 1290              		.file 40 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/hdreg.h"
+ 1291              		.file 41 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ 1292              		.file 42 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/path.h"
+ 1293              		.file 43 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/statfs.h"
+ 1294              		.file 44 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stat.h"
+ 1295              		.file 45 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/gfp_types.h"
+ 1296              		.file 46 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 1297              		.file 47 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 1298              		.file 48 "<built-in>"
+ARM GAS  /tmp/ccOLEJfR.s 			page 41
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 systemcall.c
+     /tmp/ccOLEJfR.s:22     .text.str_to_uint32:00000000 $t
+     /tmp/ccOLEJfR.s:27     .text.str_to_uint32:00000000 str_to_uint32
+     /tmp/ccOLEJfR.s:72     .text.goto_next_char:00000000 $t
+     /tmp/ccOLEJfR.s:77     .text.goto_next_char:00000000 goto_next_char
+     /tmp/ccOLEJfR.s:101    .text.goto_next_string:00000000 $t
+     /tmp/ccOLEJfR.s:106    .text.goto_next_string:00000000 goto_next_string
+     /tmp/ccOLEJfR.s:129    .text.goto_next_data_line:00000000 $t
+     /tmp/ccOLEJfR.s:134    .text.goto_next_data_line:00000000 goto_next_data_line
+     /tmp/ccOLEJfR.s:171    .text.copy_string_data:00000000 $t
+     /tmp/ccOLEJfR.s:176    .text.copy_string_data:00000000 copy_string_data
+     /tmp/ccOLEJfR.s:199    .text.get_line_data:00000000 $t
+     /tmp/ccOLEJfR.s:204    .text.get_line_data:00000000 get_line_data
+     /tmp/ccOLEJfR.s:354    .text.get_next_line_data:00000000 $t
+     /tmp/ccOLEJfR.s:359    .text.get_next_line_data:00000000 get_next_line_data
+     /tmp/ccOLEJfR.s:410    .text.get_syscall_numbers:00000000 $t
+     /tmp/ccOLEJfR.s:415    .text.get_syscall_numbers:00000000 get_syscall_numbers
+     /tmp/ccOLEJfR.s:492    .rodata.load_syscall.str1.4:00000000 $d
+     /tmp/ccOLEJfR.s:496    .text.load_syscall:00000000 $t
+     /tmp/ccOLEJfR.s:501    .text.load_syscall:00000000 load_syscall
+     /tmp/ccOLEJfR.s:563    .text.load_syscall:0000002c $d
+     /tmp/ccOLEJfR.s:1251   .bss.syscall_table:00000000 syscall_table
+     /tmp/ccOLEJfR.s:569    .rodata.parse_syscall_table.str1.4:00000000 $d
+     /tmp/ccOLEJfR.s:576    .text.parse_syscall_table:00000000 $t
+     /tmp/ccOLEJfR.s:581    .text.parse_syscall_table:00000000 parse_syscall_table
+     /tmp/ccOLEJfR.s:702    .text.parse_syscall_table:0000005c $d
+     /tmp/ccOLEJfR.s:1245   .bss.syscall_number:00000000 syscall_number
+     /tmp/ccOLEJfR.s:710    .rodata.syscall_init.str1.4:00000000 $d
+     /tmp/ccOLEJfR.s:745    .text.syscall_init:00000000 $t
+     /tmp/ccOLEJfR.s:750    .text.syscall_init:00000000 syscall_init
+     /tmp/ccOLEJfR.s:1075   .text.syscall_init:0000011c $d
+     /tmp/ccOLEJfR.s:1091   .rodata.system_call.str1.4:00000000 $d
+     /tmp/ccOLEJfR.s:1101   .text.system_call:00000000 $t
+     /tmp/ccOLEJfR.s:1107   .text.system_call:00000000 system_call
+     /tmp/ccOLEJfR.s:1227   .text.system_call:0000005c $d
+     /tmp/ccOLEJfR.s:1236   .coreinitcall:00000000 $d
+     /tmp/ccOLEJfR.s:1239   .coreinitcall:00000000 _initcall_syscall_init
+     /tmp/ccOLEJfR.s:1242   .bss.syscall_number:00000000 $d
+     /tmp/ccOLEJfR.s:1248   .bss.syscall_table:00000000 $d
+
+UNDEFINED SYMBOLS
+__goto_next_char
+__goto_next_string
+__copy_string_data
+find_table_by_fnname
+printk
+__smalloc__
+memset
+filp_open
+kernel_read
+filp_close
+preprocess_ini_data
+get_value_from_ini
+__sfree__

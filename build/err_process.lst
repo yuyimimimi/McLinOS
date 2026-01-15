@@ -1,0 +1,349 @@
+ARM GAS  /tmp/ccBzZhjH.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"err_process.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c"
+  21              		.section	.text.get_register_dump,"ax",%progbits
+  22              		.align	1
+  23              		.global	get_register_dump
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	get_register_dump:
+  29              	.LVL0:
+  30              	.LFB148:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #include <linux/types.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #define __get_MSP()       ({ register uint32_t result; __asm volatile ("MRS %0, msp" : "=r" (result
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #define __get_PSP()       ({ register uint32_t result; __asm volatile ("MRS %0, psp" : "=r" (result
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #define __get_LR()        ({ register uint32_t result; __asm volatile ("MOV %0, lr"  : "=r" (result
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #define __get_PC()        ({ register uint32_t result; __asm volatile ("MOV %0, pc"  : "=r" (result
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** #define __get_CONTROL()   ({ register uint32_t result; __asm volatile ("MRS %0, control" : "=r" (re
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** typedef struct {
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t r0;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t r1;
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t r2;
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t r3;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t r12;
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t lr;   
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t pc;    
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t psr; 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t msp;  
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     uint32_t psp;  
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** } RegisterDump;
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** void get_register_dump(RegisterDump *dump, uint32_t *stack_frame) {
+  31              		.loc 1 24 67 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccBzZhjH.s 			page 2
+
+
+  35              		@ link register save eliminated.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->r0  = stack_frame[0];
+  36              		.loc 1 25 5 view .LVU1
+  37              		.loc 1 25 28 is_stmt 0 view .LVU2
+  38 0000 0B68     		ldr	r3, [r1]
+  39              		.loc 1 25 15 view .LVU3
+  40 0002 0360     		str	r3, [r0]
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->r1  = stack_frame[1];
+  41              		.loc 1 26 5 is_stmt 1 view .LVU4
+  42              		.loc 1 26 15 is_stmt 0 view .LVU5
+  43 0004 4B68     		ldr	r3, [r1, #4]
+  44 0006 4360     		str	r3, [r0, #4]
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->r2  = stack_frame[2];
+  45              		.loc 1 27 5 is_stmt 1 view .LVU6
+  46              		.loc 1 27 15 is_stmt 0 view .LVU7
+  47 0008 8B68     		ldr	r3, [r1, #8]
+  48 000a 8360     		str	r3, [r0, #8]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->r3  = stack_frame[3];
+  49              		.loc 1 28 5 is_stmt 1 view .LVU8
+  50              		.loc 1 28 15 is_stmt 0 view .LVU9
+  51 000c CB68     		ldr	r3, [r1, #12]
+  52 000e C360     		str	r3, [r0, #12]
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->r12 = stack_frame[4];
+  53              		.loc 1 29 5 is_stmt 1 view .LVU10
+  54              		.loc 1 29 15 is_stmt 0 view .LVU11
+  55 0010 0B69     		ldr	r3, [r1, #16]
+  56 0012 0361     		str	r3, [r0, #16]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->lr  = stack_frame[5];
+  57              		.loc 1 30 5 is_stmt 1 view .LVU12
+  58              		.loc 1 30 15 is_stmt 0 view .LVU13
+  59 0014 4B69     		ldr	r3, [r1, #20]
+  60 0016 4361     		str	r3, [r0, #20]
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->pc  = stack_frame[6];
+  61              		.loc 1 31 5 is_stmt 1 view .LVU14
+  62              		.loc 1 31 15 is_stmt 0 view .LVU15
+  63 0018 8B69     		ldr	r3, [r1, #24]
+  64 001a 8361     		str	r3, [r0, #24]
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->psr = stack_frame[7];
+  65              		.loc 1 32 5 is_stmt 1 view .LVU16
+  66              		.loc 1 32 15 is_stmt 0 view .LVU17
+  67 001c CB69     		ldr	r3, [r1, #28]
+  68 001e C361     		str	r3, [r0, #28]
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->msp = __get_MSP();
+  69              		.loc 1 33 5 is_stmt 1 view .LVU18
+  70              	.LBB2:
+  71              		.loc 1 33 17 view .LVU19
+  72              		.loc 1 33 17 view .LVU20
+  73              		.syntax unified
+  74              	@ 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c" 1
+  75 0020 EFF30883 		MRS r3, msp
+  76              	@ 0 "" 2
+  77              	.LVL1:
+  78              		.loc 1 33 17 view .LVU21
+  79              		.thumb
+  80              		.syntax unified
+  81              	.LBE2:
+  82              		.loc 1 33 15 is_stmt 0 view .LVU22
+ARM GAS  /tmp/ccBzZhjH.s 			page 3
+
+
+  83 0024 0362     		str	r3, [r0, #32]
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     dump->psp = __get_PSP();
+  84              		.loc 1 34 5 is_stmt 1 view .LVU23
+  85              	.LBB3:
+  86              		.loc 1 34 17 view .LVU24
+  87              		.loc 1 34 17 view .LVU25
+  88              		.syntax unified
+  89              	@ 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c" 1
+  90 0026 EFF30983 		MRS r3, psp
+  91              	@ 0 "" 2
+  92              	.LVL2:
+  93              		.loc 1 34 17 view .LVU26
+  94              		.thumb
+  95              		.syntax unified
+  96              	.LBE3:
+  97              		.loc 1 34 15 is_stmt 0 view .LVU27
+  98 002a 4362     		str	r3, [r0, #36]
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** }
+  99              		.loc 1 35 1 view .LVU28
+ 100 002c 7047     		bx	lr
+ 101              		.cfi_endproc
+ 102              	.LFE148:
+ 104              		.section	.rodata.__hard_fault_handler_c.str1.4,"aMS",%progbits,1
+ 105              		.align	2
+ 106              	.LC0:
+ 107 0000 0A486172 		.ascii	"\012HardFault Registers:\012\000"
+ 107      64466175 
+ 107      6C742052 
+ 107      65676973 
+ 107      74657273 
+ 108 0017 00       		.align	2
+ 109              	.LC1:
+ 110 0018 52303A20 		.ascii	"R0:  0x%08x, R1:  0x%08x, R2:  0x%08x\012\000"
+ 110      20307825 
+ 110      3038782C 
+ 110      2052313A 
+ 110      20203078 
+ 111 003f 00       		.align	2
+ 112              	.LC2:
+ 113 0040 52333A20 		.ascii	"R3:  0x%08x, R12: 0x%08x, LR:  0x%08x\012\000"
+ 113      20307825 
+ 113      3038782C 
+ 113      20523132 
+ 113      3A203078 
+ 114 0067 00       		.align	2
+ 115              	.LC3:
+ 116 0068 50433A20 		.ascii	"PC:  0x%08x, PSR: 0x%08x\012\000"
+ 116      20307825 
+ 116      3038782C 
+ 116      20505352 
+ 116      3A203078 
+ 117 0082 0000     		.align	2
+ 118              	.LC4:
+ 119 0084 4D53503A 		.ascii	"MSP: 0x%08x, PSP: 0x%08x\012\000"
+ 119      20307825 
+ 119      3038782C 
+ 119      20505350 
+ARM GAS  /tmp/ccBzZhjH.s 			page 4
+
+
+ 119      3A203078 
+ 120              		.section	.text.__hard_fault_handler_c,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	__hard_fault_handler_c
+ 123              		.syntax unified
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	__hard_fault_handler_c:
+ 128              	.LVL3:
+ 129              	.LFB149:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** extern void __kernel_error_process(void);
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****   
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** void __hard_fault_handler_c(uint32_t *stack_frame) {
+ 130              		.loc 1 39 52 is_stmt 1 view -0
+ 131              		.cfi_startproc
+ 132              		@ args = 0, pretend = 0, frame = 40
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134              		.loc 1 39 52 is_stmt 0 view .LVU30
+ 135 0000 00B5     		push	{lr}
+ 136              	.LCFI0:
+ 137              		.cfi_def_cfa_offset 4
+ 138              		.cfi_offset 14, -4
+ 139 0002 8DB0     		sub	sp, sp, #52
+ 140              	.LCFI1:
+ 141              		.cfi_def_cfa_offset 56
+ 142 0004 0146     		mov	r1, r0
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     RegisterDump regs;
+ 143              		.loc 1 40 5 is_stmt 1 view .LVU31
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     get_register_dump(&regs, stack_frame);
+ 144              		.loc 1 41 5 view .LVU32
+ 145 0006 02A8     		add	r0, sp, #8
+ 146              	.LVL4:
+ 147              		.loc 1 41 5 is_stmt 0 view .LVU33
+ 148 0008 FFF7FEFF 		bl	get_register_dump
+ 149              	.LVL5:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     pr_err("\nHardFault Registers:\n");
+ 150              		.loc 1 42 5 is_stmt 1 view .LVU34
+ 151 000c 1249     		ldr	r1, .L4
+ 152 000e 0320     		movs	r0, #3
+ 153 0010 FFF7FEFF 		bl	printk
+ 154              	.LVL6:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     pr_err("R0:  0x%08x, R1:  0x%08x, R2:  0x%08x\n", regs.r0, regs.r1, regs.r2);
+ 155              		.loc 1 43 5 view .LVU35
+ 156 0014 049B     		ldr	r3, [sp, #16]
+ 157 0016 0093     		str	r3, [sp]
+ 158 0018 039B     		ldr	r3, [sp, #12]
+ 159 001a 029A     		ldr	r2, [sp, #8]
+ 160 001c 0F49     		ldr	r1, .L4+4
+ 161 001e 0320     		movs	r0, #3
+ 162 0020 FFF7FEFF 		bl	printk
+ 163              	.LVL7:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     pr_err("R3:  0x%08x, R12: 0x%08x, LR:  0x%08x\n", regs.r3, regs.r12, regs.lr);
+ 164              		.loc 1 44 5 view .LVU36
+ 165 0024 079B     		ldr	r3, [sp, #28]
+ 166 0026 0093     		str	r3, [sp]
+ 167 0028 069B     		ldr	r3, [sp, #24]
+ARM GAS  /tmp/ccBzZhjH.s 			page 5
+
+
+ 168 002a 059A     		ldr	r2, [sp, #20]
+ 169 002c 0C49     		ldr	r1, .L4+8
+ 170 002e 0320     		movs	r0, #3
+ 171 0030 FFF7FEFF 		bl	printk
+ 172              	.LVL8:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     pr_err("PC:  0x%08x, PSR: 0x%08x\n", regs.pc, regs.psr);
+ 173              		.loc 1 45 5 view .LVU37
+ 174 0034 099B     		ldr	r3, [sp, #36]
+ 175 0036 089A     		ldr	r2, [sp, #32]
+ 176 0038 0A49     		ldr	r1, .L4+12
+ 177 003a 0320     		movs	r0, #3
+ 178 003c FFF7FEFF 		bl	printk
+ 179              	.LVL9:
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     pr_err("MSP: 0x%08x, PSP: 0x%08x\n", regs.msp, regs.psp);
+ 180              		.loc 1 46 5 view .LVU38
+ 181 0040 0B9B     		ldr	r3, [sp, #44]
+ 182 0042 0A9A     		ldr	r2, [sp, #40]
+ 183 0044 0849     		ldr	r1, .L4+16
+ 184 0046 0320     		movs	r0, #3
+ 185 0048 FFF7FEFF 		bl	printk
+ 186              	.LVL10:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     __kernel_error_process();
+ 187              		.loc 1 47 5 view .LVU39
+ 188 004c FFF7FEFF 		bl	__kernel_error_process
+ 189              	.LVL11:
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** }
+ 190              		.loc 1 48 1 is_stmt 0 view .LVU40
+ 191 0050 0DB0     		add	sp, sp, #52
+ 192              	.LCFI2:
+ 193              		.cfi_def_cfa_offset 4
+ 194              		@ sp needed
+ 195 0052 5DF804FB 		ldr	pc, [sp], #4
+ 196              	.L5:
+ 197 0056 00BF     		.align	2
+ 198              	.L4:
+ 199 0058 00000000 		.word	.LC0
+ 200 005c 18000000 		.word	.LC1
+ 201 0060 40000000 		.word	.LC2
+ 202 0064 68000000 		.word	.LC3
+ 203 0068 84000000 		.word	.LC4
+ 204              		.cfi_endproc
+ 205              	.LFE149:
+ 207              		.section	.text.HardFault_Handler,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	HardFault_Handler
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	HardFault_Handler:
+ 215              	.LFB150:
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** 
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** void __attribute__((naked)) HardFault_Handler() 
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** {
+ 216              		.loc 1 51 1 is_stmt 1 view -0
+ 217              		.cfi_startproc
+ 218              		@ Naked Function: prologue and epilogue provided by programmer.
+ 219              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccBzZhjH.s 			page 6
+
+
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     __asm__ volatile (
+ 221              		.loc 1 52 5 view .LVU42
+ 222              		.syntax unified
+ 223              	@ 52 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c" 1
+ 224 0000 1EF0040F 		TST LR, #4            
+ 225 0004 0CBF     	ITE EQ                 
+ 226 0006 EFF30880 	MRSEQ R0, MSP          
+ 227 000a EFF30980 	MRSNE R0, PSP          
+ 228 000e FFF7FEBF 	B __hard_fault_handler_c 
+ 229              	
+ 230              	@ 0 "" 2
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****         "TST LR, #4            \n"  
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****         "ITE EQ                 \n"
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****         "MRSEQ R0, MSP          \n"  
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****         "MRSNE R0, PSP          \n"  
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****         "B __hard_fault_handler_c \n" 
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c ****     );
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/err/err_process.c **** }
+ 231              		.loc 1 59 1 is_stmt 0 view .LVU43
+ 232              		.thumb
+ 233              		.syntax unified
+ 234              		.cfi_endproc
+ 235              	.LFE150:
+ 237              		.text
+ 238              	.Letext0:
+ 239              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 240              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 241              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/ccBzZhjH.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 err_process.c
+     /tmp/ccBzZhjH.s:22     .text.get_register_dump:00000000 $t
+     /tmp/ccBzZhjH.s:28     .text.get_register_dump:00000000 get_register_dump
+     /tmp/ccBzZhjH.s:105    .rodata.__hard_fault_handler_c.str1.4:00000000 $d
+     /tmp/ccBzZhjH.s:121    .text.__hard_fault_handler_c:00000000 $t
+     /tmp/ccBzZhjH.s:127    .text.__hard_fault_handler_c:00000000 __hard_fault_handler_c
+     /tmp/ccBzZhjH.s:199    .text.__hard_fault_handler_c:00000058 $d
+     /tmp/ccBzZhjH.s:208    .text.HardFault_Handler:00000000 $t
+     /tmp/ccBzZhjH.s:214    .text.HardFault_Handler:00000000 HardFault_Handler
+
+UNDEFINED SYMBOLS
+printk
+__kernel_error_process

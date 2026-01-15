@@ -1,0 +1,875 @@
+ARM GAS  /tmp/ccyNY6yM.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"Default_handler.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler
+  21              		.section	.rodata.Reset_Handler.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 70757463 		.ascii	"putchar\000"
+  24      68617200 
+  25              		.section	.text.Reset_Handler,"ax",%progbits
+  26              		.align	1
+  27              		.global	Reset_Handler
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	Reset_Handler:
+  33              	.LVL0:
+  34              	.LFB247:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** #include <linux/types.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** #include <linux/module.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** #include <linux/irqflags.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** #include <generated/autoconf.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _estack;
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _sdata;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _edata;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _sidata;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _sbss;
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** extern unsigned int _ebss;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** typedef void(*_put_char_t)(char c);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** _put_char_t _put_char = NULL;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** struct export_node_struct* __boot_export_table_start;
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** struct export_node_struct* __boot_export_table_end;
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void* find_symbol_by_fnname_from_bootloader(char *name);
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+ARM GAS  /tmp/ccyNY6yM.s 			page 2
+
+
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void Reset_Handler(struct export_node_struct* start,struct export_node_struct* end,uint32_t other)
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** {
+  35              		.loc 1 25 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		.loc 1 25 1 is_stmt 0 view .LVU1
+  40 0000 10B5     		push	{r4, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 8
+  43              		.cfi_offset 4, -8
+  44              		.cfi_offset 14, -4
+  45 0002 0C46     		mov	r4, r1
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     __asm volatile ("ldr sp, =_estack");
+  46              		.loc 1 26 5 is_stmt 1 view .LVU2
+  47              		.syntax unified
+  48              	@ 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c" 
+  49 0004 DFF87CD0 		ldr sp, =_estack
+  50              	@ 0 "" 2
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     unsigned int *src = &_sidata;
+  51              		.loc 1 27 5 view .LVU3
+  52              	.LVL1:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     unsigned int *dest = &_sdata;
+  53              		.loc 1 28 5 view .LVU4
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     unsigned int size = (unsigned int)(&_edata - &_sdata);
+  54              		.loc 1 29 5 view .LVU5
+  55              		.loc 1 29 48 is_stmt 0 view .LVU6
+  56              		.thumb
+  57              		.syntax unified
+  58 0008 154B     		ldr	r3, .L8
+  59 000a 164A     		ldr	r2, .L8+4
+  60              	.LVL2:
+  61              		.loc 1 29 48 view .LVU7
+  62 000c A3EB020C 		sub	ip, r3, r2
+  63 0010 4FEAAC0C 		asr	ip, ip, #2
+  64              	.LVL3:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+  65              		.loc 1 30 5 is_stmt 1 view .LVU8
+  66              	.LBB2:
+  67              		.loc 1 30 10 view .LVU9
+  68              		.loc 1 30 23 is_stmt 0 view .LVU10
+  69 0014 0023     		movs	r3, #0
+  70              		.loc 1 30 5 view .LVU11
+  71 0016 06E0     		b	.L2
+  72              	.LVL4:
+  73              	.L3:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****         dest[i] = src[i];
+  74              		.loc 1 31 9 is_stmt 1 view .LVU12
+  75              		.loc 1 31 22 is_stmt 0 view .LVU13
+  76 0018 134A     		ldr	r2, .L8+8
+  77 001a 52F82310 		ldr	r1, [r2, r3, lsl #2]
+  78              		.loc 1 31 17 view .LVU14
+  79 001e 114A     		ldr	r2, .L8+4
+  80 0020 42F82310 		str	r1, [r2, r3, lsl #2]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+  81              		.loc 1 30 41 is_stmt 1 discriminator 3 view .LVU15
+  82 0024 0133     		adds	r3, r3, #1
+ARM GAS  /tmp/ccyNY6yM.s 			page 3
+
+
+  83              	.LVL5:
+  84              	.L2:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+  85              		.loc 1 30 32 discriminator 1 view .LVU16
+  86 0026 6345     		cmp	r3, ip
+  87 0028 F6D3     		bcc	.L3
+  88              	.LBE2:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     }
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     unsigned int *bss_start = &_sbss;
+  89              		.loc 1 33 5 view .LVU17
+  90              	.LVL6:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     unsigned int *bss_end = &_ebss;
+  91              		.loc 1 34 5 view .LVU18
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     size = (unsigned int)(bss_end - bss_start);
+  92              		.loc 1 35 5 view .LVU19
+  93              		.loc 1 35 35 is_stmt 0 view .LVU20
+  94 002a 104B     		ldr	r3, .L8+12
+  95              	.LVL7:
+  96              		.loc 1 35 35 view .LVU21
+  97 002c 104A     		ldr	r2, .L8+16
+  98 002e A3EB020C 		sub	ip, r3, r2
+  99              	.LVL8:
+ 100              		.loc 1 35 35 view .LVU22
+ 101 0032 4FEAAC0C 		asr	ip, ip, #2
+ 102              	.LVL9:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+ 103              		.loc 1 36 5 is_stmt 1 view .LVU23
+ 104              	.LBB3:
+ 105              		.loc 1 36 10 view .LVU24
+ 106              		.loc 1 36 23 is_stmt 0 view .LVU25
+ 107 0036 0023     		movs	r3, #0
+ 108              		.loc 1 36 5 view .LVU26
+ 109 0038 04E0     		b	.L4
+ 110              	.LVL10:
+ 111              	.L5:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****         bss_start[i] = 0;
+ 112              		.loc 1 37 9 is_stmt 1 view .LVU27
+ 113              		.loc 1 37 22 is_stmt 0 view .LVU28
+ 114 003a 0D4A     		ldr	r2, .L8+16
+ 115 003c 0021     		movs	r1, #0
+ 116 003e 42F82310 		str	r1, [r2, r3, lsl #2]
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+ 117              		.loc 1 36 41 is_stmt 1 discriminator 3 view .LVU29
+ 118 0042 0133     		adds	r3, r3, #1
+ 119              	.LVL11:
+ 120              	.L4:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     for (unsigned int i = 0; i < size; i++) {
+ 121              		.loc 1 36 32 discriminator 1 view .LVU30
+ 122 0044 6345     		cmp	r3, ip
+ 123 0046 F8D3     		bcc	.L5
+ 124              	.LBE3:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     }
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     __boot_export_table_start= start;
+ 125              		.loc 1 40 5 view .LVU31
+ 126              		.loc 1 40 30 is_stmt 0 view .LVU32
+ 127 0048 0A4B     		ldr	r3, .L8+20
+ARM GAS  /tmp/ccyNY6yM.s 			page 4
+
+
+ 128              	.LVL12:
+ 129              		.loc 1 40 30 view .LVU33
+ 130 004a 1860     		str	r0, [r3]
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     __boot_export_table_end = end;
+ 131              		.loc 1 41 5 is_stmt 1 view .LVU34
+ 132              		.loc 1 41 29 is_stmt 0 view .LVU35
+ 133 004c 0A4B     		ldr	r3, .L8+24
+ 134 004e 1C60     		str	r4, [r3]
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     _put_char = find_symbol_by_fnname_from_bootloader("putchar");
+ 135              		.loc 1 43 5 is_stmt 1 view .LVU36
+ 136              		.loc 1 43 17 is_stmt 0 view .LVU37
+ 137 0050 0A48     		ldr	r0, .L8+28
+ 138              	.LVL13:
+ 139              		.loc 1 43 17 view .LVU38
+ 140 0052 FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 141              	.LVL14:
+ 142              		.loc 1 43 15 discriminator 1 view .LVU39
+ 143 0056 0A4B     		ldr	r3, .L8+32
+ 144 0058 1860     		str	r0, [r3]
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     Kernel_Start();
+ 145              		.loc 1 44 5 is_stmt 1 view .LVU40
+ 146 005a FFF7FEFF 		bl	Kernel_Start
+ 147              	.LVL15:
+ 148              	.L6:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     while(1);
+ 149              		.loc 1 45 5 view .LVU41
+ 150              		.loc 1 45 10 view .LVU42
+ 151 005e FEE7     		b	.L6
+ 152              	.L9:
+ 153              		.align	2
+ 154              	.L8:
+ 155 0060 00000000 		.word	_edata
+ 156 0064 00000000 		.word	_sdata
+ 157 0068 00000000 		.word	_sidata
+ 158 006c 00000000 		.word	_ebss
+ 159 0070 00000000 		.word	_sbss
+ 160 0074 00000000 		.word	__boot_export_table_start
+ 161 0078 00000000 		.word	__boot_export_table_end
+ 162 007c 00000000 		.word	.LC0
+ 163 0080 00000000 		.word	_put_char
+ 164              		.cfi_endproc
+ 165              	.LFE247:
+ 167              		.section	.rodata.NMI_Handler.str1.4,"aMS",%progbits,1
+ 168              		.align	2
+ 169              	.LC1:
+ 170 0000 596F7520 		.ascii	"You have not set NMI_Handler\012\000"
+ 170      68617665 
+ 170      206E6F74 
+ 170      20736574 
+ 170      204E4D49 
+ 171              		.section	.text.NMI_Handler,"ax",%progbits
+ 172              		.align	1
+ 173              		.weak	NMI_Handler
+ 174              		.syntax unified
+ 175              		.thumb
+ 176              		.thumb_func
+ARM GAS  /tmp/ccyNY6yM.s 			page 5
+
+
+ 178              	NMI_Handler:
+ 179              	.LFB248:
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void IRQ_Generic_Handler(void);
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** 
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak NMI_Handler(void){
+ 180              		.loc 1 51 30 view -0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184 0000 08B5     		push	{r3, lr}
+ 185              	.LCFI1:
+ 186              		.cfi_def_cfa_offset 8
+ 187              		.cfi_offset 3, -8
+ 188              		.cfi_offset 14, -4
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set NMI_Handler\n");
+ 189              		.loc 1 52 6 view .LVU44
+ 190 0002 0249     		ldr	r1, .L13
+ 191 0004 0620     		movs	r0, #6
+ 192 0006 FFF7FEFF 		bl	printk
+ 193              	.LVL16:
+ 194              	.L11:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 195              		.loc 1 53 6 view .LVU45
+ 196              		.loc 1 53 16 view .LVU46
+ 197              		.loc 1 53 12 view .LVU47
+ 198 000a FEE7     		b	.L11
+ 199              	.L14:
+ 200              		.align	2
+ 201              	.L13:
+ 202 000c 00000000 		.word	.LC1
+ 203              		.cfi_endproc
+ 204              	.LFE248:
+ 206              		.section	.rodata.HardFault_Handler.str1.4,"aMS",%progbits,1
+ 207              		.align	2
+ 208              	.LC2:
+ 209 0000 596F7520 		.ascii	"You have not set HardFault_Handler\012\000"
+ 209      68617665 
+ 209      206E6F74 
+ 209      20736574 
+ 209      20486172 
+ 210              		.section	.text.HardFault_Handler,"ax",%progbits
+ 211              		.align	1
+ 212              		.weak	HardFault_Handler
+ 213              		.syntax unified
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	HardFault_Handler:
+ 218              	.LFB249:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak HardFault_Handler(void){
+ 219              		.loc 1 55 36 view -0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccyNY6yM.s 			page 6
+
+
+ 223 0000 08B5     		push	{r3, lr}
+ 224              	.LCFI2:
+ 225              		.cfi_def_cfa_offset 8
+ 226              		.cfi_offset 3, -8
+ 227              		.cfi_offset 14, -4
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set HardFault_Handler\n");
+ 228              		.loc 1 56 6 view .LVU49
+ 229 0002 0249     		ldr	r1, .L18
+ 230 0004 0620     		movs	r0, #6
+ 231 0006 FFF7FEFF 		bl	printk
+ 232              	.LVL17:
+ 233              	.L16:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 234              		.loc 1 57 6 view .LVU50
+ 235              		.loc 1 57 16 view .LVU51
+ 236              		.loc 1 57 12 view .LVU52
+ 237 000a FEE7     		b	.L16
+ 238              	.L19:
+ 239              		.align	2
+ 240              	.L18:
+ 241 000c 00000000 		.word	.LC2
+ 242              		.cfi_endproc
+ 243              	.LFE249:
+ 245              		.section	.rodata.MemManage_Handler.str1.4,"aMS",%progbits,1
+ 246              		.align	2
+ 247              	.LC3:
+ 248 0000 596F7520 		.ascii	"You have not set MemManage_Handler\012\000"
+ 248      68617665 
+ 248      206E6F74 
+ 248      20736574 
+ 248      204D656D 
+ 249              		.section	.text.MemManage_Handler,"ax",%progbits
+ 250              		.align	1
+ 251              		.weak	MemManage_Handler
+ 252              		.syntax unified
+ 253              		.thumb
+ 254              		.thumb_func
+ 256              	MemManage_Handler:
+ 257              	.LFB250:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak MemManage_Handler(void){
+ 258              		.loc 1 59 36 view -0
+ 259              		.cfi_startproc
+ 260              		@ args = 0, pretend = 0, frame = 0
+ 261              		@ frame_needed = 0, uses_anonymous_args = 0
+ 262 0000 08B5     		push	{r3, lr}
+ 263              	.LCFI3:
+ 264              		.cfi_def_cfa_offset 8
+ 265              		.cfi_offset 3, -8
+ 266              		.cfi_offset 14, -4
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set MemManage_Handler\n");
+ 267              		.loc 1 60 6 view .LVU54
+ 268 0002 0249     		ldr	r1, .L23
+ 269 0004 0620     		movs	r0, #6
+ 270 0006 FFF7FEFF 		bl	printk
+ 271              	.LVL18:
+ 272              	.L21:
+ARM GAS  /tmp/ccyNY6yM.s 			page 7
+
+
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 273              		.loc 1 61 6 view .LVU55
+ 274              		.loc 1 61 16 view .LVU56
+ 275              		.loc 1 61 12 view .LVU57
+ 276 000a FEE7     		b	.L21
+ 277              	.L24:
+ 278              		.align	2
+ 279              	.L23:
+ 280 000c 00000000 		.word	.LC3
+ 281              		.cfi_endproc
+ 282              	.LFE250:
+ 284              		.section	.rodata.BusFault_Handler.str1.4,"aMS",%progbits,1
+ 285              		.align	2
+ 286              	.LC4:
+ 287 0000 596F7520 		.ascii	"You have not set BusFault_Handler\012\000"
+ 287      68617665 
+ 287      206E6F74 
+ 287      20736574 
+ 287      20427573 
+ 288              		.section	.text.BusFault_Handler,"ax",%progbits
+ 289              		.align	1
+ 290              		.weak	BusFault_Handler
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	BusFault_Handler:
+ 296              	.LFB251:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak BusFault_Handler(void){
+ 297              		.loc 1 63 35 view -0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301 0000 08B5     		push	{r3, lr}
+ 302              	.LCFI4:
+ 303              		.cfi_def_cfa_offset 8
+ 304              		.cfi_offset 3, -8
+ 305              		.cfi_offset 14, -4
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set BusFault_Handler\n");
+ 306              		.loc 1 64 6 view .LVU59
+ 307 0002 0249     		ldr	r1, .L28
+ 308 0004 0620     		movs	r0, #6
+ 309 0006 FFF7FEFF 		bl	printk
+ 310              	.LVL19:
+ 311              	.L26:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 312              		.loc 1 65 6 view .LVU60
+ 313              		.loc 1 65 16 view .LVU61
+ 314              		.loc 1 65 12 view .LVU62
+ 315 000a FEE7     		b	.L26
+ 316              	.L29:
+ 317              		.align	2
+ 318              	.L28:
+ 319 000c 00000000 		.word	.LC4
+ 320              		.cfi_endproc
+ 321              	.LFE251:
+ 323              		.section	.rodata.UsageFault_Handler.str1.4,"aMS",%progbits,1
+ARM GAS  /tmp/ccyNY6yM.s 			page 8
+
+
+ 324              		.align	2
+ 325              	.LC5:
+ 326 0000 596F7520 		.ascii	"You have not set UsageFault_Handler\012\000"
+ 326      68617665 
+ 326      206E6F74 
+ 326      20736574 
+ 326      20557361 
+ 327              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 328              		.align	1
+ 329              		.weak	UsageFault_Handler
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 334              	UsageFault_Handler:
+ 335              	.LFB252:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak UsageFault_Handler(void){
+ 336              		.loc 1 67 37 view -0
+ 337              		.cfi_startproc
+ 338              		@ args = 0, pretend = 0, frame = 0
+ 339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340 0000 08B5     		push	{r3, lr}
+ 341              	.LCFI5:
+ 342              		.cfi_def_cfa_offset 8
+ 343              		.cfi_offset 3, -8
+ 344              		.cfi_offset 14, -4
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set UsageFault_Handler\n");
+ 345              		.loc 1 68 6 view .LVU64
+ 346 0002 0249     		ldr	r1, .L33
+ 347 0004 0620     		movs	r0, #6
+ 348 0006 FFF7FEFF 		bl	printk
+ 349              	.LVL20:
+ 350              	.L31:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 351              		.loc 1 69 6 view .LVU65
+ 352              		.loc 1 69 16 view .LVU66
+ 353              		.loc 1 69 12 view .LVU67
+ 354 000a FEE7     		b	.L31
+ 355              	.L34:
+ 356              		.align	2
+ 357              	.L33:
+ 358 000c 00000000 		.word	.LC5
+ 359              		.cfi_endproc
+ 360              	.LFE252:
+ 362              		.section	.rodata.SVC_Handler.str1.4,"aMS",%progbits,1
+ 363              		.align	2
+ 364              	.LC6:
+ 365 0000 596F7520 		.ascii	"You have not set SVC_Handler\012\000"
+ 365      68617665 
+ 365      206E6F74 
+ 365      20736574 
+ 365      20535643 
+ 366              		.section	.text.SVC_Handler,"ax",%progbits
+ 367              		.align	1
+ 368              		.weak	SVC_Handler
+ 369              		.syntax unified
+ 370              		.thumb
+ARM GAS  /tmp/ccyNY6yM.s 			page 9
+
+
+ 371              		.thumb_func
+ 373              	SVC_Handler:
+ 374              	.LFB253:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak SVC_Handler(void){
+ 375              		.loc 1 71 30 view -0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 0
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379 0000 08B5     		push	{r3, lr}
+ 380              	.LCFI6:
+ 381              		.cfi_def_cfa_offset 8
+ 382              		.cfi_offset 3, -8
+ 383              		.cfi_offset 14, -4
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set SVC_Handler\n");
+ 384              		.loc 1 72 6 view .LVU69
+ 385 0002 0249     		ldr	r1, .L38
+ 386 0004 0620     		movs	r0, #6
+ 387 0006 FFF7FEFF 		bl	printk
+ 388              	.LVL21:
+ 389              	.L36:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 390              		.loc 1 73 6 view .LVU70
+ 391              		.loc 1 73 16 view .LVU71
+ 392              		.loc 1 73 12 view .LVU72
+ 393 000a FEE7     		b	.L36
+ 394              	.L39:
+ 395              		.align	2
+ 396              	.L38:
+ 397 000c 00000000 		.word	.LC6
+ 398              		.cfi_endproc
+ 399              	.LFE253:
+ 401              		.section	.rodata.DebugMon_Handler.str1.4,"aMS",%progbits,1
+ 402              		.align	2
+ 403              	.LC7:
+ 404 0000 596F7520 		.ascii	"You have not set DebugMon_Handler\012\000"
+ 404      68617665 
+ 404      206E6F74 
+ 404      20736574 
+ 404      20446562 
+ 405              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 406              		.align	1
+ 407              		.weak	DebugMon_Handler
+ 408              		.syntax unified
+ 409              		.thumb
+ 410              		.thumb_func
+ 412              	DebugMon_Handler:
+ 413              	.LFB254:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak DebugMon_Handler(void){
+ 414              		.loc 1 75 35 view -0
+ 415              		.cfi_startproc
+ 416              		@ args = 0, pretend = 0, frame = 0
+ 417              		@ frame_needed = 0, uses_anonymous_args = 0
+ 418 0000 08B5     		push	{r3, lr}
+ 419              	.LCFI7:
+ 420              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccyNY6yM.s 			page 10
+
+
+ 421              		.cfi_offset 3, -8
+ 422              		.cfi_offset 14, -4
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set DebugMon_Handler\n");
+ 423              		.loc 1 76 6 view .LVU74
+ 424 0002 0249     		ldr	r1, .L43
+ 425 0004 0620     		movs	r0, #6
+ 426 0006 FFF7FEFF 		bl	printk
+ 427              	.LVL22:
+ 428              	.L41:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****     while (1){}
+ 429              		.loc 1 77 5 view .LVU75
+ 430              		.loc 1 77 15 view .LVU76
+ 431              		.loc 1 77 11 view .LVU77
+ 432 000a FEE7     		b	.L41
+ 433              	.L44:
+ 434              		.align	2
+ 435              	.L43:
+ 436 000c 00000000 		.word	.LC7
+ 437              		.cfi_endproc
+ 438              	.LFE254:
+ 440              		.section	.rodata.PendSV_Handler.str1.4,"aMS",%progbits,1
+ 441              		.align	2
+ 442              	.LC8:
+ 443 0000 596F7520 		.ascii	"You have not set PendSV_Handler\012\000"
+ 443      68617665 
+ 443      206E6F74 
+ 443      20736574 
+ 443      2050656E 
+ 444              		.section	.text.PendSV_Handler,"ax",%progbits
+ 445              		.align	1
+ 446              		.weak	PendSV_Handler
+ 447              		.syntax unified
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	PendSV_Handler:
+ 452              	.LFB255:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak PendSV_Handler(void){
+ 453              		.loc 1 79 33 view -0
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 0
+ 456              		@ frame_needed = 0, uses_anonymous_args = 0
+ 457 0000 08B5     		push	{r3, lr}
+ 458              	.LCFI8:
+ 459              		.cfi_def_cfa_offset 8
+ 460              		.cfi_offset 3, -8
+ 461              		.cfi_offset 14, -4
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set PendSV_Handler\n");
+ 462              		.loc 1 80 6 view .LVU79
+ 463 0002 0249     		ldr	r1, .L48
+ 464 0004 0620     		movs	r0, #6
+ 465 0006 FFF7FEFF 		bl	printk
+ 466              	.LVL23:
+ 467              	.L46:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 468              		.loc 1 81 6 view .LVU80
+ 469              		.loc 1 81 16 view .LVU81
+ARM GAS  /tmp/ccyNY6yM.s 			page 11
+
+
+ 470              		.loc 1 81 12 view .LVU82
+ 471 000a FEE7     		b	.L46
+ 472              	.L49:
+ 473              		.align	2
+ 474              	.L48:
+ 475 000c 00000000 		.word	.LC8
+ 476              		.cfi_endproc
+ 477              	.LFE255:
+ 479              		.section	.rodata.SysTick_Handler.str1.4,"aMS",%progbits,1
+ 480              		.align	2
+ 481              	.LC9:
+ 482 0000 596F7520 		.ascii	"You have not set SysTick_Handler\012\000"
+ 482      68617665 
+ 482      206E6F74 
+ 482      20736574 
+ 482      20537973 
+ 483              		.section	.text.SysTick_Handler,"ax",%progbits
+ 484              		.align	1
+ 485              		.weak	SysTick_Handler
+ 486              		.syntax unified
+ 487              		.thumb
+ 488              		.thumb_func
+ 490              	SysTick_Handler:
+ 491              	.LFB256:
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak SysTick_Handler(void){
+ 492              		.loc 1 83 34 view -0
+ 493              		.cfi_startproc
+ 494              		@ args = 0, pretend = 0, frame = 0
+ 495              		@ frame_needed = 0, uses_anonymous_args = 0
+ 496 0000 08B5     		push	{r3, lr}
+ 497              	.LCFI9:
+ 498              		.cfi_def_cfa_offset 8
+ 499              		.cfi_offset 3, -8
+ 500              		.cfi_offset 14, -4
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "You have not set SysTick_Handler\n");
+ 501              		.loc 1 84 6 view .LVU84
+ 502 0002 0249     		ldr	r1, .L53
+ 503 0004 0620     		movs	r0, #6
+ 504 0006 FFF7FEFF 		bl	printk
+ 505              	.LVL24:
+ 506              	.L51:
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 507              		.loc 1 85 6 view .LVU85
+ 508              		.loc 1 85 16 view .LVU86
+ 509              		.loc 1 85 12 view .LVU87
+ 510 000a FEE7     		b	.L51
+ 511              	.L54:
+ 512              		.align	2
+ 513              	.L53:
+ 514 000c 00000000 		.word	.LC9
+ 515              		.cfi_endproc
+ 516              	.LFE256:
+ 518              		.section	.rodata.Unknow_Handler.str1.4,"aMS",%progbits,1
+ 519              		.align	2
+ 520              	.LC10:
+ 521 0000 556E6B6E 		.ascii	"Unknow Interrupte\012\000"
+ARM GAS  /tmp/ccyNY6yM.s 			page 12
+
+
+ 521      6F772049 
+ 521      6E746572 
+ 521      72757074 
+ 521      650A00
+ 522              		.section	.text.Unknow_Handler,"ax",%progbits
+ 523              		.align	1
+ 524              		.weak	Unknow_Handler
+ 525              		.syntax unified
+ 526              		.thumb
+ 527              		.thumb_func
+ 529              	Unknow_Handler:
+ 530              	.LFB257:
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** }
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c **** void __weak Unknow_Handler(void){
+ 531              		.loc 1 87 33 view -0
+ 532              		.cfi_startproc
+ 533              		@ args = 0, pretend = 0, frame = 0
+ 534              		@ frame_needed = 0, uses_anonymous_args = 0
+ 535 0000 08B5     		push	{r3, lr}
+ 536              	.LCFI10:
+ 537              		.cfi_def_cfa_offset 8
+ 538              		.cfi_offset 3, -8
+ 539              		.cfi_offset 14, -4
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      printk(KERN_INFO "Unknow Interrupte\n");
+ 540              		.loc 1 88 6 view .LVU89
+ 541 0002 0249     		ldr	r1, .L58
+ 542 0004 0620     		movs	r0, #6
+ 543 0006 FFF7FEFF 		bl	printk
+ 544              	.LVL25:
+ 545              	.L56:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/start/Default_handler.c ****      while (1){}
+ 546              		.loc 1 89 6 view .LVU90
+ 547              		.loc 1 89 16 view .LVU91
+ 548              		.loc 1 89 12 view .LVU92
+ 549 000a FEE7     		b	.L56
+ 550              	.L59:
+ 551              		.align	2
+ 552              	.L58:
+ 553 000c 00000000 		.word	.LC10
+ 554              		.cfi_endproc
+ 555              	.LFE257:
+ 557              		.global	g_pfnVectors
+ 558              		.section	.isr_vector,"aw"
+ 559              		.align	2
+ 562              	g_pfnVectors:
+ 563 0000 00000000 		.word	_estack
+ 564 0004 00000000 		.word	Reset_Handler
+ 565 0008 00000000 		.word	NMI_Handler
+ 566 000c 00000000 		.word	HardFault_Handler
+ 567 0010 00000000 		.word	MemManage_Handler
+ 568 0014 00000000 		.word	BusFault_Handler
+ 569 0018 00000000 		.word	UsageFault_Handler
+ 570 001c 00000000 		.word	Unknow_Handler
+ 571 0020 00000000 		.word	Unknow_Handler
+ 572 0024 00000000 		.word	Unknow_Handler
+ 573 0028 00000000 		.word	Unknow_Handler
+ 574 002c 00000000 		.word	SVC_Handler
+ARM GAS  /tmp/ccyNY6yM.s 			page 13
+
+
+ 575 0030 00000000 		.word	DebugMon_Handler
+ 576 0034 00000000 		.word	Unknow_Handler
+ 577 0038 00000000 		.word	PendSV_Handler
+ 578 003c 00000000 		.word	SysTick_Handler
+ 579 0040 00000000 		.word	IRQ_Generic_Handler
+ 580 0044 00000000 		.word	IRQ_Generic_Handler
+ 581 0048 00000000 		.word	IRQ_Generic_Handler
+ 582 004c 00000000 		.word	IRQ_Generic_Handler
+ 583 0050 00000000 		.word	IRQ_Generic_Handler
+ 584 0054 00000000 		.word	IRQ_Generic_Handler
+ 585 0058 00000000 		.word	IRQ_Generic_Handler
+ 586 005c 00000000 		.word	IRQ_Generic_Handler
+ 587 0060 00000000 		.word	IRQ_Generic_Handler
+ 588 0064 00000000 		.word	IRQ_Generic_Handler
+ 589 0068 00000000 		.word	IRQ_Generic_Handler
+ 590 006c 00000000 		.word	IRQ_Generic_Handler
+ 591 0070 00000000 		.word	IRQ_Generic_Handler
+ 592 0074 00000000 		.word	IRQ_Generic_Handler
+ 593 0078 00000000 		.word	IRQ_Generic_Handler
+ 594 007c 00000000 		.word	IRQ_Generic_Handler
+ 595 0080 00000000 		.word	IRQ_Generic_Handler
+ 596 0084 00000000 		.word	IRQ_Generic_Handler
+ 597 0088 00000000 		.word	IRQ_Generic_Handler
+ 598 008c 00000000 		.word	IRQ_Generic_Handler
+ 599 0090 00000000 		.word	IRQ_Generic_Handler
+ 600 0094 00000000 		.word	IRQ_Generic_Handler
+ 601 0098 00000000 		.word	IRQ_Generic_Handler
+ 602 009c 00000000 		.word	IRQ_Generic_Handler
+ 603 00a0 00000000 		.word	IRQ_Generic_Handler
+ 604 00a4 00000000 		.word	IRQ_Generic_Handler
+ 605 00a8 00000000 		.word	IRQ_Generic_Handler
+ 606 00ac 00000000 		.word	IRQ_Generic_Handler
+ 607 00b0 00000000 		.word	IRQ_Generic_Handler
+ 608 00b4 00000000 		.word	IRQ_Generic_Handler
+ 609 00b8 00000000 		.word	IRQ_Generic_Handler
+ 610 00bc 00000000 		.word	IRQ_Generic_Handler
+ 611 00c0 00000000 		.word	IRQ_Generic_Handler
+ 612 00c4 00000000 		.word	IRQ_Generic_Handler
+ 613 00c8 00000000 		.word	IRQ_Generic_Handler
+ 614 00cc 00000000 		.word	IRQ_Generic_Handler
+ 615 00d0 00000000 		.word	IRQ_Generic_Handler
+ 616 00d4 00000000 		.word	IRQ_Generic_Handler
+ 617 00d8 00000000 		.word	IRQ_Generic_Handler
+ 618 00dc 00000000 		.word	IRQ_Generic_Handler
+ 619 00e0 00000000 		.word	IRQ_Generic_Handler
+ 620 00e4 00000000 		.word	IRQ_Generic_Handler
+ 621 00e8 00000000 		.word	IRQ_Generic_Handler
+ 622 00ec 00000000 		.word	IRQ_Generic_Handler
+ 623 00f0 00000000 		.word	IRQ_Generic_Handler
+ 624 00f4 00000000 		.word	IRQ_Generic_Handler
+ 625 00f8 00000000 		.word	IRQ_Generic_Handler
+ 626 00fc 00000000 		.word	IRQ_Generic_Handler
+ 627 0100 00000000 		.word	IRQ_Generic_Handler
+ 628 0104 00000000 		.word	IRQ_Generic_Handler
+ 629 0108 00000000 		.word	IRQ_Generic_Handler
+ 630              		.global	__boot_export_table_end
+ 631              		.section	.bss.__boot_export_table_end,"aw",%nobits
+ARM GAS  /tmp/ccyNY6yM.s 			page 14
+
+
+ 632              		.align	2
+ 635              	__boot_export_table_end:
+ 636 0000 00000000 		.space	4
+ 637              		.global	__boot_export_table_start
+ 638              		.section	.bss.__boot_export_table_start,"aw",%nobits
+ 639              		.align	2
+ 642              	__boot_export_table_start:
+ 643 0000 00000000 		.space	4
+ 644              		.global	_put_char
+ 645              		.section	.bss._put_char,"aw",%nobits
+ 646              		.align	2
+ 649              	_put_char:
+ 650 0000 00000000 		.space	4
+ 651              		.text
+ 652              	.Letext0:
+ 653              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 654              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 655              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 656              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ARM GAS  /tmp/ccyNY6yM.s 			page 15
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Default_handler.c
+     /tmp/ccyNY6yM.s:22     .rodata.Reset_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:26     .text.Reset_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:32     .text.Reset_Handler:00000000 Reset_Handler
+     /tmp/ccyNY6yM.s:155    .text.Reset_Handler:00000060 $d
+     /tmp/ccyNY6yM.s:642    .bss.__boot_export_table_start:00000000 __boot_export_table_start
+     /tmp/ccyNY6yM.s:635    .bss.__boot_export_table_end:00000000 __boot_export_table_end
+     /tmp/ccyNY6yM.s:649    .bss._put_char:00000000 _put_char
+     /tmp/ccyNY6yM.s:168    .rodata.NMI_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:172    .text.NMI_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:178    .text.NMI_Handler:00000000 NMI_Handler
+     /tmp/ccyNY6yM.s:202    .text.NMI_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:207    .rodata.HardFault_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:211    .text.HardFault_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:217    .text.HardFault_Handler:00000000 HardFault_Handler
+     /tmp/ccyNY6yM.s:241    .text.HardFault_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:246    .rodata.MemManage_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:250    .text.MemManage_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:256    .text.MemManage_Handler:00000000 MemManage_Handler
+     /tmp/ccyNY6yM.s:280    .text.MemManage_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:285    .rodata.BusFault_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:289    .text.BusFault_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:295    .text.BusFault_Handler:00000000 BusFault_Handler
+     /tmp/ccyNY6yM.s:319    .text.BusFault_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:324    .rodata.UsageFault_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:328    .text.UsageFault_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:334    .text.UsageFault_Handler:00000000 UsageFault_Handler
+     /tmp/ccyNY6yM.s:358    .text.UsageFault_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:363    .rodata.SVC_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:367    .text.SVC_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:373    .text.SVC_Handler:00000000 SVC_Handler
+     /tmp/ccyNY6yM.s:397    .text.SVC_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:402    .rodata.DebugMon_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:406    .text.DebugMon_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:412    .text.DebugMon_Handler:00000000 DebugMon_Handler
+     /tmp/ccyNY6yM.s:436    .text.DebugMon_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:441    .rodata.PendSV_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:445    .text.PendSV_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:451    .text.PendSV_Handler:00000000 PendSV_Handler
+     /tmp/ccyNY6yM.s:475    .text.PendSV_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:480    .rodata.SysTick_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:484    .text.SysTick_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:490    .text.SysTick_Handler:00000000 SysTick_Handler
+     /tmp/ccyNY6yM.s:514    .text.SysTick_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:519    .rodata.Unknow_Handler.str1.4:00000000 $d
+     /tmp/ccyNY6yM.s:523    .text.Unknow_Handler:00000000 $t
+     /tmp/ccyNY6yM.s:529    .text.Unknow_Handler:00000000 Unknow_Handler
+     /tmp/ccyNY6yM.s:553    .text.Unknow_Handler:0000000c $d
+     /tmp/ccyNY6yM.s:562    .isr_vector:00000000 g_pfnVectors
+     /tmp/ccyNY6yM.s:559    .isr_vector:00000000 $d
+     /tmp/ccyNY6yM.s:632    .bss.__boot_export_table_end:00000000 $d
+     /tmp/ccyNY6yM.s:639    .bss.__boot_export_table_start:00000000 $d
+     /tmp/ccyNY6yM.s:646    .bss._put_char:00000000 $d
+     /tmp/ccyNY6yM.s:2252   .text.Reset_Handler:00000084 $d
+
+UNDEFINED SYMBOLS
+ARM GAS  /tmp/ccyNY6yM.s 			page 16
+
+
+_estack
+find_symbol_by_fnname_from_bootloader
+Kernel_Start
+_edata
+_sdata
+_sidata
+_ebss
+_sbss
+printk
+IRQ_Generic_Handler

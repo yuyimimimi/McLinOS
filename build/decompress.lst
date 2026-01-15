@@ -1,0 +1,151 @@
+ARM GAS  /tmp/ccio4Q8K.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"decompress.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c
+  21              		.section	.text.do_decompress,"ax",%progbits
+  22              		.align	1
+  23              		.global	do_decompress
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	do_decompress:
+  29              	.LVL0:
+  30              	.LFB3:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #define _LINUX_STRING_H_
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include <linux/compiler.h>	/* for inline */
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include <linux/types.h>	/* for size_t */
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include <linux/stddef.h>	/* for NULL */
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include <linux/linkage.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include <asm/string.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "misc.h"
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #define STATIC static
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #define STATIC_RW_DATA	/* non-static please */
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** /* Diagnostic functions */
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef DEBUG
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Assert(cond,msg) {if(!(cond)) error(msg);}
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Trace(x) fprintf x
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracev(x) {if (verbose) fprintf x ;}
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracevv(x) {if (verbose>1) fprintf x ;}
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracec(c,x) {if (verbose && (c)) fprintf x ;}
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracecv(c,x) {if (verbose>1 && (c)) fprintf x ;}
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #else
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Assert(cond,msg)
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Trace(x)
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracev(x)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracevv(x)
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracec(c,x)
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #  define Tracecv(c,x)
+ARM GAS  /tmp/ccio4Q8K.s 			page 2
+
+
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** /* Not needed, but used in some headers pulled in by decompressors */
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** extern char * strstr(const char * s1, const char *s2);
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** extern size_t strlen(const char *s);
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** extern int strcmp(const char *cs, const char *ct);
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** extern int memcmp(const void *cs, const void *ct, size_t count);
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** extern char * strchrnul(const char *, int);
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_GZIP
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_inflate.c"
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZO
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlzo.c"
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZMA
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlzma.c"
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_XZ
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** /* Prevent KASAN override of string helpers in decompressor */
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #undef memmove
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #define memmove memmove
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #undef memcpy
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #define memcpy memcpy
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unxz.c"
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #ifdef CONFIG_KERNEL_LZ4
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #include "../../../../lib/decompress_unlz4.c"
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** #endif
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** int do_decompress(u8 *input, int len, u8 *output, void (*error)(char *x))
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** {
+  31              		.loc 1 64 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 64 1 is_stmt 0 view .LVU1
+  36 0000 00B5     		push	{lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 14, -4
+  40 0002 85B0     		sub	sp, sp, #20
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 24
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** 	return __decompress(input, len, NULL, NULL, output, 0, NULL, error);
+  43              		.loc 1 65 2 is_stmt 1 view .LVU2
+  44              		.loc 1 65 9 is_stmt 0 view .LVU3
+  45 0004 0393     		str	r3, [sp, #12]
+  46 0006 0023     		movs	r3, #0
+  47              	.LVL1:
+  48              		.loc 1 65 9 view .LVU4
+  49 0008 0293     		str	r3, [sp, #8]
+  50 000a 0193     		str	r3, [sp, #4]
+ARM GAS  /tmp/ccio4Q8K.s 			page 3
+
+
+  51 000c 0092     		str	r2, [sp]
+  52 000e 1A46     		mov	r2, r3
+  53              	.LVL2:
+  54              		.loc 1 65 9 view .LVU5
+  55 0010 FFF7FEFF 		bl	__decompress
+  56              	.LVL3:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/decompress.c **** }
+  57              		.loc 1 66 1 view .LVU6
+  58 0014 05B0     		add	sp, sp, #20
+  59              	.LCFI2:
+  60              		.cfi_def_cfa_offset 4
+  61              		@ sp needed
+  62 0016 5DF804FB 		ldr	pc, [sp], #4
+  63              		.cfi_endproc
+  64              	.LFE3:
+  66              		.text
+  67              	.Letext0:
+  68              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ARM GAS  /tmp/ccio4Q8K.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 decompress.c
+     /tmp/ccio4Q8K.s:22     .text.do_decompress:00000000 $t
+     /tmp/ccio4Q8K.s:28     .text.do_decompress:00000000 do_decompress
+
+UNDEFINED SYMBOLS
+__decompress

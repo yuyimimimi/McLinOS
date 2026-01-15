@@ -1,12 +1,14 @@
 #ifndef __LINUX_SCHED_H_
 #define __LINUX_SCHED_H_
 
+
 #include <linux/time.h>
 #include <linux/list.h>
 #include <asm/sched.h>
 
+
 #define defauld_thread_priority      8
-#define defauld_Task_watch_dog_tick  1000
+#define defauld_Task_watch_dog_tick  1000 
 #define task_struct_magic            123456
 #define task_name_max_len            64
 enum task_state {
@@ -15,14 +17,20 @@ enum task_state {
     TASK_WAITING = 3,     //等待
     TASK_BLOCKED = 4,     //完全阻塞
     TASK_RUNNING = 5,     //运行
-    TASK_DEAD    = 6,     //死亡
+    TASK_DEAD    = 6,     //死亡(不会被立即清理)
     TASK_BROKEN  = 7,     //任务内部发生致命错误
 };
+enum script {
+    WAITING_SON_TASK = 0
+};
 
+atomic_t;
 struct task_struct 
 {
     uint32_t           magic;
     uint32_t           id;               //任务ID
+    uint32_t           pid;   
+    
     char               task_name[task_name_max_len];         
     char*              comm;
     
@@ -41,9 +49,16 @@ struct task_struct
 
     struct task_struct *priv;
     struct task_struct *next;
-    struct task_struct *father;
-    uint32_t offset;
     
+        enum script script;         //用于标识执行模式
+        struct list_head children;
+        struct list_head task_node; //用于添加到全局链表或死亡链表
+        struct list_head this_task_node; //用于添加到父进程链表中
+        atomic_t use_count;
+        struct task_struct *parent;
+    
+
+    uint32_t offset;
 };
 
 struct task_pool_operations {
@@ -68,6 +83,7 @@ enum scheduler_block_flag {
 #define scheduler_scheduler  0x123456
 struct scheduler
 {
+    uint64_t            scheduler_timer;
     uint32_t                      magic;
     void                   *s_task_pool;
     uint32_t                     s_core;
@@ -80,7 +96,7 @@ struct scheduler
 
 void exit();
 void sched(void);
-void i_sched(void); //只能在特权指令下使用
+int i_sched(void); //只能在特权指令下使用
 void block_scheduler(struct scheduler *s);
 void run_scheduler(struct scheduler *s);
 void start_all_scheduler(void);

@@ -1,0 +1,827 @@
+ARM GAS  /tmp/ccDtq35x.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"msp_init.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_
+  21              		.section	.text.multicore_doorbell_irq_num,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	multicore_doorbell_irq_num:
+  28              	.LVL0:
+  29              	.LFB154:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** #include <linux/types.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** #include <linux/irqflags.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** #include <linux/symbl.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** extern void current_sched_start();
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** int i_sched();
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static void (*hard_multicore_fifo_push_blocking)(uint32_t data) = NULL;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static int (*hard_multicore_doorbell_claim_unused)(uint core_mask, bool required) = NULL;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static void (*hard_multicore_doorbell_set_other_core)(uint doorbell_num) = NULL ;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static void (*hard_multicore_doorbell_clear_current_core)(uint doorbell_num) = NULL;
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static uint (*hard_multicore_doorbell_irq_num)(uint doorbell_num) = NULL;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** void multicore_fifo_push_blocking(uint32_t data){
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_fifo_push_blocking != NULL)
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_fifo_push_blocking(data);
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     else{
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         pr_err("can not find symbol:multicore_fifo_push_blocking\n");
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     }
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** int multicore_doorbell_claim_unused(uint core_mask, bool required)
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_claim_unused!= NULL)
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_claim_unused(core_mask,required);
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ARM GAS  /tmp/ccDtq35x.s 			page 2
+
+
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** void multicore_doorbell_set_other_core(uint doorbell_num) 
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_set_other_core!= NULL)
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_set_other_core(doorbell_num);
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** void multicore_doorbell_clear_current_core(uint doorbell_num)
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_clear_current_core!= NULL)
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_clear_current_core(doorbell_num);
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static uint multicore_doorbell_irq_num(uint doorbell_num)
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  30              		.loc 1 44 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 44 1 is_stmt 0 view .LVU1
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_irq_num != NULL)
+  40              		.loc 1 45 5 is_stmt 1 view .LVU2
+  41              		.loc 1 45 40 is_stmt 0 view .LVU3
+  42 0002 044B     		ldr	r3, .L5
+  43 0004 1B68     		ldr	r3, [r3]
+  44              		.loc 1 45 7 view .LVU4
+  45 0006 0BB1     		cbz	r3, .L3
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_irq_num(doorbell_num);
+  46              		.loc 1 46 9 is_stmt 1 view .LVU5
+  47              		.loc 1 46 16 is_stmt 0 view .LVU6
+  48 0008 9847     		blx	r3
+  49              	.LVL1:
+  50              	.L1:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  51              		.loc 1 48 1 view .LVU7
+  52 000a 08BD     		pop	{r3, pc}
+  53              	.LVL2:
+  54              	.L3:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+  55              		.loc 1 47 12 view .LVU8
+  56 000c 4FF0FF30 		mov	r0, #-1
+  57              	.LVL3:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+  58              		.loc 1 47 12 view .LVU9
+  59 0010 FBE7     		b	.L1
+  60              	.L6:
+  61 0012 00BF     		.align	2
+  62              	.L5:
+  63 0014 00000000 		.word	hard_multicore_doorbell_irq_num
+  64              		.cfi_endproc
+  65              	.LFE154:
+ARM GAS  /tmp/ccDtq35x.s 			page 3
+
+
+  67              		.section	.rodata.cpu1_start_irq.str1.4,"aMS",%progbits,1
+  68              		.align	2
+  69              	.LC0:
+  70 0000 63707531 		.ascii	"cpu1 start irq\012\000"
+  70      20737461 
+  70      72742069 
+  70      72710A00 
+  71              		.align	2
+  72              	.LC1:
+  73 0010 63707531 		.ascii	"cpu1 start irq %d \012\000"
+  73      20737461 
+  73      72742069 
+  73      72712025 
+  73      64200A00 
+  74              		.align	2
+  75              	.LC2:
+  76 0024 43505531 		.ascii	"CPU1_Scheduler\000"
+  76      5F536368 
+  76      6564756C 
+  76      657200
+  77              		.section	.text.cpu1_start_irq,"ax",%progbits
+  78              		.align	1
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  83              	cpu1_start_irq:
+  84              	.LFB157:
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** void Cpu1_sched_Handler()
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_clear_current_core(0);
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     i_sched();
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** void call_mulit_core_scheduler(int cpu_number)
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(cpu_number == 0)
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     i_sched();
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(cpu_number == 1)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_set_other_core(0);
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** #define NUM_CORES 2u
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** static void cpu1_start_irq()
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+  85              		.loc 1 71 1 is_stmt 1 view -0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89 0000 10B5     		push	{r4, lr}
+  90              	.LCFI1:
+  91              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccDtq35x.s 			page 4
+
+
+  92              		.cfi_offset 4, -8
+  93              		.cfi_offset 14, -4
+  94 0002 82B0     		sub	sp, sp, #8
+  95              	.LCFI2:
+  96              		.cfi_def_cfa_offset 16
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     pr_info("cpu1 start irq\n");
+  97              		.loc 1 72 5 view .LVU11
+  98 0004 0C49     		ldr	r1, .L9
+  99 0006 0620     		movs	r0, #6
+ 100 0008 FFF7FEFF 		bl	printk
+ 101              	.LVL4:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     uint32_t irq = multicore_doorbell_irq_num(0);
+ 102              		.loc 1 73 5 view .LVU12
+ 103              		.loc 1 73 20 is_stmt 0 view .LVU13
+ 104 000c 0020     		movs	r0, #0
+ 105 000e FFF7FEFF 		bl	multicore_doorbell_irq_num
+ 106              	.LVL5:
+ 107 0012 0446     		mov	r4, r0
+ 108              	.LVL6:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     pr_info("cpu1 start irq %d \n",irq);
+ 109              		.loc 1 74 5 is_stmt 1 view .LVU14
+ 110 0014 0246     		mov	r2, r0
+ 111 0016 0949     		ldr	r1, .L9+4
+ 112 0018 0620     		movs	r0, #6
+ 113              	.LVL7:
+ 114              		.loc 1 74 5 is_stmt 0 view .LVU15
+ 115 001a FFF7FEFF 		bl	printk
+ 116              	.LVL8:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     request_irq(irq,Cpu1_sched_Handler,NULL,"CPU1_Scheduler",NULL);   
+ 117              		.loc 1 75 5 is_stmt 1 view .LVU16
+ 118 001e 0022     		movs	r2, #0
+ 119 0020 0092     		str	r2, [sp]
+ 120 0022 074B     		ldr	r3, .L9+8
+ 121 0024 0749     		ldr	r1, .L9+12
+ 122 0026 2046     		mov	r0, r4
+ 123 0028 FFF7FEFF 		bl	request_irq
+ 124              	.LVL9:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     irq_set_enabled(irq, true);
+ 125              		.loc 1 76 5 view .LVU17
+ 126 002c 0121     		movs	r1, #1
+ 127 002e 2046     		mov	r0, r4
+ 128 0030 FFF7FEFF 		bl	irq_set_enabled
+ 129              	.LVL10:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 130              		.loc 1 77 1 is_stmt 0 view .LVU18
+ 131 0034 02B0     		add	sp, sp, #8
+ 132              	.LCFI3:
+ 133              		.cfi_def_cfa_offset 8
+ 134              		@ sp needed
+ 135 0036 10BD     		pop	{r4, pc}
+ 136              	.LVL11:
+ 137              	.L10:
+ 138              		.loc 1 77 1 view .LVU19
+ 139              		.align	2
+ 140              	.L9:
+ 141 0038 00000000 		.word	.LC0
+ 142 003c 10000000 		.word	.LC1
+ARM GAS  /tmp/ccDtq35x.s 			page 5
+
+
+ 143 0040 24000000 		.word	.LC2
+ 144 0044 00000000 		.word	Cpu1_sched_Handler
+ 145              		.cfi_endproc
+ 146              	.LFE157:
+ 148              		.section	.rodata.multicore_fifo_push_blocking.str1.4,"aMS",%progbits,1
+ 149              		.align	2
+ 150              	.LC3:
+ 151 0000 63616E20 		.ascii	"can not find symbol:multicore_fifo_push_blocking\012"
+ 151      6E6F7420 
+ 151      66696E64 
+ 151      2073796D 
+ 151      626F6C3A 
+ 152 0031 00       		.ascii	"\000"
+ 153              		.section	.text.multicore_fifo_push_blocking,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	multicore_fifo_push_blocking
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	multicore_fifo_push_blocking:
+ 161              	.LVL12:
+ 162              	.LFB150:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_fifo_push_blocking != NULL)
+ 163              		.loc 1 15 49 is_stmt 1 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_fifo_push_blocking != NULL)
+ 167              		.loc 1 15 49 is_stmt 0 view .LVU21
+ 168 0000 08B5     		push	{r3, lr}
+ 169              	.LCFI4:
+ 170              		.cfi_def_cfa_offset 8
+ 171              		.cfi_offset 3, -8
+ 172              		.cfi_offset 14, -4
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_fifo_push_blocking(data);
+ 173              		.loc 1 16 5 is_stmt 1 view .LVU22
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_fifo_push_blocking(data);
+ 174              		.loc 1 16 42 is_stmt 0 view .LVU23
+ 175 0002 054B     		ldr	r3, .L15
+ 176 0004 1B68     		ldr	r3, [r3]
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_fifo_push_blocking(data);
+ 177              		.loc 1 16 7 view .LVU24
+ 178 0006 0BB1     		cbz	r3, .L12
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     else{
+ 179              		.loc 1 17 5 is_stmt 1 view .LVU25
+ 180 0008 9847     		blx	r3
+ 181              	.LVL13:
+ 182              	.L11:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 183              		.loc 1 21 1 is_stmt 0 view .LVU26
+ 184 000a 08BD     		pop	{r3, pc}
+ 185              	.LVL14:
+ 186              	.L12:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     }
+ 187              		.loc 1 19 9 is_stmt 1 view .LVU27
+ 188 000c 0349     		ldr	r1, .L15+4
+ 189 000e 0320     		movs	r0, #3
+ARM GAS  /tmp/ccDtq35x.s 			page 6
+
+
+ 190              	.LVL15:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     }
+ 191              		.loc 1 19 9 is_stmt 0 view .LVU28
+ 192 0010 FFF7FEFF 		bl	printk
+ 193              	.LVL16:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 194              		.loc 1 21 1 view .LVU29
+ 195 0014 F9E7     		b	.L11
+ 196              	.L16:
+ 197 0016 00BF     		.align	2
+ 198              	.L15:
+ 199 0018 00000000 		.word	hard_multicore_fifo_push_blocking
+ 200 001c 00000000 		.word	.LC3
+ 201              		.cfi_endproc
+ 202              	.LFE150:
+ 204              		.section	.text.multicore_doorbell_claim_unused,"ax",%progbits
+ 205              		.align	1
+ 206              		.global	multicore_doorbell_claim_unused
+ 207              		.syntax unified
+ 208              		.thumb
+ 209              		.thumb_func
+ 211              	multicore_doorbell_claim_unused:
+ 212              	.LVL17:
+ 213              	.LFB151:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_claim_unused!= NULL)
+ 214              		.loc 1 25 1 is_stmt 1 view -0
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 0
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_claim_unused!= NULL)
+ 218              		.loc 1 25 1 is_stmt 0 view .LVU31
+ 219 0000 08B5     		push	{r3, lr}
+ 220              	.LCFI5:
+ 221              		.cfi_def_cfa_offset 8
+ 222              		.cfi_offset 3, -8
+ 223              		.cfi_offset 14, -4
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_claim_unused(core_mask,required);
+ 224              		.loc 1 26 5 is_stmt 1 view .LVU32
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_claim_unused(core_mask,required);
+ 225              		.loc 1 26 44 is_stmt 0 view .LVU33
+ 226 0002 044B     		ldr	r3, .L21
+ 227 0004 1B68     		ldr	r3, [r3]
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_claim_unused(core_mask,required);
+ 228              		.loc 1 26 7 view .LVU34
+ 229 0006 0BB1     		cbz	r3, .L19
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+ 230              		.loc 1 27 9 is_stmt 1 view .LVU35
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     return -1;
+ 231              		.loc 1 27 16 is_stmt 0 view .LVU36
+ 232 0008 9847     		blx	r3
+ 233              	.LVL18:
+ 234              	.L17:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 235              		.loc 1 29 1 view .LVU37
+ 236 000a 08BD     		pop	{r3, pc}
+ 237              	.LVL19:
+ 238              	.L19:
+ARM GAS  /tmp/ccDtq35x.s 			page 7
+
+
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 239              		.loc 1 28 12 view .LVU38
+ 240 000c 4FF0FF30 		mov	r0, #-1
+ 241              	.LVL20:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 242              		.loc 1 28 12 view .LVU39
+ 243 0010 FBE7     		b	.L17
+ 244              	.L22:
+ 245 0012 00BF     		.align	2
+ 246              	.L21:
+ 247 0014 00000000 		.word	hard_multicore_doorbell_claim_unused
+ 248              		.cfi_endproc
+ 249              	.LFE151:
+ 251              		.section	.text.multicore_doorbell_set_other_core,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	multicore_doorbell_set_other_core
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	multicore_doorbell_set_other_core:
+ 259              	.LVL21:
+ 260              	.LFB152:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_set_other_core!= NULL)
+ 261              		.loc 1 32 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_set_other_core!= NULL)
+ 265              		.loc 1 32 1 is_stmt 0 view .LVU41
+ 266 0000 08B5     		push	{r3, lr}
+ 267              	.LCFI6:
+ 268              		.cfi_def_cfa_offset 8
+ 269              		.cfi_offset 3, -8
+ 270              		.cfi_offset 14, -4
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_set_other_core(doorbell_num);
+ 271              		.loc 1 33 5 is_stmt 1 view .LVU42
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_set_other_core(doorbell_num);
+ 272              		.loc 1 33 46 is_stmt 0 view .LVU43
+ 273 0002 024B     		ldr	r3, .L26
+ 274 0004 1B68     		ldr	r3, [r3]
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_set_other_core(doorbell_num);
+ 275              		.loc 1 33 7 view .LVU44
+ 276 0006 03B1     		cbz	r3, .L23
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 277              		.loc 1 34 9 is_stmt 1 view .LVU45
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 278              		.loc 1 34 16 is_stmt 0 view .LVU46
+ 279 0008 9847     		blx	r3
+ 280              	.LVL22:
+ 281              	.L23:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 282              		.loc 1 35 1 view .LVU47
+ 283 000a 08BD     		pop	{r3, pc}
+ 284              	.L27:
+ 285              		.align	2
+ 286              	.L26:
+ 287 000c 00000000 		.word	hard_multicore_doorbell_set_other_core
+ARM GAS  /tmp/ccDtq35x.s 			page 8
+
+
+ 288              		.cfi_endproc
+ 289              	.LFE152:
+ 291              		.section	.text.multicore_doorbell_clear_current_core,"ax",%progbits
+ 292              		.align	1
+ 293              		.global	multicore_doorbell_clear_current_core
+ 294              		.syntax unified
+ 295              		.thumb
+ 296              		.thumb_func
+ 298              	multicore_doorbell_clear_current_core:
+ 299              	.LVL23:
+ 300              	.LFB153:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_clear_current_core!= NULL)
+ 301              		.loc 1 38 1 is_stmt 1 view -0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(hard_multicore_doorbell_clear_current_core!= NULL)
+ 305              		.loc 1 38 1 is_stmt 0 view .LVU49
+ 306 0000 08B5     		push	{r3, lr}
+ 307              	.LCFI7:
+ 308              		.cfi_def_cfa_offset 8
+ 309              		.cfi_offset 3, -8
+ 310              		.cfi_offset 14, -4
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_clear_current_core(doorbell_num);
+ 311              		.loc 1 39 5 is_stmt 1 view .LVU50
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_clear_current_core(doorbell_num);
+ 312              		.loc 1 39 50 is_stmt 0 view .LVU51
+ 313 0002 024B     		ldr	r3, .L31
+ 314 0004 1B68     		ldr	r3, [r3]
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****         return hard_multicore_doorbell_clear_current_core(doorbell_num);
+ 315              		.loc 1 39 7 view .LVU52
+ 316 0006 03B1     		cbz	r3, .L28
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 317              		.loc 1 40 9 is_stmt 1 view .LVU53
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 318              		.loc 1 40 16 is_stmt 0 view .LVU54
+ 319 0008 9847     		blx	r3
+ 320              	.LVL24:
+ 321              	.L28:
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 322              		.loc 1 41 1 view .LVU55
+ 323 000a 08BD     		pop	{r3, pc}
+ 324              	.L32:
+ 325              		.align	2
+ 326              	.L31:
+ 327 000c 00000000 		.word	hard_multicore_doorbell_clear_current_core
+ 328              		.cfi_endproc
+ 329              	.LFE153:
+ 331              		.section	.text.Cpu1_sched_Handler,"ax",%progbits
+ 332              		.align	1
+ 333              		.global	Cpu1_sched_Handler
+ 334              		.syntax unified
+ 335              		.thumb
+ 336              		.thumb_func
+ 338              	Cpu1_sched_Handler:
+ 339              	.LFB155:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_clear_current_core(0);
+ARM GAS  /tmp/ccDtq35x.s 			page 9
+
+
+ 340              		.loc 1 53 1 is_stmt 1 view -0
+ 341              		.cfi_startproc
+ 342              		@ args = 0, pretend = 0, frame = 0
+ 343              		@ frame_needed = 0, uses_anonymous_args = 0
+ 344 0000 08B5     		push	{r3, lr}
+ 345              	.LCFI8:
+ 346              		.cfi_def_cfa_offset 8
+ 347              		.cfi_offset 3, -8
+ 348              		.cfi_offset 14, -4
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     i_sched();
+ 349              		.loc 1 54 5 view .LVU57
+ 350 0002 0020     		movs	r0, #0
+ 351 0004 FFF7FEFF 		bl	multicore_doorbell_clear_current_core
+ 352              	.LVL25:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 353              		.loc 1 55 5 view .LVU58
+ 354 0008 FFF7FEFF 		bl	i_sched
+ 355              	.LVL26:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 356              		.loc 1 56 1 is_stmt 0 view .LVU59
+ 357 000c 08BD     		pop	{r3, pc}
+ 358              		.cfi_endproc
+ 359              	.LFE155:
+ 361              		.section	.text.call_mulit_core_scheduler,"ax",%progbits
+ 362              		.align	1
+ 363              		.global	call_mulit_core_scheduler
+ 364              		.syntax unified
+ 365              		.thumb
+ 366              		.thumb_func
+ 368              	call_mulit_core_scheduler:
+ 369              	.LVL27:
+ 370              	.LFB156:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(cpu_number == 0)
+ 371              		.loc 1 59 1 is_stmt 1 view -0
+ 372              		.cfi_startproc
+ 373              		@ args = 0, pretend = 0, frame = 0
+ 374              		@ frame_needed = 0, uses_anonymous_args = 0
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(cpu_number == 0)
+ 375              		.loc 1 59 1 is_stmt 0 view .LVU61
+ 376 0000 08B5     		push	{r3, lr}
+ 377              	.LCFI9:
+ 378              		.cfi_def_cfa_offset 8
+ 379              		.cfi_offset 3, -8
+ 380              		.cfi_offset 14, -4
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     i_sched();
+ 381              		.loc 1 60 5 is_stmt 1 view .LVU62
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     i_sched();
+ 382              		.loc 1 60 7 is_stmt 0 view .LVU63
+ 383 0002 10B1     		cbz	r0, .L39
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_set_other_core(0);
+ 384              		.loc 1 62 5 is_stmt 1 view .LVU64
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_set_other_core(0);
+ 385              		.loc 1 62 7 is_stmt 0 view .LVU65
+ 386 0004 0128     		cmp	r0, #1
+ 387 0006 03D0     		beq	.L40
+ 388              	.LVL28:
+ 389              	.L35:
+ARM GAS  /tmp/ccDtq35x.s 			page 10
+
+
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 390              		.loc 1 64 1 view .LVU66
+ 391 0008 08BD     		pop	{r3, pc}
+ 392              	.LVL29:
+ 393              	.L39:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     if(cpu_number == 1)
+ 394              		.loc 1 61 5 is_stmt 1 view .LVU67
+ 395 000a FFF7FEFF 		bl	i_sched
+ 396              	.LVL30:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_doorbell_set_other_core(0);
+ 397              		.loc 1 62 5 view .LVU68
+ 398 000e FBE7     		b	.L35
+ 399              	.LVL31:
+ 400              	.L40:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 401              		.loc 1 63 5 view .LVU69
+ 402 0010 0020     		movs	r0, #0
+ 403              	.LVL32:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 404              		.loc 1 63 5 is_stmt 0 view .LVU70
+ 405 0012 FFF7FEFF 		bl	multicore_doorbell_set_other_core
+ 406              	.LVL33:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+ 407              		.loc 1 64 1 view .LVU71
+ 408 0016 F7E7     		b	.L35
+ 409              		.cfi_endproc
+ 410              	.LFE156:
+ 412              		.section	.rodata.msp_init.str1.4,"aMS",%progbits,1
+ 413              		.align	2
+ 414              	.LC4:
+ 415 0000 73746172 		.ascii	"start cpu 1\012\000"
+ 415      74206370 
+ 415      7520310A 
+ 415      00
+ 416 000d 000000   		.align	2
+ 417              	.LC5:
+ 418 0010 6D756C74 		.ascii	"multicore_doorbell_claim_unused\000"
+ 418      69636F72 
+ 418      655F646F 
+ 418      6F726265 
+ 418      6C6C5F63 
+ 419              		.align	2
+ 420              	.LC6:
+ 421 0030 6D756C74 		.ascii	"multicore_doorbell_set_other_core\000"
+ 421      69636F72 
+ 421      655F646F 
+ 421      6F726265 
+ 421      6C6C5F73 
+ 422 0052 0000     		.align	2
+ 423              	.LC7:
+ 424 0054 6D756C74 		.ascii	"multicore_doorbell_clear_current_core\000"
+ 424      69636F72 
+ 424      655F646F 
+ 424      6F726265 
+ 424      6C6C5F63 
+ 425 007a 0000     		.align	2
+ 426              	.LC8:
+ARM GAS  /tmp/ccDtq35x.s 			page 11
+
+
+ 427 007c 6D756C74 		.ascii	"multicore_doorbell_irq_num\000"
+ 427      69636F72 
+ 427      655F646F 
+ 427      6F726265 
+ 427      6C6C5F69 
+ 428 0097 00       		.align	2
+ 429              	.LC9:
+ 430 0098 6D756C74 		.ascii	"multicore_fifo_push_blocking\000"
+ 430      69636F72 
+ 430      655F6669 
+ 430      666F5F70 
+ 430      7573685F 
+ 431              		.section	.text.msp_init,"ax",%progbits
+ 432              		.align	1
+ 433              		.global	msp_init
+ 434              		.syntax unified
+ 435              		.thumb
+ 436              		.thumb_func
+ 438              	msp_init:
+ 439              	.LFB158:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** int msp_init()
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** {
+ 440              		.loc 1 82 1 is_stmt 1 view -0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 0
+ 443              		@ frame_needed = 0, uses_anonymous_args = 0
+ 444 0000 08B5     		push	{r3, lr}
+ 445              	.LCFI10:
+ 446              		.cfi_def_cfa_offset 8
+ 447              		.cfi_offset 3, -8
+ 448              		.cfi_offset 14, -4
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     pr_info("start cpu 1\n");
+ 449              		.loc 1 83 5 view .LVU73
+ 450 0002 1549     		ldr	r1, .L45
+ 451 0004 0620     		movs	r0, #6
+ 452 0006 FFF7FEFF 		bl	printk
+ 453              	.LVL34:
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_doorbell_claim_unused = find_symbol_by_fnname_from_bootloader("multicore_doorbel
+ 454              		.loc 1 85 5 view .LVU74
+ 455              		.loc 1 85 44 is_stmt 0 view .LVU75
+ 456 000a 1448     		ldr	r0, .L45+4
+ 457 000c FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 458              	.LVL35:
+ 459              		.loc 1 85 42 discriminator 1 view .LVU76
+ 460 0010 134B     		ldr	r3, .L45+8
+ 461 0012 1860     		str	r0, [r3]
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_doorbell_set_other_core = find_symbol_by_fnname_from_bootloader("multicore_doorb
+ 462              		.loc 1 86 5 is_stmt 1 view .LVU77
+ 463              		.loc 1 86 46 is_stmt 0 view .LVU78
+ 464 0014 1348     		ldr	r0, .L45+12
+ 465 0016 FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 466              	.LVL36:
+ 467              		.loc 1 86 44 discriminator 1 view .LVU79
+ARM GAS  /tmp/ccDtq35x.s 			page 12
+
+
+ 468 001a 134B     		ldr	r3, .L45+16
+ 469 001c 1860     		str	r0, [r3]
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_doorbell_clear_current_core = find_symbol_by_fnname_from_bootloader("multicore_d
+ 470              		.loc 1 87 5 is_stmt 1 view .LVU80
+ 471              		.loc 1 87 50 is_stmt 0 view .LVU81
+ 472 001e 1348     		ldr	r0, .L45+20
+ 473 0020 FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 474              	.LVL37:
+ 475              		.loc 1 87 48 discriminator 1 view .LVU82
+ 476 0024 124B     		ldr	r3, .L45+24
+ 477 0026 1860     		str	r0, [r3]
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_doorbell_irq_num = find_symbol_by_fnname_from_bootloader("multicore_doorbell_irq
+ 478              		.loc 1 88 5 is_stmt 1 view .LVU83
+ 479              		.loc 1 88 39 is_stmt 0 view .LVU84
+ 480 0028 1248     		ldr	r0, .L45+28
+ 481 002a FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 482              	.LVL38:
+ 483              		.loc 1 88 37 discriminator 1 view .LVU85
+ 484 002e 124B     		ldr	r3, .L45+32
+ 485 0030 1860     		str	r0, [r3]
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     hard_multicore_fifo_push_blocking = find_symbol_by_fnname_from_bootloader("multicore_fifo_push_
+ 486              		.loc 1 89 5 is_stmt 1 view .LVU86
+ 487              		.loc 1 89 41 is_stmt 0 view .LVU87
+ 488 0032 1248     		ldr	r0, .L45+36
+ 489 0034 FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+ 490              	.LVL39:
+ 491              		.loc 1 89 39 discriminator 1 view .LVU88
+ 492 0038 114B     		ldr	r3, .L45+40
+ 493 003a 1860     		str	r0, [r3]
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** 
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_fifo_push_blocking(cpu1_start_irq);    
+ 494              		.loc 1 91 5 is_stmt 1 view .LVU89
+ 495 003c 1148     		ldr	r0, .L45+44
+ 496 003e FFF7FEFF 		bl	multicore_fifo_push_blocking
+ 497              	.LVL40:
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     multicore_fifo_push_blocking(current_sched_start);
+ 498              		.loc 1 92 5 view .LVU90
+ 499 0042 1148     		ldr	r0, .L45+48
+ 500 0044 FFF7FEFF 		bl	multicore_fifo_push_blocking
+ 501              	.LVL41:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c ****     for(int i =0 ;i <10000000;i++);
+ 502              		.loc 1 93 5 view .LVU91
+ 503              	.LBB2:
+ 504              		.loc 1 93 9 view .LVU92
+ 505              		.loc 1 93 13 is_stmt 0 view .LVU93
+ 506 0048 0023     		movs	r3, #0
+ 507              		.loc 1 93 5 view .LVU94
+ 508 004a 00E0     		b	.L42
+ 509              	.LVL42:
+ 510              	.L43:
+ 511              		.loc 1 93 32 is_stmt 1 discriminator 3 view .LVU95
+ 512 004c 0133     		adds	r3, r3, #1
+ 513              	.LVL43:
+ 514              	.L42:
+ 515              		.loc 1 93 21 discriminator 1 view .LVU96
+ 516 004e 0F4A     		ldr	r2, .L45+52
+ 517 0050 9342     		cmp	r3, r2
+ARM GAS  /tmp/ccDtq35x.s 			page 13
+
+
+ 518 0052 FBDB     		blt	.L43
+ 519              	.LBE2:
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/msp_init.c **** }
+ 520              		.loc 1 94 1 is_stmt 0 view .LVU97
+ 521 0054 08BD     		pop	{r3, pc}
+ 522              	.LVL44:
+ 523              	.L46:
+ 524              		.loc 1 94 1 view .LVU98
+ 525 0056 00BF     		.align	2
+ 526              	.L45:
+ 527 0058 00000000 		.word	.LC4
+ 528 005c 10000000 		.word	.LC5
+ 529 0060 00000000 		.word	hard_multicore_doorbell_claim_unused
+ 530 0064 30000000 		.word	.LC6
+ 531 0068 00000000 		.word	hard_multicore_doorbell_set_other_core
+ 532 006c 54000000 		.word	.LC7
+ 533 0070 00000000 		.word	hard_multicore_doorbell_clear_current_core
+ 534 0074 7C000000 		.word	.LC8
+ 535 0078 00000000 		.word	hard_multicore_doorbell_irq_num
+ 536 007c 98000000 		.word	.LC9
+ 537 0080 00000000 		.word	hard_multicore_fifo_push_blocking
+ 538 0084 00000000 		.word	cpu1_start_irq
+ 539 0088 00000000 		.word	current_sched_start
+ 540 008c 80969800 		.word	10000000
+ 541              		.cfi_endproc
+ 542              	.LFE158:
+ 544              		.section	.bss.hard_multicore_doorbell_irq_num,"aw",%nobits
+ 545              		.align	2
+ 548              	hard_multicore_doorbell_irq_num:
+ 549 0000 00000000 		.space	4
+ 550              		.section	.bss.hard_multicore_doorbell_clear_current_core,"aw",%nobits
+ 551              		.align	2
+ 554              	hard_multicore_doorbell_clear_current_core:
+ 555 0000 00000000 		.space	4
+ 556              		.section	.bss.hard_multicore_doorbell_set_other_core,"aw",%nobits
+ 557              		.align	2
+ 560              	hard_multicore_doorbell_set_other_core:
+ 561 0000 00000000 		.space	4
+ 562              		.section	.bss.hard_multicore_doorbell_claim_unused,"aw",%nobits
+ 563              		.align	2
+ 566              	hard_multicore_doorbell_claim_unused:
+ 567 0000 00000000 		.space	4
+ 568              		.section	.bss.hard_multicore_fifo_push_blocking,"aw",%nobits
+ 569              		.align	2
+ 572              	hard_multicore_fifo_push_blocking:
+ 573 0000 00000000 		.space	4
+ 574              		.text
+ 575              	.Letext0:
+ 576              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 577              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 578              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 579              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stddef.h"
+ 580              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/symbl.h"
+ARM GAS  /tmp/ccDtq35x.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 msp_init.c
+     /tmp/ccDtq35x.s:22     .text.multicore_doorbell_irq_num:00000000 $t
+     /tmp/ccDtq35x.s:27     .text.multicore_doorbell_irq_num:00000000 multicore_doorbell_irq_num
+     /tmp/ccDtq35x.s:63     .text.multicore_doorbell_irq_num:00000014 $d
+     /tmp/ccDtq35x.s:548    .bss.hard_multicore_doorbell_irq_num:00000000 hard_multicore_doorbell_irq_num
+     /tmp/ccDtq35x.s:68     .rodata.cpu1_start_irq.str1.4:00000000 $d
+     /tmp/ccDtq35x.s:78     .text.cpu1_start_irq:00000000 $t
+     /tmp/ccDtq35x.s:83     .text.cpu1_start_irq:00000000 cpu1_start_irq
+     /tmp/ccDtq35x.s:141    .text.cpu1_start_irq:00000038 $d
+     /tmp/ccDtq35x.s:338    .text.Cpu1_sched_Handler:00000000 Cpu1_sched_Handler
+     /tmp/ccDtq35x.s:149    .rodata.multicore_fifo_push_blocking.str1.4:00000000 $d
+     /tmp/ccDtq35x.s:154    .text.multicore_fifo_push_blocking:00000000 $t
+     /tmp/ccDtq35x.s:160    .text.multicore_fifo_push_blocking:00000000 multicore_fifo_push_blocking
+     /tmp/ccDtq35x.s:199    .text.multicore_fifo_push_blocking:00000018 $d
+     /tmp/ccDtq35x.s:572    .bss.hard_multicore_fifo_push_blocking:00000000 hard_multicore_fifo_push_blocking
+     /tmp/ccDtq35x.s:205    .text.multicore_doorbell_claim_unused:00000000 $t
+     /tmp/ccDtq35x.s:211    .text.multicore_doorbell_claim_unused:00000000 multicore_doorbell_claim_unused
+     /tmp/ccDtq35x.s:247    .text.multicore_doorbell_claim_unused:00000014 $d
+     /tmp/ccDtq35x.s:566    .bss.hard_multicore_doorbell_claim_unused:00000000 hard_multicore_doorbell_claim_unused
+     /tmp/ccDtq35x.s:252    .text.multicore_doorbell_set_other_core:00000000 $t
+     /tmp/ccDtq35x.s:258    .text.multicore_doorbell_set_other_core:00000000 multicore_doorbell_set_other_core
+     /tmp/ccDtq35x.s:287    .text.multicore_doorbell_set_other_core:0000000c $d
+     /tmp/ccDtq35x.s:560    .bss.hard_multicore_doorbell_set_other_core:00000000 hard_multicore_doorbell_set_other_core
+     /tmp/ccDtq35x.s:292    .text.multicore_doorbell_clear_current_core:00000000 $t
+     /tmp/ccDtq35x.s:298    .text.multicore_doorbell_clear_current_core:00000000 multicore_doorbell_clear_current_core
+     /tmp/ccDtq35x.s:327    .text.multicore_doorbell_clear_current_core:0000000c $d
+     /tmp/ccDtq35x.s:554    .bss.hard_multicore_doorbell_clear_current_core:00000000 hard_multicore_doorbell_clear_current_core
+     /tmp/ccDtq35x.s:332    .text.Cpu1_sched_Handler:00000000 $t
+     /tmp/ccDtq35x.s:362    .text.call_mulit_core_scheduler:00000000 $t
+     /tmp/ccDtq35x.s:368    .text.call_mulit_core_scheduler:00000000 call_mulit_core_scheduler
+     /tmp/ccDtq35x.s:413    .rodata.msp_init.str1.4:00000000 $d
+     /tmp/ccDtq35x.s:432    .text.msp_init:00000000 $t
+     /tmp/ccDtq35x.s:438    .text.msp_init:00000000 msp_init
+     /tmp/ccDtq35x.s:527    .text.msp_init:00000058 $d
+     /tmp/ccDtq35x.s:545    .bss.hard_multicore_doorbell_irq_num:00000000 $d
+     /tmp/ccDtq35x.s:551    .bss.hard_multicore_doorbell_clear_current_core:00000000 $d
+     /tmp/ccDtq35x.s:557    .bss.hard_multicore_doorbell_set_other_core:00000000 $d
+     /tmp/ccDtq35x.s:563    .bss.hard_multicore_doorbell_claim_unused:00000000 $d
+     /tmp/ccDtq35x.s:569    .bss.hard_multicore_fifo_push_blocking:00000000 $d
+
+UNDEFINED SYMBOLS
+printk
+request_irq
+irq_set_enabled
+i_sched
+find_symbol_by_fnname_from_bootloader
+current_sched_start

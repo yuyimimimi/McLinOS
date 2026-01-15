@@ -10,22 +10,23 @@ SyscallTable = /etc/syscall.tbl
 
  [Loader_Config]
 magic            = 12345678 
-min_kernel_ver   = 0    # 加载器支持的最低内核版本
-max_kernel_ver   = 2    # 加载器支持的最高内核版本
-cmd              = 1    # 指令模式(在arm中标识Thumb)
-max_stack_size   = 8    #允许的最大栈大小(KB)
-default_priority = 7    # 默认任务优先级
-arch_flags       = 7    #armv7
-max_app_size     = Auto #32 #允许的最大任务大小(KB)
-
-
+min_kernel_ver   = 0   
+max_kernel_ver   = 2    
+cmd              = 1
+max_stack_size_limit   = 8*1024  
+default_priority = 7  
+arch_flags       = armv7    
+max_app_size     = Auto 
+compatable       = cortex_m7
+ 
  [user_start_app]
-path            = /bin/for_cortex_m4.bin
+path            =  /bin/init.elf
 
  [system]
-cpu_fq    = 168
+cpu_fq    =  150
 
  [file_system]
 use_initramfs_only = y 
 
-
+ [console]
+kernel.log_level= "7417"

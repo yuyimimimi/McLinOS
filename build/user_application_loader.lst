@@ -1,0 +1,2598 @@
+ARM GAS  /tmp/cceaku1h.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"user_application_loader.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c
+  21              		.section	.text.str_to_uint32,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	str_to_uint32:
+  28              	.LVL0:
+  29              	.LFB1051:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/fs.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/slab.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/module.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/init.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/err.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/errno.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/error.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/sched.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** #include <linux/script.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** typedef void(*__start)(void);
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** typedef struct {
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t magic;         
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t kernel_ver;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t cmd;         
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t arch_flags;
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t stack_size;
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     __start  start;    
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t got_start;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t got_end;
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t program_size;
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** } AppMeta;
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** typedef struct 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t magic;         
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t min_kernel_ver;
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t max_kernel_ver;
+ARM GAS  /tmp/cceaku1h.s 			page 2
+
+
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t cmd;
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t max_stack_size;  
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t default_priority;
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t arch_flags;
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t max_app_size;
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }loader_config_t;
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static loader_config_t loader_config;
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static void print_app_meta(const AppMeta *meta)
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("AppMeta Information:\n");
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  magic: %d\n", meta->magic);
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  kernel_ver: 0x%08X\n", meta->kernel_ver);
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  cmd: 0x%08X\n", meta->cmd);
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  arch_flags: 0x%08X\n", meta->arch_flags);
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  stack_size: %u\n", meta->stack_size);
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  start: %p\n", meta->start);
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  got_start: 0x%08X\n", meta->got_start);
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  got_end: 0x%08X\n", meta->got_end);
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("  program_size: %d kb\n", meta->program_size/1024);
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static int check_app(AppMeta* app)
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->magic != loader_config.magic) {
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Magic mismatch: expected %d, got %d\n", 
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****                loader_config.magic, app->magic);
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->kernel_ver < loader_config.min_kernel_ver ||
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Kernel version mismatch\n");
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->cmd != loader_config.cmd) {
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("User App cmd is not avilible\n");
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->arch_flags != loader_config.arch_flags) {
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Architecture flags mismatch\n");
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(app->stack_size/1024 > loader_config.max_stack_size){
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(app->program_size > loader_config.max_app_size*1024){
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return 0;
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ARM GAS  /tmp/cceaku1h.s 			page 3
+
+
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static void set_got_table(AppMeta* app,char* app_data)
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_start = (uint32_t*)((char*)app->got_start + (uint32_t)app_data);
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_end = (uint32_t*)((char*)app->got_end + (uint32_t)app_data);
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(got_start == got_end){
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         printk(KERN_WARNING "loader: warning your application's got table is empty\n");
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     else
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     {
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         printk(KERN_DEBUG "got table start:0x%x end:0x%x \n",got_start,got_end);
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     for (uint32_t* entry = got_start; entry < got_end; entry++) {
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         if (*entry != 0) 
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         { // 仅处理非零条目（零表示未初始化的 GOT 条目）
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****             *entry += (uint32_t)app_data; // 将基地址加到 GOT 条目
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         }
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static void print_AppMeta(AppMeta* app)
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****      printk(KERN_DEBUG "app_data: %d, %d, %d,%d, %d\n",
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     app->magic,app->kernel_ver,app->cmd,app->arch_flags,app->stack_size/1024);
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** void print_haper_status(void);
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** int loader_user_app(char* file_path,void* argv)
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("load user app from file:%s\n",file_path);
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct file * app_file = filp_open(file_path,O_RDWR,0755);
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(app_file)){
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("can not open file:%s\n",file_path);
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return PTR_ERR(app_file);
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     AppMeta load_app_data;
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loff_t offset = 0;
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,&load_app_data,sizeof(load_app_data),&offset);
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     //print_app_meta(&load_app_data);
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(check_app(&load_app_data) != 0){
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -1;
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     size_t app_size = load_app_data.program_size + 8;
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     char* addr = kmalloc(app_size,GFP_NOWAIT); //此处使用复用的标识符，此时会强制�
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(addr == NULL){
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("user app loader: has not memory,need:%dkb\n",app_size/1024);
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -ENOMEM;
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ARM GAS  /tmp/cceaku1h.s 			page 4
+
+
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     offset = 0;
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,addr,app_file->f_inode->i_size,&offset);    
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     AppMeta* app_data_head = addr;
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     void (*start)(void) = (uint32_t)(app_data_head->start) + (uint32_t)addr;
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set start at     0x%x\n",start);
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set base address 0x%x\n",addr);
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     set_got_table(app_data_head,addr);
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct task_struct  * t = task_run(start,app_data_head->stack_size,argv,loader_config.default_p
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(t)){
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         kfree(addr);
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return 0;
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static uint32_t str_to_uint32(const char *s) {
+  30              		.loc 1 162 46 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 162 46 is_stmt 0 view .LVU1
+  36 0000 0246     		mov	r2, r0
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t result = 0;
+  37              		.loc 1 163 5 is_stmt 1 view .LVU2
+  38              	.LVL1:
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     while (*s) {
+  39              		.loc 1 164 5 view .LVU3
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t result = 0;
+  40              		.loc 1 163 14 is_stmt 0 view .LVU4
+  41 0002 0020     		movs	r0, #0
+  42              	.LVL2:
+  43              		.loc 1 164 11 view .LVU5
+  44 0004 06E0     		b	.L2
+  45              	.LVL3:
+  46              	.L3:
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         result = result * 10 + (*s - '0');
+  47              		.loc 1 165 9 is_stmt 1 view .LVU6
+  48              		.loc 1 165 25 is_stmt 0 view .LVU7
+  49 0006 00EB8000 		add	r0, r0, r0, lsl #2
+  50              	.LVL4:
+  51              		.loc 1 165 30 view .LVU8
+  52 000a 03EB4003 		add	r3, r3, r0, lsl #1
+  53              		.loc 1 165 16 view .LVU9
+  54 000e A3F13000 		sub	r0, r3, #48
+  55              	.LVL5:
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         s++;
+  56              		.loc 1 166 9 is_stmt 1 view .LVU10
+  57              		.loc 1 166 10 is_stmt 0 view .LVU11
+  58 0012 0132     		adds	r2, r2, #1
+  59              	.LVL6:
+  60              	.L2:
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     while (*s) {
+  61              		.loc 1 164 12 is_stmt 1 view .LVU12
+ARM GAS  /tmp/cceaku1h.s 			page 5
+
+
+  62 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  63 0016 002B     		cmp	r3, #0
+  64 0018 F5D1     		bne	.L3
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return result;
+  65              		.loc 1 168 5 view .LVU13
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+  66              		.loc 1 169 1 is_stmt 0 view .LVU14
+  67 001a 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE1051:
+  71              		.section	.rodata.check_app.str1.4,"aMS",%progbits,1
+  72              		.align	2
+  73              	.LC0:
+  74 0000 4D616769 		.ascii	"Magic mismatch: expected %d, got %d\012\000"
+  74      63206D69 
+  74      736D6174 
+  74      63683A20 
+  74      65787065 
+  75 0025 000000   		.align	2
+  76              	.LC1:
+  77 0028 4B65726E 		.ascii	"Kernel version mismatch\012\000"
+  77      656C2076 
+  77      65727369 
+  77      6F6E206D 
+  77      69736D61 
+  78 0041 000000   		.align	2
+  79              	.LC2:
+  80 0044 55736572 		.ascii	"User App cmd is not avilible\012\000"
+  80      20417070 
+  80      20636D64 
+  80      20697320 
+  80      6E6F7420 
+  81 0062 0000     		.align	2
+  82              	.LC3:
+  83 0064 41726368 		.ascii	"Architecture flags mismatch\012\000"
+  83      69746563 
+  83      74757265 
+  83      20666C61 
+  83      6773206D 
+  84 0081 000000   		.align	2
+  85              	.LC4:
+  86 0084 6C6F6164 		.ascii	"loader:no memory app need: %d kb ram.\012\000"
+  86      65723A6E 
+  86      6F206D65 
+  86      6D6F7279 
+  86      20617070 
+  87 00ab 00       		.align	2
+  88              	.LC5:
+  89 00ac 74686973 		.ascii	"this aplication is too large need:%d kb ram to load"
+  89      2061706C 
+  89      69636174 
+  89      696F6E20 
+  89      69732074 
+  90 00df 0A00     		.ascii	"\012\000"
+  91              		.section	.text.check_app,"ax",%progbits
+  92              		.align	1
+ARM GAS  /tmp/cceaku1h.s 			page 6
+
+
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	check_app:
+  98              	.LVL7:
+  99              	.LFB1047:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->magic != loader_config.magic) {
+ 100              		.loc 1 57 1 is_stmt 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (app->magic != loader_config.magic) {
+ 104              		.loc 1 57 1 is_stmt 0 view .LVU16
+ 105 0000 08B5     		push	{r3, lr}
+ 106              	.LCFI0:
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 3, -8
+ 109              		.cfi_offset 14, -4
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Magic mismatch: expected %d, got %d\n", 
+ 110              		.loc 1 58 5 is_stmt 1 view .LVU17
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Magic mismatch: expected %d, got %d\n", 
+ 111              		.loc 1 58 12 is_stmt 0 view .LVU18
+ 112 0002 0368     		ldr	r3, [r0]
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Magic mismatch: expected %d, got %d\n", 
+ 113              		.loc 1 58 36 view .LVU19
+ 114 0004 274A     		ldr	r2, .L19
+ 115 0006 1268     		ldr	r2, [r2]
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Magic mismatch: expected %d, got %d\n", 
+ 116              		.loc 1 58 8 view .LVU20
+ 117 0008 9342     		cmp	r3, r2
+ 118 000a 20D1     		bne	.L14
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+ 119              		.loc 1 63 5 is_stmt 1 view .LVU21
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+ 120              		.loc 1 63 12 is_stmt 0 view .LVU22
+ 121 000c 4368     		ldr	r3, [r0, #4]
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+ 122              		.loc 1 63 40 view .LVU23
+ 123 000e 254A     		ldr	r2, .L19
+ 124 0010 5268     		ldr	r2, [r2, #4]
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+ 125              		.loc 1 63 8 view .LVU24
+ 126 0012 9342     		cmp	r3, r2
+ 127 0014 22D3     		bcc	.L7
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Kernel version mismatch\n");
+ 128              		.loc 1 64 40 view .LVU25
+ 129 0016 234A     		ldr	r2, .L19
+ 130 0018 9268     		ldr	r2, [r2, #8]
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         app->kernel_ver > loader_config.max_kernel_ver) {
+ 131              		.loc 1 63 56 discriminator 1 view .LVU26
+ 132 001a 9342     		cmp	r3, r2
+ 133 001c 1ED8     		bhi	.L7
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("User App cmd is not avilible\n");
+ 134              		.loc 1 68 5 is_stmt 1 view .LVU27
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("User App cmd is not avilible\n");
+ 135              		.loc 1 68 12 is_stmt 0 view .LVU28
+ 136 001e 8268     		ldr	r2, [r0, #8]
+ARM GAS  /tmp/cceaku1h.s 			page 7
+
+
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("User App cmd is not avilible\n");
+ 137              		.loc 1 68 34 view .LVU29
+ 138 0020 204B     		ldr	r3, .L19
+ 139 0022 DB68     		ldr	r3, [r3, #12]
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("User App cmd is not avilible\n");
+ 140              		.loc 1 68 8 view .LVU30
+ 141 0024 9A42     		cmp	r2, r3
+ 142 0026 20D1     		bne	.L15
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Architecture flags mismatch\n");
+ 143              		.loc 1 72 5 is_stmt 1 view .LVU31
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Architecture flags mismatch\n");
+ 144              		.loc 1 72 12 is_stmt 0 view .LVU32
+ 145 0028 C268     		ldr	r2, [r0, #12]
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Architecture flags mismatch\n");
+ 146              		.loc 1 72 41 view .LVU33
+ 147 002a 1E4B     		ldr	r3, .L19
+ 148 002c 9B69     		ldr	r3, [r3, #24]
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("Architecture flags mismatch\n");
+ 149              		.loc 1 72 8 view .LVU34
+ 150 002e 9A42     		cmp	r2, r3
+ 151 0030 22D1     		bne	.L16
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
+ 152              		.loc 1 76 5 is_stmt 1 view .LVU35
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
+ 153              		.loc 1 76 11 is_stmt 0 view .LVU36
+ 154 0032 0269     		ldr	r2, [r0, #16]
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
+ 155              		.loc 1 76 44 view .LVU37
+ 156 0034 1B4B     		ldr	r3, .L19
+ 157 0036 1B69     		ldr	r3, [r3, #16]
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
+ 158              		.loc 1 76 7 view .LVU38
+ 159 0038 B3EB922F 		cmp	r3, r2, lsr #10
+ 160 003c 23D3     		bcc	.L17
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
+ 161              		.loc 1 80 5 is_stmt 1 view .LVU39
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
+ 162              		.loc 1 80 11 is_stmt 0 view .LVU40
+ 163 003e 026A     		ldr	r2, [r0, #32]
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
+ 164              		.loc 1 80 41 view .LVU41
+ 165 0040 184B     		ldr	r3, .L19
+ 166 0042 DB69     		ldr	r3, [r3, #28]
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
+ 167              		.loc 1 80 7 view .LVU42
+ 168 0044 B2EB832F 		cmp	r2, r3, lsl #10
+ 169 0048 24D8     		bhi	.L18
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 170              		.loc 1 84 12 view .LVU43
+ 171 004a 0020     		movs	r0, #0
+ 172              	.LVL8:
+ 173              	.L4:
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 174              		.loc 1 85 1 view .LVU44
+ 175 004c 08BD     		pop	{r3, pc}
+ 176              	.LVL9:
+ 177              	.L14:
+ARM GAS  /tmp/cceaku1h.s 			page 8
+
+
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****                loader_config.magic, app->magic);
+ 178              		.loc 1 59 9 is_stmt 1 view .LVU45
+ 179 004e 1649     		ldr	r1, .L19+4
+ 180 0050 0320     		movs	r0, #3
+ 181              	.LVL10:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****                loader_config.magic, app->magic);
+ 182              		.loc 1 59 9 is_stmt 0 view .LVU46
+ 183 0052 FFF7FEFF 		bl	printk
+ 184              	.LVL11:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 185              		.loc 1 61 9 is_stmt 1 view .LVU47
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 186              		.loc 1 61 16 is_stmt 0 view .LVU48
+ 187 0056 6FF01500 		mvn	r0, #21
+ 188 005a F7E7     		b	.L4
+ 189              	.LVL12:
+ 190              	.L7:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 191              		.loc 1 65 9 is_stmt 1 view .LVU49
+ 192 005c 1349     		ldr	r1, .L19+8
+ 193 005e 0320     		movs	r0, #3
+ 194              	.LVL13:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 195              		.loc 1 65 9 is_stmt 0 view .LVU50
+ 196 0060 FFF7FEFF 		bl	printk
+ 197              	.LVL14:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 198              		.loc 1 66 9 is_stmt 1 view .LVU51
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 199              		.loc 1 66 16 is_stmt 0 view .LVU52
+ 200 0064 6FF01500 		mvn	r0, #21
+ 201 0068 F0E7     		b	.L4
+ 202              	.LVL15:
+ 203              	.L15:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 204              		.loc 1 69 9 is_stmt 1 view .LVU53
+ 205 006a 1149     		ldr	r1, .L19+12
+ 206 006c 0320     		movs	r0, #3
+ 207              	.LVL16:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 208              		.loc 1 69 9 is_stmt 0 view .LVU54
+ 209 006e FFF7FEFF 		bl	printk
+ 210              	.LVL17:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 211              		.loc 1 70 9 is_stmt 1 view .LVU55
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 212              		.loc 1 70 16 is_stmt 0 view .LVU56
+ 213 0072 6FF01500 		mvn	r0, #21
+ 214 0076 E9E7     		b	.L4
+ 215              	.LVL18:
+ 216              	.L16:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 217              		.loc 1 73 9 is_stmt 1 view .LVU57
+ 218 0078 0E49     		ldr	r1, .L19+16
+ 219 007a 0320     		movs	r0, #3
+ 220              	.LVL19:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ARM GAS  /tmp/cceaku1h.s 			page 9
+
+
+ 221              		.loc 1 73 9 is_stmt 0 view .LVU58
+ 222 007c FFF7FEFF 		bl	printk
+ 223              	.LVL20:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 224              		.loc 1 74 9 is_stmt 1 view .LVU59
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 225              		.loc 1 74 16 is_stmt 0 view .LVU60
+ 226 0080 6FF01500 		mvn	r0, #21
+ 227 0084 E2E7     		b	.L4
+ 228              	.LVL21:
+ 229              	.L17:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 230              		.loc 1 77 9 is_stmt 1 view .LVU61
+ 231 0086 0C49     		ldr	r1, .L19+20
+ 232 0088 0320     		movs	r0, #3
+ 233              	.LVL22:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 234              		.loc 1 77 9 is_stmt 0 view .LVU62
+ 235 008a FFF7FEFF 		bl	printk
+ 236              	.LVL23:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 237              		.loc 1 78 9 is_stmt 1 view .LVU63
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 238              		.loc 1 78 16 is_stmt 0 view .LVU64
+ 239 008e 6FF01500 		mvn	r0, #21
+ 240 0092 DBE7     		b	.L4
+ 241              	.LVL24:
+ 242              	.L18:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 243              		.loc 1 81 9 is_stmt 1 view .LVU65
+ 244 0094 920A     		lsrs	r2, r2, #10
+ 245 0096 0949     		ldr	r1, .L19+24
+ 246 0098 0320     		movs	r0, #3
+ 247              	.LVL25:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -EINVAL;
+ 248              		.loc 1 81 9 is_stmt 0 view .LVU66
+ 249 009a FFF7FEFF 		bl	printk
+ 250              	.LVL26:
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 251              		.loc 1 82 9 is_stmt 1 view .LVU67
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 252              		.loc 1 82 16 is_stmt 0 view .LVU68
+ 253 009e 6FF01500 		mvn	r0, #21
+ 254 00a2 D3E7     		b	.L4
+ 255              	.L20:
+ 256              		.align	2
+ 257              	.L19:
+ 258 00a4 00000000 		.word	loader_config
+ 259 00a8 00000000 		.word	.LC0
+ 260 00ac 28000000 		.word	.LC1
+ 261 00b0 44000000 		.word	.LC2
+ 262 00b4 64000000 		.word	.LC3
+ 263 00b8 84000000 		.word	.LC4
+ 264 00bc AC000000 		.word	.LC5
+ 265              		.cfi_endproc
+ 266              	.LFE1047:
+ 268              		.section	.rodata.set_got_table.str1.4,"aMS",%progbits,1
+ARM GAS  /tmp/cceaku1h.s 			page 10
+
+
+ 269              		.align	2
+ 270              	.LC6:
+ 271 0000 6C6F6164 		.ascii	"loader: warning your application's got table is emp"
+ 271      65723A20 
+ 271      7761726E 
+ 271      696E6720 
+ 271      796F7572 
+ 272 0033 74790A00 		.ascii	"ty\012\000"
+ 273 0037 00       		.align	2
+ 274              	.LC7:
+ 275 0038 676F7420 		.ascii	"got table start:0x%x end:0x%x \012\000"
+ 275      7461626C 
+ 275      65207374 
+ 275      6172743A 
+ 275      30782578 
+ 276              		.section	.text.set_got_table,"ax",%progbits
+ 277              		.align	1
+ 278              		.syntax unified
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	set_got_table:
+ 283              	.LVL27:
+ 284              	.LFB1048:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_start = (uint32_t*)((char*)app->got_start + (uint32_t)app_data);
+ 285              		.loc 1 89 1 is_stmt 1 view -0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 0
+ 288              		@ frame_needed = 0, uses_anonymous_args = 0
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_start = (uint32_t*)((char*)app->got_start + (uint32_t)app_data);
+ 289              		.loc 1 89 1 is_stmt 0 view .LVU70
+ 290 0000 70B5     		push	{r4, r5, r6, lr}
+ 291              	.LCFI1:
+ 292              		.cfi_def_cfa_offset 16
+ 293              		.cfi_offset 4, -16
+ 294              		.cfi_offset 5, -12
+ 295              		.cfi_offset 6, -8
+ 296              		.cfi_offset 14, -4
+ 297 0002 0E46     		mov	r6, r1
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_end = (uint32_t*)((char*)app->got_end + (uint32_t)app_data);
+ 298              		.loc 1 90 5 is_stmt 1 view .LVU71
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_end = (uint32_t*)((char*)app->got_end + (uint32_t)app_data);
+ 299              		.loc 1 90 49 is_stmt 0 view .LVU72
+ 300 0004 8469     		ldr	r4, [r0, #24]
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     uint32_t* got_end = (uint32_t*)((char*)app->got_end + (uint32_t)app_data);
+ 301              		.loc 1 90 15 view .LVU73
+ 302 0006 0C44     		add	r4, r4, r1
+ 303              	.LVL28:
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(got_start == got_end){
+ 304              		.loc 1 91 5 is_stmt 1 view .LVU74
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(got_start == got_end){
+ 305              		.loc 1 91 47 is_stmt 0 view .LVU75
+ 306 0008 C569     		ldr	r5, [r0, #28]
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(got_start == got_end){
+ 307              		.loc 1 91 15 view .LVU76
+ 308 000a 0D44     		add	r5, r5, r1
+ 309              	.LVL29:
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         printk(KERN_WARNING "loader: warning your application's got table is empty\n");
+ARM GAS  /tmp/cceaku1h.s 			page 11
+
+
+ 310              		.loc 1 92 5 is_stmt 1 view .LVU77
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         printk(KERN_WARNING "loader: warning your application's got table is empty\n");
+ 311              		.loc 1 92 7 is_stmt 0 view .LVU78
+ 312 000c AC42     		cmp	r4, r5
+ 313 000e 06D0     		beq	.L28
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 314              		.loc 1 97 9 is_stmt 1 view .LVU79
+ 315 0010 2B46     		mov	r3, r5
+ 316 0012 2246     		mov	r2, r4
+ 317 0014 0949     		ldr	r1, .L30
+ 318              	.LVL30:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 319              		.loc 1 97 9 is_stmt 0 view .LVU80
+ 320 0016 0720     		movs	r0, #7
+ 321              	.LVL31:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 322              		.loc 1 97 9 view .LVU81
+ 323 0018 FFF7FEFF 		bl	printk
+ 324              	.LVL32:
+ 325 001c 05E0     		b	.L23
+ 326              	.LVL33:
+ 327              	.L28:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 328              		.loc 1 93 9 is_stmt 1 view .LVU82
+ 329 001e 0849     		ldr	r1, .L30+4
+ 330              	.LVL34:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 331              		.loc 1 93 9 is_stmt 0 view .LVU83
+ 332 0020 0420     		movs	r0, #4
+ 333              	.LVL35:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 334              		.loc 1 93 9 view .LVU84
+ 335 0022 FFF7FEFF 		bl	printk
+ 336              	.LVL36:
+ 337 0026 00E0     		b	.L23
+ 338              	.LVL37:
+ 339              	.L25:
+ 340              	.LBB20:
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         if (*entry != 0) 
+ 341              		.loc 1 100 61 is_stmt 1 discriminator 2 view .LVU85
+ 342 0028 0434     		adds	r4, r4, #4
+ 343              	.LVL38:
+ 344              	.L23:
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         if (*entry != 0) 
+ 345              		.loc 1 100 45 discriminator 1 view .LVU86
+ 346 002a AC42     		cmp	r4, r5
+ 347 002c 05D2     		bcs	.L29
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         { // 仅处理非零条目（零表示未初始化的 GOT 条目）
+ 348              		.loc 1 101 9 view .LVU87
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         { // 仅处理非零条目（零表示未初始化的 GOT 条目）
+ 349              		.loc 1 101 13 is_stmt 0 view .LVU88
+ 350 002e 2368     		ldr	r3, [r4]
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         { // 仅处理非零条目（零表示未初始化的 GOT 条目）
+ 351              		.loc 1 101 12 view .LVU89
+ 352 0030 002B     		cmp	r3, #0
+ 353 0032 F9D0     		beq	.L25
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         }
+ARM GAS  /tmp/cceaku1h.s 			page 12
+
+
+ 354              		.loc 1 103 13 is_stmt 1 view .LVU90
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         }
+ 355              		.loc 1 103 20 is_stmt 0 view .LVU91
+ 356 0034 3344     		add	r3, r3, r6
+ 357 0036 2360     		str	r3, [r4]
+ 358 0038 F6E7     		b	.L25
+ 359              	.L29:
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         }
+ 360              		.loc 1 103 20 view .LVU92
+ 361              	.LBE20:
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 362              		.loc 1 106 1 view .LVU93
+ 363 003a 70BD     		pop	{r4, r5, r6, pc}
+ 364              	.LVL39:
+ 365              	.L31:
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 366              		.loc 1 106 1 view .LVU94
+ 367              		.align	2
+ 368              	.L30:
+ 369 003c 38000000 		.word	.LC7
+ 370 0040 00000000 		.word	.LC6
+ 371              		.cfi_endproc
+ 372              	.LFE1048:
+ 374              		.section	.rodata.loader_init.str1.4,"aMS",%progbits,1
+ 375              		.align	2
+ 376              	.LC8:
+ 377 0000 6B65726E 		.ascii	"kernel loader init\012\000"
+ 377      656C206C 
+ 377      6F616465 
+ 377      7220696E 
+ 377      69740A00 
+ 378              		.align	2
+ 379              	.LC9:
+ 380 0014 2F626F6F 		.ascii	"/boot/config.txt\000"
+ 380      742F636F 
+ 380      6E666967 
+ 380      2E747874 
+ 380      00
+ 381 0025 000000   		.align	2
+ 382              	.LC10:
+ 383 0028 63616E20 		.ascii	"can not open file:/boot/config.txt\012\000"
+ 383      6E6F7420 
+ 383      6F70656E 
+ 383      2066696C 
+ 383      653A2F62 
+ 384              		.align	2
+ 385              	.LC11:
+ 386 004c 63616E6E 		.ascii	"cannot allocate memory for config\012\000"
+ 386      6F742061 
+ 386      6C6C6F63 
+ 386      61746520 
+ 386      6D656D6F 
+ 387 006f 00       		.align	2
+ 388              	.LC12:
+ 389 0070 6D616769 		.ascii	"magic\000"
+ 389      6300
+ 390 0076 0000     		.align	2
+ARM GAS  /tmp/cceaku1h.s 			page 13
+
+
+ 391              	.LC13:
+ 392 0078 4C6F6164 		.ascii	"Loader_Config\000"
+ 392      65725F43 
+ 392      6F6E6669 
+ 392      6700
+ 393 0086 0000     		.align	2
+ 394              	.LC14:
+ 395 0088 6D696E5F 		.ascii	"min_kernel_ver\000"
+ 395      6B65726E 
+ 395      656C5F76 
+ 395      657200
+ 396 0097 00       		.align	2
+ 397              	.LC15:
+ 398 0098 6D61785F 		.ascii	"max_kernel_ver\000"
+ 398      6B65726E 
+ 398      656C5F76 
+ 398      657200
+ 399 00a7 00       		.align	2
+ 400              	.LC16:
+ 401 00a8 636D6400 		.ascii	"cmd\000"
+ 402              		.align	2
+ 403              	.LC17:
+ 404 00ac 6D61785F 		.ascii	"max_stack_size_limit\000"
+ 404      73746163 
+ 404      6B5F7369 
+ 404      7A655F6C 
+ 404      696D6974 
+ 405 00c1 000000   		.align	2
+ 406              	.LC18:
+ 407 00c4 64656661 		.ascii	"default_priority\000"
+ 407      756C745F 
+ 407      7072696F 
+ 407      72697479 
+ 407      00
+ 408 00d5 000000   		.align	2
+ 409              	.LC19:
+ 410 00d8 61726368 		.ascii	"arch_flags\000"
+ 410      5F666C61 
+ 410      677300
+ 411 00e3 00       		.align	2
+ 412              	.LC20:
+ 413 00e4 6D61785F 		.ascii	"max_app_size\000"
+ 413      6170705F 
+ 413      73697A65 
+ 413      00
+ 414 00f1 000000   		.align	2
+ 415              	.LC21:
+ 416 00f4 4175746F 		.ascii	"Auto\000"
+ 416      00
+ 417 00f9 000000   		.align	2
+ 418              	.LC22:
+ 419 00fc 70617468 		.ascii	"path\000"
+ 419      00
+ 420 0101 000000   		.align	2
+ 421              	.LC23:
+ 422 0104 75736572 		.ascii	"user_start_app\000"
+ 422      5F737461 
+ARM GAS  /tmp/cceaku1h.s 			page 14
+
+
+ 422      72745F61 
+ 422      707000
+ 423 0113 00       		.align	2
+ 424              	.LC24:
+ 425 0114 63616E20 		.ascii	"can not find user space start app\012\000"
+ 425      6E6F7420 
+ 425      66696E64 
+ 425      20757365 
+ 425      72207370 
+ 426 0137 00       		.align	2
+ 427              	.LC25:
+ 428 0138 63616E20 		.ascii	"can not get loader config form /boot/config.txt(%d)"
+ 428      6E6F7420 
+ 428      67657420 
+ 428      6C6F6164 
+ 428      65722063 
+ 429 016b 0A00     		.ascii	"\012\000"
+ 430              		.section	.text.loader_init,"ax",%progbits
+ 431              		.align	1
+ 432              		.syntax unified
+ 433              		.thumb
+ 434              		.thumb_func
+ 436              	loader_init:
+ 437              	.LFB1052:
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static char *data = NULL;
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static int loader_init()
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+ 438              		.loc 1 173 1 is_stmt 1 view -0
+ 439              		.cfi_startproc
+ 440              		@ args = 0, pretend = 0, frame = 8
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+ 442 0000 70B5     		push	{r4, r5, r6, lr}
+ 443              	.LCFI2:
+ 444              		.cfi_def_cfa_offset 16
+ 445              		.cfi_offset 4, -16
+ 446              		.cfi_offset 5, -12
+ 447              		.cfi_offset 6, -8
+ 448              		.cfi_offset 14, -4
+ 449 0002 82B0     		sub	sp, sp, #8
+ 450              	.LCFI3:
+ 451              		.cfi_def_cfa_offset 24
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("kernel loader init\n");
+ 452              		.loc 1 174 5 view .LVU96
+ 453 0004 7449     		ldr	r1, .L55
+ 454 0006 0620     		movs	r0, #6
+ 455 0008 FFF7FEFF 		bl	printk
+ 456              	.LVL40:
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct file* f = filp_open("/boot/config.txt",O_RDWR,0);
+ 457              		.loc 1 175 5 view .LVU97
+ 458              		.loc 1 175 22 is_stmt 0 view .LVU98
+ 459 000c 0022     		movs	r2, #0
+ 460 000e 0221     		movs	r1, #2
+ 461 0010 7248     		ldr	r0, .L55+4
+ 462 0012 FFF7FEFF 		bl	filp_open
+ 463              	.LVL41:
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(f)){
+ARM GAS  /tmp/cceaku1h.s 			page 15
+
+
+ 464              		.loc 1 176 5 is_stmt 1 view .LVU99
+ 465              	.LBB21:
+ 466              	.LBI21:
+ 467              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+ARM GAS  /tmp/cceaku1h.s 			page 16
+
+
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 468              		.loc 2 75 33 view .LVU100
+ 469              	.LBB22:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 470              		.loc 2 77 2 view .LVU101
+ 471              		.loc 2 77 2 is_stmt 0 view .LVU102
+ 472              	.LBE22:
+ 473              	.LBE21:
+ 474              		.loc 1 176 7 discriminator 1 view .LVU103
+ 475 0016 10F5805F 		cmn	r0, #4096
+ 476 001a 00F2B380 		bhi	.L52
+ 477 001e 0446     		mov	r4, r0
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("can not open file:/boot/config.txt\n");
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while (1){}
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     int data_length = f->f_inode->i_size;
+ 478              		.loc 1 180 5 is_stmt 1 view .LVU104
+ 479              		.loc 1 180 24 is_stmt 0 view .LVU105
+ 480 0020 C36A     		ldr	r3, [r0, #44]
+ 481              		.loc 1 180 33 view .LVU106
+ 482 0022 1E6A     		ldr	r6, [r3, #32]
+ 483              	.LVL42:
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     char *file_data = kmalloc(data_length + 1,GFP_KERNEL);
+ 484              		.loc 1 181 5 is_stmt 1 view .LVU107
+ 485              	.LBB23:
+ 486              	.LBI23:
+ 487              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+ARM GAS  /tmp/cceaku1h.s 			page 17
+
+
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ARM GAS  /tmp/cceaku1h.s 			page 18
+
+
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ARM GAS  /tmp/cceaku1h.s 			page 19
+
+
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ARM GAS  /tmp/cceaku1h.s 			page 20
+
+
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ARM GAS  /tmp/cceaku1h.s 			page 21
+
+
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head partial;
+ARM GAS  /tmp/cceaku1h.s 			page 22
+
+
+ 294:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ARM GAS  /tmp/cceaku1h.s 			page 23
+
+
+ 351:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 488              		.loc 3 379 21 view .LVU108
+ 489              	.LBB24:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 490              		.loc 3 380 2 view .LVU109
+ 491              		.loc 3 380 9 is_stmt 0 view .LVU110
+ 492 0024 4FF44C61 		mov	r1, #3264
+ 493 0028 701C     		adds	r0, r6, #1
+ 494              	.LVL43:
+ 495              		.loc 3 380 9 view .LVU111
+ 496 002a FFF7FEFF 		bl	__smalloc__
+ 497              	.LVL44:
+ 498              		.loc 3 380 9 view .LVU112
+ 499              	.LBE24:
+ 500              	.LBE23:
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if (!file_data) {
+ 501              		.loc 1 182 5 is_stmt 1 view .LVU113
+ 502              		.loc 1 182 8 is_stmt 0 view .LVU114
+ 503 002e 0546     		mov	r5, r0
+ 504 0030 0028     		cmp	r0, #0
+ 505 0032 00F0AC80 		beq	.L53
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("cannot allocate memory for config\n");
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while(1){}                                   //系统配置项必须有的，所以如果�
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loff_t offset = 0;
+ 506              		.loc 1 186 5 is_stmt 1 view .LVU115
+ 507              		.loc 1 186 12 is_stmt 0 view .LVU116
+ 508 0036 0022     		movs	r2, #0
+ 509 0038 0023     		movs	r3, #0
+ARM GAS  /tmp/cceaku1h.s 			page 24
+
+
+ 510 003a CDE90023 		strd	r2, [sp]
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(f,file_data,data_length,&offset);
+ 511              		.loc 1 187 5 is_stmt 1 view .LVU117
+ 512 003e 6B46     		mov	r3, sp
+ 513 0040 3246     		mov	r2, r6
+ 514 0042 0146     		mov	r1, r0
+ 515 0044 2046     		mov	r0, r4
+ 516              	.LVL45:
+ 517              		.loc 1 187 5 is_stmt 0 view .LVU118
+ 518 0046 FFF7FEFF 		bl	kernel_read
+ 519              	.LVL46:
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     filp_close(f,0);
+ 520              		.loc 1 188 5 is_stmt 1 view .LVU119
+ 521 004a 0021     		movs	r1, #0
+ 522 004c 2046     		mov	r0, r4
+ 523 004e FFF7FEFF 		bl	filp_close
+ 524              	.LVL47:
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     file_data[data_length] = '\0';
+ 525              		.loc 1 190 5 view .LVU120
+ 526              		.loc 1 190 28 is_stmt 0 view .LVU121
+ 527 0052 0024     		movs	r4, #0
+ 528              	.LVL48:
+ 529              		.loc 1 190 28 view .LVU122
+ 530 0054 AC55     		strb	r4, [r5, r6]
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     preprocess_ini_data(file_data);                //脚本预处理
+ 531              		.loc 1 191 5 is_stmt 1 view .LVU123
+ 532 0056 2846     		mov	r0, r5
+ 533 0058 FFF7FEFF 		bl	preprocess_ini_data
+ 534              	.LVL49:
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     data = kmalloc(64,GFP_KERNEL);
+ 535              		.loc 1 193 5 view .LVU124
+ 536              	.LBB25:
+ 537              	.LBI25:
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 538              		.loc 3 379 21 view .LVU125
+ 539              	.LBB26:
+ 540              		.loc 3 380 2 view .LVU126
+ 541              		.loc 3 380 9 is_stmt 0 view .LVU127
+ 542 005c 4FF44C61 		mov	r1, #3264
+ 543 0060 4020     		movs	r0, #64
+ 544 0062 FFF7FEFF 		bl	__smalloc__
+ 545              	.LVL50:
+ 546 0066 0346     		mov	r3, r0
+ 547              	.LVL51:
+ 548              		.loc 3 380 9 view .LVU128
+ 549              	.LBE26:
+ 550              	.LBE25:
+ 551              		.loc 1 193 10 discriminator 1 view .LVU129
+ 552 0068 5D4A     		ldr	r2, .L55+8
+ 553 006a 1060     		str	r0, [r2]
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     data[63] = '\0';
+ 554              		.loc 1 194 5 is_stmt 1 view .LVU130
+ 555              		.loc 1 194 14 is_stmt 0 view .LVU131
+ 556 006c 80F83F40 		strb	r4, [r0, #63]
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ARM GAS  /tmp/cceaku1h.s 			page 25
+
+
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     char* index;
+ 557              		.loc 1 196 5 is_stmt 1 view .LVU132
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     int number = 0;
+ 558              		.loc 1 197 5 view .LVU133
+ 559              	.LVL52:
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 560              		.loc 1 199 5 view .LVU134
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","magic",data);
+ 561              		.loc 1 200 5 view .LVU135
+ 562              		.loc 1 200 13 is_stmt 0 view .LVU136
+ 563 0070 5C4A     		ldr	r2, .L55+12
+ 564 0072 5D49     		ldr	r1, .L55+16
+ 565 0074 2846     		mov	r0, r5
+ 566 0076 FFF7FEFF 		bl	get_value_from_ini
+ 567              	.LVL53:
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 568              		.loc 1 201 5 is_stmt 1 view .LVU137
+ 569              		.loc 1 201 7 is_stmt 0 view .LVU138
+ 570 007a 0028     		cmp	r0, #0
+ 571 007c 00F09780 		beq	.L42
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.magic = str_to_uint32(data);
+ 572              		.loc 1 202 5 is_stmt 1 view .LVU139
+ 573              		.loc 1 202 27 is_stmt 0 view .LVU140
+ 574 0080 574B     		ldr	r3, .L55+8
+ 575 0082 1C68     		ldr	r4, [r3]
+ 576 0084 2046     		mov	r0, r4
+ 577              	.LVL54:
+ 578              		.loc 1 202 27 view .LVU141
+ 579 0086 FFF7FEFF 		bl	str_to_uint32
+ 580              	.LVL55:
+ 581              		.loc 1 202 25 discriminator 1 view .LVU142
+ 582 008a 584B     		ldr	r3, .L55+20
+ 583 008c 1860     		str	r0, [r3]
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 584              		.loc 1 203 5 is_stmt 1 view .LVU143
+ 585              	.LVL56:
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","min_kernel_ver",data);
+ 586              		.loc 1 204 5 view .LVU144
+ 587              		.loc 1 204 13 is_stmt 0 view .LVU145
+ 588 008e 2346     		mov	r3, r4
+ 589 0090 574A     		ldr	r2, .L55+24
+ 590 0092 5549     		ldr	r1, .L55+16
+ 591 0094 2846     		mov	r0, r5
+ 592 0096 FFF7FEFF 		bl	get_value_from_ini
+ 593              	.LVL57:
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 594              		.loc 1 205 5 is_stmt 1 view .LVU146
+ 595              		.loc 1 205 7 is_stmt 0 view .LVU147
+ 596 009a 0028     		cmp	r0, #0
+ 597 009c 00F08D80 		beq	.L43
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.min_kernel_ver = str_to_uint32(data);
+ 598              		.loc 1 206 5 is_stmt 1 view .LVU148
+ 599              		.loc 1 206 36 is_stmt 0 view .LVU149
+ 600 00a0 4F4B     		ldr	r3, .L55+8
+ 601 00a2 1C68     		ldr	r4, [r3]
+ 602 00a4 2046     		mov	r0, r4
+ARM GAS  /tmp/cceaku1h.s 			page 26
+
+
+ 603              	.LVL58:
+ 604              		.loc 1 206 36 view .LVU150
+ 605 00a6 FFF7FEFF 		bl	str_to_uint32
+ 606              	.LVL59:
+ 607              		.loc 1 206 34 discriminator 1 view .LVU151
+ 608 00aa 504B     		ldr	r3, .L55+20
+ 609 00ac 5860     		str	r0, [r3, #4]
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 610              		.loc 1 207 5 is_stmt 1 view .LVU152
+ 611              	.LVL60:
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_kernel_ver",data);
+ 612              		.loc 1 208 5 view .LVU153
+ 613              		.loc 1 208 13 is_stmt 0 view .LVU154
+ 614 00ae 2346     		mov	r3, r4
+ 615 00b0 504A     		ldr	r2, .L55+28
+ 616 00b2 4D49     		ldr	r1, .L55+16
+ 617 00b4 2846     		mov	r0, r5
+ 618 00b6 FFF7FEFF 		bl	get_value_from_ini
+ 619              	.LVL61:
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 620              		.loc 1 209 5 is_stmt 1 view .LVU155
+ 621              		.loc 1 209 7 is_stmt 0 view .LVU156
+ 622 00ba 0028     		cmp	r0, #0
+ 623 00bc 7FD0     		beq	.L44
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.max_kernel_ver = str_to_uint32(data);
+ 624              		.loc 1 210 5 is_stmt 1 view .LVU157
+ 625              		.loc 1 210 36 is_stmt 0 view .LVU158
+ 626 00be 484B     		ldr	r3, .L55+8
+ 627 00c0 1C68     		ldr	r4, [r3]
+ 628 00c2 2046     		mov	r0, r4
+ 629              	.LVL62:
+ 630              		.loc 1 210 36 view .LVU159
+ 631 00c4 FFF7FEFF 		bl	str_to_uint32
+ 632              	.LVL63:
+ 633              		.loc 1 210 34 discriminator 1 view .LVU160
+ 634 00c8 484B     		ldr	r3, .L55+20
+ 635 00ca 9860     		str	r0, [r3, #8]
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 636              		.loc 1 211 5 is_stmt 1 view .LVU161
+ 637              	.LVL64:
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","cmd",data);
+ 638              		.loc 1 212 5 view .LVU162
+ 639              		.loc 1 212 13 is_stmt 0 view .LVU163
+ 640 00cc 2346     		mov	r3, r4
+ 641 00ce 4A4A     		ldr	r2, .L55+32
+ 642 00d0 4549     		ldr	r1, .L55+16
+ 643 00d2 2846     		mov	r0, r5
+ 644 00d4 FFF7FEFF 		bl	get_value_from_ini
+ 645              	.LVL65:
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 646              		.loc 1 213 5 is_stmt 1 view .LVU164
+ 647              		.loc 1 213 7 is_stmt 0 view .LVU165
+ 648 00d8 0028     		cmp	r0, #0
+ 649 00da 72D0     		beq	.L45
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.cmd = str_to_uint32(data);
+ 650              		.loc 1 214 5 is_stmt 1 view .LVU166
+ 651              		.loc 1 214 25 is_stmt 0 view .LVU167
+ARM GAS  /tmp/cceaku1h.s 			page 27
+
+
+ 652 00dc 404B     		ldr	r3, .L55+8
+ 653 00de 1C68     		ldr	r4, [r3]
+ 654 00e0 2046     		mov	r0, r4
+ 655              	.LVL66:
+ 656              		.loc 1 214 25 view .LVU168
+ 657 00e2 FFF7FEFF 		bl	str_to_uint32
+ 658              	.LVL67:
+ 659              		.loc 1 214 23 discriminator 1 view .LVU169
+ 660 00e6 414B     		ldr	r3, .L55+20
+ 661 00e8 D860     		str	r0, [r3, #12]
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 662              		.loc 1 215 5 is_stmt 1 view .LVU170
+ 663              	.LVL68:
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_stack_size_limit",data);
+ 664              		.loc 1 216 5 view .LVU171
+ 665              		.loc 1 216 13 is_stmt 0 view .LVU172
+ 666 00ea 2346     		mov	r3, r4
+ 667 00ec 434A     		ldr	r2, .L55+36
+ 668 00ee 3E49     		ldr	r1, .L55+16
+ 669 00f0 2846     		mov	r0, r5
+ 670 00f2 FFF7FEFF 		bl	get_value_from_ini
+ 671              	.LVL69:
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 672              		.loc 1 217 5 is_stmt 1 view .LVU173
+ 673              		.loc 1 217 7 is_stmt 0 view .LVU174
+ 674 00f6 0028     		cmp	r0, #0
+ 675 00f8 65D0     		beq	.L46
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.max_stack_size = str_to_uint32(data);
+ 676              		.loc 1 218 5 is_stmt 1 view .LVU175
+ 677              		.loc 1 218 36 is_stmt 0 view .LVU176
+ 678 00fa 394B     		ldr	r3, .L55+8
+ 679 00fc 1C68     		ldr	r4, [r3]
+ 680 00fe 2046     		mov	r0, r4
+ 681              	.LVL70:
+ 682              		.loc 1 218 36 view .LVU177
+ 683 0100 FFF7FEFF 		bl	str_to_uint32
+ 684              	.LVL71:
+ 685              		.loc 1 218 34 discriminator 1 view .LVU178
+ 686 0104 394B     		ldr	r3, .L55+20
+ 687 0106 1861     		str	r0, [r3, #16]
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 688              		.loc 1 219 5 is_stmt 1 view .LVU179
+ 689              	.LVL72:
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","default_priority",data);
+ 690              		.loc 1 220 5 view .LVU180
+ 691              		.loc 1 220 13 is_stmt 0 view .LVU181
+ 692 0108 2346     		mov	r3, r4
+ 693 010a 3D4A     		ldr	r2, .L55+40
+ 694 010c 3649     		ldr	r1, .L55+16
+ 695 010e 2846     		mov	r0, r5
+ 696 0110 FFF7FEFF 		bl	get_value_from_ini
+ 697              	.LVL73:
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 698              		.loc 1 221 5 is_stmt 1 view .LVU182
+ 699              		.loc 1 221 7 is_stmt 0 view .LVU183
+ 700 0114 0028     		cmp	r0, #0
+ 701 0116 58D0     		beq	.L47
+ARM GAS  /tmp/cceaku1h.s 			page 28
+
+
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.default_priority = str_to_uint32(data);
+ 702              		.loc 1 222 5 is_stmt 1 view .LVU184
+ 703              		.loc 1 222 38 is_stmt 0 view .LVU185
+ 704 0118 314B     		ldr	r3, .L55+8
+ 705 011a 1C68     		ldr	r4, [r3]
+ 706 011c 2046     		mov	r0, r4
+ 707              	.LVL74:
+ 708              		.loc 1 222 38 view .LVU186
+ 709 011e FFF7FEFF 		bl	str_to_uint32
+ 710              	.LVL75:
+ 711              		.loc 1 222 36 discriminator 1 view .LVU187
+ 712 0122 324B     		ldr	r3, .L55+20
+ 713 0124 5861     		str	r0, [r3, #20]
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 714              		.loc 1 223 5 is_stmt 1 view .LVU188
+ 715              	.LVL76:
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","arch_flags",data);
+ 716              		.loc 1 224 5 view .LVU189
+ 717              		.loc 1 224 13 is_stmt 0 view .LVU190
+ 718 0126 2346     		mov	r3, r4
+ 719 0128 364A     		ldr	r2, .L55+44
+ 720 012a 2F49     		ldr	r1, .L55+16
+ 721 012c 2846     		mov	r0, r5
+ 722 012e FFF7FEFF 		bl	get_value_from_ini
+ 723              	.LVL77:
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 724              		.loc 1 225 5 is_stmt 1 view .LVU191
+ 725              		.loc 1 225 7 is_stmt 0 view .LVU192
+ 726 0132 0028     		cmp	r0, #0
+ 727 0134 4BD0     		beq	.L48
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loader_config.arch_flags = str_to_uint32(data);
+ 728              		.loc 1 226 5 is_stmt 1 view .LVU193
+ 729              		.loc 1 226 32 is_stmt 0 view .LVU194
+ 730 0136 2A4B     		ldr	r3, .L55+8
+ 731 0138 1C68     		ldr	r4, [r3]
+ 732 013a 2046     		mov	r0, r4
+ 733              	.LVL78:
+ 734              		.loc 1 226 32 view .LVU195
+ 735 013c FFF7FEFF 		bl	str_to_uint32
+ 736              	.LVL79:
+ 737              		.loc 1 226 30 discriminator 1 view .LVU196
+ 738 0140 2A4B     		ldr	r3, .L55+20
+ 739 0142 9861     		str	r0, [r3, #24]
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;
+ 740              		.loc 1 227 5 is_stmt 1 view .LVU197
+ 741              	.LVL80:
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_app_size",data);
+ 742              		.loc 1 228 5 view .LVU198
+ 743              		.loc 1 228 13 is_stmt 0 view .LVU199
+ 744 0144 2346     		mov	r3, r4
+ 745 0146 304A     		ldr	r2, .L55+48
+ 746 0148 2749     		ldr	r1, .L55+16
+ 747 014a 2846     		mov	r0, r5
+ 748 014c FFF7FEFF 		bl	get_value_from_ini
+ 749              	.LVL81:
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL) goto block_system;
+ 750              		.loc 1 229 5 is_stmt 1 view .LVU200
+ARM GAS  /tmp/cceaku1h.s 			page 29
+
+
+ 751              		.loc 1 229 7 is_stmt 0 view .LVU201
+ 752 0150 0028     		cmp	r0, #0
+ 753 0152 3ED0     		beq	.L49
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(strcmp(data,"Auto") ==0)  loader_config.max_app_size = 0xffffffff;
+ 754              		.loc 1 230 5 is_stmt 1 view .LVU202
+ 755              		.loc 1 230 8 is_stmt 0 view .LVU203
+ 756 0154 224B     		ldr	r3, .L55+8
+ 757 0156 1C68     		ldr	r4, [r3]
+ 758 0158 2C49     		ldr	r1, .L55+52
+ 759 015a 2046     		mov	r0, r4
+ 760              	.LVL82:
+ 761              		.loc 1 230 8 view .LVU204
+ 762 015c FFF7FEFF 		bl	strcmp
+ 763              	.LVL83:
+ 764              		.loc 1 230 7 discriminator 1 view .LVU205
+ 765 0160 D0B9     		cbnz	r0, .L38
+ 766              		.loc 1 230 34 is_stmt 1 discriminator 1 view .LVU206
+ 767              		.loc 1 230 61 is_stmt 0 discriminator 1 view .LVU207
+ 768 0162 224B     		ldr	r3, .L55+20
+ 769 0164 4FF0FF32 		mov	r2, #-1
+ 770 0168 DA61     		str	r2, [r3, #28]
+ 771              	.L39:
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     else  loader_config.max_app_size = str_to_uint32(data);
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;    
+ 772              		.loc 1 232 5 is_stmt 1 view .LVU208
+ 773              	.LVL84:
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"user_start_app","path",data);
+ 774              		.loc 1 233 5 view .LVU209
+ 775              		.loc 1 233 13 is_stmt 0 view .LVU210
+ 776 016a 2346     		mov	r3, r4
+ 777 016c 284A     		ldr	r2, .L55+56
+ 778 016e 2949     		ldr	r1, .L55+60
+ 779 0170 2846     		mov	r0, r5
+ 780 0172 FFF7FEFF 		bl	get_value_from_ini
+ 781              	.LVL85:
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(index == NULL){
+ 782              		.loc 1 234 5 is_stmt 1 view .LVU211
+ 783              		.loc 1 234 7 is_stmt 0 view .LVU212
+ 784 0176 A8B1     		cbz	r0, .L54
+ 785              	.LVL86:
+ 786              	.L40:
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_info("can not find user space start app\n");
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kfree(file_data);
+ 787              		.loc 1 237 5 is_stmt 1 view .LVU213
+ 788              	.LBB27:
+ 789              	.LBI27:
+ 381:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 382:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 383:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline kfree(const void *ptr){
+ 790              		.loc 3 383 20 view .LVU214
+ 791              	.LBB28:
+ 384:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 792              		.loc 3 384 2 view .LVU215
+ 793 0178 2846     		mov	r0, r5
+ 794 017a FFF7FEFF 		bl	__sfree__
+ 795              	.LVL87:
+ARM GAS  /tmp/cceaku1h.s 			page 30
+
+
+ 796              		.loc 3 384 2 is_stmt 0 view .LVU216
+ 797              	.LBE28:
+ 798              	.LBE27:
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return 0;
+ 799              		.loc 1 238 5 is_stmt 1 view .LVU217
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     block_system:
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_err("can not get loader config form /boot/config.txt(%d)\n",number);
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     while (1){}     
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return -1;                                      
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 800              		.loc 1 244 1 is_stmt 0 view .LVU218
+ 801 017e 0020     		movs	r0, #0
+ 802 0180 02B0     		add	sp, sp, #8
+ 803              	.LCFI4:
+ 804              		.cfi_remember_state
+ 805              		.cfi_def_cfa_offset 16
+ 806              		@ sp needed
+ 807 0182 70BD     		pop	{r4, r5, r6, pc}
+ 808              	.LVL88:
+ 809              	.L52:
+ 810              	.LCFI5:
+ 811              		.cfi_restore_state
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while (1){}
+ 812              		.loc 1 177 9 is_stmt 1 view .LVU219
+ 813 0184 2449     		ldr	r1, .L55+64
+ 814 0186 0320     		movs	r0, #3
+ 815              	.LVL89:
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while (1){}
+ 816              		.loc 1 177 9 is_stmt 0 view .LVU220
+ 817 0188 FFF7FEFF 		bl	printk
+ 818              	.LVL90:
+ 819              	.L34:
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 820              		.loc 1 178 9 is_stmt 1 view .LVU221
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 821              		.loc 1 178 19 view .LVU222
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 822              		.loc 1 178 15 view .LVU223
+ 823 018c FEE7     		b	.L34
+ 824              	.LVL91:
+ 825              	.L53:
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while(1){}                                   //系统配置项必须有的，所以如果�
+ 826              		.loc 1 183 9 view .LVU224
+ 827 018e 2349     		ldr	r1, .L55+68
+ 828 0190 0320     		movs	r0, #3
+ 829              	.LVL92:
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         while(1){}                                   //系统配置项必须有的，所以如果�
+ 830              		.loc 1 183 9 is_stmt 0 view .LVU225
+ 831 0192 FFF7FEFF 		bl	printk
+ 832              	.LVL93:
+ 833              	.L36:
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 834              		.loc 1 184 9 is_stmt 1 view .LVU226
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 835              		.loc 1 184 18 view .LVU227
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ARM GAS  /tmp/cceaku1h.s 			page 31
+
+
+ 836              		.loc 1 184 14 view .LVU228
+ 837 0196 FEE7     		b	.L36
+ 838              	.LVL94:
+ 839              	.L38:
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;    
+ 840              		.loc 1 231 11 view .LVU229
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;    
+ 841              		.loc 1 231 40 is_stmt 0 view .LVU230
+ 842 0198 2046     		mov	r0, r4
+ 843 019a FFF7FEFF 		bl	str_to_uint32
+ 844              	.LVL95:
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     number++;    
+ 845              		.loc 1 231 38 discriminator 1 view .LVU231
+ 846 019e 134B     		ldr	r3, .L55+20
+ 847 01a0 D861     		str	r0, [r3, #28]
+ 848 01a2 E2E7     		b	.L39
+ 849              	.LVL96:
+ 850              	.L54:
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 851              		.loc 1 235 9 is_stmt 1 view .LVU232
+ 852 01a4 1E49     		ldr	r1, .L55+72
+ 853 01a6 0620     		movs	r0, #6
+ 854              	.LVL97:
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 855              		.loc 1 235 9 is_stmt 0 view .LVU233
+ 856 01a8 FFF7FEFF 		bl	printk
+ 857              	.LVL98:
+ 858 01ac E4E7     		b	.L40
+ 859              	.LVL99:
+ 860              	.L42:
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","magic",data);
+ 861              		.loc 1 199 11 view .LVU234
+ 862 01ae 0122     		movs	r2, #1
+ 863              	.LVL100:
+ 864              	.L37:
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     while (1){}     
+ 865              		.loc 1 241 5 is_stmt 1 view .LVU235
+ 866 01b0 1C49     		ldr	r1, .L55+76
+ 867 01b2 0320     		movs	r0, #3
+ 868              	.LVL101:
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     while (1){}     
+ 869              		.loc 1 241 5 is_stmt 0 view .LVU236
+ 870 01b4 FFF7FEFF 		bl	printk
+ 871              	.LVL102:
+ 872              	.L41:
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return -1;                                      
+ 873              		.loc 1 242 5 is_stmt 1 view .LVU237
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return -1;                                      
+ 874              		.loc 1 242 15 view .LVU238
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return -1;                                      
+ 875              		.loc 1 242 11 view .LVU239
+ 876 01b8 FEE7     		b	.L41
+ 877              	.LVL103:
+ 878              	.L43:
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","min_kernel_ver",data);
+ 879              		.loc 1 203 11 is_stmt 0 view .LVU240
+ 880 01ba 0222     		movs	r2, #2
+ARM GAS  /tmp/cceaku1h.s 			page 32
+
+
+ 881 01bc F8E7     		b	.L37
+ 882              	.LVL104:
+ 883              	.L44:
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_kernel_ver",data);
+ 884              		.loc 1 207 11 view .LVU241
+ 885 01be 0322     		movs	r2, #3
+ 886 01c0 F6E7     		b	.L37
+ 887              	.LVL105:
+ 888              	.L45:
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","cmd",data);
+ 889              		.loc 1 211 11 view .LVU242
+ 890 01c2 0422     		movs	r2, #4
+ 891 01c4 F4E7     		b	.L37
+ 892              	.LVL106:
+ 893              	.L46:
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_stack_size_limit",data);
+ 894              		.loc 1 215 11 view .LVU243
+ 895 01c6 0522     		movs	r2, #5
+ 896 01c8 F2E7     		b	.L37
+ 897              	.LVL107:
+ 898              	.L47:
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","default_priority",data);
+ 899              		.loc 1 219 11 view .LVU244
+ 900 01ca 0622     		movs	r2, #6
+ 901 01cc F0E7     		b	.L37
+ 902              	.LVL108:
+ 903              	.L48:
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","arch_flags",data);
+ 904              		.loc 1 223 11 view .LVU245
+ 905 01ce 0722     		movs	r2, #7
+ 906 01d0 EEE7     		b	.L37
+ 907              	.LVL109:
+ 908              	.L49:
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     index = get_value_from_ini(file_data,"Loader_Config","max_app_size",data);
+ 909              		.loc 1 227 11 view .LVU246
+ 910 01d2 0822     		movs	r2, #8
+ 911 01d4 ECE7     		b	.L37
+ 912              	.L56:
+ 913 01d6 00BF     		.align	2
+ 914              	.L55:
+ 915 01d8 00000000 		.word	.LC8
+ 916 01dc 14000000 		.word	.LC9
+ 917 01e0 00000000 		.word	data
+ 918 01e4 70000000 		.word	.LC12
+ 919 01e8 78000000 		.word	.LC13
+ 920 01ec 00000000 		.word	loader_config
+ 921 01f0 88000000 		.word	.LC14
+ 922 01f4 98000000 		.word	.LC15
+ 923 01f8 A8000000 		.word	.LC16
+ 924 01fc AC000000 		.word	.LC17
+ 925 0200 C4000000 		.word	.LC18
+ 926 0204 D8000000 		.word	.LC19
+ 927 0208 E4000000 		.word	.LC20
+ 928 020c F4000000 		.word	.LC21
+ 929 0210 FC000000 		.word	.LC22
+ 930 0214 04010000 		.word	.LC23
+ 931 0218 28000000 		.word	.LC10
+ARM GAS  /tmp/cceaku1h.s 			page 33
+
+
+ 932 021c 4C000000 		.word	.LC11
+ 933 0220 14010000 		.word	.LC24
+ 934 0224 38010000 		.word	.LC25
+ 935              		.cfi_endproc
+ 936              	.LFE1052:
+ 938              		.section	.rodata.loader_user_app.str1.4,"aMS",%progbits,1
+ 939              		.align	2
+ 940              	.LC26:
+ 941 0000 6C6F6164 		.ascii	"load user app from file:%s\012\000"
+ 941      20757365 
+ 941      72206170 
+ 941      70206672 
+ 941      6F6D2066 
+ 942              		.align	2
+ 943              	.LC27:
+ 944 001c 63616E20 		.ascii	"can not open file:%s\012\000"
+ 944      6E6F7420 
+ 944      6F70656E 
+ 944      2066696C 
+ 944      653A2573 
+ 945 0032 0000     		.align	2
+ 946              	.LC28:
+ 947 0034 73797374 		.ascii	"system free memory size:%d kb\012\015\000"
+ 947      656D2066 
+ 947      72656520 
+ 947      6D656D6F 
+ 947      72792073 
+ 948              		.align	2
+ 949              	.LC29:
+ 950 0054 75736572 		.ascii	"user app loader: has not memory,need:%dkb\012\000"
+ 950      20617070 
+ 950      206C6F61 
+ 950      6465723A 
+ 950      20686173 
+ 951 007f 00       		.align	2
+ 952              	.LC30:
+ 953 0080 73657420 		.ascii	"set start at     0x%x\012\000"
+ 953      73746172 
+ 953      74206174 
+ 953      20202020 
+ 953      20307825 
+ 954 0097 00       		.align	2
+ 955              	.LC31:
+ 956 0098 73657420 		.ascii	"set base address 0x%x\012\000"
+ 956      62617365 
+ 956      20616464 
+ 956      72657373 
+ 956      20307825 
+ 957              		.section	.text.loader_user_app,"ax",%progbits
+ 958              		.align	1
+ 959              		.global	loader_user_app
+ 960              		.syntax unified
+ 961              		.thumb
+ 962              		.thumb_func
+ 964              	loader_user_app:
+ 965              	.LVL110:
+ 966              	.LFB1050:
+ARM GAS  /tmp/cceaku1h.s 			page 34
+
+
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("load user app from file:%s\n",file_path);
+ 967              		.loc 1 118 1 is_stmt 1 view -0
+ 968              		.cfi_startproc
+ 969              		@ args = 0, pretend = 0, frame = 48
+ 970              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     pr_info("load user app from file:%s\n",file_path);
+ 971              		.loc 1 118 1 is_stmt 0 view .LVU248
+ 972 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 973              	.LCFI6:
+ 974              		.cfi_def_cfa_offset 28
+ 975              		.cfi_offset 4, -28
+ 976              		.cfi_offset 5, -24
+ 977              		.cfi_offset 6, -20
+ 978              		.cfi_offset 7, -16
+ 979              		.cfi_offset 8, -12
+ 980              		.cfi_offset 9, -8
+ 981              		.cfi_offset 14, -4
+ 982 0004 91B0     		sub	sp, sp, #68
+ 983              	.LCFI7:
+ 984              		.cfi_def_cfa_offset 96
+ 985 0006 0646     		mov	r6, r0
+ 986 0008 8846     		mov	r8, r1
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct file * app_file = filp_open(file_path,O_RDWR,0755);
+ 987              		.loc 1 119 5 is_stmt 1 view .LVU249
+ 988 000a 0246     		mov	r2, r0
+ 989 000c 4749     		ldr	r1, .L71
+ 990              	.LVL111:
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct file * app_file = filp_open(file_path,O_RDWR,0755);
+ 991              		.loc 1 119 5 is_stmt 0 view .LVU250
+ 992 000e 0620     		movs	r0, #6
+ 993              	.LVL112:
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct file * app_file = filp_open(file_path,O_RDWR,0755);
+ 994              		.loc 1 119 5 view .LVU251
+ 995 0010 FFF7FEFF 		bl	printk
+ 996              	.LVL113:
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(app_file)){
+ 997              		.loc 1 120 5 is_stmt 1 view .LVU252
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(app_file)){
+ 998              		.loc 1 120 30 is_stmt 0 view .LVU253
+ 999 0014 40F2ED12 		movw	r2, #493
+ 1000 0018 0221     		movs	r1, #2
+ 1001 001a 3046     		mov	r0, r6
+ 1002 001c FFF7FEFF 		bl	filp_open
+ 1003              	.LVL114:
+ 1004 0020 0446     		mov	r4, r0
+ 1005              	.LVL115:
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("can not open file:%s\n",file_path);
+ 1006              		.loc 1 121 5 is_stmt 1 view .LVU254
+ 1007              	.LBB29:
+ 1008              	.LBI29:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+ 1009              		.loc 2 75 33 view .LVU255
+ 1010              	.LBB30:
+ 1011              		.loc 2 77 2 view .LVU256
+ 1012              		.loc 2 77 2 is_stmt 0 view .LVU257
+ 1013              	.LBE30:
+ 1014              	.LBE29:
+ARM GAS  /tmp/cceaku1h.s 			page 35
+
+
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("can not open file:%s\n",file_path);
+ 1015              		.loc 1 121 7 discriminator 1 view .LVU258
+ 1016 0022 10F5805F 		cmn	r0, #4096
+ 1017 0026 5AD8     		bhi	.L65
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     loff_t offset = 0;
+ 1018              		.loc 1 125 5 is_stmt 1 view .LVU259
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,&load_app_data,sizeof(load_app_data),&offset);
+ 1019              		.loc 1 126 5 view .LVU260
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,&load_app_data,sizeof(load_app_data),&offset);
+ 1020              		.loc 1 126 12 is_stmt 0 view .LVU261
+ 1021 0028 0022     		movs	r2, #0
+ 1022 002a 0023     		movs	r3, #0
+ 1023 002c CDE90423 		strd	r2, [sp, #16]
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     //print_app_meta(&load_app_data);
+ 1024              		.loc 1 127 5 is_stmt 1 view .LVU262
+ 1025 0030 04AB     		add	r3, sp, #16
+ 1026 0032 2422     		movs	r2, #36
+ 1027 0034 07A9     		add	r1, sp, #28
+ 1028 0036 FFF7FEFF 		bl	kernel_read
+ 1029              	.LVL116:
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 1030              		.loc 1 129 5 view .LVU263
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 1031              		.loc 1 129 8 is_stmt 0 view .LVU264
+ 1032 003a 07A8     		add	r0, sp, #28
+ 1033 003c FFF7FEFF 		bl	check_app
+ 1034              	.LVL117:
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 1035              		.loc 1 129 7 discriminator 1 view .LVU265
+ 1036 0040 0746     		mov	r7, r0
+ 1037 0042 0028     		cmp	r0, #0
+ 1038 0044 52D1     		bne	.L66
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 1039              		.loc 1 134 5 is_stmt 1 view .LVU266
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 1040              		.loc 1 134 36 is_stmt 0 view .LVU267
+ 1041 0046 0F9B     		ldr	r3, [sp, #60]
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 1042              		.loc 1 134 12 view .LVU268
+ 1043 0048 03F10809 		add	r9, r3, #8
+ 1044              	.LVL118:
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1045              		.loc 1 135 5 is_stmt 1 view .LVU269
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1046              		.loc 1 135 59 is_stmt 0 view .LVU270
+ 1047 004c FFF7FEFF 		bl	get_global_heap_size
+ 1048              	.LVL119:
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1049              		.loc 1 135 5 discriminator 1 view .LVU271
+ 1050 0050 0028     		cmp	r0, #0
+ 1051 0052 52DB     		blt	.L67
+ 1052              	.L61:
+ 1053 0054 8212     		asrs	r2, r0, #10
+ 1054 0056 3649     		ldr	r1, .L71+4
+ 1055 0058 0720     		movs	r0, #7
+ 1056 005a FFF7FEFF 		bl	printk
+ 1057              	.LVL120:
+ARM GAS  /tmp/cceaku1h.s 			page 36
+
+
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(addr == NULL){
+ 1058              		.loc 1 137 5 is_stmt 1 view .LVU272
+ 1059              	.LBB31:
+ 1060              	.LBI31:
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 1061              		.loc 3 379 21 view .LVU273
+ 1062              	.LBB32:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 1063              		.loc 3 380 2 view .LVU274
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 1064              		.loc 3 380 9 is_stmt 0 view .LVU275
+ 1065 005e 4FF42051 		mov	r1, #10240
+ 1066 0062 4846     		mov	r0, r9
+ 1067 0064 FFF7FEFF 		bl	__smalloc__
+ 1068              	.LVL121:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 1069              		.loc 3 380 9 view .LVU276
+ 1070              	.LBE32:
+ 1071              	.LBE31:
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 1072              		.loc 1 138 5 is_stmt 1 view .LVU277
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         filp_close(app_file,0);
+ 1073              		.loc 1 138 7 is_stmt 0 view .LVU278
+ 1074 0068 0546     		mov	r5, r0
+ 1075 006a 0028     		cmp	r0, #0
+ 1076 006c 48D0     		beq	.L68
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1077              		.loc 1 144 5 is_stmt 1 view .LVU279
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1078              		.loc 1 144 59 is_stmt 0 view .LVU280
+ 1079 006e FFF7FEFF 		bl	get_global_heap_size
+ 1080              	.LVL122:
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1081              		.loc 1 144 5 discriminator 1 view .LVU281
+ 1082 0072 021E     		subs	r2, r0, #0
+ 1083 0074 51DB     		blt	.L69
+ 1084              	.L63:
+ 1085 0076 9212     		asrs	r2, r2, #10
+ 1086 0078 2D49     		ldr	r1, .L71+4
+ 1087 007a 0720     		movs	r0, #7
+ 1088 007c FFF7FEFF 		bl	printk
+ 1089              	.LVL123:
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,addr,app_file->f_inode->i_size,&offset);    
+ 1090              		.loc 1 146 5 is_stmt 1 view .LVU282
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     kernel_read(app_file,addr,app_file->f_inode->i_size,&offset);    
+ 1091              		.loc 1 146 12 is_stmt 0 view .LVU283
+ 1092 0080 0022     		movs	r2, #0
+ 1093 0082 0023     		movs	r3, #0
+ 1094 0084 CDE90423 		strd	r2, [sp, #16]
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     AppMeta* app_data_head = addr;
+ 1095              		.loc 1 147 5 is_stmt 1 view .LVU284
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     AppMeta* app_data_head = addr;
+ 1096              		.loc 1 147 39 is_stmt 0 view .LVU285
+ 1097 0088 E26A     		ldr	r2, [r4, #44]
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     AppMeta* app_data_head = addr;
+ 1098              		.loc 1 147 5 view .LVU286
+ 1099 008a 04AB     		add	r3, sp, #16
+ARM GAS  /tmp/cceaku1h.s 			page 37
+
+
+ 1100 008c 126A     		ldr	r2, [r2, #32]
+ 1101 008e 2946     		mov	r1, r5
+ 1102 0090 2046     		mov	r0, r4
+ 1103 0092 FFF7FEFF 		bl	kernel_read
+ 1104              	.LVL124:
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     void (*start)(void) = (uint32_t)(app_data_head->start) + (uint32_t)addr;
+ 1105              		.loc 1 148 5 is_stmt 1 view .LVU287
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set start at     0x%x\n",start);
+ 1106              		.loc 1 149 5 view .LVU288
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set start at     0x%x\n",start);
+ 1107              		.loc 1 149 51 is_stmt 0 view .LVU289
+ 1108 0096 6C69     		ldr	r4, [r5, #20]
+ 1109              	.LVL125:
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set start at     0x%x\n",start);
+ 1110              		.loc 1 149 60 view .LVU290
+ 1111 0098 2C44     		add	r4, r4, r5
+ 1112              	.LVL126:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_DEBUG"set base address 0x%x\n",addr);
+ 1113              		.loc 1 150 5 is_stmt 1 view .LVU291
+ 1114 009a 2246     		mov	r2, r4
+ 1115 009c 2549     		ldr	r1, .L71+8
+ 1116 009e 0720     		movs	r0, #7
+ 1117 00a0 FFF7FEFF 		bl	printk
+ 1118              	.LVL127:
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     set_got_table(app_data_head,addr);
+ 1119              		.loc 1 151 5 view .LVU292
+ 1120 00a4 2A46     		mov	r2, r5
+ 1121 00a6 2449     		ldr	r1, .L71+12
+ 1122 00a8 0720     		movs	r0, #7
+ 1123 00aa FFF7FEFF 		bl	printk
+ 1124              	.LVL128:
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     struct task_struct  * t = task_run(start,app_data_head->stack_size,argv,loader_config.default_p
+ 1125              		.loc 1 152 5 view .LVU293
+ 1126 00ae 2946     		mov	r1, r5
+ 1127 00b0 2846     		mov	r0, r5
+ 1128 00b2 FFF7FEFF 		bl	set_got_table
+ 1129              	.LVL129:
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(t)){
+ 1130              		.loc 1 153 5 view .LVU294
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(t)){
+ 1131              		.loc 1 153 59 is_stmt 0 view .LVU295
+ 1132 00b6 2969     		ldr	r1, [r5, #16]
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(IS_ERR(t)){
+ 1133              		.loc 1 153 31 view .LVU296
+ 1134 00b8 0295     		str	r5, [sp, #8]
+ 1135 00ba 0023     		movs	r3, #0
+ 1136 00bc 0193     		str	r3, [sp, #4]
+ 1137 00be 0096     		str	r6, [sp]
+ 1138 00c0 1E4B     		ldr	r3, .L71+16
+ 1139 00c2 5B69     		ldr	r3, [r3, #20]
+ 1140 00c4 4246     		mov	r2, r8
+ 1141 00c6 2046     		mov	r0, r4
+ 1142 00c8 FFF7FEFF 		bl	task_run
+ 1143              	.LVL130:
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         kfree(addr);
+ 1144              		.loc 1 154 5 is_stmt 1 view .LVU297
+ 1145              	.LBB33:
+ARM GAS  /tmp/cceaku1h.s 			page 38
+
+
+ 1146              	.LBI33:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+ 1147              		.loc 2 75 33 view .LVU298
+ 1148              	.LBB34:
+ 1149              		.loc 2 77 2 view .LVU299
+ 1150              		.loc 2 77 9 is_stmt 0 view .LVU300
+ 1151 00cc 10F5805F 		cmn	r0, #4096
+ 1152 00d0 94BF     		ite	ls
+ 1153 00d2 0020     		movls	r0, #0
+ 1154              	.LVL131:
+ 1155              		.loc 2 77 9 view .LVU301
+ 1156 00d4 0120     		movhi	r0, #1
+ 1157              	.LVL132:
+ 1158              		.loc 2 77 9 view .LVU302
+ 1159              	.LBE34:
+ 1160              	.LBE33:
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         kfree(addr);
+ 1161              		.loc 1 154 7 discriminator 1 view .LVU303
+ 1162 00d6 18BB     		cbnz	r0, .L70
+ 1163              	.LVL133:
+ 1164              	.L57:
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1165              		.loc 1 158 1 view .LVU304
+ 1166 00d8 11B0     		add	sp, sp, #68
+ 1167              	.LCFI8:
+ 1168              		.cfi_remember_state
+ 1169              		.cfi_def_cfa_offset 28
+ 1170              		@ sp needed
+ 1171 00da BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 1172              	.LVL134:
+ 1173              	.L65:
+ 1174              	.LCFI9:
+ 1175              		.cfi_restore_state
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return PTR_ERR(app_file);
+ 1176              		.loc 1 122 9 is_stmt 1 view .LVU305
+ 1177 00de 3246     		mov	r2, r6
+ 1178 00e0 1749     		ldr	r1, .L71+20
+ 1179 00e2 0320     		movs	r0, #3
+ 1180              	.LVL135:
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return PTR_ERR(app_file);
+ 1181              		.loc 1 122 9 is_stmt 0 view .LVU306
+ 1182 00e4 FFF7FEFF 		bl	printk
+ 1183              	.LVL136:
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1184              		.loc 1 123 9 is_stmt 1 view .LVU307
+ 1185              	.LBB35:
+ 1186              	.LBI35:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+ 1187              		.loc 2 62 33 view .LVU308
+ 1188              	.LBB36:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+ 1189              		.loc 2 64 2 view .LVU309
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+ 1190              		.loc 2 64 9 is_stmt 0 view .LVU310
+ 1191 00e8 2046     		mov	r0, r4
+ 1192              	.LVL137:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+ARM GAS  /tmp/cceaku1h.s 			page 39
+
+
+ 1193              		.loc 2 64 9 view .LVU311
+ 1194              	.LBE36:
+ 1195              	.LBE35:
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1196              		.loc 1 123 16 view .LVU312
+ 1197 00ea F5E7     		b	.L57
+ 1198              	.L66:
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -1;
+ 1199              		.loc 1 130 9 is_stmt 1 view .LVU313
+ 1200 00ec 0021     		movs	r1, #0
+ 1201 00ee 2046     		mov	r0, r4
+ 1202 00f0 FFF7FEFF 		bl	filp_close
+ 1203              	.LVL138:
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1204              		.loc 1 131 9 view .LVU314
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1205              		.loc 1 131 16 is_stmt 0 view .LVU315
+ 1206 00f4 4FF0FF30 		mov	r0, #-1
+ 1207 00f8 EEE7     		b	.L57
+ 1208              	.LVL139:
+ 1209              	.L67:
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1210              		.loc 1 135 5 discriminator 1 view .LVU316
+ 1211 00fa 00F2FF30 		addw	r0, r0, #1023
+ 1212 00fe A9E7     		b	.L61
+ 1213              	.LVL140:
+ 1214              	.L68:
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("user app loader: has not memory,need:%dkb\n",app_size/1024);
+ 1215              		.loc 1 139 9 is_stmt 1 view .LVU317
+ 1216 0100 0021     		movs	r1, #0
+ 1217 0102 2046     		mov	r0, r4
+ 1218              	.LVL141:
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         pr_err("user app loader: has not memory,need:%dkb\n",app_size/1024);
+ 1219              		.loc 1 139 9 is_stmt 0 view .LVU318
+ 1220 0104 FFF7FEFF 		bl	filp_close
+ 1221              	.LVL142:
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         return -ENOMEM;
+ 1222              		.loc 1 140 9 is_stmt 1 view .LVU319
+ 1223 0108 4FEA9922 		lsr	r2, r9, #10
+ 1224 010c 0D49     		ldr	r1, .L71+24
+ 1225 010e 0320     		movs	r0, #3
+ 1226 0110 FFF7FEFF 		bl	printk
+ 1227              	.LVL143:
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1228              		.loc 1 141 9 view .LVU320
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 1229              		.loc 1 141 16 is_stmt 0 view .LVU321
+ 1230 0114 6FF00B00 		mvn	r0, #11
+ 1231 0118 DEE7     		b	.L57
+ 1232              	.L69:
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 1233              		.loc 1 144 5 discriminator 1 view .LVU322
+ 1234 011a 02F2FF32 		addw	r2, r2, #1023
+ 1235 011e AAE7     		b	.L63
+ 1236              	.LVL144:
+ 1237              	.L70:
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ARM GAS  /tmp/cceaku1h.s 			page 40
+
+
+ 1238              		.loc 1 155 9 is_stmt 1 view .LVU323
+ 1239              	.LBB37:
+ 1240              	.LBI37:
+ 383:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__((void*)ptr);
+ 1241              		.loc 3 383 20 view .LVU324
+ 1242              	.LBB38:
+ 1243              		.loc 3 384 2 view .LVU325
+ 1244 0120 2846     		mov	r0, r5
+ 1245 0122 FFF7FEFF 		bl	__sfree__
+ 1246              	.LVL145:
+ 1247              		.loc 3 384 2 is_stmt 0 view .LVU326
+ 1248              	.LBE38:
+ 1249              	.LBE37:
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 1250              		.loc 1 157 12 view .LVU327
+ 1251 0126 3846     		mov	r0, r7
+ 1252              	.LBB40:
+ 1253              	.LBB39:
+ 385:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 1254              		.loc 3 385 1 view .LVU328
+ 1255 0128 D6E7     		b	.L57
+ 1256              	.L72:
+ 1257 012a 00BF     		.align	2
+ 1258              	.L71:
+ 1259 012c 00000000 		.word	.LC26
+ 1260 0130 34000000 		.word	.LC28
+ 1261 0134 80000000 		.word	.LC30
+ 1262 0138 98000000 		.word	.LC31
+ 1263 013c 00000000 		.word	loader_config
+ 1264 0140 1C000000 		.word	.LC27
+ 1265 0144 54000000 		.word	.LC29
+ 1266              	.LBE39:
+ 1267              	.LBE40:
+ 1268              		.cfi_endproc
+ 1269              	.LFE1050:
+ 1271              		.section	.rodata.load_user_app.str1.4,"aMS",%progbits,1
+ 1272              		.align	2
+ 1273              	.LC32:
+ 1274 0000 75736572 		.ascii	"user loader complete\012\015\000"
+ 1274      206C6F61 
+ 1274      64657220 
+ 1274      636F6D70 
+ 1274      6C657465 
+ 1275              		.section	.text.load_user_app,"ax",%progbits
+ 1276              		.align	1
+ 1277              		.syntax unified
+ 1278              		.thumb
+ 1279              		.thumb_func
+ 1281              	load_user_app:
+ 1282              	.LFB1053:
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** core_initcall(loader_init);
+ARM GAS  /tmp/cceaku1h.s 			page 41
+
+
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static char* argvs[] = {"start","goodmoring",NULL};
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** 
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** static int load_user_app()
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** {
+ 1283              		.loc 1 256 1 is_stmt 1 view -0
+ 1284              		.cfi_startproc
+ 1285              		@ args = 0, pretend = 0, frame = 0
+ 1286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1287 0000 08B5     		push	{r3, lr}
+ 1288              	.LCFI10:
+ 1289              		.cfi_def_cfa_offset 8
+ 1290              		.cfi_offset 3, -8
+ 1291              		.cfi_offset 14, -4
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     if(data[0]=='/'){
+ 1292              		.loc 1 257 5 view .LVU330
+ 1293              		.loc 1 257 12 is_stmt 0 view .LVU331
+ 1294 0002 074B     		ldr	r3, .L77
+ 1295 0004 1868     		ldr	r0, [r3]
+ 1296 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 1297              		.loc 1 257 7 view .LVU332
+ 1298 0008 2F2B     		cmp	r3, #47
+ 1299 000a 05D0     		beq	.L76
+ 1300              	.L74:
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         loader_user_app(data,argvs);
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     }
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     printk(KERN_INFO "user loader complete\n\r");
+ 1301              		.loc 1 260 5 is_stmt 1 view .LVU333
+ 1302 000c 0549     		ldr	r1, .L77+4
+ 1303 000e 0620     		movs	r0, #6
+ 1304 0010 FFF7FEFF 		bl	printk
+ 1305              	.LVL146:
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****     return 0;
+ 1306              		.loc 1 261 5 view .LVU334
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c **** }
+ 1307              		.loc 1 262 1 is_stmt 0 view .LVU335
+ 1308 0014 0020     		movs	r0, #0
+ 1309 0016 08BD     		pop	{r3, pc}
+ 1310              	.L76:
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/loader/user_application_loader.c ****         loader_user_app(data,argvs);
+ 1311              		.loc 1 258 9 is_stmt 1 view .LVU336
+ 1312 0018 0349     		ldr	r1, .L77+8
+ 1313 001a FFF7FEFF 		bl	loader_user_app
+ 1314              	.LVL147:
+ 1315 001e F5E7     		b	.L74
+ 1316              	.L78:
+ 1317              		.align	2
+ 1318              	.L77:
+ 1319 0020 00000000 		.word	data
+ 1320 0024 00000000 		.word	.LC32
+ 1321 0028 00000000 		.word	argvs
+ 1322              		.cfi_endproc
+ 1323              	.LFE1053:
+ 1325              		.section	.lateinitcall,"aw"
+ 1326              		.align	2
+ 1329              	_initcall_load_user_app:
+ 1330 0000 00000000 		.word	load_user_app
+ARM GAS  /tmp/cceaku1h.s 			page 42
+
+
+ 1331              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1332              		.align	2
+ 1333              	.LC33:
+ 1334 0000 73746172 		.ascii	"start\000"
+ 1334      7400
+ 1335 0006 0000     		.align	2
+ 1336              	.LC34:
+ 1337 0008 676F6F64 		.ascii	"goodmoring\000"
+ 1337      6D6F7269 
+ 1337      6E6700
+ 1338              		.section	.data.argvs,"aw"
+ 1339              		.align	2
+ 1342              	argvs:
+ 1343 0000 00000000 		.word	.LC33
+ 1344 0004 08000000 		.word	.LC34
+ 1345 0008 00000000 		.word	0
+ 1346              		.section	.coreinitcall,"aw"
+ 1347              		.align	2
+ 1350              	_initcall_loader_init:
+ 1351 0000 00000000 		.word	loader_init
+ 1352              		.section	.bss.data,"aw",%nobits
+ 1353              		.align	2
+ 1356              	data:
+ 1357 0000 00000000 		.space	4
+ 1358              		.section	.bss.loader_config,"aw",%nobits
+ 1359              		.align	2
+ 1362              	loader_config:
+ 1363 0000 00000000 		.space	32
+ 1363      00000000 
+ 1363      00000000 
+ 1363      00000000 
+ 1363      00000000 
+ 1364              		.text
+ 1365              	.Letext0:
+ 1366              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 1367              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 1368              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/types.h"
+ 1369              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 1370              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/init.h"
+ 1371              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/errseq.h"
+ 1372              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 1373              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 1374              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 1375              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 1376              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 1377              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 1378              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rbtree_types.h"
+ 1379              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uidgid_types.h"
+ 1380              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/projid.h"
+ 1381              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/fs.h"
+ 1382              		.file 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mnt_idmapping.h"
+ 1383              		.file 21 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 1384              		.file 22 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uio.h"
+ 1385              		.file 23 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/migrate_mode.h"
+ 1386              		.file 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/wait.h"
+ 1387              		.file 25 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/xarray.h"
+ 1388              		.file 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rw_hint.h"
+ARM GAS  /tmp/cceaku1h.s 			page 43
+
+
+ 1389              		.file 27 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/reciprocal_div.h"
+ 1390              		.file 28 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mm_type.h"
+ 1391              		.file 29 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bvec.h"
+ 1392              		.file 30 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk_types.h"
+ 1393              		.file 31 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blkdev.h"
+ 1394              		.file 32 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bio.h"
+ 1395              		.file 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool_super_haper.h"
+ 1396              		.file 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool.h"
+ 1397              		.file 35 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockdep_types.h"
+ 1398              		.file 36 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/workqueue_types.h"
+ 1399              		.file 37 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk-mq.h"
+ 1400              		.file 38 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/dcache.h"
+ 1401              		.file 39 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/pr.h"
+ 1402              		.file 40 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/pr.h"
+ 1403              		.file 41 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/hdreg.h"
+ 1404              		.file 42 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ 1405              		.file 43 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/path.h"
+ 1406              		.file 44 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/statfs.h"
+ 1407              		.file 45 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stat.h"
+ 1408              		.file 46 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/error.h"
+ 1409              		.file 47 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 1410              		.file 48 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/script.h"
+ 1411              		.file 49 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 1412              		.file 50 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/gfp_types.h"
+ARM GAS  /tmp/cceaku1h.s 			page 44
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 user_application_loader.c
+     /tmp/cceaku1h.s:22     .text.str_to_uint32:00000000 $t
+     /tmp/cceaku1h.s:27     .text.str_to_uint32:00000000 str_to_uint32
+     /tmp/cceaku1h.s:72     .rodata.check_app.str1.4:00000000 $d
+     /tmp/cceaku1h.s:92     .text.check_app:00000000 $t
+     /tmp/cceaku1h.s:97     .text.check_app:00000000 check_app
+     /tmp/cceaku1h.s:258    .text.check_app:000000a4 $d
+     /tmp/cceaku1h.s:1362   .bss.loader_config:00000000 loader_config
+     /tmp/cceaku1h.s:269    .rodata.set_got_table.str1.4:00000000 $d
+     /tmp/cceaku1h.s:277    .text.set_got_table:00000000 $t
+     /tmp/cceaku1h.s:282    .text.set_got_table:00000000 set_got_table
+     /tmp/cceaku1h.s:369    .text.set_got_table:0000003c $d
+     /tmp/cceaku1h.s:375    .rodata.loader_init.str1.4:00000000 $d
+     /tmp/cceaku1h.s:431    .text.loader_init:00000000 $t
+     /tmp/cceaku1h.s:436    .text.loader_init:00000000 loader_init
+     /tmp/cceaku1h.s:915    .text.loader_init:000001d8 $d
+     /tmp/cceaku1h.s:1356   .bss.data:00000000 data
+     /tmp/cceaku1h.s:939    .rodata.loader_user_app.str1.4:00000000 $d
+     /tmp/cceaku1h.s:958    .text.loader_user_app:00000000 $t
+     /tmp/cceaku1h.s:964    .text.loader_user_app:00000000 loader_user_app
+     /tmp/cceaku1h.s:1259   .text.loader_user_app:0000012c $d
+     /tmp/cceaku1h.s:1272   .rodata.load_user_app.str1.4:00000000 $d
+     /tmp/cceaku1h.s:1276   .text.load_user_app:00000000 $t
+     /tmp/cceaku1h.s:1281   .text.load_user_app:00000000 load_user_app
+     /tmp/cceaku1h.s:1319   .text.load_user_app:00000020 $d
+     /tmp/cceaku1h.s:1342   .data.argvs:00000000 argvs
+     /tmp/cceaku1h.s:1326   .lateinitcall:00000000 $d
+     /tmp/cceaku1h.s:1329   .lateinitcall:00000000 _initcall_load_user_app
+     /tmp/cceaku1h.s:1332   .rodata.str1.4:00000000 $d
+     /tmp/cceaku1h.s:1339   .data.argvs:00000000 $d
+     /tmp/cceaku1h.s:1347   .coreinitcall:00000000 $d
+     /tmp/cceaku1h.s:1350   .coreinitcall:00000000 _initcall_loader_init
+     /tmp/cceaku1h.s:1353   .bss.data:00000000 $d
+     /tmp/cceaku1h.s:1359   .bss.loader_config:00000000 $d
+
+UNDEFINED SYMBOLS
+printk
+filp_open
+__smalloc__
+kernel_read
+filp_close
+preprocess_ini_data
+get_value_from_ini
+strcmp
+__sfree__
+get_global_heap_size
+task_run

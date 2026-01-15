@@ -1,0 +1,213 @@
+ARM GAS  /tmp/ccyQq902.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"fdt_empty_tree.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c"
+  21              		.section	.rodata.fdt_create_empty_tree.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 00       		.ascii	"\000"
+  25              		.section	.text.fdt_create_empty_tree,"ax",%progbits
+  26              		.align	1
+  27              		.global	fdt_create_empty_tree
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	fdt_create_empty_tree:
+  33              	.LVL0:
+  34              	.LFB75:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** // SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c ****  * libfdt - Flat Device Tree manipulation
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c ****  * Copyright (C) 2012 David Gibson, IBM Corporation.
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c ****  */
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** #include <linux/libfdt_env.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** #include <linux/fdt.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** #include <linux/libfdt.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** #include "libfdt_internal.h"
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** int fdt_create_empty_tree(void *buf, int bufsize)
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** {
+  35              		.loc 1 15 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		.loc 1 15 1 is_stmt 0 view .LVU1
+  40 0000 38B5     		push	{r3, r4, r5, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 16
+  43              		.cfi_offset 3, -16
+ARM GAS  /tmp/ccyQq902.s 			page 2
+
+
+  44              		.cfi_offset 4, -12
+  45              		.cfi_offset 5, -8
+  46              		.cfi_offset 14, -4
+  47 0002 0546     		mov	r5, r0
+  48 0004 0C46     		mov	r4, r1
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	int err;
+  49              		.loc 1 16 2 is_stmt 1 view .LVU2
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	err = fdt_create(buf, bufsize);
+  50              		.loc 1 18 2 view .LVU3
+  51              		.loc 1 18 8 is_stmt 0 view .LVU4
+  52 0006 FFF7FEFF 		bl	fdt_create
+  53              	.LVL1:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  54              		.loc 1 19 2 is_stmt 1 view .LVU5
+  55              		.loc 1 19 5 is_stmt 0 view .LVU6
+  56 000a 00B1     		cbz	r0, .L4
+  57              	.LVL2:
+  58              	.L1:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	err = fdt_finish_reservemap(buf);
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	err = fdt_begin_node(buf, "");
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	err =  fdt_end_node(buf);
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	err = fdt_finish(buf);
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	return fdt_open_into(buf, buf, bufsize);
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** }
+  59              		.loc 1 39 1 view .LVU7
+  60 000c 38BD     		pop	{r3, r4, r5, pc}
+  61              	.LVL3:
+  62              	.L4:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  63              		.loc 1 22 2 is_stmt 1 view .LVU8
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  64              		.loc 1 22 8 is_stmt 0 view .LVU9
+  65 000e 2846     		mov	r0, r5
+  66 0010 FFF7FEFF 		bl	fdt_finish_reservemap
+  67              	.LVL4:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  68              		.loc 1 23 2 is_stmt 1 view .LVU10
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  69              		.loc 1 23 5 is_stmt 0 view .LVU11
+  70 0014 0028     		cmp	r0, #0
+  71 0016 F9D1     		bne	.L1
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+ARM GAS  /tmp/ccyQq902.s 			page 3
+
+
+  72              		.loc 1 26 2 is_stmt 1 view .LVU12
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  73              		.loc 1 26 8 is_stmt 0 view .LVU13
+  74 0018 0A49     		ldr	r1, .L5
+  75 001a 2846     		mov	r0, r5
+  76              	.LVL5:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  77              		.loc 1 26 8 view .LVU14
+  78 001c FFF7FEFF 		bl	fdt_begin_node
+  79              	.LVL6:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  80              		.loc 1 27 2 is_stmt 1 view .LVU15
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  81              		.loc 1 27 5 is_stmt 0 view .LVU16
+  82 0020 0028     		cmp	r0, #0
+  83 0022 F3D1     		bne	.L1
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  84              		.loc 1 30 2 is_stmt 1 view .LVU17
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  85              		.loc 1 30 9 is_stmt 0 view .LVU18
+  86 0024 2846     		mov	r0, r5
+  87              	.LVL7:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  88              		.loc 1 30 9 view .LVU19
+  89 0026 FFF7FEFF 		bl	fdt_end_node
+  90              	.LVL8:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  91              		.loc 1 31 2 is_stmt 1 view .LVU20
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+  92              		.loc 1 31 5 is_stmt 0 view .LVU21
+  93 002a 0028     		cmp	r0, #0
+  94 002c EED1     		bne	.L1
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  95              		.loc 1 34 2 is_stmt 1 view .LVU22
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  96              		.loc 1 34 8 is_stmt 0 view .LVU23
+  97 002e 2846     		mov	r0, r5
+  98              	.LVL9:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 	if (err)
+  99              		.loc 1 34 8 view .LVU24
+ 100 0030 FFF7FEFF 		bl	fdt_finish
+ 101              	.LVL10:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+ 102              		.loc 1 35 2 is_stmt 1 view .LVU25
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** 		return err;
+ 103              		.loc 1 35 5 is_stmt 0 view .LVU26
+ 104 0034 0028     		cmp	r0, #0
+ 105 0036 E9D1     		bne	.L1
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** }
+ 106              		.loc 1 38 2 is_stmt 1 view .LVU27
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** }
+ 107              		.loc 1 38 9 is_stmt 0 view .LVU28
+ 108 0038 2246     		mov	r2, r4
+ 109 003a 2946     		mov	r1, r5
+ 110 003c 2846     		mov	r0, r5
+ 111              	.LVL11:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_empty_tree.c **** }
+ARM GAS  /tmp/ccyQq902.s 			page 4
+
+
+ 112              		.loc 1 38 9 view .LVU29
+ 113 003e FFF7FEFF 		bl	fdt_open_into
+ 114              	.LVL12:
+ 115 0042 E3E7     		b	.L1
+ 116              	.L6:
+ 117              		.align	2
+ 118              	.L5:
+ 119 0044 00000000 		.word	.LC0
+ 120              		.cfi_endproc
+ 121              	.LFE75:
+ 123              		.text
+ 124              	.Letext0:
+ 125              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h"
+ARM GAS  /tmp/ccyQq902.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fdt_empty_tree.c
+     /tmp/ccyQq902.s:22     .rodata.fdt_create_empty_tree.str1.4:00000000 $d
+     /tmp/ccyQq902.s:26     .text.fdt_create_empty_tree:00000000 $t
+     /tmp/ccyQq902.s:32     .text.fdt_create_empty_tree:00000000 fdt_create_empty_tree
+     /tmp/ccyQq902.s:119    .text.fdt_create_empty_tree:00000044 $d
+
+UNDEFINED SYMBOLS
+fdt_create
+fdt_finish_reservemap
+fdt_begin_node
+fdt_end_node
+fdt_finish
+fdt_open_into

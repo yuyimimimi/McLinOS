@@ -228,6 +228,7 @@ static int get_block(struct haper2* haper, struct memory_block* block, void* arg
 	}
 	return 1;
 }
+
 static int free_haper_block(struct haper2* haper, void* ptr){ //安全地释放内存块
 	if (ptr == NULL || haper == NULL) return -1;
 	struct get_block block = {
@@ -252,6 +253,9 @@ static int print_block_status(struct haper2* haper,struct memory_block* block, s
 	void (*printdata)(char *data,...) = data->printdata;
 	printdata("---------------------------\n");	
 	printdata("block number:%d\n",data->count);
+	if(block->magic != BASE_MAGIC){
+		printdata("block was broken\n");
+	}
 	if(get_block_status(block,use_flag) == 0){
 		printdata("block is free\n");
 	}
@@ -259,7 +263,7 @@ static int print_block_status(struct haper2* haper,struct memory_block* block, s
 		printdata("block is used\n");
 	}
 	printdata("block size:%d\n",block->block_size);
-	printdata("block addr:%p\n",block);
+	printdata("block addr:0x%08x\n",block);
 	data->count++;
 	return 1;
 }

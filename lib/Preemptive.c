@@ -11,7 +11,6 @@ struct task_pool_Preemptive{
 
 static void remove_task_from_pool(struct task_struct* task,struct scheduler *sched);
 
-static time64_t time = 0;
 struct task_struct* get_next_task(struct task_struct* task){
     return task->next;
 }
@@ -34,7 +33,7 @@ struct task_struct* get_useful_task(struct task_struct* head_task,struct schedul
             break;            
         }
         else if(search_task->state == TASK_WAITING){
-            if(search_task->last_scheduler_time + search_task->block_time < time){
+            if(search_task->last_scheduler_time + search_task->block_time < sched->scheduler_timer){
                 search_task->state = TASK_READY;
                 break;
             }
@@ -48,14 +47,14 @@ struct task_struct* get_useful_task(struct task_struct* head_task,struct schedul
 
 static struct task_struct* Preemptive_scheduling(struct scheduler *sched)
 {   
-    time++; 
+    sched->scheduler_timer++;
     struct task_struct* next_task = get_useful_task(((struct task_pool_Preemptive*)sched->s_task_pool)->task_head,sched);    
     if(next_task != sched->current_task)
     {
         if( sched->current_task != NULL){
-            sched->current_task->last_scheduler_time = time;
+            sched->current_task->last_scheduler_time = sched->scheduler_timer;
         }
-        next_task->last_scheduler_time = time;
+        next_task->last_scheduler_time =  sched->scheduler_timer;
     }
     return next_task;
 } 

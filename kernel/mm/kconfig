@@ -1,37 +1,33 @@
 menu "Kernel Memory Pool"
 
-menu "MAIN_HEAP"
+
 config KERNEL_MAIN_HEAP_SIZE
-    int "main heap size (kb)"
+    int "Main heap size (KB)"
     default 120
     help
-      Set the size of the heap space in kb.
-endmenu    
+      Set the size of the main kernel heap in kilobytes.
 
-menu "EXPAND_HEAP 1"
+
 
 config EXPAND_HEAP_1_RUN_TASK
-    bool "Enable expand heap for task run stack"
+    bool "Enable expand heap1 for task run stack"
     default n
     help
-      Enable or disable the use of expand heap for task run stack.
+      Enable or disable the use of expand heap1 for task run stack.
 
 config EXPAND_HEAP_1_START_ADDR
-    hex "Expand heap start address"
+    hex "Expand heap1 start address"
     default 0x10000000
     help
-      Define the start address for the expanded heap.
+      Define the start address for expand heap1.
 
 config EXPAND_HEAP_1_SIZE
-    int "Expand heap size (kb)"
+    int "Expand heap1 size (KB)"
     default 0
     help
-      Set the size of the heap space in kb.
-      
-endmenu
+      Set the size of expand heap1 in kilobytes.
 
 
-menu "EXPAND_HEAP 2"
 
 config EXPAND_HEAP_2_TASK_RUN
     bool "Enable expand heap2 for task run stack"
@@ -43,15 +39,102 @@ config EXPAND_HEAP_2_START_ADDR
     hex "Expand heap2 start address"
     default 0x70000000
     help
-      Define the start address for the second expanded heap.
+      Define the start address for expand heap2.
 
 config EXPAND_HEAP_2_SIZE
-    int "Expand heap2 size (kb)"
+    int "Expand heap2 size (KB)"
     default 0
     help
-      Set the size of the second expanded heap space.
+      Set the size of expand heap2 in kilobytes.
+
+
+
+
+config EXPAND_HEAP_3_TASK_RUN
+    bool "Enable expand heap3 for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap3 for task run stack.
+
+config EXPAND_HEAP_3_START_ADDR
+    hex "Expand heap3 start address"
+    default 0x00000000
+    help
+      Define the start address for expand heap3.
+
+config EXPAND_HEAP_3_SIZE
+    int "Expand heap3 size (KB)"
+    default 0
+    help
+      Set the size of expand heap3 in kilobytes.
+
+
+
+
+config EXPAND_HEAP_4_TASK_RUN
+    bool "Enable expand heap4 for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap4 for task run stack.
+
+config EXPAND_HEAP_4_START_ADDR
+    hex "Expand heap4 start address"
+    default 0x00000000
+    help
+      Define the start address for expand heap4.
+
+config EXPAND_HEAP_4_SIZE
+    int "Expand heap4 size (KB)"
+    default 0
+    help
+      Set the size of expand heap4 in kilobytes.
+
+
+
+
+config EXPAND_HEAP_5_TASK_RUN
+    bool "Enable expand heap5 for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap5 for task run stack.
+
+config EXPAND_HEAP_5_START_ADDR
+    hex "Expand heap5 start address"
+    default 0x00000000
+    help
+      Define the start address for expand heap5.
+
+config EXPAND_HEAP_5_SIZE
+    int "Expand heap5 size (KB)"
+    default 0
+    help
+      Set the size of expand heap5 in kilobytes.
+
+
+
+
+config EXPAND_HEAP_6_TASK_RUN
+    bool "Enable expand heap6 for task run stack"
+    default n
+    help
+      Enable or disable the use of expand heap6 for task run stack.
+
+config EXPAND_HEAP_6_START_ADDR
+    hex "Expand heap6 start address"
+    default 0x00000000
+    help
+      Define the start address for expand heap6.
+
+config EXPAND_HEAP_6_SIZE
+    int "Expand heap6 size (KB)"
+    default 0
+    help
+      Set the size of expand heap6 in kilobytes.
+
+
+
+      
+
+
 
 endmenu
-
-endmenu
-

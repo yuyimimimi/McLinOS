@@ -9,22 +9,8 @@
  * Written by David Howells (dhowells@redhat.com)
  */
 
-#include <linux/rwonce.h>
 
-static inline void sync(void)
-{
-	asm volatile("sync" : : : "memory");
-}
 
-static inline void eieio(void)
-{
-	asm volatile("eieio" : : : "memory");
-}
-
-static inline void barrier(void)
-{
-	asm volatile("" : : : "memory");
-}
 
 
 #ifndef __ASM_GENERIC_BARRIER_H
@@ -32,9 +18,10 @@ static inline void barrier(void)
 
 #ifndef __ASSEMBLY__
 
+#include <linux/rwonce.h>
 #include <linux/compiler.h>
 #include <linux/kcsan-checks.h>
-//#include <asm/rwonce.h>
+#include <asm/rwonce.h>
 
 #ifndef nop
 #define nop()	asm volatile ("nop")

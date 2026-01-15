@@ -1,0 +1,188 @@
+ARM GAS  /tmp/cc3kHChf.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"cortexmirq.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c"
+  21              		.section	.text.IRQ_Generic_Handler,"ax",%progbits
+  22              		.align	1
+  23              		.global	IRQ_Generic_Handler
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	IRQ_Generic_Handler:
+  29              	.LFB148:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** #include <linux/compiler.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** #include <linux/types.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** extern void C_IRQ_Dispatcher(int irq_number);
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void IRQ_Generic_Handler(void)
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** {   
+  30              		.loc 1 7 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     int irq_number;
+  39              		.loc 1 8 5 view .LVU1
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile (
+  40              		.loc 1 9 5 view .LVU2
+  41              		.syntax unified
+  42              	@ 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c" 1
+  43 0002 EFF30580 		MRS r0, IPSR
+  44 0006 A0F11000 		SUB r0, r0, #16
+  45              		
+  46              	@ 0 "" 2
+  47              	.LVL0:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****         "MRS %0, IPSR\n\t"  
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****         "SUB %0, %0, #16\n\t"
+ARM GAS  /tmp/cc3kHChf.s 			page 2
+
+
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****         : "=r" (irq_number)
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     );
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     C_IRQ_Dispatcher(irq_number);
+  48              		.loc 1 14 5 view .LVU3
+  49              		.thumb
+  50              		.syntax unified
+  51 000a FFF7FEFF 		bl	C_IRQ_Dispatcher
+  52              	.LVL1:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** }
+  53              		.loc 1 15 1 is_stmt 0 view .LVU4
+  54 000e 08BD     		pop	{r3, pc}
+  55              		.cfi_endproc
+  56              	.LFE148:
+  58              		.section	.text.__enable_irq,"ax",%progbits
+  59              		.align	1
+  60              		.weak	__enable_irq
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  65              	__enable_irq:
+  66              	.LFB149:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void __weak __enable_irq(){
+  67              		.loc 1 19 27 is_stmt 1 view -0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile ("cpsie i": : : "memory");
+  72              		.loc 1 20 5 view .LVU6
+  73              		.syntax unified
+  74              	@ 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c" 1
+  75 0000 62B6     		cpsie i
+  76              	@ 0 "" 2
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** }
+  77              		.loc 1 21 1 is_stmt 0 view .LVU7
+  78              		.thumb
+  79              		.syntax unified
+  80 0002 7047     		bx	lr
+  81              		.cfi_endproc
+  82              	.LFE149:
+  84              		.section	.text.__disable_irq,"ax",%progbits
+  85              		.align	1
+  86              		.weak	__disable_irq
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	__disable_irq:
+  92              	.LFB150:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void __weak __disable_irq(){
+  93              		.loc 1 23 28 is_stmt 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/cc3kHChf.s 			page 3
+
+
+  97              		@ link register save eliminated.
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     __asm volatile ("cpsid i": : : "memory");
+  98              		.loc 1 24 5 view .LVU9
+  99              		.syntax unified
+ 100              	@ 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c" 1
+ 101 0000 72B6     		cpsid i
+ 102              	@ 0 "" 2
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** }
+ 103              		.loc 1 25 1 is_stmt 0 view .LVU10
+ 104              		.thumb
+ 105              		.syntax unified
+ 106 0002 7047     		bx	lr
+ 107              		.cfi_endproc
+ 108              	.LFE150:
+ 110              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 111              		.align	1
+ 112              		.global	UsageFault_Handler
+ 113              		.syntax unified
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	UsageFault_Handler:
+ 118              	.LFB151:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void __enable_irq();
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void __disable_irq();
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** extern void __user_error_process(void);
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** void UsageFault_Handler(){
+ 119              		.loc 1 31 26 is_stmt 1 view -0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123 0000 08B5     		push	{r3, lr}
+ 124              	.LCFI1:
+ 125              		.cfi_def_cfa_offset 8
+ 126              		.cfi_offset 3, -8
+ 127              		.cfi_offset 14, -4
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c ****     __user_error_process();
+ 128              		.loc 1 32 5 view .LVU12
+ 129 0002 FFF7FEFF 		bl	__user_error_process
+ 130              	.LVL2:
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/irq/cortexmirq.c **** }
+ 131              		.loc 1 33 1 is_stmt 0 view .LVU13
+ 132 0006 08BD     		pop	{r3, pc}
+ 133              		.cfi_endproc
+ 134              	.LFE151:
+ 136              		.text
+ 137              	.Letext0:
+ARM GAS  /tmp/cc3kHChf.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 cortexmirq.c
+     /tmp/cc3kHChf.s:22     .text.IRQ_Generic_Handler:00000000 $t
+     /tmp/cc3kHChf.s:28     .text.IRQ_Generic_Handler:00000000 IRQ_Generic_Handler
+     /tmp/cc3kHChf.s:59     .text.__enable_irq:00000000 $t
+     /tmp/cc3kHChf.s:65     .text.__enable_irq:00000000 __enable_irq
+     /tmp/cc3kHChf.s:85     .text.__disable_irq:00000000 $t
+     /tmp/cc3kHChf.s:91     .text.__disable_irq:00000000 __disable_irq
+     /tmp/cc3kHChf.s:111    .text.UsageFault_Handler:00000000 $t
+     /tmp/cc3kHChf.s:117    .text.UsageFault_Handler:00000000 UsageFault_Handler
+
+UNDEFINED SYMBOLS
+C_IRQ_Dispatcher
+__user_error_process

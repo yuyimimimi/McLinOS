@@ -1,0 +1,98 @@
+ARM GAS  /tmp/ccQT6vn9.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sys_loader.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c"
+  21              		.section	.text.sys_execve,"ax",%progbits
+  22              		.align	1
+  23              		.global	sys_execve
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	sys_execve:
+  29              	.LVL0:
+  30              	.LFB109:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** #include <linux/sched.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** #include <linux/export.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** struct task_struct *loader_user_app(char* file_path,void* argv);
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** struct task_struct * sys_execve(const char __user *file_path, void __user *argv,char *const envp[])
+  31              		.loc 1 6 100 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 6 100 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 3, -8
+  40              		.cfi_offset 14, -4
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c ****     return loader_user_app(file_path,argv);
+  41              		.loc 1 7 5 is_stmt 1 view .LVU2
+  42              		.loc 1 7 12 is_stmt 0 view .LVU3
+  43 0002 FFF7FEFF 		bl	loader_user_app
+  44              	.LVL1:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_loader.c **** }
+  45              		.loc 1 8 1 view .LVU4
+  46 0006 08BD     		pop	{r3, pc}
+  47              		.cfi_endproc
+  48              	.LFE109:
+  50              		.section	.rodata.str1.4,"aMS",%progbits,1
+  51              		.align	2
+ARM GAS  /tmp/ccQT6vn9.s 			page 2
+
+
+  52              	.LC0:
+  53 0000 7379735F 		.ascii	"sys_execve\000"
+  53      65786563 
+  53      766500
+  54 000b 00       		.align	2
+  55              	.LC1:
+  56 000c 00       		.ascii	"\000"
+  57              		.section	.export_table,"aw"
+  58              		.align	2
+  61              	sys_execve_export_struct:
+  62 0000 00000000 		.word	.LC0
+  63 0004 0C000000 		.word	.LC1
+  64 0008 00000000 		.word	sys_execve
+  65              		.text
+  66              	.Letext0:
+  67              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+  68              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+  69              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+  70              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+  71              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+  72              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+  73              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ARM GAS  /tmp/ccQT6vn9.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys_loader.c
+     /tmp/ccQT6vn9.s:22     .text.sys_execve:00000000 $t
+     /tmp/ccQT6vn9.s:28     .text.sys_execve:00000000 sys_execve
+     /tmp/ccQT6vn9.s:51     .rodata.str1.4:00000000 $d
+     /tmp/ccQT6vn9.s:58     .export_table:00000000 $d
+     /tmp/ccQT6vn9.s:61     .export_table:00000000 sys_execve_export_struct
+
+UNDEFINED SYMBOLS
+loader_user_app

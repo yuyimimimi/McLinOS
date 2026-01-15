@@ -5,8 +5,15 @@
 ######################################
 
 STRUCT    = arm_m
-PLATFORM  = stm32f4
+# PLATFORM  = stm32h743
+# PLATFORM  = stm32f4
+PLATFORM  = rp2350
 PREFIX    = arm-none-eabi-
+# VENDOR    = st
+VENDOR    = raspberrypi
+
+
+
 
 DEBUG = 1
 OPT = -Og
@@ -22,6 +29,7 @@ TARGET    = $(BASE_DIR)/out/$(STRUCT)-$(PLATFORM)-image
 ######################################
 # Source
 ######################################
+
 C_SOURCES   =  
 ASM_SOURCES =  
 ASMM_SOURCES= 
@@ -30,11 +38,11 @@ C_DEFS      =
 AS_INCLUDES = 
 C_INCLUDES  =  
 
-START_UP = $(BASE_DIR)/arch/$(STRUCT)/boot/startup.s 
-ASM_SOURCES += $(START_UP)
-LDSCRIPT = $(BASE_DIR)/arch/$(STRUCT)/boot/link.ld
 
-DTS_FILE = $(BASE_DIR)/arch/$(STRUCT)/boot/dts/$(PLATFORM).dts
+ASM_SOURCES += 
+LDSCRIPT = $(BASE_DIR)/arch/$(STRUCT)/boot/ld/link.ld
+
+
 DTB_SOURCES = $(OUTPUT_DIR)/$(PLATFORM)-bord-out.dtb
 DTB_OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(DTB_SOURCES:.dtb=.dtb.o)))
 OBJECTS += $(DTB_OBJECTS)
@@ -51,12 +59,18 @@ C_INCLUDES += \
     -I$(BASE_DIR)/include/uapi \
     -I$(BASE_DIR)/arch/$(STRUCT)/include \
     -I$(BASE_DIR)/arch/$(STRUCT)/include/uapi \
+	
+
+
 
 CFLAGS = -nostdlib -nostartfiles -Wno-unused-function
 
-CFLAGS += -DSTRUCT=\"$(STRUCT)\" -DPLATFORM=\"$(PLATFORM)\" -DPREFIX=\"$(PREFIX)\"
 
-
+CFLAGS += -DSTRUCT=\"$(STRUCT)\" \
+		  -DPLATFORM=\"$(PLATFORM)\" \
+		  -DPREFIX=\"$(PREFIX)\" \
+		  -DCOMPILE_TIME="\"$(shell date '+%Y-%m-%d %H:%M:%S')\"" \
+		  -DVERSION=\"0.01\" 
 
 
 
@@ -153,21 +167,20 @@ clean:
 .PHONY: menuconfig
 
 menuconfig:
-	kconfig-mconf $(BASE_DIR)/arch/$(STRUCT)/config/kconfig.$(PLATFORM)
-	@echo "Generating config/config.h from .config..."
-	@grep '^CONFIG_' .config | sed 's/^CONFIG_/#define CONFIG_/; s/=\(.*\)/ \1/' > $(BASE_DIR)/include/generated/autoconf.h
+	KCONFIG_CONFIG=$(BASE_DIR)/arch/$(STRUCT)/mach-$(VENDOR)/$(PLATFORM)/.config kconfig-mconf $(BASE_DIR)/arch/$(STRUCT)/mach-$(VENDOR)/$(PLATFORM)/kconfig
+	@grep '^CONFIG_' $(BASE_DIR)/arch/$(STRUCT)/mach-$(VENDOR)/$(PLATFORM)/.config | sed 's/^CONFIG_/#define CONFIG_/; s/=\(.*\)/ \1/' > $(BASE_DIR)/include/generated/autoconf.h
 	@mkdir -p $(BUILD_DIR)
-	@echo "Create link script ..." 
-	@cpp -nostdinc -I$(BASE_DIR)/arch/$(STRUCT)/boot -I$(BASE_DIR)/include -undef -x assembler-with-cpp $(BASE_DIR)/arch/$(STRUCT)/boot/ld/$(PLATFORM).ld.in -o $(LDSCRIPT)
-	@echo "Create startup script ..." 
-	@cpp -nostdinc -I$(BASE_DIR)/arch/$(STRUCT)/kernel -I$(BASE_DIR)/include -undef -x assembler-with-cpp $(BASE_DIR)/arch/$(STRUCT)/kernel/Interruptvectorscale.s -o $(START_UP)
+	@cpp -nostdinc -I$(BASE_DIR)/arch/$(STRUCT)/boot -I$(BASE_DIR)/include -undef -x assembler-with-cpp $(BASE_DIR)/arch/$(STRUCT)/boot/ld/main.ld -o $(LDSCRIPT)
+	
+
+DTS_FILE = $(BASE_DIR)/arch/$(STRUCT)/boot/dts/$(PLATFORM).dtsi
 
 dtbs:
 	@mkdir -p $(OUTPUT_DIR)
 	@touch $(DTB_SOURCES)
-	@cpp -nostdinc -I$(BASE_DIR)/arch/$(STRUCT)/boot/dts -I$(BASE_DIR)/include -undef -x assembler-with-cpp $(DTS_FILE) -o $(DTS_FILE).pp
+	@cpp -nostdinc -I$(BASE_DIR)/arch/$(STRUCT)/boot/dts -I$(BASE_DIR)/include -undef -x assembler-with-cpp $(DTS_FILE) -o $(DTS_FILE).dts
 	@echo "Create dtb file..."
-	@dtc -I dts -O dtb -o $(DTB_SOURCES) $(DTS_FILE).pp 
+	@dtc -I dts -O dtb -o $(DTB_SOURCES) $(DTS_FILE).dts
 
 installtools:
 	@echo "Installing required tools..."
@@ -179,7 +192,7 @@ installtools:
 		build-essential
 	@echo "Tools installed!"
 
-rootfs:
+rootfs: 
 	@sudo python3 $(BASE_DIR)/user/rootfs/rootfs_create.py
 
 userclean:
@@ -194,9 +207,13 @@ help:
 	@echo "  clean         - Remove build artifacts"
 	@echo "  installtools  - Install required tools"
 
+
+
 #######################################
 # Dependencies
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
 
 # *** EOF ***
+
+

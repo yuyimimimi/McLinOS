@@ -1,0 +1,1320 @@
+ARM GAS  /tmp/ccgOHB1z.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"add_disk.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c"
+  21              		.section	.text.spin_lock_init,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	spin_lock_init:
+  28              	.LVL0:
+  29              	.LFB238:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/types.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <asm/irqflags.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct* get_current_task(void);
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void __delay(uint32_t time);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_lock(spinlock_t* lock);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_unlock(spinlock_t* lock);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+  31              		.loc 2 17 45 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     lock->flag = 0;
+  36              		.loc 2 18 5 view .LVU1
+  37              		.loc 2 18 16 is_stmt 0 view .LVU2
+  38 0000 0023     		movs	r3, #0
+  39 0002 0360     		str	r3, [r0]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+ARM GAS  /tmp/ccgOHB1z.s 			page 2
+
+
+  40              		.loc 2 19 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE238:
+  45              		.section	.rodata.add_mbr_son_disk.str1.4,"aMS",%progbits,1
+  46              		.align	2
+  47              	.LC0:
+  48 0000 63616E20 		.ascii	"can not alloc more memory\012\000"
+  48      6E6F7420 
+  48      616C6C6F 
+  48      63206D6F 
+  48      7265206D 
+  49              		.section	.text.add_mbr_son_disk,"ax",%progbits
+  50              		.align	1
+  51              		.global	add_mbr_son_disk
+  52              		.syntax unified
+  53              		.thumb
+  54              		.thumb_func
+  56              	add_mbr_son_disk:
+  57              	.LVL1:
+  58              	.LFB1033:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/slab.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/fs.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/blkdev.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/spinlock.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #include <linux/string.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** static void register_son_disk(struct block_device *bdev);
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** int __register_disk(struct block_device *dev,struct gendisk *disk,char *name);
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** extern uint32_t get_partiton_data(struct partition* partition,int number,uint32_t flag);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** extern struct partition* get_partition_from_device(struct block_device *bdev);
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** extern int check_empty_MBR_Table(struct partition *partition,int number);
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** int __add_disk(struct gendisk *disk)
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** {
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     struct block_device *dev;
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     if(disk->part0 == NULL){
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         dev = kmalloc(sizeof(struct block_device) , GFP_KERNEL);
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         if(dev == NULL){
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             printk(KERN_INFO "can not alloc more memory\n");
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             return -ENOMEM;
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         }   
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         disk->part0 = dev;     
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev = disk->part0;
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_disk = disk;
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_queue = disk->queue;
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_stamp = jiffies;
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_dev = disk->major;
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     spin_lock_init(&dev->bd_size_lock);
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_claiming = NULL;
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_holder = NULL;
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&dev->bd_holder_lock);
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&dev->bd_fsfreeze_mutex);
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_holders = 0;
+ARM GAS  /tmp/ccgOHB1z.s 			page 3
+
+
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     __register_disk(dev,disk,NULL);
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     register_son_disk(dev);
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     return 0;
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** }
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** EXPORT_SYMBOL(__add_disk);
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #define mbr_partiton_startaddress 0x01
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #define mbr_partiton_size         0x02
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** #define mbr_partiton_magic        0x03
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** int add_mbr_son_disk(struct block_device *dev,struct partition* partition,uint32_t number)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** {
+  59              		.loc 1 50 1 is_stmt 1 view -0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 32
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		.loc 1 50 1 is_stmt 0 view .LVU5
+  64 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+  65              	.LCFI0:
+  66              		.cfi_def_cfa_offset 28
+  67              		.cfi_offset 4, -28
+  68              		.cfi_offset 5, -24
+  69              		.cfi_offset 6, -20
+  70              		.cfi_offset 7, -16
+  71              		.cfi_offset 8, -12
+  72              		.cfi_offset 9, -8
+  73              		.cfi_offset 14, -4
+  74 0004 89B0     		sub	sp, sp, #36
+  75              	.LCFI1:
+  76              		.cfi_def_cfa_offset 64
+  77 0006 0646     		mov	r6, r0
+  78 0008 0F46     		mov	r7, r1
+  79 000a 1546     		mov	r5, r2
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     struct block_device* son_dev = kmalloc(sizeof(struct block_device) , GFP_KERNEL);
+  80              		.loc 1 51 5 is_stmt 1 view .LVU6
+  81              	.LVL2:
+  82              	.LBB17:
+  83              	.LBI17:
+  84              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/overflow.h>
+ARM GAS  /tmp/ccgOHB1z.s 			page 4
+
+
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KMALLOC,
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ARM GAS  /tmp/ccgOHB1z.s 			page 5
+
+
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  rcu_read_unlock();
+ARM GAS  /tmp/ccgOHB1z.s 			page 6
+
+
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ARM GAS  /tmp/ccgOHB1z.s 			page 7
+
+
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ARM GAS  /tmp/ccgOHB1z.s 			page 8
+
+
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache {
+ARM GAS  /tmp/ccgOHB1z.s 			page 9
+
+
+ 302:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ 314:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	};
+ARM GAS  /tmp/ccgOHB1z.s 			page 10
+
+
+ 359:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 371:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+  85              		.loc 3 379 21 view .LVU7
+  86              	.LBB18:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+  87              		.loc 3 380 2 view .LVU8
+  88              		.loc 3 380 9 is_stmt 0 view .LVU9
+  89 000c 4FF44C61 		mov	r1, #3264
+  90              	.LVL3:
+  91              		.loc 3 380 9 view .LVU10
+  92 0010 6C20     		movs	r0, #108
+  93              	.LVL4:
+  94              		.loc 3 380 9 view .LVU11
+  95 0012 FFF7FEFF 		bl	__smalloc__
+  96              	.LVL5:
+  97              		.loc 3 380 9 view .LVU12
+  98              	.LBE18:
+  99              	.LBE17:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     if(son_dev == NULL){
+ 100              		.loc 1 52 5 is_stmt 1 view .LVU13
+ 101              		.loc 1 52 7 is_stmt 0 view .LVU14
+ 102 0016 0028     		cmp	r0, #0
+ 103 0018 59D0     		beq	.L7
+ 104 001a 0446     		mov	r4, r0
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         printk(KERN_INFO "can not alloc more memory\n");
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         return -ENOMEM;
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     if(check_empty_MBR_Table(partition,number) == 1){
+ 105              		.loc 1 56 5 is_stmt 1 view .LVU15
+ 106              		.loc 1 56 8 is_stmt 0 view .LVU16
+ 107 001c 2946     		mov	r1, r5
+ 108 001e 3846     		mov	r0, r7
+ 109              	.LVL6:
+ 110              		.loc 1 56 8 view .LVU17
+ 111 0020 FFF7FEFF 		bl	check_empty_MBR_Table
+ 112              	.LVL7:
+ 113              		.loc 1 56 7 discriminator 1 view .LVU18
+ 114 0024 0128     		cmp	r0, #1
+ARM GAS  /tmp/ccgOHB1z.s 			page 11
+
+
+ 115 0026 59D0     		beq	.L5
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****          return -1;
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     sector_t startaddress = get_partiton_data(partition,number,mbr_partiton_startaddress);
+ 116              		.loc 1 59 5 is_stmt 1 view .LVU19
+ 117              		.loc 1 59 29 is_stmt 0 view .LVU20
+ 118 0028 0122     		movs	r2, #1
+ 119 002a 2946     		mov	r1, r5
+ 120 002c 3846     		mov	r0, r7
+ 121 002e FFF7FEFF 		bl	get_partiton_data
+ 122              	.LVL8:
+ 123 0032 8146     		mov	r9, r0
+ 124              	.LVL9:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     sector_t size         = get_partiton_data(partition,number,mbr_partiton_size);
+ 125              		.loc 1 60 5 is_stmt 1 view .LVU21
+ 126              		.loc 1 60 29 is_stmt 0 view .LVU22
+ 127 0034 0222     		movs	r2, #2
+ 128 0036 2946     		mov	r1, r5
+ 129 0038 3846     		mov	r0, r7
+ 130              	.LVL10:
+ 131              		.loc 1 60 29 view .LVU23
+ 132 003a FFF7FEFF 		bl	get_partiton_data
+ 133              	.LVL11:
+ 134 003e 8046     		mov	r8, r0
+ 135              	.LVL12:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     uint8_t flag          = get_partiton_data(partition,number,mbr_partiton_magic);
+ 136              		.loc 1 61 5 is_stmt 1 view .LVU24
+ 137              		.loc 1 61 29 is_stmt 0 view .LVU25
+ 138 0040 0322     		movs	r2, #3
+ 139 0042 2946     		mov	r1, r5
+ 140 0044 3846     		mov	r0, r7
+ 141              	.LVL13:
+ 142              		.loc 1 61 29 view .LVU26
+ 143 0046 FFF7FEFF 		bl	get_partiton_data
+ 144              	.LVL14:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_start_sect = startaddress;
+ 145              		.loc 1 62 5 is_stmt 1 view .LVU27
+ 146              		.loc 1 62 28 is_stmt 0 view .LVU28
+ 147 004a C4F80090 		str	r9, [r4]
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_nr_sectors = size;
+ 148              		.loc 1 63 5 is_stmt 1 view .LVU29
+ 149              		.loc 1 63 28 is_stmt 0 view .LVU30
+ 150 004e C4F80480 		str	r8, [r4, #4]
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_disk  = dev->bd_disk;
+ 151              		.loc 1 64 5 is_stmt 1 view .LVU31
+ 152              		.loc 1 64 28 is_stmt 0 view .LVU32
+ 153 0052 B368     		ldr	r3, [r6, #8]
+ 154              		.loc 1 64 23 view .LVU33
+ 155 0054 A360     		str	r3, [r4, #8]
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_stamp = jiffies;
+ 156              		.loc 1 65 5 is_stmt 1 view .LVU34
+ 157              		.loc 1 65 25 is_stmt 0 view .LVU35
+ 158 0056 FFF7FEFF 		bl	ktime_get
+ 159              	.LVL15:
+ 160              		.loc 1 65 23 discriminator 1 view .LVU36
+ 161 005a 2061     		str	r0, [r4, #16]
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_queue = dev->bd_queue;
+ARM GAS  /tmp/ccgOHB1z.s 			page 12
+
+
+ 162              		.loc 1 66 5 is_stmt 1 view .LVU37
+ 163              		.loc 1 66 28 is_stmt 0 view .LVU38
+ 164 005c F368     		ldr	r3, [r6, #12]
+ 165              		.loc 1 66 23 view .LVU39
+ 166 005e E360     		str	r3, [r4, #12]
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_dev   = dev->bd_dev++;
+ 167              		.loc 1 67 5 is_stmt 1 view .LVU40
+ 168              		.loc 1 67 28 is_stmt 0 view .LVU41
+ 169 0060 B369     		ldr	r3, [r6, #24]
+ 170              		.loc 1 67 36 view .LVU42
+ 171 0062 5A1C     		adds	r2, r3, #1
+ 172 0064 B261     		str	r2, [r6, #24]
+ 173              		.loc 1 67 23 view .LVU43
+ 174 0066 A361     		str	r3, [r4, #24]
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     spin_lock_init(&son_dev->bd_size_lock);
+ 175              		.loc 1 68 5 is_stmt 1 view .LVU44
+ 176 0068 04F12400 		add	r0, r4, #36
+ 177 006c FFF7FEFF 		bl	spin_lock_init
+ 178              	.LVL16:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_claiming = NULL;
+ 179              		.loc 1 69 5 view .LVU45
+ 180              		.loc 1 69 26 is_stmt 0 view .LVU46
+ 181 0070 0027     		movs	r7, #0
+ 182              	.LVL17:
+ 183              		.loc 1 69 26 view .LVU47
+ 184 0072 6763     		str	r7, [r4, #52]
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_holder   = NULL;
+ 185              		.loc 1 70 5 is_stmt 1 view .LVU48
+ 186              		.loc 1 70 26 is_stmt 0 view .LVU49
+ 187 0074 A763     		str	r7, [r4, #56]
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&son_dev->bd_holder_lock);
+ 188              		.loc 1 71 5 is_stmt 1 view .LVU50
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&son_dev->bd_fsfreeze_mutex);
+ 189              		.loc 1 72 5 view .LVU51
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     son_dev->bd_holders  = 0;
+ 190              		.loc 1 73 5 view .LVU52
+ 191              		.loc 1 73 26 is_stmt 0 view .LVU53
+ 192 0076 E764     		str	r7, [r4, #76]
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     char name[32];
+ 193              		.loc 1 74 5 is_stmt 1 view .LVU54
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     memset(name,"\0",32);
+ 194              		.loc 1 75 5 view .LVU55
+ 195 0078 2022     		movs	r2, #32
+ 196 007a 1A49     		ldr	r1, .L8
+ 197 007c 6846     		mov	r0, sp
+ 198 007e FFF7FEFF 		bl	memset
+ 199              	.LVL18:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     strcpy(name,dev->bd_disk->disk_name);
+ 200              		.loc 1 76 5 view .LVU56
+ 201              		.loc 1 76 20 is_stmt 0 view .LVU57
+ 202 0082 B168     		ldr	r1, [r6, #8]
+ 203              		.loc 1 76 5 view .LVU58
+ 204 0084 0C31     		adds	r1, r1, #12
+ 205 0086 6846     		mov	r0, sp
+ 206 0088 FFF7FEFF 		bl	strcpy
+ 207              	.LVL19:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     name[strlen(name)+1] =  name[strlen(name)];
+ARM GAS  /tmp/ccgOHB1z.s 			page 13
+
+
+ 208              		.loc 1 77 5 is_stmt 1 view .LVU59
+ 209              		.loc 1 77 34 is_stmt 0 view .LVU60
+ 210 008c 6846     		mov	r0, sp
+ 211 008e FFF7FEFF 		bl	strlen
+ 212              	.LVL20:
+ 213              		.loc 1 77 22 discriminator 2 view .LVU61
+ 214 0092 431C     		adds	r3, r0, #1
+ 215              		.loc 1 77 33 discriminator 2 view .LVU62
+ 216 0094 00F12002 		add	r2, r0, #32
+ 217 0098 0DEB0200 		add	r0, sp, r2
+ 218 009c 10F8202C 		ldrb	r2, [r0, #-32]	@ zero_extendqisi2
+ 219              		.loc 1 77 26 discriminator 2 view .LVU63
+ 220 00a0 2033     		adds	r3, r3, #32
+ 221 00a2 6B44     		add	r3, sp, r3
+ 222 00a4 03F8202C 		strb	r2, [r3, #-32]
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     name[strlen(name)]   = '0' + number;
+ 223              		.loc 1 78 5 is_stmt 1 view .LVU64
+ 224              		.loc 1 78 10 is_stmt 0 view .LVU65
+ 225 00a8 6846     		mov	r0, sp
+ 226 00aa FFF7FEFF 		bl	strlen
+ 227              	.LVL21:
+ 228              		.loc 1 78 32 discriminator 1 view .LVU66
+ 229 00ae 3035     		adds	r5, r5, #48
+ 230              	.LVL22:
+ 231              		.loc 1 78 26 discriminator 1 view .LVU67
+ 232 00b0 00F12003 		add	r3, r0, #32
+ 233 00b4 0DEB0300 		add	r0, sp, r3
+ 234 00b8 00F8205C 		strb	r5, [r0, #-32]
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     __register_disk(son_dev,dev->bd_disk,name);
+ 235              		.loc 1 79 5 is_stmt 1 view .LVU68
+ 236 00bc 6A46     		mov	r2, sp
+ 237 00be B168     		ldr	r1, [r6, #8]
+ 238 00c0 2046     		mov	r0, r4
+ 239 00c2 FFF7FEFF 		bl	__register_disk
+ 240              	.LVL23:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     return 0;
+ 241              		.loc 1 80 5 view .LVU69
+ 242              		.loc 1 80 12 is_stmt 0 view .LVU70
+ 243 00c6 3846     		mov	r0, r7
+ 244              	.LVL24:
+ 245              	.L2:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** }
+ 246              		.loc 1 81 1 view .LVU71
+ 247 00c8 09B0     		add	sp, sp, #36
+ 248              	.LCFI2:
+ 249              		.cfi_remember_state
+ 250              		.cfi_def_cfa_offset 28
+ 251              		@ sp needed
+ 252 00ca BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 253              	.LVL25:
+ 254              	.L7:
+ 255              	.LCFI3:
+ 256              		.cfi_restore_state
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         return -ENOMEM;
+ 257              		.loc 1 53 9 is_stmt 1 view .LVU72
+ 258 00ce 0649     		ldr	r1, .L8+4
+ 259 00d0 0620     		movs	r0, #6
+ARM GAS  /tmp/ccgOHB1z.s 			page 14
+
+
+ 260              	.LVL26:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         return -ENOMEM;
+ 261              		.loc 1 53 9 is_stmt 0 view .LVU73
+ 262 00d2 FFF7FEFF 		bl	printk
+ 263              	.LVL27:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 264              		.loc 1 54 9 is_stmt 1 view .LVU74
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 265              		.loc 1 54 16 is_stmt 0 view .LVU75
+ 266 00d6 6FF00B00 		mvn	r0, #11
+ 267 00da F5E7     		b	.L2
+ 268              	.LVL28:
+ 269              	.L5:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 270              		.loc 1 57 17 view .LVU76
+ 271 00dc 4FF0FF30 		mov	r0, #-1
+ 272 00e0 F2E7     		b	.L2
+ 273              	.L9:
+ 274 00e2 00BF     		.align	2
+ 275              	.L8:
+ 276 00e4 00000000 		.word	.LANCHOR0
+ 277 00e8 00000000 		.word	.LC0
+ 278              		.cfi_endproc
+ 279              	.LFE1033:
+ 281              		.section	.rodata.register_son_disk.str1.4,"aMS",%progbits,1
+ 282              		.align	2
+ 283              	.LC2:
+ 284 0000 6E6F206D 		.ascii	"no mbr partition table\012\000"
+ 284      62722070 
+ 284      61727469 
+ 284      74696F6E 
+ 284      20746162 
+ 285              		.align	2
+ 286              	.LC3:
+ 287 0018 64656374 		.ascii	"dected mbr partition table\012\000"
+ 287      6564206D 
+ 287      62722070 
+ 287      61727469 
+ 287      74696F6E 
+ 288              		.section	.text.register_son_disk,"ax",%progbits
+ 289              		.align	1
+ 290              		.syntax unified
+ 291              		.thumb
+ 292              		.thumb_func
+ 294              	register_son_disk:
+ 295              	.LVL29:
+ 296              	.LFB1034:
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** 
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** static void register_son_disk(struct block_device *bdev)
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** {
+ 297              		.loc 1 85 1 is_stmt 1 view -0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		.loc 1 85 1 is_stmt 0 view .LVU78
+ 302 0000 70B5     		push	{r4, r5, r6, lr}
+ARM GAS  /tmp/ccgOHB1z.s 			page 15
+
+
+ 303              	.LCFI4:
+ 304              		.cfi_def_cfa_offset 16
+ 305              		.cfi_offset 4, -16
+ 306              		.cfi_offset 5, -12
+ 307              		.cfi_offset 6, -8
+ 308              		.cfi_offset 14, -4
+ 309 0002 0646     		mov	r6, r0
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     struct partition* p = get_partition_from_device(bdev);
+ 310              		.loc 1 86 5 is_stmt 1 view .LVU79
+ 311              		.loc 1 86 27 is_stmt 0 view .LVU80
+ 312 0004 FFF7FEFF 		bl	get_partition_from_device
+ 313              	.LVL30:
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     if(IS_ERR(p))
+ 314              		.loc 1 87 5 is_stmt 1 view .LVU81
+ 315              	.LBB19:
+ 316              	.LBI19:
+ 317              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+ARM GAS  /tmp/ccgOHB1z.s 			page 16
+
+
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 318              		.loc 4 75 33 view .LVU82
+ 319              	.LBB20:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 320              		.loc 4 77 2 view .LVU83
+ 321              		.loc 4 77 9 is_stmt 0 view .LVU84
+ 322 0008 10F5805F 		cmn	r0, #4096
+ 323 000c 94BF     		ite	ls
+ 324 000e 0024     		movls	r4, #0
+ 325 0010 0124     		movhi	r4, #1
+ 326              	.LVL31:
+ 327              		.loc 4 77 9 view .LVU85
+ 328              	.LBE20:
+ 329              	.LBE19:
+ 330              		.loc 1 87 7 discriminator 1 view .LVU86
+ 331 0012 2CB9     		cbnz	r4, .L16
+ 332 0014 0546     		mov	r5, r0
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     { 
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****          printk(KERN_INFO "no mbr partition table\n");
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****          return;
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     printk(KERN_INFO "dected mbr partition table\n");
+ARM GAS  /tmp/ccgOHB1z.s 			page 17
+
+
+ 333              		.loc 1 92 5 is_stmt 1 view .LVU87
+ 334 0016 0A49     		ldr	r1, .L18
+ 335 0018 0620     		movs	r0, #6
+ 336              	.LVL32:
+ 337              		.loc 1 92 5 is_stmt 0 view .LVU88
+ 338 001a FFF7FEFF 		bl	printk
+ 339              	.LVL33:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     for(int i =0;i<4;i++)
+ 340              		.loc 1 93 5 is_stmt 1 view .LVU89
+ 341              	.LBB21:
+ 342              		.loc 1 93 9 view .LVU90
+ 343              		.loc 1 93 5 is_stmt 0 view .LVU91
+ 344 001e 05E0     		b	.L13
+ 345              	.LVL34:
+ 346              	.L16:
+ 347              		.loc 1 93 5 view .LVU92
+ 348              	.LBE21:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****          return;
+ 349              		.loc 1 89 10 is_stmt 1 view .LVU93
+ 350 0020 0849     		ldr	r1, .L18+4
+ 351 0022 0620     		movs	r0, #6
+ 352              	.LVL35:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****          return;
+ 353              		.loc 1 89 10 is_stmt 0 view .LVU94
+ 354 0024 FFF7FEFF 		bl	printk
+ 355              	.LVL36:
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 356              		.loc 1 90 10 is_stmt 1 view .LVU95
+ 357 0028 09E0     		b	.L10
+ 358              	.LVL37:
+ 359              	.L17:
+ 360              	.LBB22:
+ 361              		.loc 1 93 23 discriminator 2 view .LVU96
+ 362 002a 0134     		adds	r4, r4, #1
+ 363              	.LVL38:
+ 364              	.L13:
+ 365              		.loc 1 93 19 discriminator 1 view .LVU97
+ 366 002c 032C     		cmp	r4, #3
+ 367 002e 06DC     		bgt	.L10
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     {
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         if(add_mbr_son_disk(bdev,p,i) < 0)
+ 368              		.loc 1 95 9 view .LVU98
+ 369              		.loc 1 95 12 is_stmt 0 view .LVU99
+ 370 0030 2246     		mov	r2, r4
+ 371 0032 2946     		mov	r1, r5
+ 372 0034 3046     		mov	r0, r6
+ 373 0036 FFF7FEFF 		bl	add_mbr_son_disk
+ 374              	.LVL39:
+ 375              		.loc 1 95 11 discriminator 1 view .LVU100
+ 376 003a 0028     		cmp	r0, #0
+ 377 003c F5DA     		bge	.L17
+ 378              	.LVL40:
+ 379              	.L10:
+ 380              		.loc 1 95 11 discriminator 1 view .LVU101
+ 381              	.LBE22:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         break;
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ARM GAS  /tmp/ccgOHB1z.s 			page 18
+
+
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** }
+ 382              		.loc 1 98 1 view .LVU102
+ 383 003e 70BD     		pop	{r4, r5, r6, pc}
+ 384              	.LVL41:
+ 385              	.L19:
+ 386              		.loc 1 98 1 view .LVU103
+ 387              		.align	2
+ 388              	.L18:
+ 389 0040 18000000 		.word	.LC3
+ 390 0044 00000000 		.word	.LC2
+ 391              		.cfi_endproc
+ 392              	.LFE1034:
+ 394              		.section	.text.__add_disk,"ax",%progbits
+ 395              		.align	1
+ 396              		.global	__add_disk
+ 397              		.syntax unified
+ 398              		.thumb
+ 399              		.thumb_func
+ 401              	__add_disk:
+ 402              	.LVL42:
+ 403              	.LFB1032:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     struct block_device *dev;
+ 404              		.loc 1 16 1 is_stmt 1 view -0
+ 405              		.cfi_startproc
+ 406              		@ args = 0, pretend = 0, frame = 0
+ 407              		@ frame_needed = 0, uses_anonymous_args = 0
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     struct block_device *dev;
+ 408              		.loc 1 16 1 is_stmt 0 view .LVU105
+ 409 0000 70B5     		push	{r4, r5, r6, lr}
+ 410              	.LCFI5:
+ 411              		.cfi_def_cfa_offset 16
+ 412              		.cfi_offset 4, -16
+ 413              		.cfi_offset 5, -12
+ 414              		.cfi_offset 6, -8
+ 415              		.cfi_offset 14, -4
+ 416 0002 0546     		mov	r5, r0
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     if(disk->part0 == NULL){
+ 417              		.loc 1 17 5 is_stmt 1 view .LVU106
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         dev = kmalloc(sizeof(struct block_device) , GFP_KERNEL);
+ 418              		.loc 1 18 5 view .LVU107
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         dev = kmalloc(sizeof(struct block_device) , GFP_KERNEL);
+ 419              		.loc 1 18 12 is_stmt 0 view .LVU108
+ 420 0004 836B     		ldr	r3, [r0, #56]
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         dev = kmalloc(sizeof(struct block_device) , GFP_KERNEL);
+ 421              		.loc 1 18 7 view .LVU109
+ 422 0006 D3B1     		cbz	r3, .L25
+ 423              	.LVL43:
+ 424              	.L21:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_disk = disk;
+ 425              		.loc 1 26 5 is_stmt 1 view .LVU110
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_disk = disk;
+ 426              		.loc 1 26 9 is_stmt 0 view .LVU111
+ 427 0008 AC6B     		ldr	r4, [r5, #56]
+ 428              	.LVL44:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_queue = disk->queue;
+ 429              		.loc 1 27 5 is_stmt 1 view .LVU112
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_queue = disk->queue;
+ARM GAS  /tmp/ccgOHB1z.s 			page 19
+
+
+ 430              		.loc 1 27 18 is_stmt 0 view .LVU113
+ 431 000a A560     		str	r5, [r4, #8]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_stamp = jiffies;
+ 432              		.loc 1 28 5 is_stmt 1 view .LVU114
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_stamp = jiffies;
+ 433              		.loc 1 28 25 is_stmt 0 view .LVU115
+ 434 000c 2B6C     		ldr	r3, [r5, #64]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_stamp = jiffies;
+ 435              		.loc 1 28 19 view .LVU116
+ 436 000e E360     		str	r3, [r4, #12]
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_dev = disk->major;
+ 437              		.loc 1 29 5 is_stmt 1 view .LVU117
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_dev = disk->major;
+ 438              		.loc 1 29 21 is_stmt 0 view .LVU118
+ 439 0010 FFF7FEFF 		bl	ktime_get
+ 440              	.LVL45:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_dev = disk->major;
+ 441              		.loc 1 29 19 discriminator 1 view .LVU119
+ 442 0014 2061     		str	r0, [r4, #16]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     spin_lock_init(&dev->bd_size_lock);
+ 443              		.loc 1 30 5 is_stmt 1 view .LVU120
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     spin_lock_init(&dev->bd_size_lock);
+ 444              		.loc 1 30 23 is_stmt 0 view .LVU121
+ 445 0016 2B68     		ldr	r3, [r5]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     spin_lock_init(&dev->bd_size_lock);
+ 446              		.loc 1 30 17 view .LVU122
+ 447 0018 A361     		str	r3, [r4, #24]
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_claiming = NULL;
+ 448              		.loc 1 31 5 is_stmt 1 view .LVU123
+ 449 001a 04F12400 		add	r0, r4, #36
+ 450 001e FFF7FEFF 		bl	spin_lock_init
+ 451              	.LVL46:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_holder = NULL;
+ 452              		.loc 1 32 5 view .LVU124
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_holder = NULL;
+ 453              		.loc 1 32 22 is_stmt 0 view .LVU125
+ 454 0022 0026     		movs	r6, #0
+ 455 0024 6663     		str	r6, [r4, #52]
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&dev->bd_holder_lock);
+ 456              		.loc 1 33 5 is_stmt 1 view .LVU126
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&dev->bd_holder_lock);
+ 457              		.loc 1 33 20 is_stmt 0 view .LVU127
+ 458 0026 A663     		str	r6, [r4, #56]
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     mutex_init(&dev->bd_fsfreeze_mutex);
+ 459              		.loc 1 34 5 is_stmt 1 view .LVU128
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     dev->bd_holders = 0;
+ 460              		.loc 1 35 5 view .LVU129
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     __register_disk(dev,disk,NULL);
+ 461              		.loc 1 36 5 view .LVU130
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     __register_disk(dev,disk,NULL);
+ 462              		.loc 1 36 21 is_stmt 0 view .LVU131
+ 463 0028 E664     		str	r6, [r4, #76]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     register_son_disk(dev);
+ 464              		.loc 1 37 5 is_stmt 1 view .LVU132
+ 465 002a 3246     		mov	r2, r6
+ 466 002c 2946     		mov	r1, r5
+ 467 002e 2046     		mov	r0, r4
+ARM GAS  /tmp/ccgOHB1z.s 			page 20
+
+
+ 468 0030 FFF7FEFF 		bl	__register_disk
+ 469              	.LVL47:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     return 0;
+ 470              		.loc 1 38 5 view .LVU133
+ 471 0034 2046     		mov	r0, r4
+ 472 0036 FFF7FEFF 		bl	register_son_disk
+ 473              	.LVL48:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** }
+ 474              		.loc 1 39 5 view .LVU134
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** }
+ 475              		.loc 1 39 12 is_stmt 0 view .LVU135
+ 476 003a 3046     		mov	r0, r6
+ 477              	.LVL49:
+ 478              	.L20:
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c **** EXPORT_SYMBOL(__add_disk);
+ 479              		.loc 1 40 1 view .LVU136
+ 480 003c 70BD     		pop	{r4, r5, r6, pc}
+ 481              	.LVL50:
+ 482              	.L25:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         if(dev == NULL){
+ 483              		.loc 1 19 9 is_stmt 1 view .LVU137
+ 484              	.LBB23:
+ 485              	.LBI23:
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 486              		.loc 3 379 21 view .LVU138
+ 487              	.LBB24:
+ 488              		.loc 3 380 2 view .LVU139
+ 489              		.loc 3 380 9 is_stmt 0 view .LVU140
+ 490 003e 4FF44C61 		mov	r1, #3264
+ 491 0042 6C20     		movs	r0, #108
+ 492              	.LVL51:
+ 493              		.loc 3 380 9 view .LVU141
+ 494 0044 FFF7FEFF 		bl	__smalloc__
+ 495              	.LVL52:
+ 496              		.loc 3 380 9 view .LVU142
+ 497              	.LBE24:
+ 498              	.LBE23:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             printk(KERN_INFO "can not alloc more memory\n");
+ 499              		.loc 1 20 9 is_stmt 1 view .LVU143
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             printk(KERN_INFO "can not alloc more memory\n");
+ 500              		.loc 1 20 11 is_stmt 0 view .LVU144
+ 501 0048 08B1     		cbz	r0, .L26
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 502              		.loc 1 24 9 is_stmt 1 view .LVU145
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****     }
+ 503              		.loc 1 24 21 is_stmt 0 view .LVU146
+ 504 004a A863     		str	r0, [r5, #56]
+ 505 004c DCE7     		b	.L21
+ 506              	.L26:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             return -ENOMEM;
+ 507              		.loc 1 21 13 is_stmt 1 view .LVU147
+ 508 004e 0349     		ldr	r1, .L27
+ 509 0050 0620     		movs	r0, #6
+ 510              	.LVL53:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****             return -ENOMEM;
+ 511              		.loc 1 21 13 is_stmt 0 view .LVU148
+ 512 0052 FFF7FEFF 		bl	printk
+ARM GAS  /tmp/ccgOHB1z.s 			page 21
+
+
+ 513              	.LVL54:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         }   
+ 514              		.loc 1 22 13 is_stmt 1 view .LVU149
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/block/add_disk.c ****         }   
+ 515              		.loc 1 22 20 is_stmt 0 view .LVU150
+ 516 0056 6FF00B00 		mvn	r0, #11
+ 517 005a EFE7     		b	.L20
+ 518              	.L28:
+ 519              		.align	2
+ 520              	.L27:
+ 521 005c 00000000 		.word	.LC0
+ 522              		.cfi_endproc
+ 523              	.LFE1032:
+ 525              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 526              		.align	2
+ 527              	.LC4:
+ 528 0000 5F5F6164 		.ascii	"__add_disk\000"
+ 528      645F6469 
+ 528      736B00
+ 529 000b 00       		.align	2
+ 530              	.LC5:
+ 531 000c 00       		.ascii	"\000"
+ 532              		.section	.export_table,"aw"
+ 533              		.align	2
+ 536              	__add_disk_export_struct:
+ 537 0000 00000000 		.word	.LC4
+ 538 0004 0C000000 		.word	.LC5
+ 539 0008 00000000 		.word	__add_disk
+ 540              		.section	.rodata
+ 541              		.align	2
+ 542              		.set	.LANCHOR0,. + 0
+ 543              	.LC1:
+ 544 0000 0000     		.ascii	"\000\000"
+ 545              		.text
+ 546              	.Letext0:
+ 547              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 548              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 549              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/types.h"
+ 550              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 551              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 552              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/reciprocal_div.h"
+ 553              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 554              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 555              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 556              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 557              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/errseq.h"
+ 558              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rbtree_types.h"
+ 559              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uidgid_types.h"
+ 560              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/projid.h"
+ 561              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/fs.h"
+ 562              		.file 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mnt_idmapping.h"
+ 563              		.file 21 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 564              		.file 22 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uio.h"
+ 565              		.file 23 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/wait.h"
+ 566              		.file 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/xarray.h"
+ 567              		.file 25 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/migrate_mode.h"
+ 568              		.file 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rw_hint.h"
+ARM GAS  /tmp/ccgOHB1z.s 			page 22
+
+
+ 569              		.file 27 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mm_type.h"
+ 570              		.file 28 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bvec.h"
+ 571              		.file 29 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk_types.h"
+ 572              		.file 30 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blkdev.h"
+ 573              		.file 31 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bio.h"
+ 574              		.file 32 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool_super_haper.h"
+ 575              		.file 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool.h"
+ 576              		.file 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockdep_types.h"
+ 577              		.file 35 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/workqueue_types.h"
+ 578              		.file 36 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk-mq.h"
+ 579              		.file 37 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/dcache.h"
+ 580              		.file 38 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/pr.h"
+ 581              		.file 39 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/pr.h"
+ 582              		.file 40 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/hdreg.h"
+ 583              		.file 41 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ 584              		.file 42 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/path.h"
+ 585              		.file 43 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/statfs.h"
+ 586              		.file 44 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stat.h"
+ 587              		.file 45 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/gfp_types.h"
+ 588              		.file 46 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 589              		.file 47 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/string.h"
+ 590              		.file 48 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time.h"
+ 591              		.file 49 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/ccgOHB1z.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 add_disk.c
+     /tmp/ccgOHB1z.s:22     .text.spin_lock_init:00000000 $t
+     /tmp/ccgOHB1z.s:27     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccgOHB1z.s:46     .rodata.add_mbr_son_disk.str1.4:00000000 $d
+     /tmp/ccgOHB1z.s:50     .text.add_mbr_son_disk:00000000 $t
+     /tmp/ccgOHB1z.s:56     .text.add_mbr_son_disk:00000000 add_mbr_son_disk
+     /tmp/ccgOHB1z.s:276    .text.add_mbr_son_disk:000000e4 $d
+     /tmp/ccgOHB1z.s:282    .rodata.register_son_disk.str1.4:00000000 $d
+     /tmp/ccgOHB1z.s:289    .text.register_son_disk:00000000 $t
+     /tmp/ccgOHB1z.s:294    .text.register_son_disk:00000000 register_son_disk
+     /tmp/ccgOHB1z.s:389    .text.register_son_disk:00000040 $d
+     /tmp/ccgOHB1z.s:395    .text.__add_disk:00000000 $t
+     /tmp/ccgOHB1z.s:401    .text.__add_disk:00000000 __add_disk
+     /tmp/ccgOHB1z.s:521    .text.__add_disk:0000005c $d
+     /tmp/ccgOHB1z.s:526    .rodata.str1.4:00000000 $d
+     /tmp/ccgOHB1z.s:533    .export_table:00000000 $d
+     /tmp/ccgOHB1z.s:536    .export_table:00000000 __add_disk_export_struct
+     /tmp/ccgOHB1z.s:541    .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+__smalloc__
+check_empty_MBR_Table
+get_partiton_data
+ktime_get
+memset
+strcpy
+strlen
+__register_disk
+printk
+get_partition_from_device

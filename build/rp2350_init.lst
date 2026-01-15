@@ -1,0 +1,648 @@
+ARM GAS  /tmp/ccg4VRCA.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"rp2350_init.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp23
+  21              		.section	.text.CPU1_TickHandler,"ax",%progbits
+  22              		.align	1
+  23              		.global	CPU1_TickHandler
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	CPU1_TickHandler:
+  29              	.LVL0:
+  30              	.LFB259:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <generated/autoconf.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <linux/irqflags.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <linux/string.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <asm/barrier.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <hardware/structs/scb.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #include <linux/interrupt.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** void __hardful_spinlock_init(volatile int8_t *lock);
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define     __IOM    volatile         
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define     __OM     volatile   
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** typedef struct
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** {
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t ISER[16U];              /*!< Offset: 0x000 (R/W)  Interrupt Set Enable Register */
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED0[16U];
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t ICER[16U];              /*!< Offset: 0x080 (R/W)  Interrupt Clear Enable Register 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RSERVED1[16U];
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t ISPR[16U];              /*!< Offset: 0x100 (R/W)  Interrupt Set Pending Register *
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED2[16U];
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t ICPR[16U];              /*!< Offset: 0x180 (R/W)  Interrupt Clear Pending Register
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED3[16U];
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t IABR[16U];              /*!< Offset: 0x200 (R/W)  Interrupt Active bit Register */
+ARM GAS  /tmp/ccg4VRCA.s 			page 2
+
+
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED4[16U];
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint32_t ITNS[16U];              /*!< Offset: 0x280 (R/W)  Interrupt Non-Secure State Regis
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED5[16U];
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __IOM uint8_t  IPR[496U];              /*!< Offset: 0x300 (R/W)  Interrupt Priority Register (8Bi
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         uint32_t RESERVED6[580U];
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****   __OM  uint32_t STIR;                   /*!< Offset: 0xE00 ( /W)  Software Trigger Interrupt Regis
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }  NVIC_Type;
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define SCS_BASE            (0xE000E000UL)  
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define NVIC_BASE           (SCS_BASE +  0x0100UL)   
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** // #define NVIC_BASE       (0xE000E100)
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define NVIC                ((NVIC_Type      *)     NVIC_BASE   )
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define NVIC_SETENA     ((volatile uint32_t *)(NVIC_BASE + 0x000))
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** #define NVIC_CLRENA     ((volatile uint32_t *)(NVIC_BASE + 0x080))
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** void irq_set_enabled(uint32_t num, bool enabled) {
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t reg_index = num >> 5;            // num / 32
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);   // 1 << (num % 32)
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     if (enabled) {
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC_SETENA[reg_index] = bit_mask;    // 设置中断使能位
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     } else {
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC_CLRENA[reg_index] = bit_mask;    // 清除中断使能位
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** bool irq_is_enabled(uint32_t num) {
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t reg_index = num >> 5;
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t reg_value = NVIC_SETENA[reg_index];
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return (reg_value & bit_mask) != 0;
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** void clean_interrupt_flag(uint32_t irq_num) 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** {
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     int IRQn = irq_num;
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     if ((int)(IRQn) > 1){
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         pr_info("clean flas:%d\n",IRQn);
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         irq_set_enabled(IRQn,0);
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC->ICPR[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** extern void SysTick_Handler(void);
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** irqreturn_t  CPU1_TickHandler(int i,void *argv)
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** {
+  31              		.loc 1 81 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccg4VRCA.s 			page 3
+
+
+  35              		.loc 1 81 1 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 3, -8
+  40              		.cfi_offset 14, -4
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     SysTick_Handler();
+  41              		.loc 1 82 5 is_stmt 1 view .LVU2
+  42 0002 FFF7FEFF 		bl	SysTick_Handler
+  43              	.LVL1:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****    //pr_info("cpu%d running\n",__get_task_using_cpu_core());
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return IRQ_HANDLED;
+  44              		.loc 1 84 5 view .LVU3
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+  45              		.loc 1 85 1 is_stmt 0 view .LVU4
+  46 0006 0120     		movs	r0, #1
+  47 0008 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE259:
+  51              		.section	.text.irq_set_enabled,"ax",%progbits
+  52              		.align	1
+  53              		.global	irq_set_enabled
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	irq_set_enabled:
+  59              	.LVL2:
+  60              	.LFB256:
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t reg_index = num >> 5;            // num / 32
+  61              		.loc 1 48 50 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);   // 1 << (num % 32)
+  66              		.loc 1 49 5 view .LVU6
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);   // 1 << (num % 32)
+  67              		.loc 1 49 14 is_stmt 0 view .LVU7
+  68 0000 4309     		lsrs	r3, r0, #5
+  69              	.LVL3:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  70              		.loc 1 50 5 is_stmt 1 view .LVU8
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  71              		.loc 1 50 36 is_stmt 0 view .LVU9
+  72 0002 00F01F00 		and	r0, r0, #31
+  73              	.LVL4:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  74              		.loc 1 50 14 view .LVU10
+  75 0006 0122     		movs	r2, #1
+  76 0008 8240     		lsls	r2, r2, r0
+  77              	.LVL5:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC_SETENA[reg_index] = bit_mask;    // 设置中断使能位
+  78              		.loc 1 52 5 is_stmt 1 view .LVU11
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC_SETENA[reg_index] = bit_mask;    // 设置中断使能位
+  79              		.loc 1 52 8 is_stmt 0 view .LVU12
+  80 000a 31B1     		cbz	r1, .L4
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     } else {
+ARM GAS  /tmp/ccg4VRCA.s 			page 4
+
+
+  81              		.loc 1 53 9 is_stmt 1 view .LVU13
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     } else {
+  82              		.loc 1 53 20 is_stmt 0 view .LVU14
+  83 000c 9B00     		lsls	r3, r3, #2
+  84              	.LVL6:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     } else {
+  85              		.loc 1 53 20 view .LVU15
+  86 000e 03F16043 		add	r3, r3, #-536870912
+  87 0012 03F56143 		add	r3, r3, #57600
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     } else {
+  88              		.loc 1 53 32 view .LVU16
+  89 0016 1A60     		str	r2, [r3]
+  90 0018 7047     		bx	lr
+  91              	.LVL7:
+  92              	.L4:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+  93              		.loc 1 55 9 is_stmt 1 view .LVU17
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+  94              		.loc 1 55 20 is_stmt 0 view .LVU18
+  95 001a 0249     		ldr	r1, .L6
+  96              	.LVL8:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+  97              		.loc 1 55 32 view .LVU19
+  98 001c 41F82320 		str	r2, [r1, r3, lsl #2]
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** bool irq_is_enabled(uint32_t num) {
+  99              		.loc 1 57 1 view .LVU20
+ 100 0020 7047     		bx	lr
+ 101              	.L7:
+ 102 0022 00BF     		.align	2
+ 103              	.L6:
+ 104 0024 80E100E0 		.word	-536813184
+ 105              		.cfi_endproc
+ 106              	.LFE256:
+ 108              		.section	.text.irq_is_enabled,"ax",%progbits
+ 109              		.align	1
+ 110              		.global	irq_is_enabled
+ 111              		.syntax unified
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	irq_is_enabled:
+ 116              	.LVL9:
+ 117              	.LFB257:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t reg_index = num >> 5;
+ 118              		.loc 1 58 35 is_stmt 1 view -0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122              		@ link register save eliminated.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);
+ 123              		.loc 1 59 5 view .LVU22
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t bit_mask = 1u << (num & 0x1F);
+ 124              		.loc 1 59 14 is_stmt 0 view .LVU23
+ 125 0000 4309     		lsrs	r3, r0, #5
+ 126              	.LVL10:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 127              		.loc 1 60 5 is_stmt 1 view .LVU24
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ARM GAS  /tmp/ccg4VRCA.s 			page 5
+
+
+ 128              		.loc 1 60 36 is_stmt 0 view .LVU25
+ 129 0002 00F01F00 		and	r0, r0, #31
+ 130              	.LVL11:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 131              		.loc 1 60 14 view .LVU26
+ 132 0006 0122     		movs	r2, #1
+ 133 0008 8240     		lsls	r2, r2, r0
+ 134              	.LVL12:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return (reg_value & bit_mask) != 0;
+ 135              		.loc 1 62 5 is_stmt 1 view .LVU27
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return (reg_value & bit_mask) != 0;
+ 136              		.loc 1 62 37 is_stmt 0 view .LVU28
+ 137 000a 9B00     		lsls	r3, r3, #2
+ 138              	.LVL13:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return (reg_value & bit_mask) != 0;
+ 139              		.loc 1 62 37 view .LVU29
+ 140 000c 03F16043 		add	r3, r3, #-536870912
+ 141 0010 03F56143 		add	r3, r3, #57600
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     return (reg_value & bit_mask) != 0;
+ 142              		.loc 1 62 14 view .LVU30
+ 143 0014 1B68     		ldr	r3, [r3]
+ 144              	.LVL14:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+ 145              		.loc 1 63 5 is_stmt 1 view .LVU31
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+ 146              		.loc 1 63 35 is_stmt 0 view .LVU32
+ 147 0016 1A42     		tst	r2, r3
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 148              		.loc 1 64 1 view .LVU33
+ 149 0018 14BF     		ite	ne
+ 150 001a 0120     		movne	r0, #1
+ 151 001c 0020     		moveq	r0, #0
+ 152 001e 7047     		bx	lr
+ 153              		.cfi_endproc
+ 154              	.LFE257:
+ 156              		.section	.rodata.clean_interrupt_flag.str1.4,"aMS",%progbits,1
+ 157              		.align	2
+ 158              	.LC0:
+ 159 0000 636C6561 		.ascii	"clean flas:%d\012\000"
+ 159      6E20666C 
+ 159      61733A25 
+ 159      640A00
+ 160              		.section	.text.clean_interrupt_flag,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	clean_interrupt_flag
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	clean_interrupt_flag:
+ 168              	.LVL15:
+ 169              	.LFB258:
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     int IRQn = irq_num;
+ 170              		.loc 1 68 1 is_stmt 1 view -0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     if ((int)(IRQn) > 1){
+ARM GAS  /tmp/ccg4VRCA.s 			page 6
+
+
+ 174              		.loc 1 69 5 view .LVU35
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         pr_info("clean flas:%d\n",IRQn);
+ 175              		.loc 1 70 5 view .LVU36
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         pr_info("clean flas:%d\n",IRQn);
+ 176              		.loc 1 70 8 is_stmt 0 view .LVU37
+ 177 0000 0128     		cmp	r0, #1
+ 178 0002 00DC     		bgt	.L15
+ 179 0004 7047     		bx	lr
+ 180              	.L15:
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     int IRQn = irq_num;
+ 181              		.loc 1 68 1 view .LVU38
+ 182 0006 10B5     		push	{r4, lr}
+ 183              	.LCFI1:
+ 184              		.cfi_def_cfa_offset 8
+ 185              		.cfi_offset 4, -8
+ 186              		.cfi_offset 14, -4
+ 187 0008 0446     		mov	r4, r0
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         irq_set_enabled(IRQn,0);
+ 188              		.loc 1 71 9 is_stmt 1 view .LVU39
+ 189 000a 0246     		mov	r2, r0
+ 190 000c 0849     		ldr	r1, .L16
+ 191 000e 0620     		movs	r0, #6
+ 192              	.LVL16:
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         irq_set_enabled(IRQn,0);
+ 193              		.loc 1 71 9 is_stmt 0 view .LVU40
+ 194 0010 FFF7FEFF 		bl	printk
+ 195              	.LVL17:
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         NVIC->ICPR[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
+ 196              		.loc 1 72 9 is_stmt 1 view .LVU41
+ 197 0014 0021     		movs	r1, #0
+ 198 0016 2046     		mov	r0, r4
+ 199 0018 FFF7FEFF 		bl	irq_set_enabled
+ 200              	.LVL18:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+ 201              		.loc 1 73 9 view .LVU42
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+ 202              		.loc 1 73 85 is_stmt 0 view .LVU43
+ 203 001c 04F01F02 		and	r2, r4, #31
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+ 204              		.loc 1 73 38 view .LVU44
+ 205 0020 6409     		lsrs	r4, r4, #5
+ 206              	.LVL19:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+ 207              		.loc 1 73 64 view .LVU45
+ 208 0022 0123     		movs	r3, #1
+ 209 0024 9340     		lsls	r3, r3, r2
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     }
+ 210              		.loc 1 73 47 view .LVU46
+ 211 0026 6034     		adds	r4, r4, #96
+ 212 0028 024A     		ldr	r2, .L16+4
+ 213 002a 42F82430 		str	r3, [r2, r4, lsl #2]
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 214              		.loc 1 75 1 view .LVU47
+ 215 002e 10BD     		pop	{r4, pc}
+ 216              	.L17:
+ 217              		.align	2
+ 218              	.L16:
+ARM GAS  /tmp/ccg4VRCA.s 			page 7
+
+
+ 219 0030 00000000 		.word	.LC0
+ 220 0034 00E100E0 		.word	-536813312
+ 221              		.cfi_endproc
+ 222              	.LFE258:
+ 224              		.section	.rodata.arch_init.str1.4,"aMS",%progbits,1
+ 225              		.align	2
+ 226              	.LC1:
+ 227 0000 4350553A 		.ascii	"CPU: cortex_m33\012\000"
+ 227      20636F72 
+ 227      7465785F 
+ 227      6D33330A 
+ 227      00
+ 228 0011 000000   		.align	2
+ 229              	.LC2:
+ 230 0014 4D53503A 		.ascii	"MSP: 0x%08x PSP: 0x%08x VTOR: 0x%08x CONTROL: 0x%08"
+ 230      20307825 
+ 230      30387820 
+ 230      5053503A 
+ 230      20307825 
+ 231 0047 78204375 		.ascii	"x Current PC: 0x%08x\012\000"
+ 231      7272656E 
+ 231      74205043 
+ 231      3A203078 
+ 231      25303878 
+ 232 005d 000000   		.align	2
+ 233              	.LC3:
+ 234 0060 56656374 		.ascii	"Vector Table[0] (MSP): 0x%08x Vector Table[1] (Rese"
+ 234      6F722054 
+ 234      61626C65 
+ 234      5B305D20 
+ 234      284D5350 
+ 235 0093 745F4861 		.ascii	"t_Handler): 0x%08x\012\000"
+ 235      6E646C65 
+ 235      72293A20 
+ 235      30782530 
+ 235      38780A00 
+ 236 00a7 00       		.align	2
+ 237              	.LC4:
+ 238 00a8 4E657720 		.ascii	"New VTOR: 0x%08x r2350 arch init done\012\000"
+ 238      56544F52 
+ 238      3A203078 
+ 238      25303878 
+ 238      20723233 
+ 239 00cf 00       		.align	2
+ 240              	.LC5:
+ 241 00d0 43505531 		.ascii	"CPU1_Tick\000"
+ 241      5F546963 
+ 241      6B00
+ 242              		.section	.text.arch_init,"ax",%progbits
+ 243              		.align	1
+ 244              		.global	arch_init
+ 245              		.syntax unified
+ 246              		.thumb
+ 247              		.thumb_func
+ 249              	arch_init:
+ 250              	.LFB260:
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ARM GAS  /tmp/ccg4VRCA.s 			page 8
+
+
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** void arch_init()
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** {
+ 251              		.loc 1 90 1 is_stmt 1 view -0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 0
+ 254              		@ frame_needed = 0, uses_anonymous_args = 0
+ 255 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 256              	.LCFI2:
+ 257              		.cfi_def_cfa_offset 28
+ 258              		.cfi_offset 4, -28
+ 259              		.cfi_offset 5, -24
+ 260              		.cfi_offset 6, -20
+ 261              		.cfi_offset 7, -16
+ 262              		.cfi_offset 8, -12
+ 263              		.cfi_offset 9, -8
+ 264              		.cfi_offset 14, -4
+ 265 0004 85B0     		sub	sp, sp, #20
+ 266              	.LCFI3:
+ 267              		.cfi_def_cfa_offset 48
+ 268 0006 7446     		mov	r4, lr
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t msp, psp, vtor, control;
+ 269              		.loc 1 91 5 view .LVU49
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     __asm volatile (
+ 270              		.loc 1 92 5 view .LVU50
+ 271              		.syntax unified
+ 272              	@ 92 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_i
+ 273 0008 EFF30885 		mrs r5, msp
+ 274 000c EFF30988 	mrs r8, psp
+ 275 0010 EFF31489 	mrs r9, control
+ 276              	
+ 277              	@ 0 "" 2
+ 278              	.LVL20:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         "mrs %0, msp\n"
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         "mrs %1, psp\n"
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         "mrs %2, control\n"
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****         : "=r"(msp), "=r"(psp), "=r"(control)
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     );
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     vtor = scb_hw->vtor;
+ 279              		.loc 1 98 5 view .LVU51
+ 280              		.loc 1 98 10 is_stmt 0 view .LVU52
+ 281              		.thumb
+ 282              		.syntax unified
+ 283 0014 1B4E     		ldr	r6, .L20
+ 284 0016 B768     		ldr	r7, [r6, #8]
+ 285              	.LVL21:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     pr_info("CPU: cortex_m33\n");
+ 286              		.loc 1 99 5 is_stmt 1 view .LVU53
+ 287 0018 1B49     		ldr	r1, .L20+4
+ 288 001a 0620     		movs	r0, #6
+ 289 001c FFF7FEFF 		bl	printk
+ 290              	.LVL22:
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     pr_info("MSP: 0x%08x PSP: 0x%08x VTOR: 0x%08x CONTROL: 0x%08x Current PC: 0x%08x\n", msp, psp, 
+ 291              		.loc 1 100 5 view .LVU54
+ 292              		.loc 1 100 5 is_stmt 0 discriminator 1 view .LVU55
+ 293 0020 0294     		str	r4, [sp, #8]
+ARM GAS  /tmp/ccg4VRCA.s 			page 9
+
+
+ 294 0022 CDF80490 		str	r9, [sp, #4]
+ 295 0026 0097     		str	r7, [sp]
+ 296 0028 4346     		mov	r3, r8
+ 297 002a 2A46     		mov	r2, r5
+ 298 002c 1749     		ldr	r1, .L20+8
+ 299 002e 0620     		movs	r0, #6
+ 300 0030 FFF7FEFF 		bl	printk
+ 301              	.LVL23:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     uint32_t *vector_table = (uint32_t *)CONFIG_LD_FLASH_START_ADDRESS;
+ 302              		.loc 1 101 5 is_stmt 1 view .LVU56
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     pr_info("Vector Table[0] (MSP): 0x%08x Vector Table[1] (Reset_Handler): 0x%08x\n", vector_table
+ 303              		.loc 1 102 5 view .LVU57
+ 304 0034 164D     		ldr	r5, .L20+12
+ 305              	.LVL24:
+ 306              		.loc 1 102 5 is_stmt 0 view .LVU58
+ 307 0036 6B68     		ldr	r3, [r5, #4]
+ 308 0038 2A68     		ldr	r2, [r5]
+ 309 003a 1649     		ldr	r1, .L20+16
+ 310 003c 0620     		movs	r0, #6
+ 311 003e FFF7FEFF 		bl	printk
+ 312              	.LVL25:
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     barrier();
+ 313              		.loc 1 103 5 is_stmt 1 view .LVU59
+ 314              	.LBB4:
+ 315              	.LBI4:
+ 316              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** #ifndef _ALPHA_RWONCE_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** #define _ALPHA_RWONCE_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void sync(void)
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("sync" : : : "memory");
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** }
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void eieio(void)
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("eieio" : : : "memory");
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** }
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void barrier(void)
+ 317              		.loc 2 16 20 view .LVU60
+ 318              	.LBB5:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("" : : : "memory");
+ 319              		.loc 2 18 2 view .LVU61
+ 320              	.LBE5:
+ 321              	.LBE4:
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     bool irq_enabled = irq_is_enabled(0x19);
+ 322              		.loc 1 105 5 view .LVU62
+ 323              		.loc 1 105 24 is_stmt 0 view .LVU63
+ 324 0042 1920     		movs	r0, #25
+ 325 0044 FFF7FEFF 		bl	irq_is_enabled
+ 326              	.LVL26:
+ 327 0048 0446     		mov	r4, r0
+ARM GAS  /tmp/ccg4VRCA.s 			page 10
+
+
+ 328              	.LVL27:
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     irq_set_enabled(0x19, false);
+ 329              		.loc 1 106 5 is_stmt 1 view .LVU64
+ 330 004a 0021     		movs	r1, #0
+ 331 004c 1920     		movs	r0, #25
+ 332 004e FFF7FEFF 		bl	irq_set_enabled
+ 333              	.LVL28:
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     memcpy(vtor,CONFIG_LD_FLASH_START_ADDRESS,(68)*4);
+ 334              		.loc 1 108 5 view .LVU65
+ 335 0052 4FF48872 		mov	r2, #272
+ 336 0056 2946     		mov	r1, r5
+ 337 0058 3846     		mov	r0, r7
+ 338 005a FFF7FEFF 		bl	memcpy
+ 339              	.LVL29:
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     irq_set_enabled(0x19, irq_enabled);
+ 340              		.loc 1 110 5 view .LVU66
+ 341 005e 2146     		mov	r1, r4
+ 342 0060 1920     		movs	r0, #25
+ 343 0062 FFF7FEFF 		bl	irq_set_enabled
+ 344              	.LVL30:
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****    
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     pr_info("New VTOR: 0x%08x r2350 arch init done\n", scb_hw->vtor);
+ 345              		.loc 1 112 5 view .LVU67
+ 346 0066 B268     		ldr	r2, [r6, #8]
+ 347 0068 0B49     		ldr	r1, .L20+20
+ 348 006a 0620     		movs	r0, #6
+ 349 006c FFF7FEFF 		bl	printk
+ 350              	.LVL31:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c ****     request_irq(1,CPU1_TickHandler,NULL,"CPU1_Tick",NULL);    
+ 351              		.loc 1 114 5 view .LVU68
+ 352 0070 0022     		movs	r2, #0
+ 353 0072 0092     		str	r2, [sp]
+ 354 0074 094B     		ldr	r3, .L20+24
+ 355 0076 0A49     		ldr	r1, .L20+28
+ 356 0078 0120     		movs	r0, #1
+ 357 007a FFF7FEFF 		bl	request_irq
+ 358              	.LVL32:
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** 
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/rp2350_init.c **** }
+ 359              		.loc 1 116 1 is_stmt 0 view .LVU69
+ 360 007e 05B0     		add	sp, sp, #20
+ 361              	.LCFI4:
+ 362              		.cfi_def_cfa_offset 28
+ 363              		@ sp needed
+ 364 0080 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 365              	.LVL33:
+ 366              	.L21:
+ 367              		.loc 1 116 1 view .LVU70
+ 368              		.align	2
+ 369              	.L20:
+ 370 0084 00ED00E0 		.word	-536810240
+ 371 0088 00000000 		.word	.LC1
+ 372 008c 14000000 		.word	.LC2
+ 373 0090 00001010 		.word	269484032
+ARM GAS  /tmp/ccg4VRCA.s 			page 11
+
+
+ 374 0094 60000000 		.word	.LC3
+ 375 0098 A8000000 		.word	.LC4
+ 376 009c D0000000 		.word	.LC5
+ 377 00a0 00000000 		.word	CPU1_TickHandler
+ 378              		.cfi_endproc
+ 379              	.LFE260:
+ 381              		.text
+ 382              	.Letext0:
+ 383              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 384              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 385              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 386              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/incl
+ 387              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/incl
+ 388              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/irqreturn.h"
+ 389              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/interrupt.h"
+ 390              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 391              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stddef.h"
+ 392              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 393              		.file 13 "<built-in>"
+ARM GAS  /tmp/ccg4VRCA.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 rp2350_init.c
+     /tmp/ccg4VRCA.s:22     .text.CPU1_TickHandler:00000000 $t
+     /tmp/ccg4VRCA.s:28     .text.CPU1_TickHandler:00000000 CPU1_TickHandler
+     /tmp/ccg4VRCA.s:52     .text.irq_set_enabled:00000000 $t
+     /tmp/ccg4VRCA.s:58     .text.irq_set_enabled:00000000 irq_set_enabled
+     /tmp/ccg4VRCA.s:104    .text.irq_set_enabled:00000024 $d
+     /tmp/ccg4VRCA.s:109    .text.irq_is_enabled:00000000 $t
+     /tmp/ccg4VRCA.s:115    .text.irq_is_enabled:00000000 irq_is_enabled
+     /tmp/ccg4VRCA.s:157    .rodata.clean_interrupt_flag.str1.4:00000000 $d
+     /tmp/ccg4VRCA.s:161    .text.clean_interrupt_flag:00000000 $t
+     /tmp/ccg4VRCA.s:167    .text.clean_interrupt_flag:00000000 clean_interrupt_flag
+     /tmp/ccg4VRCA.s:219    .text.clean_interrupt_flag:00000030 $d
+     /tmp/ccg4VRCA.s:225    .rodata.arch_init.str1.4:00000000 $d
+     /tmp/ccg4VRCA.s:243    .text.arch_init:00000000 $t
+     /tmp/ccg4VRCA.s:249    .text.arch_init:00000000 arch_init
+     /tmp/ccg4VRCA.s:370    .text.arch_init:00000084 $d
+
+UNDEFINED SYMBOLS
+SysTick_Handler
+printk
+memcpy
+request_irq

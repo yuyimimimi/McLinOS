@@ -61,7 +61,7 @@ struct export_node_struct{
 	void *export_node_fn_address;
 };
  
-#ifdef CONFIG_USE_EXPORT_SYMBOL_TABLE
+#ifdef CONFIG_USE_EXPORT_SYMBOL_TABLE 
 #define __EXPORT_SYMBOL(sym, license, ns)        \
 	static struct export_node_struct             \
 	__attribute__((__section__(".export_table")))\

@@ -1,0 +1,367 @@
+ARM GAS  /tmp/ccxArYp7.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"_atomic.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c"
+  21              		.section	.text.raw_xchg_not_implemented,"ax",%progbits
+  22              		.align	1
+  23              		.global	raw_xchg_not_implemented
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	raw_xchg_not_implemented:
+  29              	.LFB0:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_xchg_not_implemented(void){}
+  30              		.loc 1 1 36 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 1 37 view .LVU1
+  36 0000 7047     		bx	lr
+  37              		.cfi_endproc
+  38              	.LFE0:
+  40              		.section	.text.raw_xchg_acquire_not_implemented,"ax",%progbits
+  41              		.align	1
+  42              		.global	raw_xchg_acquire_not_implemented
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	raw_xchg_acquire_not_implemented:
+  48              	.LFB1:
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_xchg_acquire_not_implemented(void){}
+  49              		.loc 1 2 44 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+  54              		.loc 1 2 45 view .LVU3
+  55 0000 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE1:
+  59              		.section	.text.raw_xchg_release_not_implemented,"ax",%progbits
+ARM GAS  /tmp/ccxArYp7.s 			page 2
+
+
+  60              		.align	1
+  61              		.global	raw_xchg_release_not_implemented
+  62              		.syntax unified
+  63              		.thumb
+  64              		.thumb_func
+  66              	raw_xchg_release_not_implemented:
+  67              	.LFB2:
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_xchg_release_not_implemented(void){}
+  68              		.loc 1 3 44 view -0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+  73              		.loc 1 3 45 view .LVU5
+  74 0000 7047     		bx	lr
+  75              		.cfi_endproc
+  76              	.LFE2:
+  78              		.section	.text.raw_xchg_relaxed_not_implemented,"ax",%progbits
+  79              		.align	1
+  80              		.global	raw_xchg_relaxed_not_implemented
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	raw_xchg_relaxed_not_implemented:
+  86              	.LFB3:
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_xchg_relaxed_not_implemented(void){}
+  87              		.loc 1 4 44 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  92              		.loc 1 4 45 view .LVU7
+  93 0000 7047     		bx	lr
+  94              		.cfi_endproc
+  95              	.LFE3:
+  97              		.section	.text.raw_cmpxchg_not_implemented,"ax",%progbits
+  98              		.align	1
+  99              		.global	raw_cmpxchg_not_implemented
+ 100              		.syntax unified
+ 101              		.thumb
+ 102              		.thumb_func
+ 104              	raw_cmpxchg_not_implemented:
+ 105              	.LFB4:
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg_not_implemented(void){}
+ 106              		.loc 1 5 39 view -0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110              		@ link register save eliminated.
+ 111              		.loc 1 5 40 view .LVU9
+ 112 0000 7047     		bx	lr
+ 113              		.cfi_endproc
+ 114              	.LFE4:
+ 116              		.section	.text.raw_cmpxchg_acquire_not_implemented,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	raw_cmpxchg_acquire_not_implemented
+ 119              		.syntax unified
+ARM GAS  /tmp/ccxArYp7.s 			page 3
+
+
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	raw_cmpxchg_acquire_not_implemented:
+ 124              	.LFB5:
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg_acquire_not_implemented(void){}
+ 125              		.loc 1 6 47 view -0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
+ 130              		.loc 1 6 48 view .LVU11
+ 131 0000 7047     		bx	lr
+ 132              		.cfi_endproc
+ 133              	.LFE5:
+ 135              		.section	.text.raw_cmpxchg_release_not_implemented,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	raw_cmpxchg_release_not_implemented
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	raw_cmpxchg_release_not_implemented:
+ 143              	.LFB6:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg_release_not_implemented(void){}
+ 144              		.loc 1 7 47 view -0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148              		@ link register save eliminated.
+ 149              		.loc 1 7 48 view .LVU13
+ 150 0000 7047     		bx	lr
+ 151              		.cfi_endproc
+ 152              	.LFE6:
+ 154              		.section	.text.raw_cmpxchg_relaxed_not_implemented,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	raw_cmpxchg_relaxed_not_implemented
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	raw_cmpxchg_relaxed_not_implemented:
+ 162              	.LFB7:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg_relaxed_not_implemented(void){}
+ 163              		.loc 1 8 47 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              		.loc 1 8 48 view .LVU15
+ 169 0000 7047     		bx	lr
+ 170              		.cfi_endproc
+ 171              	.LFE7:
+ 173              		.section	.text.raw_cmpxchg64_not_implemented,"ax",%progbits
+ 174              		.align	1
+ 175              		.global	raw_cmpxchg64_not_implemented
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	raw_cmpxchg64_not_implemented:
+ARM GAS  /tmp/ccxArYp7.s 			page 4
+
+
+ 181              	.LFB8:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg64_not_implemented(void){}
+ 182              		.loc 1 9 41 view -0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187              		.loc 1 9 42 view .LVU17
+ 188 0000 7047     		bx	lr
+ 189              		.cfi_endproc
+ 190              	.LFE8:
+ 192              		.section	.text.raw_cmpxchg64_acquire_not_implemented,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	raw_cmpxchg64_acquire_not_implemented
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	raw_cmpxchg64_acquire_not_implemented:
+ 200              	.LFB9:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg64_acquire_not_implemented(void){}
+ 201              		.loc 1 10 49 view -0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              		@ link register save eliminated.
+ 206              		.loc 1 10 50 view .LVU19
+ 207 0000 7047     		bx	lr
+ 208              		.cfi_endproc
+ 209              	.LFE9:
+ 211              		.section	.text.raw_cmpxchg64_release_not_implemented,"ax",%progbits
+ 212              		.align	1
+ 213              		.global	raw_cmpxchg64_release_not_implemented
+ 214              		.syntax unified
+ 215              		.thumb
+ 216              		.thumb_func
+ 218              	raw_cmpxchg64_release_not_implemented:
+ 219              	.LFB10:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg64_release_not_implemented(void){}
+ 220              		.loc 1 11 49 view -0
+ 221              		.cfi_startproc
+ 222              		@ args = 0, pretend = 0, frame = 0
+ 223              		@ frame_needed = 0, uses_anonymous_args = 0
+ 224              		@ link register save eliminated.
+ 225              		.loc 1 11 50 view .LVU21
+ 226 0000 7047     		bx	lr
+ 227              		.cfi_endproc
+ 228              	.LFE10:
+ 230              		.section	.text.raw_cmpxchg64_relaxed_not_implemented,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	raw_cmpxchg64_relaxed_not_implemented
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	raw_cmpxchg64_relaxed_not_implemented:
+ 238              	.LFB11:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg64_relaxed_not_implemented(void){}
+ 239              		.loc 1 12 49 view -0
+ARM GAS  /tmp/ccxArYp7.s 			page 5
+
+
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              		@ link register save eliminated.
+ 244              		.loc 1 12 50 view .LVU23
+ 245 0000 7047     		bx	lr
+ 246              		.cfi_endproc
+ 247              	.LFE11:
+ 249              		.section	.text.raw_cmpxchg128_not_implemented,"ax",%progbits
+ 250              		.align	1
+ 251              		.global	raw_cmpxchg128_not_implemented
+ 252              		.syntax unified
+ 253              		.thumb
+ 254              		.thumb_func
+ 256              	raw_cmpxchg128_not_implemented:
+ 257              	.LFB12:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg128_not_implemented(void){}
+ 258              		.loc 1 13 42 view -0
+ 259              		.cfi_startproc
+ 260              		@ args = 0, pretend = 0, frame = 0
+ 261              		@ frame_needed = 0, uses_anonymous_args = 0
+ 262              		@ link register save eliminated.
+ 263              		.loc 1 13 43 view .LVU25
+ 264 0000 7047     		bx	lr
+ 265              		.cfi_endproc
+ 266              	.LFE12:
+ 268              		.section	.text.raw_cmpxchg128_acquire_not_implemented,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	raw_cmpxchg128_acquire_not_implemented
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 275              	raw_cmpxchg128_acquire_not_implemented:
+ 276              	.LFB13:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg128_acquire_not_implemented(void){}
+ 277              		.loc 1 14 50 view -0
+ 278              		.cfi_startproc
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 0, uses_anonymous_args = 0
+ 281              		@ link register save eliminated.
+ 282              		.loc 1 14 51 view .LVU27
+ 283 0000 7047     		bx	lr
+ 284              		.cfi_endproc
+ 285              	.LFE13:
+ 287              		.section	.text.raw_cmpxchg128_release_not_implemented,"ax",%progbits
+ 288              		.align	1
+ 289              		.global	raw_cmpxchg128_release_not_implemented
+ 290              		.syntax unified
+ 291              		.thumb
+ 292              		.thumb_func
+ 294              	raw_cmpxchg128_release_not_implemented:
+ 295              	.LFB14:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg128_release_not_implemented(void){}
+ 296              		.loc 1 15 50 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccxArYp7.s 			page 6
+
+
+ 300              		@ link register save eliminated.
+ 301              		.loc 1 15 51 view .LVU29
+ 302 0000 7047     		bx	lr
+ 303              		.cfi_endproc
+ 304              	.LFE14:
+ 306              		.section	.text.raw_cmpxchg128_relaxed_not_implemented,"ax",%progbits
+ 307              		.align	1
+ 308              		.global	raw_cmpxchg128_relaxed_not_implemented
+ 309              		.syntax unified
+ 310              		.thumb
+ 311              		.thumb_func
+ 313              	raw_cmpxchg128_relaxed_not_implemented:
+ 314              	.LFB15:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/_atomic.c **** void raw_cmpxchg128_relaxed_not_implemented(void){}
+ 315              		.loc 1 16 50 view -0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 0
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319              		@ link register save eliminated.
+ 320              		.loc 1 16 51 view .LVU31
+ 321 0000 7047     		bx	lr
+ 322              		.cfi_endproc
+ 323              	.LFE15:
+ 325              		.text
+ 326              	.Letext0:
+ARM GAS  /tmp/ccxArYp7.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 _atomic.c
+     /tmp/ccxArYp7.s:22     .text.raw_xchg_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:28     .text.raw_xchg_not_implemented:00000000 raw_xchg_not_implemented
+     /tmp/ccxArYp7.s:41     .text.raw_xchg_acquire_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:47     .text.raw_xchg_acquire_not_implemented:00000000 raw_xchg_acquire_not_implemented
+     /tmp/ccxArYp7.s:60     .text.raw_xchg_release_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:66     .text.raw_xchg_release_not_implemented:00000000 raw_xchg_release_not_implemented
+     /tmp/ccxArYp7.s:79     .text.raw_xchg_relaxed_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:85     .text.raw_xchg_relaxed_not_implemented:00000000 raw_xchg_relaxed_not_implemented
+     /tmp/ccxArYp7.s:98     .text.raw_cmpxchg_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:104    .text.raw_cmpxchg_not_implemented:00000000 raw_cmpxchg_not_implemented
+     /tmp/ccxArYp7.s:117    .text.raw_cmpxchg_acquire_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:123    .text.raw_cmpxchg_acquire_not_implemented:00000000 raw_cmpxchg_acquire_not_implemented
+     /tmp/ccxArYp7.s:136    .text.raw_cmpxchg_release_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:142    .text.raw_cmpxchg_release_not_implemented:00000000 raw_cmpxchg_release_not_implemented
+     /tmp/ccxArYp7.s:155    .text.raw_cmpxchg_relaxed_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:161    .text.raw_cmpxchg_relaxed_not_implemented:00000000 raw_cmpxchg_relaxed_not_implemented
+     /tmp/ccxArYp7.s:174    .text.raw_cmpxchg64_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:180    .text.raw_cmpxchg64_not_implemented:00000000 raw_cmpxchg64_not_implemented
+     /tmp/ccxArYp7.s:193    .text.raw_cmpxchg64_acquire_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:199    .text.raw_cmpxchg64_acquire_not_implemented:00000000 raw_cmpxchg64_acquire_not_implemented
+     /tmp/ccxArYp7.s:212    .text.raw_cmpxchg64_release_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:218    .text.raw_cmpxchg64_release_not_implemented:00000000 raw_cmpxchg64_release_not_implemented
+     /tmp/ccxArYp7.s:231    .text.raw_cmpxchg64_relaxed_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:237    .text.raw_cmpxchg64_relaxed_not_implemented:00000000 raw_cmpxchg64_relaxed_not_implemented
+     /tmp/ccxArYp7.s:250    .text.raw_cmpxchg128_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:256    .text.raw_cmpxchg128_not_implemented:00000000 raw_cmpxchg128_not_implemented
+     /tmp/ccxArYp7.s:269    .text.raw_cmpxchg128_acquire_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:275    .text.raw_cmpxchg128_acquire_not_implemented:00000000 raw_cmpxchg128_acquire_not_implemented
+     /tmp/ccxArYp7.s:288    .text.raw_cmpxchg128_release_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:294    .text.raw_cmpxchg128_release_not_implemented:00000000 raw_cmpxchg128_release_not_implemented
+     /tmp/ccxArYp7.s:307    .text.raw_cmpxchg128_relaxed_not_implemented:00000000 $t
+     /tmp/ccxArYp7.s:313    .text.raw_cmpxchg128_relaxed_not_implemented:00000000 raw_cmpxchg128_relaxed_not_implemented
+
+NO UNDEFINED SYMBOLS

@@ -96,7 +96,7 @@ static int initramfs_read(struct file *file, char __user * data, size_t size, lo
 static int initramfs_write(struct file *file, char __user * data, size_t size, loff_t *offset)
 {
     struct initramfs_inode *p_inode = file->f_inode->i_private;
-    if(p_inode->mode = READONLY){
+    if(p_inode->mode == READONLY){
         pr_err("this file is read only\n");
         return 0;
     }

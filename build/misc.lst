@@ -1,0 +1,594 @@
+ARM GAS  /tmp/ccpFMhPx.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"misc.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c"
+  21              		.section	.text.putstr,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	putstr:
+  28              	.LVL0:
+  29              	.LFB1:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * misc.c
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * This is a collection of several routines from gzip-1.0.3 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * adapted for Linux.
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * Modified for ARM Linux by Russell King
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * Nicolas Pitre <nico@visuaide.com>  1999/04/14 :
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *  For this code to run directly from Flash, all constant variables must
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *  be marked with 'const' and all other variables initialized at run-time 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *  only.  This way all non constant variables will end up in the bss segment,
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *  which should point to addresses in RAM and cleared to 0 on start.
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  *  This allows for a much quicker boot time.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** unsigned int __machine_arch_type;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #include <linux/compiler.h>	/* for inline */
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #include <linux/types.h>
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #include <linux/linkage.h>
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #include "misc.h"
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #ifdef CONFIG_ARCH_EP93XX
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #include "misc-ep93xx.h"
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #endif
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ARM GAS  /tmp/ccpFMhPx.s 			page 2
+
+
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** static void putstr(const char *ptr);
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #ifdef CONFIG_DEBUG_ICEDCC
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #if defined(CONFIG_CPU_V6) || defined(CONFIG_CPU_V6K) || defined(CONFIG_CPU_V7)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** static void icedcc_putc(int ch)
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	int status, i = 0x4000000;
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	do {
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (--i < 0)
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 			return;
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		asm volatile ("mrc p14, 0, %0, c0, c1, 0" : "=r" (status));
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	} while (status & (1 << 29));
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	asm("mcr p14, 0, %0, c0, c5, 0" : : "r" (ch));
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #elif defined(CONFIG_CPU_XSCALE)
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** static void icedcc_putc(int ch)
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	int status, i = 0x4000000;
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	do {
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (--i < 0)
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 			return;
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		asm volatile ("mrc p14, 0, %0, c14, c0, 0" : "=r" (status));
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	} while (status & (1 << 28));
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	asm("mcr p14, 0, %0, c8, c0, 0" : : "r" (ch));
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #else
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** static void icedcc_putc(int ch)
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	int status, i = 0x4000000;
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	do {
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (--i < 0)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 			return;
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		asm volatile ("mrc p14, 0, %0, c0, c0, 0" : "=r" (status));
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	} while (status & 2);
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	asm("mcr p14, 0, %0, c1, c0, 0" : : "r" (ch));
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #endif
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #define putc(ch)	icedcc_putc(ch)
+ARM GAS  /tmp/ccpFMhPx.s 			page 3
+
+
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #endif
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** static void putstr(const char *ptr)
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+  30              		.loc 1 90 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 90 1 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0446     		mov	r4, r0
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	char c;
+  43              		.loc 1 91 2 is_stmt 1 view .LVU2
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	while ((c = *ptr++) != '\0') {
+  44              		.loc 1 93 2 view .LVU3
+  45              		.loc 1 93 8 is_stmt 0 view .LVU4
+  46 0004 02E0     		b	.L2
+  47              	.LVL1:
+  48              	.L3:
+  49              	.LBB2:
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 			putc('\r');
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		putc(c);
+  50              		.loc 1 96 3 is_stmt 1 view .LVU5
+  51 0006 2846     		mov	r0, r5
+  52 0008 FFF7FEFF 		bl	putc
+  53              	.LVL2:
+  54              	.L2:
+  55              		.loc 1 96 3 is_stmt 0 view .LVU6
+  56              	.LBE2:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  57              		.loc 1 93 22 is_stmt 1 view .LVU7
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  58              		.loc 1 93 12 is_stmt 0 view .LVU8
+  59 000c 14F8015B 		ldrb	r5, [r4], #1	@ zero_extendqisi2
+  60              	.LVL3:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  61              		.loc 1 93 22 view .LVU9
+  62 0010 2DB1     		cbz	r5, .L6
+  63              	.LBB4:
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  64              		.loc 1 94 3 is_stmt 1 view .LVU10
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		if (c == '\n')
+  65              		.loc 1 94 6 is_stmt 0 view .LVU11
+  66 0012 0A2D     		cmp	r5, #10
+  67 0014 F7D1     		bne	.L3
+  68              	.LBB3:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		putc(c);
+  69              		.loc 1 95 4 is_stmt 1 view .LVU12
+  70 0016 0D20     		movs	r0, #13
+ARM GAS  /tmp/ccpFMhPx.s 			page 4
+
+
+  71 0018 FFF7FEFF 		bl	putc
+  72              	.LVL4:
+  73 001c F3E7     		b	.L3
+  74              	.L6:
+  75              	.LBE3:
+  76              	.LBE4:
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	}
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	flush();
+  77              		.loc 1 99 2 view .LVU13
+  78 001e FFF7FEFF 		bl	flush
+  79              	.LVL5:
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+  80              		.loc 1 100 1 is_stmt 0 view .LVU14
+  81 0022 38BD     		pop	{r3, r4, r5, pc}
+  82              		.loc 1 100 1 view .LVU15
+  83              		.cfi_endproc
+  84              	.LFE1:
+  86              		.section	.rodata.error.str1.4,"aMS",%progbits,1
+  87              		.align	2
+  88              	.LC0:
+  89 0000 0A0A00   		.ascii	"\012\012\000"
+  90 0003 00       		.align	2
+  91              	.LC1:
+  92 0004 0A0A202D 		.ascii	"\012\012 -- System halted\000"
+  92      2D205379 
+  92      7374656D 
+  92      2068616C 
+  92      74656400 
+  93              		.section	.text.error,"ax",%progbits
+  94              		.align	1
+  95              		.global	error
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+ 100              	error:
+ 101              	.LVL6:
+ 102              	.LFB2:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** /*
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  * gzip declarations
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c ****  */
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** unsigned char *output_data;
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** unsigned long free_mem_ptr;
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** unsigned long free_mem_end_ptr;
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #ifndef arch_error
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #define arch_error(x)
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #endif
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** void error(char *x)
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+ 103              		.loc 1 115 1 is_stmt 1 view -0
+ 104              		.cfi_startproc
+ 105              		@ Volatile: function does not return.
+ 106              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccpFMhPx.s 			page 5
+
+
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		.loc 1 115 1 is_stmt 0 view .LVU17
+ 109 0000 08B5     		push	{r3, lr}
+ 110              	.LCFI1:
+ 111              		.cfi_def_cfa_offset 8
+ 112              		.cfi_offset 3, -8
+ 113              		.cfi_offset 14, -4
+ 114 0002 0446     		mov	r4, r0
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	arch_error(x);
+ 115              		.loc 1 116 15 is_stmt 1 view .LVU18
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	putstr("\n\n");
+ 116              		.loc 1 118 2 view .LVU19
+ 117 0004 0448     		ldr	r0, .L10
+ 118              	.LVL7:
+ 119              		.loc 1 118 2 is_stmt 0 view .LVU20
+ 120 0006 FFF7FEFF 		bl	putstr
+ 121              	.LVL8:
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	putstr(x);
+ 122              		.loc 1 119 2 is_stmt 1 view .LVU21
+ 123 000a 2046     		mov	r0, r4
+ 124 000c FFF7FEFF 		bl	putstr
+ 125              	.LVL9:
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	putstr("\n\n -- System halted");
+ 126              		.loc 1 120 2 view .LVU22
+ 127 0010 0248     		ldr	r0, .L10+4
+ 128 0012 FFF7FEFF 		bl	putstr
+ 129              	.LVL10:
+ 130              	.L8:
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	while(1);	/* Halt */
+ 131              		.loc 1 122 2 view .LVU23
+ 132              		.loc 1 122 7 view .LVU24
+ 133 0016 FEE7     		b	.L8
+ 134              	.L11:
+ 135              		.align	2
+ 136              	.L10:
+ 137 0018 00000000 		.word	.LC0
+ 138 001c 04000000 		.word	.LC1
+ 139              		.cfi_endproc
+ 140              	.LFE2:
+ 142              		.section	.rodata.__div0.str1.4,"aMS",%progbits,1
+ 143              		.align	2
+ 144              	.LC2:
+ 145 0000 41747465 		.ascii	"Attempting division by 0!\000"
+ 145      6D707469 
+ 145      6E672064 
+ 145      69766973 
+ 145      696F6E20 
+ 146              		.section	.text.__div0,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	__div0
+ 149              		.syntax unified
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	__div0:
+ 154              	.LFB3:
+ARM GAS  /tmp/ccpFMhPx.s 			page 6
+
+
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** asmlinkage void __div0(void)
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+ 155              		.loc 1 126 1 view -0
+ 156              		.cfi_startproc
+ 157              		@ Volatile: function does not return.
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 160 0000 08B5     		push	{r3, lr}
+ 161              	.LCFI2:
+ 162              		.cfi_def_cfa_offset 8
+ 163              		.cfi_offset 3, -8
+ 164              		.cfi_offset 14, -4
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	error("Attempting division by 0!");
+ 165              		.loc 1 127 2 view .LVU26
+ 166 0002 0148     		ldr	r0, .L14
+ 167 0004 FFF7FEFF 		bl	error
+ 168              	.LVL11:
+ 169              	.L15:
+ 170              		.align	2
+ 171              	.L14:
+ 172 0008 00000000 		.word	.LC2
+ 173              		.cfi_endproc
+ 174              	.LFE3:
+ 176              		.section	.rodata.decompress_kernel.str1.4,"aMS",%progbits,1
+ 177              		.align	2
+ 178              	.LC3:
+ 179 0000 556E636F 		.ascii	"Uncompressing Linux...\000"
+ 179      6D707265 
+ 179      7373696E 
+ 179      67204C69 
+ 179      6E75782E 
+ 180 0017 00       		.align	2
+ 181              	.LC4:
+ 182 0018 6465636F 		.ascii	"decompressor returned an error\000"
+ 182      6D707265 
+ 182      73736F72 
+ 182      20726574 
+ 182      75726E65 
+ 183 0037 00       		.align	2
+ 184              	.LC5:
+ 185 0038 20646F6E 		.ascii	" done, booting the kernel.\012\000"
+ 185      652C2062 
+ 185      6F6F7469 
+ 185      6E672074 
+ 185      6865206B 
+ 186              		.section	.text.decompress_kernel,"ax",%progbits
+ 187              		.align	1
+ 188              		.global	decompress_kernel
+ 189              		.syntax unified
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	decompress_kernel:
+ 194              	.LVL12:
+ 195              	.LFB4:
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+ARM GAS  /tmp/ccpFMhPx.s 			page 7
+
+
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** void
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** decompress_kernel(unsigned long output_start, unsigned long free_mem_ptr_p,
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		unsigned long free_mem_ptr_end_p,
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		int arch_id)
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+ 196              		.loc 1 134 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200              		.loc 1 134 1 is_stmt 0 view .LVU28
+ 201 0000 10B5     		push	{r4, lr}
+ 202              	.LCFI3:
+ 203              		.cfi_def_cfa_offset 8
+ 204              		.cfi_offset 4, -8
+ 205              		.cfi_offset 14, -4
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	int ret;
+ 206              		.loc 1 135 2 is_stmt 1 view .LVU29
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	output_data		= (unsigned char *)output_start;
+ 207              		.loc 1 137 2 view .LVU30
+ 208              		.loc 1 137 15 is_stmt 0 view .LVU31
+ 209 0002 0E4C     		ldr	r4, .L20
+ 210 0004 2060     		str	r0, [r4]
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	free_mem_ptr		= free_mem_ptr_p;
+ 211              		.loc 1 138 2 is_stmt 1 view .LVU32
+ 212              		.loc 1 138 16 is_stmt 0 view .LVU33
+ 213 0006 0E48     		ldr	r0, .L20+4
+ 214              	.LVL13:
+ 215              		.loc 1 138 16 view .LVU34
+ 216 0008 0160     		str	r1, [r0]
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	free_mem_end_ptr	= free_mem_ptr_end_p;
+ 217              		.loc 1 139 2 is_stmt 1 view .LVU35
+ 218              		.loc 1 139 19 is_stmt 0 view .LVU36
+ 219 000a 0E49     		ldr	r1, .L20+8
+ 220              	.LVL14:
+ 221              		.loc 1 139 19 view .LVU37
+ 222 000c 0A60     		str	r2, [r1]
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	__machine_arch_type	= arch_id;
+ 223              		.loc 1 140 2 is_stmt 1 view .LVU38
+ 224              		.loc 1 140 22 is_stmt 0 view .LVU39
+ 225 000e 0E4A     		ldr	r2, .L20+12
+ 226              	.LVL15:
+ 227              		.loc 1 140 22 view .LVU40
+ 228 0010 1360     		str	r3, [r2]
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #ifdef CONFIG_ARCH_EP93XX
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	ep93xx_decomp_setup();
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** #endif
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	arch_decomp_setup();
+ 229              		.loc 1 145 2 is_stmt 1 view .LVU41
+ 230 0012 FFF7FEFF 		bl	arch_decomp_setup
+ 231              	.LVL16:
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	putstr("Uncompressing Linux...");
+ 232              		.loc 1 147 2 view .LVU42
+ 233 0016 0D48     		ldr	r0, .L20+16
+ARM GAS  /tmp/ccpFMhPx.s 			page 8
+
+
+ 234 0018 FFF7FEFF 		bl	putstr
+ 235              	.LVL17:
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	ret = do_decompress(input_data, input_data_end - input_data,
+ 236              		.loc 1 148 2 view .LVU43
+ 237              		.loc 1 148 8 is_stmt 0 view .LVU44
+ 238 001c 0C48     		ldr	r0, .L20+20
+ 239 001e 0D4B     		ldr	r3, .L20+24
+ 240 0020 2268     		ldr	r2, [r4]
+ 241 0022 0D49     		ldr	r1, .L20+28
+ 242 0024 091A     		subs	r1, r1, r0
+ 243 0026 FFF7FEFF 		bl	do_decompress
+ 244              	.LVL18:
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 			    output_data, error);
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	if (ret)
+ 245              		.loc 1 150 2 is_stmt 1 view .LVU45
+ 246              		.loc 1 150 5 is_stmt 0 view .LVU46
+ 247 002a 18B9     		cbnz	r0, .L19
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		error("decompressor returned an error");
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	else
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		putstr(" done, booting the kernel.\n");
+ 248              		.loc 1 153 3 is_stmt 1 view .LVU47
+ 249 002c 0B48     		ldr	r0, .L20+32
+ 250              	.LVL19:
+ 251              		.loc 1 153 3 is_stmt 0 view .LVU48
+ 252 002e FFF7FEFF 		bl	putstr
+ 253              	.LVL20:
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** }
+ 254              		.loc 1 154 1 view .LVU49
+ 255 0032 10BD     		pop	{r4, pc}
+ 256              	.LVL21:
+ 257              	.L19:
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		error("decompressor returned an error");
+ 258              		.loc 1 151 3 is_stmt 1 view .LVU50
+ 259 0034 0A48     		ldr	r0, .L20+36
+ 260              	.LVL22:
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 		error("decompressor returned an error");
+ 261              		.loc 1 151 3 is_stmt 0 view .LVU51
+ 262 0036 FFF7FEFF 		bl	error
+ 263              	.LVL23:
+ 264              	.L21:
+ 265 003a 00BF     		.align	2
+ 266              	.L20:
+ 267 003c 00000000 		.word	output_data
+ 268 0040 00000000 		.word	free_mem_ptr
+ 269 0044 00000000 		.word	free_mem_end_ptr
+ 270 0048 00000000 		.word	__machine_arch_type
+ 271 004c 00000000 		.word	.LC3
+ 272 0050 00000000 		.word	input_data
+ 273 0054 00000000 		.word	error
+ 274 0058 00000000 		.word	input_data_end
+ 275 005c 38000000 		.word	.LC5
+ 276 0060 18000000 		.word	.LC4
+ 277              		.cfi_endproc
+ 278              	.LFE4:
+ 280              		.section	.rodata.__fortify_panic.str1.4,"aMS",%progbits,1
+ 281              		.align	2
+ 282              	.LC6:
+ARM GAS  /tmp/ccpFMhPx.s 			page 9
+
+
+ 283 0000 64657465 		.ascii	"detected buffer overflow\000"
+ 283      63746564 
+ 283      20627566 
+ 283      66657220 
+ 283      6F766572 
+ 284              		.section	.text.__fortify_panic,"ax",%progbits
+ 285              		.align	1
+ 286              		.global	__fortify_panic
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	__fortify_panic:
+ 292              	.LVL24:
+ 293              	.LFB5:
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** void __fortify_panic(const u8 reason, size_t avail, size_t size)
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** {
+ 294              		.loc 1 157 1 is_stmt 1 view -0
+ 295              		.cfi_startproc
+ 296              		@ Volatile: function does not return.
+ 297              		@ args = 0, pretend = 0, frame = 0
+ 298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299              		.loc 1 157 1 is_stmt 0 view .LVU53
+ 300 0000 08B5     		push	{r3, lr}
+ 301              	.LCFI4:
+ 302              		.cfi_def_cfa_offset 8
+ 303              		.cfi_offset 3, -8
+ 304              		.cfi_offset 14, -4
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.c **** 	error("detected buffer overflow");
+ 305              		.loc 1 158 2 is_stmt 1 view .LVU54
+ 306 0002 0148     		ldr	r0, .L24
+ 307              	.LVL25:
+ 308              		.loc 1 158 2 is_stmt 0 view .LVU55
+ 309 0004 FFF7FEFF 		bl	error
+ 310              	.LVL26:
+ 311              	.L25:
+ 312              		.loc 1 158 2 view .LVU56
+ 313              		.align	2
+ 314              	.L24:
+ 315 0008 00000000 		.word	.LC6
+ 316              		.cfi_endproc
+ 317              	.LFE5:
+ 319              		.global	free_mem_end_ptr
+ 320              		.section	.bss.free_mem_end_ptr,"aw",%nobits
+ 321              		.align	2
+ 324              	free_mem_end_ptr:
+ 325 0000 00000000 		.space	4
+ 326              		.global	free_mem_ptr
+ 327              		.section	.bss.free_mem_ptr,"aw",%nobits
+ 328              		.align	2
+ 331              	free_mem_ptr:
+ 332 0000 00000000 		.space	4
+ 333              		.global	output_data
+ 334              		.section	.bss.output_data,"aw",%nobits
+ 335              		.align	2
+ 338              	output_data:
+ 339 0000 00000000 		.space	4
+ARM GAS  /tmp/ccpFMhPx.s 			page 10
+
+
+ 340              		.global	__machine_arch_type
+ 341              		.section	.bss.__machine_arch_type,"aw",%nobits
+ 342              		.align	2
+ 345              	__machine_arch_type:
+ 346 0000 00000000 		.space	4
+ 347              		.text
+ 348              	.Letext0:
+ 349              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 350              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 351              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/boot/compressed/misc.h"
+ 352              		.file 5 "<built-in>"
+ 353              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ARM GAS  /tmp/ccpFMhPx.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 misc.c
+     /tmp/ccpFMhPx.s:22     .text.putstr:00000000 $t
+     /tmp/ccpFMhPx.s:27     .text.putstr:00000000 putstr
+     /tmp/ccpFMhPx.s:87     .rodata.error.str1.4:00000000 $d
+     /tmp/ccpFMhPx.s:94     .text.error:00000000 $t
+     /tmp/ccpFMhPx.s:100    .text.error:00000000 error
+     /tmp/ccpFMhPx.s:137    .text.error:00000018 $d
+     /tmp/ccpFMhPx.s:143    .rodata.__div0.str1.4:00000000 $d
+     /tmp/ccpFMhPx.s:147    .text.__div0:00000000 $t
+     /tmp/ccpFMhPx.s:153    .text.__div0:00000000 __div0
+     /tmp/ccpFMhPx.s:172    .text.__div0:00000008 $d
+     /tmp/ccpFMhPx.s:177    .rodata.decompress_kernel.str1.4:00000000 $d
+     /tmp/ccpFMhPx.s:187    .text.decompress_kernel:00000000 $t
+     /tmp/ccpFMhPx.s:193    .text.decompress_kernel:00000000 decompress_kernel
+     /tmp/ccpFMhPx.s:267    .text.decompress_kernel:0000003c $d
+     /tmp/ccpFMhPx.s:338    .bss.output_data:00000000 output_data
+     /tmp/ccpFMhPx.s:331    .bss.free_mem_ptr:00000000 free_mem_ptr
+     /tmp/ccpFMhPx.s:324    .bss.free_mem_end_ptr:00000000 free_mem_end_ptr
+     /tmp/ccpFMhPx.s:345    .bss.__machine_arch_type:00000000 __machine_arch_type
+     /tmp/ccpFMhPx.s:281    .rodata.__fortify_panic.str1.4:00000000 $d
+     /tmp/ccpFMhPx.s:285    .text.__fortify_panic:00000000 $t
+     /tmp/ccpFMhPx.s:291    .text.__fortify_panic:00000000 __fortify_panic
+     /tmp/ccpFMhPx.s:315    .text.__fortify_panic:00000008 $d
+     /tmp/ccpFMhPx.s:321    .bss.free_mem_end_ptr:00000000 $d
+     /tmp/ccpFMhPx.s:328    .bss.free_mem_ptr:00000000 $d
+     /tmp/ccpFMhPx.s:335    .bss.output_data:00000000 $d
+     /tmp/ccpFMhPx.s:342    .bss.__machine_arch_type:00000000 $d
+
+UNDEFINED SYMBOLS
+putc
+flush
+arch_decomp_setup
+do_decompress
+input_data
+input_data_end

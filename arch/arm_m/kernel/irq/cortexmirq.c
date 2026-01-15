@@ -1,9 +1,13 @@
+#include <linux/kernel.h>
+#include <linux/compiler.h>
+#include <linux/types.h>
+
 extern void C_IRQ_Dispatcher(int irq_number);
 void IRQ_Generic_Handler(void)
-{
-     int irq_number;
+{   
+    int irq_number;
     __asm volatile (
-        "MRS %0, IPSR\n\t"   // 读 IPSR 到 irq_number
+        "MRS %0, IPSR\n\t"  
         "SUB %0, %0, #16\n\t"
         : "=r" (irq_number)
     );
@@ -11,10 +15,20 @@ void IRQ_Generic_Handler(void)
 }
 
 
-void __enable_irq(){
-    __asm volatile ("cpsie i");
+
+void __weak __enable_irq(){
+    __asm volatile ("cpsie i": : : "memory");
+} 
+
+void __weak __disable_irq(){
+    __asm volatile ("cpsid i": : : "memory");
 }
 
-void __disble_irq(){
-    __asm volatile ("cpsid i");
+void __enable_irq();
+void __disable_irq();
+
+extern void __user_error_process(void);
+void UsageFault_Handler(){
+    __user_error_process();
 }
+

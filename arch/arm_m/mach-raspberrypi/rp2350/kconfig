@@ -1,0 +1,33 @@
+menu "Linker Script Config"
+
+    menu "Flash Config"
+    config LD_FLASH_START_ADDRESS
+        hex "FLASH Start Address"
+        default 0x10100000
+        help
+            Set the start address of the flash memory.
+    config LD_KERNEL_USE_FLASH_SIZE
+        int "Flash Size (KiB)"
+        default 2048
+        help
+            Set the size of the flash space  (in KiB).
+    endmenu
+    
+    menu "RAM Config" 
+    config LD_RAM_START_ADDRESS
+        hex "RAM Start Address"
+        default 0x20008000
+        help
+            Set the start address of the RAM memory.
+    config LD_KERNEL_USE_RAM_SIZE
+        int "RAM Size (KiB)"
+        default 480
+        help
+            Set the size of the RAM space  (in KiB).
+    endmenu   
+endmenu
+
+source "arch/arm_m/kconfig"
+
+
+

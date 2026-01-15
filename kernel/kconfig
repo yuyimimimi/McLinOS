@@ -5,7 +5,7 @@ menu "Kernel Core Features"
   menu "SYMBOL_TABLE"
   config USE_EXPORT_SYMBOL_TABLE
       bool "Use export symbol tabe to mannage kernel lib"
-      default n
+      default y
       help
         This function will use plenty much flash space ,
         if you want load elf file to add function when kernel is running 

@@ -18,6 +18,7 @@ typedef struct spinlock {
 	union {
 		struct raw_spinlock rlock;
 		void *owner;
+		volatile int flag;
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 # define LOCK_PADSIZE (offsetof(struct raw_spinlock, dep_map))
 		struct {

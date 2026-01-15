@@ -400,7 +400,7 @@
  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-weak-function-attribute
  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-weak-variable-attribute
  */
-#define __weak                          __attribute__((__weak__))
+#define __weak   __attribute__((__weak__))
 
 /*
  * Used by functions that use '__builtin_return_address'. These function

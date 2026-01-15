@@ -34,7 +34,7 @@ typedef struct
     uint32_t max_app_size;
 }loader_config_t;
 
-static loader_config_t loder_config;
+static loader_config_t loader_config;
 
 
 static void print_app_meta(const AppMeta *meta)
@@ -55,30 +55,30 @@ static void print_app_meta(const AppMeta *meta)
 
 static int check_app(AppMeta* app)
 {
-    if (app->magic != loder_config.magic) {
+    if (app->magic != loader_config.magic) {
         pr_err("Magic mismatch: expected %d, got %d\n", 
-               loder_config.magic, app->magic);
+               loader_config.magic, app->magic);
         return -EINVAL;
     }
-    if (app->kernel_ver < loder_config.min_kernel_ver ||
-        app->kernel_ver > loder_config.max_kernel_ver) {
+    if (app->kernel_ver < loader_config.min_kernel_ver ||
+        app->kernel_ver > loader_config.max_kernel_ver) {
         pr_err("Kernel version mismatch\n");
         return -EINVAL;
     }
-    if (app->cmd != loder_config.cmd) {
-        pr_err("User App xmd is not avilible\n");
+    if (app->cmd != loader_config.cmd) {
+        pr_err("User App cmd is not avilible\n");
         return -EINVAL;
     }
-    if (app->arch_flags != loder_config.arch_flags) {
+    if (app->arch_flags != loader_config.arch_flags) {
         pr_err("Architecture flags mismatch\n");
         return -EINVAL;
     }
-    if(app->stack_size/1024 > loder_config.max_stack_size){
+    if(app->stack_size/1024 > loader_config.max_stack_size){
         pr_err("loader:no memory app need: %d kb ram.\n",app->stack_size);
         return -EINVAL;
     }
-    if(app->program_size > loder_config.max_app_size*1024){
-        pr_err("this aplication:is too large need:%d kb ram to load\n",app->program_size/1024);
+    if(app->program_size > loader_config.max_app_size*1024){
+        pr_err("this aplication is too large need:%d kb ram to load\n",app->program_size/1024);
         return -EINVAL;
     }
     return 0;
@@ -150,7 +150,7 @@ int loader_user_app(char* file_path,void* argv)
     printk(KERN_DEBUG"set start at     0x%x\n",start);
     printk(KERN_DEBUG"set base address 0x%x\n",addr);
     set_got_table(app_data_head,addr);
-    struct task_struct  * t = task_run(start,app_data_head->stack_size,argv,loder_config.default_priority,file_path,0,(uint32_t)addr);
+    struct task_struct  * t = task_run(start,app_data_head->stack_size,argv,loader_config.default_priority,file_path,0,(uint32_t)addr);
     if(IS_ERR(t)){
         kfree(addr);
     }
@@ -199,36 +199,36 @@ static int loader_init()
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","magic",data);
     if(index == NULL) goto block_system;
-    loder_config.magic = str_to_uint32(data);
+    loader_config.magic = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","min_kernel_ver",data);
     if(index == NULL) goto block_system;
-    loder_config.min_kernel_ver = str_to_uint32(data);
+    loader_config.min_kernel_ver = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","max_kernel_ver",data);
     if(index == NULL) goto block_system;
-    loder_config.max_kernel_ver = str_to_uint32(data);
+    loader_config.max_kernel_ver = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","cmd",data);
     if(index == NULL) goto block_system;
-    loder_config.cmd = str_to_uint32(data);
+    loader_config.cmd = str_to_uint32(data);
     number++;
-    index = get_value_from_ini(file_data,"Loader_Config","max_stack_size",data);
+    index = get_value_from_ini(file_data,"Loader_Config","max_stack_size_limit",data);
     if(index == NULL) goto block_system;
-    loder_config.max_stack_size = str_to_uint32(data);
+    loader_config.max_stack_size = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","default_priority",data);
     if(index == NULL) goto block_system;
-    loder_config.default_priority = str_to_uint32(data);
+    loader_config.default_priority = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","arch_flags",data);
     if(index == NULL) goto block_system;
-    loder_config.arch_flags = str_to_uint32(data);
+    loader_config.arch_flags = str_to_uint32(data);
     number++;
     index = get_value_from_ini(file_data,"Loader_Config","max_app_size",data);
     if(index == NULL) goto block_system;
-    if(strcmp(data,"Auto") ==0)  loder_config.max_app_size = 0xffffffff;
-    else  loder_config.max_app_size = str_to_uint32(data);
+    if(strcmp(data,"Auto") ==0)  loader_config.max_app_size = 0xffffffff;
+    else  loader_config.max_app_size = str_to_uint32(data);
     number++;    
     index = get_value_from_ini(file_data,"user_start_app","path",data);
     if(index == NULL){
@@ -243,22 +243,21 @@ static int loader_init()
     return -1;                                      
 }
 
+
+
+
+
+
 core_initcall(loader_init);
 
 static char* argvs[] = {"start","goodmoring",NULL};
 
 static int load_user_app()
 {
-    if(data[0]=='/')
-    loader_user_app(data,argvs);
-    kfree(data);
+    if(data[0]=='/'){
+        loader_user_app(data,argvs);
+    }
+    printk(KERN_INFO "user loader complete\n\r");
     return 0;
 }
 late_initcall(load_user_app);
-
-
-
-
-
-
-

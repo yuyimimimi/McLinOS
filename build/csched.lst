@@ -1,0 +1,176 @@
+ARM GAS  /tmp/ccqLGFgO.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"csched.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c"
+  21              		.section	.text.__init_Taskcontext,"ax",%progbits
+  22              		.align	1
+  23              		.global	__init_Taskcontext
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	__init_Taskcontext:
+  29              	.LVL0:
+  30              	.LFB226:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** #include <linux/compiler.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** #include <linux/types.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** #include <linux/sched.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** extern void __default_Task_return_function(void);
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** void __init_Taskcontext(struct task_struct* task_data,uint32_t pic_offset){
+  31              		.loc 1 9 75 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     if(task_data == NULL) return;
+  36              		.loc 1 10 5 view .LVU1
+  37              		.loc 1 10 7 is_stmt 0 view .LVU2
+  38 0000 8446     		mov	ip, r0
+  39 0002 F0B1     		cbz	r0, .L1
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     TaskContext* context = (TaskContext*)(&task_data->context);
+  40              		.loc 1 11 5 is_stmt 1 view .LVU3
+  41              	.LVL1:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     uint32_t* psp = (uint32_t*)(((uint32_t)task_data->stack_Top) & ~0x7) - 32;
+  42              		.loc 1 12 5 view .LVU4
+  43              		.loc 1 12 53 is_stmt 0 view .LVU5
+  44 0004 836D     		ldr	r3, [r0, #88]
+  45              		.loc 1 12 74 view .LVU6
+  46 0006 23F00703 		bic	r3, r3, #7
+ARM GAS  /tmp/ccqLGFgO.s 			page 2
+
+
+  47 000a 803B     		subs	r3, r3, #128
+  48              	.LVL2:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[15] = 0x01000000u;                  // xPSR
+  49              		.loc 1 13 5 is_stmt 1 view .LVU7
+  50              		.loc 1 13 13 is_stmt 0 view .LVU8
+  51 000c 4FF08072 		mov	r2, #16777216
+  52 0010 DA63     		str	r2, [r3, #60]
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[14] = task_data->entry;             // PC (任务入口地址)
+  53              		.loc 1 14 5 is_stmt 1 view .LVU9
+  54              		.loc 1 14 24 is_stmt 0 view .LVU10
+  55 0012 C26D     		ldr	r2, [r0, #92]
+  56              		.loc 1 14 13 view .LVU11
+  57 0014 9A63     		str	r2, [r3, #56]
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[13] = __default_Task_return_function;  // LR (返回地址)
+  58              		.loc 1 15 5 is_stmt 1 view .LVU12
+  59              		.loc 1 15 13 is_stmt 0 view .LVU13
+  60 0016 0B4A     		ldr	r2, .L3
+  61 0018 5A63     		str	r2, [r3, #52]
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[12] = 0;                            // r12
+  62              		.loc 1 16 5 is_stmt 1 view .LVU14
+  63              		.loc 1 16 13 is_stmt 0 view .LVU15
+  64 001a 0022     		movs	r2, #0
+  65 001c 1A63     		str	r2, [r3, #48]
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[11] = 0;                            // r3
+  66              		.loc 1 17 5 is_stmt 1 view .LVU16
+  67              		.loc 1 17 13 is_stmt 0 view .LVU17
+  68 001e DA62     		str	r2, [r3, #44]
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[10] = 0;                            // r2
+  69              		.loc 1 18 5 is_stmt 1 view .LVU18
+  70              		.loc 1 18 13 is_stmt 0 view .LVU19
+  71 0020 9A62     		str	r2, [r3, #40]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[9] = 0xFFFFFFFD;                    // r1     
+  72              		.loc 1 19 5 is_stmt 1 view .LVU20
+  73              		.loc 1 19 12 is_stmt 0 view .LVU21
+  74 0022 6FF00200 		mvn	r0, #2
+  75              	.LVL3:
+  76              		.loc 1 19 12 view .LVU22
+  77 0026 5862     		str	r0, [r3, #36]
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[8] = task_data->arg;                // r0
+  78              		.loc 1 20 5 is_stmt 1 view .LVU23
+  79              		.loc 1 20 23 is_stmt 0 view .LVU24
+  80 0028 DCF86000 		ldr	r0, [ip, #96]
+  81              		.loc 1 20 12 view .LVU25
+  82 002c 1862     		str	r0, [r3, #32]
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[7] = 0;                     // r11
+  83              		.loc 1 21 5 is_stmt 1 view .LVU26
+  84              		.loc 1 21 12 is_stmt 0 view .LVU27
+  85 002e DA61     		str	r2, [r3, #28]
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[6] = 0;                     // r10
+  86              		.loc 1 22 5 is_stmt 1 view .LVU28
+  87              		.loc 1 22 12 is_stmt 0 view .LVU29
+  88 0030 9A61     		str	r2, [r3, #24]
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[5] = pic_offset;            // r9
+  89              		.loc 1 23 5 is_stmt 1 view .LVU30
+  90              		.loc 1 23 12 is_stmt 0 view .LVU31
+  91 0032 5961     		str	r1, [r3, #20]
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[4] = 0;                     // r8
+ARM GAS  /tmp/ccqLGFgO.s 			page 3
+
+
+  92              		.loc 1 24 5 is_stmt 1 view .LVU32
+  93              		.loc 1 24 12 is_stmt 0 view .LVU33
+  94 0034 1A61     		str	r2, [r3, #16]
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[3] = 0;                     // r7
+  95              		.loc 1 25 5 is_stmt 1 view .LVU34
+  96              		.loc 1 25 12 is_stmt 0 view .LVU35
+  97 0036 DA60     		str	r2, [r3, #12]
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[2] = 0;                     // r6
+  98              		.loc 1 26 5 is_stmt 1 view .LVU36
+  99              		.loc 1 26 12 is_stmt 0 view .LVU37
+ 100 0038 9A60     		str	r2, [r3, #8]
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[1] = 0;                     // r5
+ 101              		.loc 1 27 5 is_stmt 1 view .LVU38
+ 102              		.loc 1 27 12 is_stmt 0 view .LVU39
+ 103 003a 5A60     		str	r2, [r3, #4]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     psp[0] = (uint32_t)(psp);       // r4
+ 104              		.loc 1 28 5 is_stmt 1 view .LVU40
+ 105              		.loc 1 28 12 is_stmt 0 view .LVU41
+ 106 003c 1B60     		str	r3, [r3]
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c ****     context->psp = (uint32_t)(psp);
+ 107              		.loc 1 29 5 is_stmt 1 view .LVU42
+ 108              		.loc 1 29 18 is_stmt 0 view .LVU43
+ 109 003e CCF85030 		str	r3, [ip, #80]
+ 110              	.LVL4:
+ 111              	.L1:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/kernel/sched/csched.c **** }
+ 112              		.loc 1 30 1 view .LVU44
+ 113 0042 7047     		bx	lr
+ 114              	.L4:
+ 115              		.align	2
+ 116              	.L3:
+ 117 0044 00000000 		.word	__default_Task_return_function
+ 118              		.cfi_endproc
+ 119              	.LFE226:
+ 121              		.text
+ 122              	.Letext0:
+ 123              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 124              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 125              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 126              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 127              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 128              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ARM GAS  /tmp/ccqLGFgO.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 csched.c
+     /tmp/ccqLGFgO.s:22     .text.__init_Taskcontext:00000000 $t
+     /tmp/ccqLGFgO.s:28     .text.__init_Taskcontext:00000000 __init_Taskcontext
+     /tmp/ccqLGFgO.s:117    .text.__init_Taskcontext:00000044 $d
+
+UNDEFINED SYMBOLS
+__default_Task_return_function

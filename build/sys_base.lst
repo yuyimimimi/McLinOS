@@ -1,0 +1,88 @@
+ARM GAS  /tmp/cc627PcY.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sys_base.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c"
+  21              		.section	.text.sys_restart_syscall,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	sys_restart_syscall:
+  28              	.LFB1:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c **** #include <linux/export.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c **** 
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c **** extern void Reset_Handler();
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c **** static sys_restart_syscall(){
+  29              		.loc 1 4 29 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c ****     Reset_Handler();
+  38              		.loc 1 5 5 view .LVU1
+  39 0002 FFF7FEFF 		bl	Reset_Handler
+  40              	.LVL0:
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/sys/sys_base.c **** }
+  41              		.loc 1 6 1 is_stmt 0 view .LVU2
+  42 0006 08BD     		pop	{r3, pc}
+  43              		.cfi_endproc
+  44              	.LFE1:
+  46              		.section	.rodata.str1.4,"aMS",%progbits,1
+  47              		.align	2
+  48              	.LC0:
+  49 0000 7379735F 		.ascii	"sys_restart_syscall\000"
+  49      72657374 
+  49      6172745F 
+  49      73797363 
+  49      616C6C00 
+ARM GAS  /tmp/cc627PcY.s 			page 2
+
+
+  50              		.align	2
+  51              	.LC1:
+  52 0014 00       		.ascii	"\000"
+  53              		.section	.export_table,"aw"
+  54              		.align	2
+  57              	sys_restart_syscall_export_struct:
+  58 0000 00000000 		.word	.LC0
+  59 0004 14000000 		.word	.LC1
+  60 0008 00000000 		.word	sys_restart_syscall
+  61              		.text
+  62              	.Letext0:
+  63              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ARM GAS  /tmp/cc627PcY.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys_base.c
+     /tmp/cc627PcY.s:22     .text.sys_restart_syscall:00000000 $t
+     /tmp/cc627PcY.s:27     .text.sys_restart_syscall:00000000 sys_restart_syscall
+     /tmp/cc627PcY.s:47     .rodata.str1.4:00000000 $d
+     /tmp/cc627PcY.s:54     .export_table:00000000 $d
+     /tmp/cc627PcY.s:57     .export_table:00000000 sys_restart_syscall_export_struct
+
+UNDEFINED SYMBOLS
+Reset_Handler

@@ -35,12 +35,12 @@ static struct dentry* find_dentry(struct dentry* dir,char *dentry_name, unsigned
         return son_dentry;
     }
     son_dentry = d_alloc(dir,dentry_name); 
-    if(son_dentry == NULL)
-    return ERR_PTR(-ENOMEM);
+    if(IS_ERR(son_dentry)){
+        return ERR_PTR(-ENOMEM);
+    }
     struct dentry* son_dentry_ = NULL;
     son_dentry_ =  dir->d_inode->i_op->lookup(dir->d_inode,son_dentry,0); 
     if(son_dentry_ == NULL || IS_ERR(son_dentry_)){
-       
         __d_drop(son_dentry); 
         return -ENOENT; 
     }

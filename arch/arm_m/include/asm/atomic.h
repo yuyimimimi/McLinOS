@@ -11,6 +11,7 @@
 
 #include <linux/compiler.h> /* Available */
 #include <linux/types.h>    /* Available */
+#include <linux/irqflags.h>
 #include <asm/barrier.h>    /* Available */
 
 /* Include architecture-specific configuration */

@@ -54,14 +54,16 @@ int dentry_rename(struct dentry *d,char *name)
 	int new_name_length = strlen(name);
 	char *new_name = kmalloc(new_name_length ,GFP_KERNEL); //先尝试申请内存，如果后续失败不会破坏现场
     if(new_name == NULL) return -ENOMEM;
-    strcpy(new_name,name);
+    //printk(KERN_INFO "get new address:0x%08x\n",new_name);
 
+	strcpy(new_name,name);
     if(d->d_name.name == d->d_iname || d->d_name.name == NULL) 
 	{
         if( new_name_length + 1 < DNAME_INLINE_LEN)
 		{
+			//printk(KERN_INFO "free address:0x%08x\n",new_name);
             kfree(new_name);
-			d->d_name.name = d->d_iname;
+			d->d_name.name = d->d_iname; 
 			strcpy(d->d_iname,name);
             d->d_name.len = new_name_length;
             return 0;
@@ -75,13 +77,15 @@ int dentry_rename(struct dentry *d,char *name)
 }
 EXPORT_SYMBOL(dentry_rename);
 
-struct dentry *__d_alloc(struct super_block *sb, const char *name) //创建一个新的空dentry
+struct dentry *__d_alloc(struct super_block *sb, const char *name) 
 {
 	struct dentry *dentry;
     dentry = kmalloc(sizeof(struct dentry),GFP_KERNEL);
-    if(dentry == NULL) return -ENOMEM;
-	memset(dentry,0,sizeof(struct dentry));
-	if( dentry_rename(dentry,name) < 0){
+    if(dentry == NULL) 
+		return -ENOMEM;
+	
+		memset(dentry,0,sizeof(struct dentry));
+	if(IS_ERR(dentry_rename(dentry,name))){
 		kfree(dentry);
 		return -ENOMEM;
 	}

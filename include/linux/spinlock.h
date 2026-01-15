@@ -3,34 +3,30 @@
 
 #include <linux/types.h>
 #include <linux/spinlock_types.h>
-#include <linux/sched.h>
+#include <asm/irqflags.h>
+
+struct task_struct;
+struct task_struct* get_current_task(void);
+void __delay(uint32_t time);
 
 
+
+void _spin_lock(spinlock_t* lock);
+void _spin_unlock(spinlock_t* lock);
 
 static void spin_lock_init(spinlock_t* lock){
-    __spin_init(&lock->rlock.raw_lock);
+    lock->flag = 0;
 }
 
 static void spin_lock(spinlock_t* lock)
 {  
-    while (1)
-    {
-        if(__spin_lock(&lock->rlock.raw_lock) == 1){
-            lock->owner = get_current_task();
-            break;
-        }
-        else  if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的，直接返回(正常不会出现这种情况)
-            return;   
-        }
-        else{
-            __delay(5); //主动让出时间片
-        }
-    }
+    _spin_lock(lock);
 }
-
 static void spin_unlock(spinlock_t* lock)
 {
-    __spin_unlock(&lock->rlock.raw_lock);
+    _spin_unlock(lock);
 }
 
+
 #endif // !__SPINLOCK_H__
+

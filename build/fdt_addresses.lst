@@ -1,0 +1,1005 @@
+ARM GAS  /tmp/ccZ6kBjt.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"fdt_addresses.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c"
+  21              		.section	.text.fdt64_st,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	fdt64_st:
+  28              	.LVL0:
+  29              	.LFB36:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #ifndef LIBFDT_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define LIBFDT_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /*
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  * libfdt - Flat Device Tree manipulation
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  */
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #include <linux/libfdt_env.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #include <linux/fdt.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #ifdef __cplusplus
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** extern "C" {
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #endif
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** extern const uint8_t __dtb_file_start_address[];
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** extern const uint8_t __dtb_file_end_address[];
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_FIRST_SUPPORTED_VERSION	0x02
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_LAST_COMPATIBLE_VERSION	0x10
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_LAST_SUPPORTED_VERSION	0x11
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* Error codes: informative error codes */
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_NOTFOUND	1
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_NOTFOUND: The requested node or property does not exist */
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_EXISTS		2
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_EXISTS: Attempted to create a node or property which
+ARM GAS  /tmp/ccZ6kBjt.s 			page 2
+
+
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * already exists */
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_NOSPACE		3
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_NOSPACE: Operation needed to expand the device
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * tree, but its buffer did not have sufficient space to
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * contain the expanded tree. Use fdt_open_into() to move the
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * device tree to a buffer with more space. */
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* Error codes: codes for bad parameters */
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADOFFSET	4
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADOFFSET: Function was passed a structure block
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * offset which is out-of-bounds, or which points to an
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * unsuitable part of the structure for the operation. */
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADPATH		5
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADPATH: Function was passed a badly formatted path
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * (e.g. missing a leading / for a function which requires an
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * absolute path) */
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADPHANDLE	6
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADPHANDLE: Function was passed an invalid phandle.
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * This can be caused either by an invalid phandle property
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * length, or the phandle value was either 0 or -1, which are
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * not permitted. */
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADSTATE	7
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADSTATE: Function was passed an incomplete device
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * tree created by the sequential-write functions, which is
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * not sufficiently complete for the requested operation. */
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* Error codes: codes for bad device tree blobs */
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_TRUNCATED	8
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_TRUNCATED: FDT or a sub-block is improperly
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * terminated (overflows, goes outside allowed bounds, or
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * isn't properly terminated).  */
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADMAGIC	9
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADMAGIC: Given "device tree" appears not to be a
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * device tree at all - it is missing the flattened device
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * tree magic number. */
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADVERSION	10
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADVERSION: Given device tree has a version which
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * can't be handled by the requested operation.  For
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * read-write functions, this may mean that fdt_open_into() is
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * required to convert the tree to the expected version. */
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADSTRUCTURE	11
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADSTRUCTURE: Given device tree has a corrupt
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * structure block or other serious error (e.g. misnested
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * nodes, or subnodes preceding properties). */
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADLAYOUT	12
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADLAYOUT: For read-write functions, the given
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * device tree has it's sub-blocks in an order that the
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * function can't handle (memory reserve map, then structure,
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * then strings).  Use fdt_open_into() to reorganize the tree
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * into a form suitable for the read-write operations. */
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* "Can't happen" error indicating a bug in libfdt */
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_INTERNAL	13
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_INTERNAL: libfdt has failed an internal assertion.
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * Should never be returned, if it is, it indicates a bug in
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * libfdt itself. */
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ARM GAS  /tmp/ccZ6kBjt.s 			page 3
+
+
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* Errors in device tree content */
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADNCELLS	14
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADNCELLS: Device tree has a #address-cells, #size-cells
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * or similar property with a bad format or value */
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADVALUE	15
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADVALUE: Device tree has a property with an unexpected
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * value. For example: a property expected to contain a string list
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * is not NUL-terminated within the length of its value. */
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADOVERLAY	16
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADOVERLAY: The device tree overlay, while
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * correctly structured, cannot be applied due to some
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * unexpected or missing value, property or node. */
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_NOPHANDLES	17
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_NOPHANDLES: The device tree doesn't have any
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * phandle available anymore without causing an overflow */
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_BADFLAGS	18
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_BADFLAGS: The function was passed a flags field that
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * contains invalid flags or an invalid combination of flags. */
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_ALIGNMENT	19
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* FDT_ERR_ALIGNMENT: The device tree base address is not 8-byte
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	 * aligned. */
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_ERR_MAX		19
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* constants */
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #define FDT_MAX_PHANDLE 0xfffffffe
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	/* Valid values for phandles range from 1 to 2^32-2. */
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /**********************************************************************/
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /* Low-level functions (you probably don't need these)                */
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /**********************************************************************/
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #ifndef SWIG /* This function is not useful in Python */
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int checklen);
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** #endif
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	return (void *)(uintptr_t)fdt_offset_ptr(fdt, offset, checklen);
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** /*
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  * External helpers to access words from a device tree blob. They're built
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  * to work even with unaligned pointers on platforms (such as ARMv5) that don't
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  * like unaligned loads and stores.
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h ****  */
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline uint16_t fdt16_ld(const fdt16_t *p)
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	return ((uint16_t)bp[0] << 8) | bp[1];
+ARM GAS  /tmp/ccZ6kBjt.s 			page 4
+
+
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline uint32_t fdt32_ld(const fdt32_t *p)
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	return ((uint32_t)bp[0] << 24)
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint32_t)bp[1] << 16)
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint32_t)bp[2] << 8)
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| bp[3];
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline void fdt32_st(void *property, uint32_t value)
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	uint8_t *bp = (uint8_t *)property;
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[0] = value >> 24;
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline uint64_t fdt64_ld(const fdt64_t *p)
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	const uint8_t *bp = (const uint8_t *)p;
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	return ((uint64_t)bp[0] << 56)
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[1] << 48)
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[2] << 40)
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[3] << 32)
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[4] << 24)
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[5] << 16)
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| ((uint64_t)bp[6] << 8)
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 		| bp[7];
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** static inline void fdt64_st(void *property, uint64_t value)
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+  31              		.loc 2 180 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	uint8_t *bp = (uint8_t *)property;
+  36              		.loc 2 181 2 view .LVU1
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[0] = value >> 56;
+  37              		.loc 2 183 2 view .LVU2
+  38              		.loc 2 183 16 is_stmt 0 view .LVU3
+  39 0000 0023     		movs	r3, #0
+  40              		.loc 2 183 8 view .LVU4
+  41 0002 0370     		strb	r3, [r0]
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 48) & 0xff;
+  42              		.loc 2 184 2 is_stmt 1 view .LVU5
+  43              		.loc 2 184 8 is_stmt 0 view .LVU6
+  44 0004 4370     		strb	r3, [r0, #1]
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 40) & 0xff;
+ARM GAS  /tmp/ccZ6kBjt.s 			page 5
+
+
+  45              		.loc 2 185 2 is_stmt 1 view .LVU7
+  46              		.loc 2 185 8 is_stmt 0 view .LVU8
+  47 0006 8370     		strb	r3, [r0, #2]
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = (value >> 32) & 0xff;
+  48              		.loc 2 186 2 is_stmt 1 view .LVU9
+  49              		.loc 2 186 8 is_stmt 0 view .LVU10
+  50 0008 C370     		strb	r3, [r0, #3]
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[4] = (value >> 24) & 0xff;
+  51              		.loc 2 187 2 is_stmt 1 view .LVU11
+  52              		.loc 2 187 17 is_stmt 0 view .LVU12
+  53 000a 0B0E     		lsrs	r3, r1, #24
+  54              		.loc 2 187 8 view .LVU13
+  55 000c 0371     		strb	r3, [r0, #4]
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[5] = (value >> 16) & 0xff;
+  56              		.loc 2 188 2 is_stmt 1 view .LVU14
+  57              		.loc 2 188 17 is_stmt 0 view .LVU15
+  58 000e 0B0C     		lsrs	r3, r1, #16
+  59              		.loc 2 188 8 view .LVU16
+  60 0010 4371     		strb	r3, [r0, #5]
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[6] = (value >> 8) & 0xff;
+  61              		.loc 2 189 2 is_stmt 1 view .LVU17
+  62              		.loc 2 189 17 is_stmt 0 view .LVU18
+  63 0012 0B0A     		lsrs	r3, r1, #8
+  64              		.loc 2 189 8 view .LVU19
+  65 0014 8371     		strb	r3, [r0, #6]
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[7] = value & 0xff;
+  66              		.loc 2 190 2 is_stmt 1 view .LVU20
+  67              		.loc 2 190 8 is_stmt 0 view .LVU21
+  68 0016 C171     		strb	r1, [r0, #7]
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+  69              		.loc 2 191 1 view .LVU22
+  70 0018 7047     		bx	lr
+  71              		.cfi_endproc
+  72              	.LFE36:
+  74              		.section	.text.fdt_cells,"ax",%progbits
+  75              		.align	1
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  80              	fdt_cells:
+  81              	.LVL1:
+  82              	.LFB75:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** // SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c ****  * libfdt - Flat Device Tree manipulation
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c ****  * Copyright (C) 2014 David Gibson <david@gibson.dropbear.id.au>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c ****  * Copyright (C) 2018 embedded brains GmbH
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c ****  */
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** #include <linux/libfdt_env.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** #include <linux/fdt.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** #include <linux/libfdt.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** #include "libfdt_internal.h"
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** static int fdt_cells(const void *fdt, int nodeoffset, const char *name)
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** {
+ARM GAS  /tmp/ccZ6kBjt.s 			page 6
+
+
+  83              		.loc 1 15 1 is_stmt 1 view -0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 8
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		.loc 1 15 1 is_stmt 0 view .LVU24
+  88 0000 00B5     		push	{lr}
+  89              	.LCFI0:
+  90              		.cfi_def_cfa_offset 4
+  91              		.cfi_offset 14, -4
+  92 0002 83B0     		sub	sp, sp, #12
+  93              	.LCFI1:
+  94              		.cfi_def_cfa_offset 16
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	const fdt32_t *c;
+  95              		.loc 1 16 2 is_stmt 1 view .LVU25
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	uint32_t val;
+  96              		.loc 1 17 2 view .LVU26
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	int len;
+  97              		.loc 1 18 2 view .LVU27
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	c = fdt_getprop(fdt, nodeoffset, name, &len);
+  98              		.loc 1 20 2 view .LVU28
+  99              		.loc 1 20 6 is_stmt 0 view .LVU29
+ 100 0004 01AB     		add	r3, sp, #4
+ 101 0006 FFF7FEFF 		bl	fdt_getprop
+ 102              	.LVL2:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (!c)
+ 103              		.loc 1 21 2 is_stmt 1 view .LVU30
+ 104              		.loc 1 21 5 is_stmt 0 view .LVU31
+ 105 000a 98B1     		cbz	r0, .L8
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return len;
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (len != sizeof(*c))
+ 106              		.loc 1 24 2 is_stmt 1 view .LVU32
+ 107              		.loc 1 24 10 is_stmt 0 view .LVU33
+ 108 000c 019A     		ldr	r2, [sp, #4]
+ 109              		.loc 1 24 5 view .LVU34
+ 110 000e 042A     		cmp	r2, #4
+ 111 0010 12D1     		bne	.L5
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	val = fdt32_to_cpu(*c);
+ 112              		.loc 1 27 2 is_stmt 1 view .LVU35
+ 113              		.loc 1 27 8 is_stmt 0 view .LVU36
+ 114 0012 0368     		ldr	r3, [r0]
+ 115              	.LVL3:
+ 116              	.LBB8:
+ 117              	.LBI8:
+ 118              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #ifndef LIBFDT_ENV_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define LIBFDT_ENV_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** /*
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h ****  * libfdt - Flat Device Tree manipulation
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h ****  * Copyright (C) 2006 David Gibson, IBM Corporation.
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h ****  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h ****  */
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+ARM GAS  /tmp/ccZ6kBjt.s 			page 7
+
+
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #include <linux/types.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #include <linux/stddef.h>
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #include <linux/string.h>
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #include <linux/limits.h>
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #ifdef __CHECKER__
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define FDT_FORCE __attribute__((force))
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define FDT_BITWISE __attribute__((bitwise))
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #else
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define FDT_FORCE
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define FDT_BITWISE
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #endif
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** typedef uint16_t FDT_BITWISE fdt16_t;
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** typedef uint32_t FDT_BITWISE fdt32_t;
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** typedef uint64_t FDT_BITWISE fdt64_t;
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define EXTRACT_BYTE(x, n)	((unsigned long long)((uint8_t *)&x)[n])
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define CPU_TO_FDT16(x) ((EXTRACT_BYTE(x, 0) << 8) | EXTRACT_BYTE(x, 1))
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define CPU_TO_FDT32(x) ((EXTRACT_BYTE(x, 0) << 24) | (EXTRACT_BYTE(x, 1) << 16) | \
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 2) << 8) | EXTRACT_BYTE(x, 3))
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** #define CPU_TO_FDT64(x) ((EXTRACT_BYTE(x, 0) << 56) | (EXTRACT_BYTE(x, 1) << 48) | \
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 2) << 40) | (EXTRACT_BYTE(x, 3) << 32) | \
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 4) << 24) | (EXTRACT_BYTE(x, 5) << 16) | \
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 			 (EXTRACT_BYTE(x, 6) << 8) | EXTRACT_BYTE(x, 7))
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** // #define CPU_TO_FDT16(x) x
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** // #define CPU_TO_FDT32(x) x
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** // #define CPU_TO_FDT64(x) x
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** static inline uint16_t fdt16_to_cpu(fdt16_t x)
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** {
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 	return (FDT_FORCE uint16_t)CPU_TO_FDT16(x);
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** }
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** static inline fdt16_t cpu_to_fdt16(uint16_t x)
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** {
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 	return (FDT_FORCE fdt16_t)CPU_TO_FDT16(x);
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** }
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** static inline uint32_t fdt32_to_cpu(fdt32_t x)
+ 119              		.loc 3 53 24 is_stmt 1 view .LVU37
+ 120              	.LBB9:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** {
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt_env.h **** 	return (FDT_FORCE uint32_t)CPU_TO_FDT32(x);
+ 121              		.loc 3 55 2 view .LVU38
+ 122              		.loc 3 55 29 is_stmt 0 view .LVU39
+ 123 0014 C3F30720 		ubfx	r0, r3, #8, #8
+ 124              	.LVL4:
+ 125              		.loc 3 55 29 view .LVU40
+ 126 0018 0004     		lsls	r0, r0, #16
+ 127 001a 40EA0360 		orr	r0, r0, r3, lsl #24
+ 128 001e C3F30742 		ubfx	r2, r3, #16, #8
+ 129 0022 40EA0220 		orr	r0, r0, r2, lsl #8
+ARM GAS  /tmp/ccZ6kBjt.s 			page 8
+
+
+ 130              		.loc 3 55 9 view .LVU41
+ 131 0026 40EA1360 		orr	r0, r0, r3, lsr #24
+ 132              	.LVL5:
+ 133              		.loc 3 55 9 view .LVU42
+ 134              	.LBE9:
+ 135              	.LBE8:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (val > FDT_MAX_NCELLS)
+ 136              		.loc 1 28 2 is_stmt 1 view .LVU43
+ 137              		.loc 1 28 5 is_stmt 0 view .LVU44
+ 138 002a 0428     		cmp	r0, #4
+ 139 002c 07D8     		bhi	.L6
+ 140              	.LVL6:
+ 141              	.L2:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	return (int)val;
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** }
+ 142              		.loc 1 32 1 view .LVU45
+ 143 002e 03B0     		add	sp, sp, #12
+ 144              	.LCFI2:
+ 145              		.cfi_remember_state
+ 146              		.cfi_def_cfa_offset 4
+ 147              		@ sp needed
+ 148 0030 5DF804FB 		ldr	pc, [sp], #4
+ 149              	.LVL7:
+ 150              	.L8:
+ 151              	.LCFI3:
+ 152              		.cfi_restore_state
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 153              		.loc 1 22 3 is_stmt 1 view .LVU46
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 154              		.loc 1 22 10 is_stmt 0 view .LVU47
+ 155 0034 0198     		ldr	r0, [sp, #4]
+ 156              	.LVL8:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 157              		.loc 1 22 10 view .LVU48
+ 158 0036 FAE7     		b	.L2
+ 159              	.LVL9:
+ 160              	.L5:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 161              		.loc 1 25 10 view .LVU49
+ 162 0038 6FF00D00 		mvn	r0, #13
+ 163              	.LVL10:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 164              		.loc 1 25 10 view .LVU50
+ 165 003c F7E7     		b	.L2
+ 166              	.LVL11:
+ 167              	.L6:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+ 168              		.loc 1 29 10 view .LVU51
+ 169 003e 6FF00D00 		mvn	r0, #13
+ 170              	.LVL12:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+ 171              		.loc 1 29 10 view .LVU52
+ 172 0042 F4E7     		b	.L2
+ 173              		.cfi_endproc
+ 174              	.LFE75:
+ARM GAS  /tmp/ccZ6kBjt.s 			page 9
+
+
+ 176              		.section	.rodata.fdt_address_cells.str1.4,"aMS",%progbits,1
+ 177              		.align	2
+ 178              	.LC0:
+ 179 0000 23616464 		.ascii	"#address-cells\000"
+ 179      72657373 
+ 179      2D63656C 
+ 179      6C7300
+ 180              		.section	.text.fdt_address_cells,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	fdt_address_cells
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	fdt_address_cells:
+ 188              	.LVL13:
+ 189              	.LFB76:
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** int fdt_address_cells(const void *fdt, int nodeoffset)
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** {
+ 190              		.loc 1 35 1 is_stmt 1 view -0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              		.loc 1 35 1 is_stmt 0 view .LVU54
+ 195 0000 08B5     		push	{r3, lr}
+ 196              	.LCFI4:
+ 197              		.cfi_def_cfa_offset 8
+ 198              		.cfi_offset 3, -8
+ 199              		.cfi_offset 14, -4
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	int val;
+ 200              		.loc 1 36 2 is_stmt 1 view .LVU55
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	val = fdt_cells(fdt, nodeoffset, "#address-cells");
+ 201              		.loc 1 38 2 view .LVU56
+ 202              		.loc 1 38 8 is_stmt 0 view .LVU57
+ 203 0002 074A     		ldr	r2, .L15
+ 204 0004 FFF7FEFF 		bl	fdt_cells
+ 205              	.LVL14:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (val == 0)
+ 206              		.loc 1 39 2 is_stmt 1 view .LVU58
+ 207              		.loc 1 39 5 is_stmt 0 view .LVU59
+ 208 0008 28B1     		cbz	r0, .L11
+ 209 000a 0346     		mov	r3, r0
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (val == -FDT_ERR_NOTFOUND)
+ 210              		.loc 1 41 2 is_stmt 1 view .LVU60
+ 211              		.loc 1 41 5 is_stmt 0 view .LVU61
+ 212 000c B0F1FF3F 		cmp	r0, #-1
+ 213 0010 04D0     		beq	.L14
+ 214              	.L9:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return 2;
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	return val;
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** }
+ 215              		.loc 1 44 1 view .LVU62
+ 216 0012 1846     		mov	r0, r3
+ 217              	.LVL15:
+ 218              		.loc 1 44 1 view .LVU63
+ARM GAS  /tmp/ccZ6kBjt.s 			page 10
+
+
+ 219 0014 08BD     		pop	{r3, pc}
+ 220              	.LVL16:
+ 221              	.L11:
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+ 222              		.loc 1 40 10 view .LVU64
+ 223 0016 6FF00D03 		mvn	r3, #13
+ 224 001a FAE7     		b	.L9
+ 225              	.L14:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return 2;
+ 226              		.loc 1 42 10 view .LVU65
+ 227 001c 0223     		movs	r3, #2
+ 228 001e F8E7     		b	.L9
+ 229              	.L16:
+ 230              		.align	2
+ 231              	.L15:
+ 232 0020 00000000 		.word	.LC0
+ 233              		.cfi_endproc
+ 234              	.LFE76:
+ 236              		.section	.rodata.fdt_size_cells.str1.4,"aMS",%progbits,1
+ 237              		.align	2
+ 238              	.LC1:
+ 239 0000 2373697A 		.ascii	"#size-cells\000"
+ 239      652D6365 
+ 239      6C6C7300 
+ 240              		.section	.text.fdt_size_cells,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	fdt_size_cells
+ 243              		.syntax unified
+ 244              		.thumb
+ 245              		.thumb_func
+ 247              	fdt_size_cells:
+ 248              	.LVL17:
+ 249              	.LFB77:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** int fdt_size_cells(const void *fdt, int nodeoffset)
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** {
+ 250              		.loc 1 47 1 is_stmt 1 view -0
+ 251              		.cfi_startproc
+ 252              		@ args = 0, pretend = 0, frame = 0
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254              		.loc 1 47 1 is_stmt 0 view .LVU67
+ 255 0000 08B5     		push	{r3, lr}
+ 256              	.LCFI5:
+ 257              		.cfi_def_cfa_offset 8
+ 258              		.cfi_offset 3, -8
+ 259              		.cfi_offset 14, -4
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	int val;
+ 260              		.loc 1 48 2 is_stmt 1 view .LVU68
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	val = fdt_cells(fdt, nodeoffset, "#size-cells");
+ 261              		.loc 1 50 2 view .LVU69
+ 262              		.loc 1 50 8 is_stmt 0 view .LVU70
+ 263 0002 044A     		ldr	r2, .L22
+ 264 0004 FFF7FEFF 		bl	fdt_cells
+ 265              	.LVL18:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (val == -FDT_ERR_NOTFOUND)
+ 266              		.loc 1 51 2 is_stmt 1 view .LVU71
+ARM GAS  /tmp/ccZ6kBjt.s 			page 11
+
+
+ 267              		.loc 1 51 5 is_stmt 0 view .LVU72
+ 268 0008 B0F1FF3F 		cmp	r0, #-1
+ 269 000c 00D0     		beq	.L21
+ 270              	.LVL19:
+ 271              	.L17:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return 1;
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	return val;
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** }
+ 272              		.loc 1 54 1 view .LVU73
+ 273 000e 08BD     		pop	{r3, pc}
+ 274              	.LVL20:
+ 275              	.L21:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return 1;
+ 276              		.loc 1 52 10 view .LVU74
+ 277 0010 0120     		movs	r0, #1
+ 278              	.LVL21:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return 1;
+ 279              		.loc 1 52 10 view .LVU75
+ 280 0012 FCE7     		b	.L17
+ 281              	.L23:
+ 282              		.align	2
+ 283              	.L22:
+ 284 0014 00000000 		.word	.LC1
+ 285              		.cfi_endproc
+ 286              	.LFE77:
+ 288              		.section	.text.fdt_appendprop_addrrange,"ax",%progbits
+ 289              		.align	1
+ 290              		.global	fdt_appendprop_addrrange
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	fdt_appendprop_addrrange:
+ 296              	.LVL22:
+ 297              	.LFB78:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** /* This function assumes that [address|size]_cells is 1 or 2 */
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** int fdt_appendprop_addrrange(void *fdt, int parent, int nodeoffset,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			     const char *name, uint64_t addr, uint64_t size)
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** {
+ 298              		.loc 1 59 1 is_stmt 1 view -0
+ 299              		.cfi_startproc
+ 300              		@ args = 8, pretend = 0, frame = 8
+ 301              		@ frame_needed = 0, uses_anonymous_args = 0
+ 302              		.loc 1 59 1 is_stmt 0 view .LVU77
+ 303 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 304              	.LCFI6:
+ 305              		.cfi_def_cfa_offset 24
+ 306              		.cfi_offset 4, -24
+ 307              		.cfi_offset 5, -20
+ 308              		.cfi_offset 6, -16
+ 309              		.cfi_offset 7, -12
+ 310              		.cfi_offset 8, -8
+ 311              		.cfi_offset 14, -4
+ 312 0004 84B0     		sub	sp, sp, #16
+ 313              	.LCFI7:
+ 314              		.cfi_def_cfa_offset 40
+ 315 0006 0646     		mov	r6, r0
+ARM GAS  /tmp/ccZ6kBjt.s 			page 12
+
+
+ 316 0008 0D46     		mov	r5, r1
+ 317 000a 1746     		mov	r7, r2
+ 318 000c 9846     		mov	r8, r3
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	int addr_cells, size_cells, ret;
+ 319              		.loc 1 60 2 is_stmt 1 view .LVU78
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	uint8_t data[sizeof(fdt64_t) * 2], *prop;
+ 320              		.loc 1 61 2 view .LVU79
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	ret = fdt_address_cells(fdt, parent);
+ 321              		.loc 1 63 2 view .LVU80
+ 322              		.loc 1 63 8 is_stmt 0 view .LVU81
+ 323 000e FFF7FEFF 		bl	fdt_address_cells
+ 324              	.LVL23:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (ret < 0)
+ 325              		.loc 1 64 2 is_stmt 1 view .LVU82
+ 326              		.loc 1 64 5 is_stmt 0 view .LVU83
+ 327 0012 041E     		subs	r4, r0, #0
+ 328 0014 21DB     		blt	.L24
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return ret;
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	addr_cells = ret;
+ 329              		.loc 1 66 2 is_stmt 1 view .LVU84
+ 330              	.LVL24:
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	ret = fdt_size_cells(fdt, parent);
+ 331              		.loc 1 68 2 view .LVU85
+ 332              		.loc 1 68 8 is_stmt 0 view .LVU86
+ 333 0016 2946     		mov	r1, r5
+ 334 0018 3046     		mov	r0, r6
+ 335              	.LVL25:
+ 336              		.loc 1 68 8 view .LVU87
+ 337 001a FFF7FEFF 		bl	fdt_size_cells
+ 338              	.LVL26:
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (ret < 0)
+ 339              		.loc 1 69 2 is_stmt 1 view .LVU88
+ 340              		.loc 1 69 5 is_stmt 0 view .LVU89
+ 341 001e 051E     		subs	r5, r0, #0
+ 342              	.LVL27:
+ 343              		.loc 1 69 5 view .LVU90
+ 344 0020 42DB     		blt	.L30
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return ret;
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	size_cells = ret;
+ 345              		.loc 1 71 2 is_stmt 1 view .LVU91
+ 346              	.LVL28:
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	/* check validity of address */
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	prop = data;
+ 347              		.loc 1 74 2 view .LVU92
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (addr_cells == 1) {
+ 348              		.loc 1 75 2 view .LVU93
+ 349              		.loc 1 75 5 is_stmt 0 view .LVU94
+ 350 0022 012C     		cmp	r4, #1
+ 351 0024 1DD0     		beq	.L35
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		if ((addr > UINT32_MAX) || (((uint64_t) UINT32_MAX + 1 - addr) < size))
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		fdt32_st(prop, (uint32_t)addr);
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else if (addr_cells == 2) {
+ARM GAS  /tmp/ccZ6kBjt.s 			page 13
+
+
+ 352              		.loc 1 80 9 is_stmt 1 view .LVU95
+ 353              		.loc 1 80 12 is_stmt 0 view .LVU96
+ 354 0026 022C     		cmp	r4, #2
+ 355 0028 43D1     		bne	.L32
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		fdt64_st(prop, addr);
+ 356              		.loc 1 81 3 is_stmt 1 view .LVU97
+ 357 002a 0A99     		ldr	r1, [sp, #40]
+ 358 002c 02A8     		add	r0, sp, #8
+ 359              	.LVL29:
+ 360              		.loc 1 81 3 is_stmt 0 view .LVU98
+ 361 002e FFF7FEFF 		bl	fdt64_st
+ 362              	.LVL30:
+ 363              	.L27:
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else {
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	/* check validity of size */
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	prop += addr_cells * sizeof(fdt32_t);
+ 364              		.loc 1 87 2 is_stmt 1 view .LVU99
+ 365              		.loc 1 87 7 is_stmt 0 view .LVU100
+ 366 0032 02AB     		add	r3, sp, #8
+ 367              	.LVL31:
+ 368              		.loc 1 87 7 view .LVU101
+ 369 0034 03EB8400 		add	r0, r3, r4, lsl #2
+ 370              	.LVL32:
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	if (size_cells == 1) {
+ 371              		.loc 1 88 2 is_stmt 1 view .LVU102
+ 372              		.loc 1 88 5 is_stmt 0 view .LVU103
+ 373 0038 012D     		cmp	r5, #1
+ 374 003a 27D0     		beq	.L36
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		if (size > UINT32_MAX)
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		fdt32_st(prop, (uint32_t)size);
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else if (size_cells == 2) {
+ 375              		.loc 1 93 9 is_stmt 1 view .LVU104
+ 376              		.loc 1 93 12 is_stmt 0 view .LVU105
+ 377 003c 022D     		cmp	r5, #2
+ 378 003e 3BD1     		bne	.L33
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		fdt64_st(prop, size);
+ 379              		.loc 1 94 3 is_stmt 1 view .LVU106
+ 380 0040 0B99     		ldr	r1, [sp, #44]
+ 381 0042 FFF7FEFF 		bl	fdt64_st
+ 382              	.LVL33:
+ 383              	.L29:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else {
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 		return -FDT_ERR_BADNCELLS;
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	return fdt_appendprop(fdt, nodeoffset, name, data,
+ 384              		.loc 1 99 2 view .LVU107
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			      (addr_cells + size_cells) * sizeof(fdt32_t));
+ 385              		.loc 1 100 22 is_stmt 0 view .LVU108
+ 386 0046 2544     		add	r5, r5, r4
+ 387              	.LVL34:
+ 388              		.loc 1 100 36 view .LVU109
+ARM GAS  /tmp/ccZ6kBjt.s 			page 14
+
+
+ 389 0048 AD00     		lsls	r5, r5, #2
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			      (addr_cells + size_cells) * sizeof(fdt32_t));
+ 390              		.loc 1 99 9 view .LVU110
+ 391 004a 0095     		str	r5, [sp]
+ 392 004c 02AB     		add	r3, sp, #8
+ 393              	.LVL35:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			      (addr_cells + size_cells) * sizeof(fdt32_t));
+ 394              		.loc 1 99 9 view .LVU111
+ 395 004e 4246     		mov	r2, r8
+ 396 0050 3946     		mov	r1, r7
+ 397 0052 3046     		mov	r0, r6
+ 398 0054 FFF7FEFF 		bl	fdt_appendprop
+ 399              	.LVL36:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			      (addr_cells + size_cells) * sizeof(fdt32_t));
+ 400              		.loc 1 99 9 view .LVU112
+ 401 0058 0446     		mov	r4, r0
+ 402              	.LVL37:
+ 403              	.L24:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** }
+ 404              		.loc 1 101 1 view .LVU113
+ 405 005a 2046     		mov	r0, r4
+ 406 005c 04B0     		add	sp, sp, #16
+ 407              	.LCFI8:
+ 408              		.cfi_remember_state
+ 409              		.cfi_def_cfa_offset 24
+ 410              		@ sp needed
+ 411 005e BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 412              	.LVL38:
+ 413              	.L35:
+ 414              	.LCFI9:
+ 415              		.cfi_restore_state
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+ 416              		.loc 1 76 3 is_stmt 1 view .LVU114
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+ 417              		.loc 1 76 58 is_stmt 0 view .LVU115
+ 418 0062 0A9B     		ldr	r3, [sp, #40]
+ 419 0064 5B42     		rsbs	r3, r3, #0
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+ 420              		.loc 1 76 6 view .LVU116
+ 421 0066 0B9A     		ldr	r2, [sp, #44]
+ 422 0068 9342     		cmp	r3, r2
+ 423 006a 1FD3     		bcc	.L31
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else if (addr_cells == 2) {
+ 424              		.loc 1 79 3 is_stmt 1 view .LVU117
+ 425              	.LVL39:
+ 426              	.LBB10:
+ 427              	.LBI10:
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 428              		.loc 2 155 20 view .LVU118
+ 429              	.LBB11:
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 430              		.loc 2 157 2 view .LVU119
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 431              		.loc 2 159 2 view .LVU120
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 432              		.loc 2 159 16 is_stmt 0 view .LVU121
+ 433 006c 0A9B     		ldr	r3, [sp, #40]
+ARM GAS  /tmp/ccZ6kBjt.s 			page 15
+
+
+ 434 006e 1B0E     		lsrs	r3, r3, #24
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 435              		.loc 2 159 8 view .LVU122
+ 436 0070 8DF80830 		strb	r3, [sp, #8]
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 437              		.loc 2 160 2 is_stmt 1 view .LVU123
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 438              		.loc 2 160 17 is_stmt 0 view .LVU124
+ 439 0074 0A9B     		ldr	r3, [sp, #40]
+ 440 0076 1B0C     		lsrs	r3, r3, #16
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 441              		.loc 2 160 8 view .LVU125
+ 442 0078 8DF80930 		strb	r3, [sp, #9]
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 443              		.loc 2 161 2 is_stmt 1 view .LVU126
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 444              		.loc 2 161 17 is_stmt 0 view .LVU127
+ 445 007c 0A9B     		ldr	r3, [sp, #40]
+ 446 007e 1B0A     		lsrs	r3, r3, #8
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 447              		.loc 2 161 8 view .LVU128
+ 448 0080 8DF80A30 		strb	r3, [sp, #10]
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 449              		.loc 2 162 2 is_stmt 1 view .LVU129
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 450              		.loc 2 162 8 is_stmt 0 view .LVU130
+ 451 0084 0A9B     		ldr	r3, [sp, #40]
+ 452 0086 8DF80B30 		strb	r3, [sp, #11]
+ 453              	.LVL40:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 454              		.loc 2 163 1 view .LVU131
+ 455 008a D2E7     		b	.L27
+ 456              	.LVL41:
+ 457              	.L36:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 458              		.loc 2 163 1 view .LVU132
+ 459              	.LBE11:
+ 460              	.LBE10:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 			return -FDT_ERR_BADVALUE;
+ 461              		.loc 1 89 3 is_stmt 1 view .LVU133
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	} else if (size_cells == 2) {
+ 462              		.loc 1 92 3 view .LVU134
+ 463              	.LBB12:
+ 464              	.LBI12:
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** {
+ 465              		.loc 2 155 20 view .LVU135
+ 466              	.LBB13:
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 467              		.loc 2 157 2 view .LVU136
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 468              		.loc 2 159 2 view .LVU137
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 469              		.loc 2 159 16 is_stmt 0 view .LVU138
+ 470 008c 0B9B     		ldr	r3, [sp, #44]
+ 471 008e 1B0E     		lsrs	r3, r3, #24
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[1] = (value >> 16) & 0xff;
+ 472              		.loc 2 159 8 view .LVU139
+ARM GAS  /tmp/ccZ6kBjt.s 			page 16
+
+
+ 473 0090 02AA     		add	r2, sp, #8
+ 474 0092 02F82430 		strb	r3, [r2, r4, lsl #2]
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 475              		.loc 2 160 2 is_stmt 1 view .LVU140
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 476              		.loc 2 160 17 is_stmt 0 view .LVU141
+ 477 0096 0B9B     		ldr	r3, [sp, #44]
+ 478 0098 1B0C     		lsrs	r3, r3, #16
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[2] = (value >> 8) & 0xff;
+ 479              		.loc 2 160 8 view .LVU142
+ 480 009a 4370     		strb	r3, [r0, #1]
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 481              		.loc 2 161 2 is_stmt 1 view .LVU143
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 482              		.loc 2 161 17 is_stmt 0 view .LVU144
+ 483 009c 0B9B     		ldr	r3, [sp, #44]
+ 484 009e 1B0A     		lsrs	r3, r3, #8
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 	bp[3] = value & 0xff;
+ 485              		.loc 2 161 8 view .LVU145
+ 486 00a0 8370     		strb	r3, [r0, #2]
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 487              		.loc 2 162 2 is_stmt 1 view .LVU146
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** }
+ 488              		.loc 2 162 8 is_stmt 0 view .LVU147
+ 489 00a2 0B9B     		ldr	r3, [sp, #44]
+ 490 00a4 C370     		strb	r3, [r0, #3]
+ 491              	.LVL42:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 492              		.loc 2 163 1 view .LVU148
+ 493 00a6 CEE7     		b	.L29
+ 494              	.LVL43:
+ 495              	.L30:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h **** 
+ 496              		.loc 2 163 1 view .LVU149
+ 497              	.LBE13:
+ 498              	.LBE12:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	size_cells = ret;
+ 499              		.loc 1 70 10 view .LVU150
+ 500 00a8 2C46     		mov	r4, r5
+ 501              	.LVL44:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	size_cells = ret;
+ 502              		.loc 1 70 10 view .LVU151
+ 503 00aa D6E7     		b	.L24
+ 504              	.LVL45:
+ 505              	.L31:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 506              		.loc 1 77 11 view .LVU152
+ 507 00ac 6FF00E04 		mvn	r4, #14
+ 508              	.LVL46:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 
+ 509              		.loc 1 77 11 view .LVU153
+ 510 00b0 D3E7     		b	.L24
+ 511              	.LVL47:
+ 512              	.L32:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+ 513              		.loc 1 83 10 view .LVU154
+ 514 00b2 6FF00D04 		mvn	r4, #13
+ARM GAS  /tmp/ccZ6kBjt.s 			page 17
+
+
+ 515              	.LVL48:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+ 516              		.loc 1 83 10 view .LVU155
+ 517 00b6 D0E7     		b	.L24
+ 518              	.LVL49:
+ 519              	.L33:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+ 520              		.loc 1 96 10 view .LVU156
+ 521 00b8 6FF00D04 		mvn	r4, #13
+ 522              	.LVL50:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/fdt/fdt_addresses.c **** 	}
+ 523              		.loc 1 96 10 view .LVU157
+ 524 00bc CDE7     		b	.L24
+ 525              		.cfi_endproc
+ 526              	.LFE78:
+ 528              		.text
+ 529              	.Letext0:
+ 530              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 531              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ARM GAS  /tmp/ccZ6kBjt.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fdt_addresses.c
+     /tmp/ccZ6kBjt.s:22     .text.fdt64_st:00000000 $t
+     /tmp/ccZ6kBjt.s:27     .text.fdt64_st:00000000 fdt64_st
+     /tmp/ccZ6kBjt.s:75     .text.fdt_cells:00000000 $t
+     /tmp/ccZ6kBjt.s:80     .text.fdt_cells:00000000 fdt_cells
+     /tmp/ccZ6kBjt.s:177    .rodata.fdt_address_cells.str1.4:00000000 $d
+     /tmp/ccZ6kBjt.s:181    .text.fdt_address_cells:00000000 $t
+     /tmp/ccZ6kBjt.s:187    .text.fdt_address_cells:00000000 fdt_address_cells
+     /tmp/ccZ6kBjt.s:232    .text.fdt_address_cells:00000020 $d
+     /tmp/ccZ6kBjt.s:237    .rodata.fdt_size_cells.str1.4:00000000 $d
+     /tmp/ccZ6kBjt.s:241    .text.fdt_size_cells:00000000 $t
+     /tmp/ccZ6kBjt.s:247    .text.fdt_size_cells:00000000 fdt_size_cells
+     /tmp/ccZ6kBjt.s:284    .text.fdt_size_cells:00000014 $d
+     /tmp/ccZ6kBjt.s:289    .text.fdt_appendprop_addrrange:00000000 $t
+     /tmp/ccZ6kBjt.s:295    .text.fdt_appendprop_addrrange:00000000 fdt_appendprop_addrrange
+
+UNDEFINED SYMBOLS
+fdt_getprop
+fdt_appendprop

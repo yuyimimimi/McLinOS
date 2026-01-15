@@ -1,0 +1,168 @@
+ARM GAS  /tmp/ccqYlve0.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"early_printk.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c"
+  21              		.section	.text.early_printk,"ax",%progbits
+  22              		.align	1
+  23              		.global	early_printk
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	early_printk:
+  29              	.LVL0:
+  30              	.LFB0:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** #include <linux/stdarg.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** typedef void(*_put_char_t)(char c);
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** extern _put_char_t _put_char;
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** void early_printk(const char *fmt, ...){
+  31              		.loc 1 5 40 view -0
+  32              		.cfi_startproc
+  33              		@ args = 4, pretend = 16, frame = 264
+  34              		@ frame_needed = 0, uses_anonymous_args = 1
+  35              		.loc 1 5 40 is_stmt 0 view .LVU1
+  36 0000 0FB4     		push	{r0, r1, r2, r3}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 0, -16
+  40              		.cfi_offset 1, -12
+  41              		.cfi_offset 2, -8
+  42              		.cfi_offset 3, -4
+  43 0002 10B5     		push	{r4, lr}
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 24
+  46              		.cfi_offset 4, -24
+  47              		.cfi_offset 14, -20
+  48 0004 C2B0     		sub	sp, sp, #264
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_offset 288
+  51 0006 44AB     		add	r3, sp, #272
+  52 0008 53F8042B 		ldr	r2, [r3], #4
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     char buf[256];
+ARM GAS  /tmp/ccqYlve0.s 			page 2
+
+
+  53              		.loc 1 6 5 is_stmt 1 view .LVU2
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     va_list args;
+  54              		.loc 1 7 5 view .LVU3
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     va_start(args, fmt);
+  55              		.loc 1 8 5 view .LVU4
+  56 000c 0193     		str	r3, [sp, #4]
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     vsnprintf(buf, sizeof(buf), fmt, args);
+  57              		.loc 1 9 5 view .LVU5
+  58 000e 4FF48071 		mov	r1, #256
+  59 0012 02A8     		add	r0, sp, #8
+  60 0014 FFF7FEFF 		bl	vsnprintf
+  61              	.LVL1:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     va_end(args);
+  62              		.loc 1 10 5 view .LVU6
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     for(int i = 0; buf[i]!= '\0'; i++){
+  63              		.loc 1 11 5 view .LVU7
+  64              	.LBB2:
+  65              		.loc 1 11 9 view .LVU8
+  66              		.loc 1 11 13 is_stmt 0 view .LVU9
+  67 0018 0024     		movs	r4, #0
+  68              		.loc 1 11 5 view .LVU10
+  69 001a 00E0     		b	.L2
+  70              	.LVL2:
+  71              	.L3:
+  72              		.loc 1 11 36 is_stmt 1 discriminator 2 view .LVU11
+  73 001c 0134     		adds	r4, r4, #1
+  74              	.LVL3:
+  75              	.L2:
+  76              		.loc 1 11 26 discriminator 1 view .LVU12
+  77              		.loc 1 11 23 is_stmt 0 discriminator 1 view .LVU13
+  78 001e 02AB     		add	r3, sp, #8
+  79 0020 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
+  80              		.loc 1 11 26 discriminator 1 view .LVU14
+  81 0022 58B1     		cbz	r0, .L6
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****         _put_char(buf[i]);
+  82              		.loc 1 12 9 is_stmt 1 view .LVU15
+  83 0024 084B     		ldr	r3, .L7
+  84 0026 1B68     		ldr	r3, [r3]
+  85 0028 9847     		blx	r3
+  86              	.LVL4:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****         if(buf[i] == '\n')
+  87              		.loc 1 13 9 view .LVU16
+  88              		.loc 1 13 15 is_stmt 0 view .LVU17
+  89 002a 02AB     		add	r3, sp, #8
+  90 002c 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+  91              		.loc 1 13 11 view .LVU18
+  92 002e 0A2B     		cmp	r3, #10
+  93 0030 F4D1     		bne	.L3
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****         _put_char('\r');
+  94              		.loc 1 14 9 is_stmt 1 view .LVU19
+  95 0032 054B     		ldr	r3, .L7
+  96 0034 1B68     		ldr	r3, [r3]
+  97 0036 0D20     		movs	r0, #13
+  98 0038 9847     		blx	r3
+  99              	.LVL5:
+ 100 003a EFE7     		b	.L3
+ 101              	.L6:
+ARM GAS  /tmp/ccqYlve0.s 			page 3
+
+
+ 102              	.LBE2:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c ****     }
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/early_printk.c **** } 
+ 103              		.loc 1 16 1 is_stmt 0 view .LVU20
+ 104 003c 42B0     		add	sp, sp, #264
+ 105              	.LCFI3:
+ 106              		.cfi_def_cfa_offset 24
+ 107              		@ sp needed
+ 108 003e BDE81040 		pop	{r4, lr}
+ 109              	.LCFI4:
+ 110              		.cfi_restore 14
+ 111              		.cfi_restore 4
+ 112              		.cfi_def_cfa_offset 16
+ 113              	.LVL6:
+ 114              		.loc 1 16 1 view .LVU21
+ 115 0042 04B0     		add	sp, sp, #16
+ 116              	.LCFI5:
+ 117              		.cfi_restore 3
+ 118              		.cfi_restore 2
+ 119              		.cfi_restore 1
+ 120              		.cfi_restore 0
+ 121              		.cfi_def_cfa_offset 0
+ 122 0044 7047     		bx	lr
+ 123              	.L8:
+ 124 0046 00BF     		.align	2
+ 125              	.L7:
+ 126 0048 00000000 		.word	_put_char
+ 127              		.cfi_endproc
+ 128              	.LFE0:
+ 130              		.text
+ 131              	.Letext0:
+ 132              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stdarg.h"
+ 133              		.file 3 "<built-in>"
+ARM GAS  /tmp/ccqYlve0.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 early_printk.c
+     /tmp/ccqYlve0.s:22     .text.early_printk:00000000 $t
+     /tmp/ccqYlve0.s:28     .text.early_printk:00000000 early_printk
+     /tmp/ccqYlve0.s:126    .text.early_printk:00000048 $d
+
+UNDEFINED SYMBOLS
+vsnprintf
+_put_char

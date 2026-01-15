@@ -1,0 +1,638 @@
+ARM GAS  /tmp/ccEg4nFV.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"ctrl.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c"
+  21              		.section	.text.get_task_using_cpu_core,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	get_task_using_cpu_core:
+  28              	.LFB105:
+  29              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #ifndef __CONTEXT_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #define __CONTEXT_H__                
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** extern void __init_Taskcontext(struct task_struct* task_data,uint32_t pic_offset);
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void init_task_context(struct task_struct* task_data,uint32_t pic_offset){
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     __init_Taskcontext(task_data,pic_offset);
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** } 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** extern int __get_task_using_cpu_core(void);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static int get_task_using_cpu_core(void){
+  30              		.loc 2 12 41 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****      return  __get_task_using_cpu_core();
+  39              		.loc 2 13 6 view .LVU1
+  40              		.loc 2 13 14 is_stmt 0 view .LVU2
+  41 0002 FFF7FEFF 		bl	__get_task_using_cpu_core
+  42              	.LVL0:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  43              		.loc 2 14 1 view .LVU3
+  44 0006 08BD     		pop	{r3, pc}
+ARM GAS  /tmp/ccEg4nFV.s 			page 2
+
+
+  45              		.cfi_endproc
+  46              	.LFE105:
+  48              		.section	.text.user_system_call,"ax",%progbits
+  49              		.align	1
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  54              	user_system_call:
+  55              	.LVL1:
+  56              	.LFB108:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void save_context(struct task_struct *this_task,uint32_t data){
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****         this_task->context.psp = data;
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static uint32_t load_task(struct task_struct *this_task) {
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     return this_task->context.psp;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** };
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** int __system_call(int sys_no, int arg0, int arg1, int arg2, int arg3, int arg4, int arg5);
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void* user_system_call(int sys_no, int arg0, int arg1, int arg2, int arg3, int arg4, int arg
+  57              		.loc 2 25 102 is_stmt 1 view -0
+  58              		.cfi_startproc
+  59              		@ args = 12, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		.loc 2 25 102 is_stmt 0 view .LVU5
+  62 0000 10B5     		push	{r4, lr}
+  63              	.LCFI1:
+  64              		.cfi_def_cfa_offset 8
+  65              		.cfi_offset 4, -8
+  66              		.cfi_offset 14, -4
+  67 0002 84B0     		sub	sp, sp, #16
+  68              	.LCFI2:
+  69              		.cfi_def_cfa_offset 24
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     __system_call(sys_no,arg0, arg1, arg2, arg3,arg4,arg5);
+  70              		.loc 2 26 5 is_stmt 1 view .LVU6
+  71 0004 089C     		ldr	r4, [sp, #32]
+  72 0006 0294     		str	r4, [sp, #8]
+  73 0008 079C     		ldr	r4, [sp, #28]
+  74 000a 0194     		str	r4, [sp, #4]
+  75 000c 069C     		ldr	r4, [sp, #24]
+  76 000e 0094     		str	r4, [sp]
+  77 0010 FFF7FEFF 		bl	__system_call
+  78              	.LVL2:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  79              		.loc 2 27 1 is_stmt 0 view .LVU7
+  80 0014 04B0     		add	sp, sp, #16
+  81              	.LCFI3:
+  82              		.cfi_def_cfa_offset 8
+  83              		@ sp needed
+  84 0016 10BD     		pop	{r4, pc}
+  85              		.loc 2 27 1 view .LVU8
+  86              		.cfi_endproc
+  87              	.LFE108:
+  89              		.section	.text.get_current_scheduler,"ax",%progbits
+  90              		.align	1
+  91              		.global	get_current_scheduler
+ARM GAS  /tmp/ccEg4nFV.s 			page 3
+
+
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	get_current_scheduler:
+  97              	.LFB111:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** #include <linux/sched.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** #include <linux/sys_call.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** #include <linux/export.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void block_scheduler(struct scheduler *s){
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler();
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     s->s_flag = SCHEDULER_BLOCKED;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void run_scheduler(struct scheduler *s){
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler(); 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     s->s_flag = SCHEDULER_RUN;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** struct scheduler *get_current_scheduler(void){
+  98              		.loc 1 18 46 is_stmt 1 view -0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102 0000 08B5     		push	{r3, lr}
+ 103              	.LCFI4:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 3, -8
+ 106              		.cfi_offset 14, -4
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     return   get_scheduler_by_cpu_core_id(get_task_using_cpu_core());
+ 107              		.loc 1 19 5 view .LVU10
+ 108              		.loc 1 19 43 is_stmt 0 view .LVU11
+ 109 0002 FFF7FEFF 		bl	get_task_using_cpu_core
+ 110              	.LVL3:
+ 111              		.loc 1 19 14 discriminator 1 view .LVU12
+ 112 0006 FFF7FEFF 		bl	get_scheduler_by_cpu_core_id
+ 113              	.LVL4:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 114              		.loc 1 20 1 view .LVU13
+ 115 000a 08BD     		pop	{r3, pc}
+ 116              		.cfi_endproc
+ 117              	.LFE111:
+ 119              		.section	.text.block_scheduler,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	block_scheduler
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	block_scheduler:
+ 127              	.LVL5:
+ 128              	.LFB109:
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+ 129              		.loc 1 5 42 is_stmt 1 view -0
+ 130              		.cfi_startproc
+ARM GAS  /tmp/ccEg4nFV.s 			page 4
+
+
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+ 133              		.loc 1 5 42 is_stmt 0 view .LVU15
+ 134 0000 08B5     		push	{r3, lr}
+ 135              	.LCFI5:
+ 136              		.cfi_def_cfa_offset 8
+ 137              		.cfi_offset 3, -8
+ 138              		.cfi_offset 14, -4
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler();
+ 139              		.loc 1 6 5 is_stmt 1 view .LVU16
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler();
+ 140              		.loc 1 6 7 is_stmt 0 view .LVU17
+ 141 0002 0346     		mov	r3, r0
+ 142 0004 10B1     		cbz	r0, .L10
+ 143              	.L8:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 144              		.loc 1 9 5 is_stmt 1 view .LVU18
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 145              		.loc 1 9 15 is_stmt 0 view .LVU19
+ 146 0006 0022     		movs	r2, #0
+ 147 0008 1A75     		strb	r2, [r3, #20]
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void run_scheduler(struct scheduler *s){
+ 148              		.loc 1 10 1 view .LVU20
+ 149 000a 08BD     		pop	{r3, pc}
+ 150              	.L10:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 151              		.loc 1 7 9 is_stmt 1 view .LVU21
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 152              		.loc 1 7 13 is_stmt 0 view .LVU22
+ 153 000c FFF7FEFF 		bl	get_current_scheduler
+ 154              	.LVL6:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 155              		.loc 1 7 13 view .LVU23
+ 156 0010 0346     		mov	r3, r0
+ 157              	.LVL7:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 158              		.loc 1 7 13 view .LVU24
+ 159 0012 F8E7     		b	.L8
+ 160              		.cfi_endproc
+ 161              	.LFE109:
+ 163              		.section	.text.run_scheduler,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	run_scheduler
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	run_scheduler:
+ 171              	.LVL8:
+ 172              	.LFB110:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+ 173              		.loc 1 11 40 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(s == NULL){
+ 177              		.loc 1 11 40 is_stmt 0 view .LVU26
+ARM GAS  /tmp/ccEg4nFV.s 			page 5
+
+
+ 178 0000 08B5     		push	{r3, lr}
+ 179              	.LCFI6:
+ 180              		.cfi_def_cfa_offset 8
+ 181              		.cfi_offset 3, -8
+ 182              		.cfi_offset 14, -4
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler(); 
+ 183              		.loc 1 12 5 is_stmt 1 view .LVU27
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         s = get_current_scheduler(); 
+ 184              		.loc 1 12 7 is_stmt 0 view .LVU28
+ 185 0002 0346     		mov	r3, r0
+ 186 0004 10B1     		cbz	r0, .L14
+ 187              	.L12:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 188              		.loc 1 15 5 is_stmt 1 view .LVU29
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 189              		.loc 1 15 15 is_stmt 0 view .LVU30
+ 190 0006 0122     		movs	r2, #1
+ 191 0008 1A75     		strb	r2, [r3, #20]
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+ 192              		.loc 1 16 1 view .LVU31
+ 193 000a 08BD     		pop	{r3, pc}
+ 194              	.L14:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 195              		.loc 1 13 9 is_stmt 1 view .LVU32
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 196              		.loc 1 13 13 is_stmt 0 view .LVU33
+ 197 000c FFF7FEFF 		bl	get_current_scheduler
+ 198              	.LVL9:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 199              		.loc 1 13 13 view .LVU34
+ 200 0010 0346     		mov	r3, r0
+ 201              	.LVL10:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+ 202              		.loc 1 13 13 view .LVU35
+ 203 0012 F8E7     		b	.L12
+ 204              		.cfi_endproc
+ 205              	.LFE110:
+ 207              		.section	.text.get_current_task,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	get_current_task
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	get_current_task:
+ 215              	.LFB112:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** struct task_struct* get_current_task(void){
+ 216              		.loc 1 22 43 is_stmt 1 view -0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220 0000 08B5     		push	{r3, lr}
+ 221              	.LCFI7:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 3, -8
+ 224              		.cfi_offset 14, -4
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     return   get_scheduler_by_cpu_core_id(get_task_using_cpu_core())->current_task;
+ARM GAS  /tmp/ccEg4nFV.s 			page 6
+
+
+ 225              		.loc 1 23 5 view .LVU37
+ 226              		.loc 1 23 43 is_stmt 0 view .LVU38
+ 227 0002 FFF7FEFF 		bl	get_task_using_cpu_core
+ 228              	.LVL11:
+ 229              		.loc 1 23 14 discriminator 1 view .LVU39
+ 230 0006 FFF7FEFF 		bl	get_scheduler_by_cpu_core_id
+ 231              	.LVL12:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 232              		.loc 1 24 1 view .LVU40
+ 233 000a 8069     		ldr	r0, [r0, #24]
+ 234 000c 08BD     		pop	{r3, pc}
+ 235              		.cfi_endproc
+ 236              	.LFE112:
+ 238              		.section	.text.scheduler_start,"ax",%progbits
+ 239              		.align	1
+ 240              		.global	scheduler_start
+ 241              		.syntax unified
+ 242              		.thumb
+ 243              		.thumb_func
+ 245              	scheduler_start:
+ 246              	.LFB113:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** static int  Scheduler_Lock1 = 0;
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void scheduler_start(){
+ 247              		.loc 1 27 23 is_stmt 1 view -0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     Scheduler_Lock1++;
+ 252              		.loc 1 28 5 view .LVU42
+ 253              		.loc 1 28 20 is_stmt 0 view .LVU43
+ 254 0000 024A     		ldr	r2, .L18
+ 255 0002 1368     		ldr	r3, [r2]
+ 256 0004 0133     		adds	r3, r3, #1
+ 257 0006 1360     		str	r3, [r2]
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 258              		.loc 1 29 1 view .LVU44
+ 259 0008 7047     		bx	lr
+ 260              	.L19:
+ 261 000a 00BF     		.align	2
+ 262              	.L18:
+ 263 000c 00000000 		.word	Scheduler_Lock1
+ 264              		.cfi_endproc
+ 265              	.LFE113:
+ 267              		.section	.text.start_all_scheduler,"ax",%progbits
+ 268              		.align	1
+ 269              		.global	start_all_scheduler
+ 270              		.syntax unified
+ 271              		.thumb
+ 272              		.thumb_func
+ 274              	start_all_scheduler:
+ 275              	.LFB114:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** static enum scheduler_block_flag Scheduler_Lock = SCHEDULER_RUN; //全局调度锁
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void start_all_scheduler(){
+ 276              		.loc 1 32 27 is_stmt 1 view -0
+ARM GAS  /tmp/ccEg4nFV.s 			page 7
+
+
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 0
+ 279              		@ frame_needed = 0, uses_anonymous_args = 0
+ 280              		@ link register save eliminated.
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     Scheduler_Lock = SCHEDULER_RUN;
+ 281              		.loc 1 33 5 view .LVU46
+ 282              		.loc 1 33 20 is_stmt 0 view .LVU47
+ 283 0000 014B     		ldr	r3, .L21
+ 284 0002 0122     		movs	r2, #1
+ 285 0004 1A70     		strb	r2, [r3]
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 286              		.loc 1 34 1 view .LVU48
+ 287 0006 7047     		bx	lr
+ 288              	.L22:
+ 289              		.align	2
+ 290              	.L21:
+ 291 0008 00000000 		.word	Scheduler_Lock
+ 292              		.cfi_endproc
+ 293              	.LFE114:
+ 295              		.section	.text.stop_all_scheduler,"ax",%progbits
+ 296              		.align	1
+ 297              		.global	stop_all_scheduler
+ 298              		.syntax unified
+ 299              		.thumb
+ 300              		.thumb_func
+ 302              	stop_all_scheduler:
+ 303              	.LFB115:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void stop_all_scheduler(){
+ 304              		.loc 1 35 26 is_stmt 1 view -0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 0
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308              		@ link register save eliminated.
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     Scheduler_Lock = SCHEDULER_BLOCKED;
+ 309              		.loc 1 36 5 view .LVU50
+ 310              		.loc 1 36 20 is_stmt 0 view .LVU51
+ 311 0000 014B     		ldr	r3, .L24
+ 312 0002 0022     		movs	r2, #0
+ 313 0004 1A70     		strb	r2, [r3]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 314              		.loc 1 37 1 view .LVU52
+ 315 0006 7047     		bx	lr
+ 316              	.L25:
+ 317              		.align	2
+ 318              	.L24:
+ 319 0008 00000000 		.word	Scheduler_Lock
+ 320              		.cfi_endproc
+ 321              	.LFE115:
+ 323              		.section	.text.i_sched,"ax",%progbits
+ 324              		.align	1
+ 325              		.global	i_sched
+ 326              		.syntax unified
+ 327              		.thumb
+ 328              		.thumb_func
+ 330              	i_sched:
+ 331              	.LFB116:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+ARM GAS  /tmp/ccEg4nFV.s 			page 8
+
+
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** int i_sched(){
+ 332              		.loc 1 40 14 is_stmt 1 view -0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 0
+ 335              		@ frame_needed = 0, uses_anonymous_args = 0
+ 336 0000 08B5     		push	{r3, lr}
+ 337              	.LCFI8:
+ 338              		.cfi_def_cfa_offset 8
+ 339              		.cfi_offset 3, -8
+ 340              		.cfi_offset 14, -4
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     if(Scheduler_Lock == SCHEDULER_RUN && Scheduler_Lock1 == CONFIG_CPU_NUM ){
+ 341              		.loc 1 41 5 view .LVU54
+ 342              		.loc 1 41 23 is_stmt 0 view .LVU55
+ 343 0002 094B     		ldr	r3, .L31
+ 344 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 345              		.loc 1 41 7 view .LVU56
+ 346 0006 012B     		cmp	r3, #1
+ 347 0008 07D1     		bne	.L28
+ 348              		.loc 1 41 59 discriminator 1 view .LVU57
+ 349 000a 084B     		ldr	r3, .L31+4
+ 350 000c 1B68     		ldr	r3, [r3]
+ 351              		.loc 1 41 40 discriminator 1 view .LVU58
+ 352 000e 022B     		cmp	r3, #2
+ 353 0010 06D1     		bne	.L29
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         __sched();
+ 354              		.loc 1 42 9 is_stmt 1 view .LVU59
+ 355 0012 FFF7FEFF 		bl	__sched
+ 356              	.LVL13:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         return 0;
+ 357              		.loc 1 43 9 view .LVU60
+ 358              		.loc 1 43 16 is_stmt 0 view .LVU61
+ 359 0016 0020     		movs	r0, #0
+ 360              	.L26:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     return -1;
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 361              		.loc 1 46 1 view .LVU62
+ 362 0018 08BD     		pop	{r3, pc}
+ 363              	.L28:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 364              		.loc 1 45 12 view .LVU63
+ 365 001a 4FF0FF30 		mov	r0, #-1
+ 366 001e FBE7     		b	.L26
+ 367              	.L29:
+ 368 0020 4FF0FF30 		mov	r0, #-1
+ 369 0024 F8E7     		b	.L26
+ 370              	.L32:
+ 371 0026 00BF     		.align	2
+ 372              	.L31:
+ 373 0028 00000000 		.word	Scheduler_Lock
+ 374 002c 00000000 		.word	Scheduler_Lock1
+ 375              		.cfi_endproc
+ 376              	.LFE116:
+ 378              		.section	.text.sched,"ax",%progbits
+ 379              		.align	1
+ 380              		.global	sched
+ARM GAS  /tmp/ccEg4nFV.s 			page 9
+
+
+ 381              		.syntax unified
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	sched:
+ 386              	.LFB117:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void sched(void){
+ 387              		.loc 1 49 17 is_stmt 1 view -0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 8
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391 0000 00B5     		push	{lr}
+ 392              	.LCFI9:
+ 393              		.cfi_def_cfa_offset 4
+ 394              		.cfi_offset 14, -4
+ 395 0002 87B0     		sub	sp, sp, #28
+ 396              	.LCFI10:
+ 397              		.cfi_def_cfa_offset 32
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     volatile int j  = 0;      
+ 398              		.loc 1 50 5 view .LVU65
+ 399              		.loc 1 50 18 is_stmt 0 view .LVU66
+ 400 0004 0021     		movs	r1, #0
+ 401 0006 0591     		str	r1, [sp, #20]
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     while ( user_system_call(158,NULL,NULL,NULL,NULL,NULL,NULL) < 0){  
+ 402              		.loc 1 51 5 is_stmt 1 view .LVU67
+ 403              		.loc 1 51 65 view .LVU68
+ 404              		.loc 1 51 13 is_stmt 0 view .LVU69
+ 405 0008 0291     		str	r1, [sp, #8]
+ 406 000a 0191     		str	r1, [sp, #4]
+ 407 000c 0091     		str	r1, [sp]
+ 408 000e 0B46     		mov	r3, r1
+ 409 0010 0A46     		mov	r2, r1
+ 410 0012 9E20     		movs	r0, #158
+ 411 0014 FFF7FEFF 		bl	user_system_call
+ 412              	.LVL14:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****         for(int i =0;i<10000;i++){j++;} //调度器阻塞无法切换，那就只能阻塞了
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     }
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 413              		.loc 1 54 1 view .LVU70
+ 414 0018 07B0     		add	sp, sp, #28
+ 415              	.LCFI11:
+ 416              		.cfi_def_cfa_offset 4
+ 417              		@ sp needed
+ 418 001a 5DF804FB 		ldr	pc, [sp], #4
+ 419              		.cfi_endproc
+ 420              	.LFE117:
+ 422              		.section	.text.__delay,"ax",%progbits
+ 423              		.align	1
+ 424              		.global	__delay
+ 425              		.syntax unified
+ 426              		.thumb
+ 427              		.thumb_func
+ 429              	__delay:
+ 430              	.LVL15:
+ 431              	.LFB118:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+ARM GAS  /tmp/ccEg4nFV.s 			page 10
+
+
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** void __delay(uint32_t time)
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** {
+ 432              		.loc 1 58 1 is_stmt 1 view -0
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 0
+ 435              		@ frame_needed = 0, uses_anonymous_args = 0
+ 436              		.loc 1 58 1 is_stmt 0 view .LVU72
+ 437 0000 10B5     		push	{r4, lr}
+ 438              	.LCFI12:
+ 439              		.cfi_def_cfa_offset 8
+ 440              		.cfi_offset 4, -8
+ 441              		.cfi_offset 14, -4
+ 442 0002 0446     		mov	r4, r0
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     struct task_struct* task = get_current_task();
+ 443              		.loc 1 59 5 is_stmt 1 view .LVU73
+ 444              		.loc 1 59 32 is_stmt 0 view .LVU74
+ 445 0004 FFF7FEFF 		bl	get_current_task
+ 446              	.LVL16:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     task->block_time = time;
+ 447              		.loc 1 60 5 is_stmt 1 view .LVU75
+ 448              		.loc 1 60 22 is_stmt 0 view .LVU76
+ 449 0008 8467     		str	r4, [r0, #120]
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     task->state = TASK_WAITING;
+ 450              		.loc 1 61 5 is_stmt 1 view .LVU77
+ 451              		.loc 1 61 17 is_stmt 0 view .LVU78
+ 452 000a 0323     		movs	r3, #3
+ 453 000c 80F86430 		strb	r3, [r0, #100]
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c ****     sched();
+ 454              		.loc 1 62 5 is_stmt 1 view .LVU79
+ 455 0010 FFF7FEFF 		bl	sched
+ 456              	.LVL17:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/ctrl.c **** }
+ 457              		.loc 1 63 1 is_stmt 0 view .LVU80
+ 458 0014 10BD     		pop	{r4, pc}
+ 459              		.loc 1 63 1 view .LVU81
+ 460              		.cfi_endproc
+ 461              	.LFE118:
+ 463              		.section	.data.Scheduler_Lock,"aw"
+ 466              	Scheduler_Lock:
+ 467 0000 01       		.byte	1
+ 468              		.section	.bss.Scheduler_Lock1,"aw",%nobits
+ 469              		.align	2
+ 472              	Scheduler_Lock1:
+ 473 0000 00000000 		.space	4
+ 474              		.text
+ 475              	.Letext0:
+ 476              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 477              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 478              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 479              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 480              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 481              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ARM GAS  /tmp/ccEg4nFV.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ctrl.c
+     /tmp/ccEg4nFV.s:22     .text.get_task_using_cpu_core:00000000 $t
+     /tmp/ccEg4nFV.s:27     .text.get_task_using_cpu_core:00000000 get_task_using_cpu_core
+     /tmp/ccEg4nFV.s:49     .text.user_system_call:00000000 $t
+     /tmp/ccEg4nFV.s:54     .text.user_system_call:00000000 user_system_call
+     /tmp/ccEg4nFV.s:90     .text.get_current_scheduler:00000000 $t
+     /tmp/ccEg4nFV.s:96     .text.get_current_scheduler:00000000 get_current_scheduler
+     /tmp/ccEg4nFV.s:120    .text.block_scheduler:00000000 $t
+     /tmp/ccEg4nFV.s:126    .text.block_scheduler:00000000 block_scheduler
+     /tmp/ccEg4nFV.s:164    .text.run_scheduler:00000000 $t
+     /tmp/ccEg4nFV.s:170    .text.run_scheduler:00000000 run_scheduler
+     /tmp/ccEg4nFV.s:208    .text.get_current_task:00000000 $t
+     /tmp/ccEg4nFV.s:214    .text.get_current_task:00000000 get_current_task
+     /tmp/ccEg4nFV.s:239    .text.scheduler_start:00000000 $t
+     /tmp/ccEg4nFV.s:245    .text.scheduler_start:00000000 scheduler_start
+     /tmp/ccEg4nFV.s:263    .text.scheduler_start:0000000c $d
+     /tmp/ccEg4nFV.s:472    .bss.Scheduler_Lock1:00000000 Scheduler_Lock1
+     /tmp/ccEg4nFV.s:268    .text.start_all_scheduler:00000000 $t
+     /tmp/ccEg4nFV.s:274    .text.start_all_scheduler:00000000 start_all_scheduler
+     /tmp/ccEg4nFV.s:291    .text.start_all_scheduler:00000008 $d
+     /tmp/ccEg4nFV.s:466    .data.Scheduler_Lock:00000000 Scheduler_Lock
+     /tmp/ccEg4nFV.s:296    .text.stop_all_scheduler:00000000 $t
+     /tmp/ccEg4nFV.s:302    .text.stop_all_scheduler:00000000 stop_all_scheduler
+     /tmp/ccEg4nFV.s:319    .text.stop_all_scheduler:00000008 $d
+     /tmp/ccEg4nFV.s:324    .text.i_sched:00000000 $t
+     /tmp/ccEg4nFV.s:330    .text.i_sched:00000000 i_sched
+     /tmp/ccEg4nFV.s:373    .text.i_sched:00000028 $d
+     /tmp/ccEg4nFV.s:379    .text.sched:00000000 $t
+     /tmp/ccEg4nFV.s:385    .text.sched:00000000 sched
+     /tmp/ccEg4nFV.s:423    .text.__delay:00000000 $t
+     /tmp/ccEg4nFV.s:429    .text.__delay:00000000 __delay
+     /tmp/ccEg4nFV.s:469    .bss.Scheduler_Lock1:00000000 $d
+
+UNDEFINED SYMBOLS
+__get_task_using_cpu_core
+__system_call
+get_scheduler_by_cpu_core_id
+__sched

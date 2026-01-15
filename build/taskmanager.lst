@@ -1,0 +1,2276 @@
+ARM GAS  /tmp/ccTmUZ8o.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"taskmanager.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c"
+  21              		.section	.text.spin_lock_init,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	spin_lock_init:
+  28              	.LVL0:
+  29              	.LFB803:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/types.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <asm/irqflags.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct* get_current_task(void);
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void __delay(uint32_t time);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_lock(spinlock_t* lock);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_unlock(spinlock_t* lock);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+  31              		.loc 2 17 45 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     lock->flag = 0;
+  36              		.loc 2 18 5 view .LVU1
+  37              		.loc 2 18 16 is_stmt 0 view .LVU2
+  38 0000 0023     		movs	r3, #0
+  39 0002 0360     		str	r3, [r0]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+ARM GAS  /tmp/ccTmUZ8o.s 			page 2
+
+
+  40              		.loc 2 19 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE803:
+  45              		.section	.text.spin_lock,"ax",%progbits
+  46              		.align	1
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	spin_lock:
+  52              	.LVL1:
+  53              	.LFB804:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {  
+  54              		.loc 2 22 1 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		.loc 2 22 1 is_stmt 0 view .LVU5
+  59 0000 08B5     		push	{r3, lr}
+  60              	.LCFI0:
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 3, -8
+  63              		.cfi_offset 14, -4
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_lock(lock);
+  64              		.loc 2 23 5 is_stmt 1 view .LVU6
+  65 0002 FFF7FEFF 		bl	_spin_lock
+  66              	.LVL2:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  67              		.loc 2 24 1 is_stmt 0 view .LVU7
+  68 0006 08BD     		pop	{r3, pc}
+  69              		.cfi_endproc
+  70              	.LFE804:
+  72              		.section	.text.spin_unlock,"ax",%progbits
+  73              		.align	1
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	spin_unlock:
+  79              	.LVL3:
+  80              	.LFB805:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {
+  81              		.loc 2 26 1 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		.loc 2 26 1 is_stmt 0 view .LVU9
+  86 0000 08B5     		push	{r3, lr}
+  87              	.LCFI1:
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 3, -8
+  90              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_unlock(lock);
+  91              		.loc 2 27 5 is_stmt 1 view .LVU10
+  92 0002 FFF7FEFF 		bl	_spin_unlock
+ARM GAS  /tmp/ccTmUZ8o.s 			page 3
+
+
+  93              	.LVL4:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  94              		.loc 2 28 1 is_stmt 0 view .LVU11
+  95 0006 08BD     		pop	{r3, pc}
+  96              		.cfi_endproc
+  97              	.LFE805:
+  99              		.section	.text.clean_task,"ax",%progbits
+ 100              		.align	1
+ 101              		.syntax unified
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	clean_task:
+ 106              	.LVL5:
+ 107              	.LFB811:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** #include <linux/kernel.h> 
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** #include <linux/atomic.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** #include <linux/kthread.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** #include <linux/list.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** #include <linux/spinlock.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** struct task_struct;
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** static spinlock_t Task_List_lock;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** static struct list_head Task_List;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** static struct list_head Death_task_List;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** struct task_struct* init;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** void __List_All_Tasks(void) {
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     printk(KERN_INFO "[TaskManager] Listing all alive tasks:\n");
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct *pos;
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_for_each_entry(pos,&Task_List,task_node){
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     printk(KERN_INFO "[TaskManager] Listing all dead tasks:\n");
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_for_each_entry(pos,&Death_task_List,task_node){
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** void __Task_manager_init(){  
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock_init(&Task_List_lock);
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&Task_List);
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&Death_task_List);
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** void __save_Task(struct task_struct* new){ //注册任务时自动调用回调函数
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     atomic_set(&new->use_count,1);
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     new->parent = current;
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->task_node);
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->children);
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->this_task_node);
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     if(current != NULL)
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->this_task_node,&current->children);
+ARM GAS  /tmp/ccTmUZ8o.s 			page 4
+
+
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->task_node,&Task_List);
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_unlock(&Task_List_lock);
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     __List_All_Tasks();
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** void __Kill_Task(struct task_struct* new)//删除任务时自动调用回调函数
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** {
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_del(&new->task_node);
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->task_node,&Death_task_List);
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_unlock(&Task_List_lock); 
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     __List_All_Tasks();
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** void __default_Task_return_function(void){
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct* cutrrent_task = current;
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     pr_info("task : %s has return\n" ,cutrrent_task->task_name);
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     while (1){
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_DEAD;
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         sched();
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** static void clean_task(struct task_struct* t)
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** {        
+ 108              		.loc 1 69 1 is_stmt 1 view -0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		.loc 1 69 1 is_stmt 0 view .LVU13
+ 113 0000 08B5     		push	{r3, lr}
+ 114              	.LCFI2:
+ 115              		.cfi_def_cfa_offset 8
+ 116              		.cfi_offset 3, -8
+ 117              		.cfi_offset 14, -4
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     // if(t->offset != NULL)
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     //     kfree(t->offset);
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     kfree(t);
+ 118              		.loc 1 72 5 is_stmt 1 view .LVU14
+ 119 0002 FFF7FEFF 		bl	kfree
+ 120              	.LVL6:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+ 121              		.loc 1 73 1 is_stmt 0 view .LVU15
+ 122 0006 08BD     		pop	{r3, pc}
+ 123              		.cfi_endproc
+ 124              	.LFE811:
+ 126              		.section	.rodata.__List_All_Tasks.str1.4,"aMS",%progbits,1
+ 127              		.align	2
+ 128              	.LC0:
+ 129 0000 5B546173 		.ascii	"[TaskManager] Listing all alive tasks:\012\000"
+ 129      6B4D616E 
+ 129      61676572 
+ 129      5D204C69 
+ 129      7374696E 
+ 130              		.align	2
+ 131              	.LC1:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 5
+
+
+ 132 0028 20202D20 		.ascii	"  - Task: %s (pid: %d)\012\000"
+ 132      5461736B 
+ 132      3A202573 
+ 132      20287069 
+ 132      643A2025 
+ 133              		.align	2
+ 134              	.LC2:
+ 135 0040 5B546173 		.ascii	"[TaskManager] Listing all dead tasks:\012\000"
+ 135      6B4D616E 
+ 135      61676572 
+ 135      5D204C69 
+ 135      7374696E 
+ 136              		.section	.text.__List_All_Tasks,"ax",%progbits
+ 137              		.align	1
+ 138              		.global	__List_All_Tasks
+ 139              		.syntax unified
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	__List_All_Tasks:
+ 144              	.LFB806:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     printk(KERN_INFO "[TaskManager] Listing all alive tasks:\n");
+ 145              		.loc 1 17 29 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149 0000 10B5     		push	{r4, lr}
+ 150              	.LCFI3:
+ 151              		.cfi_def_cfa_offset 8
+ 152              		.cfi_offset 4, -8
+ 153              		.cfi_offset 14, -4
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct *pos;
+ 154              		.loc 1 18 5 view .LVU17
+ 155 0002 1649     		ldr	r1, .L14
+ 156 0004 0620     		movs	r0, #6
+ 157 0006 FFF7FEFF 		bl	printk
+ 158              	.LVL7:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_for_each_entry(pos,&Task_List,task_node){
+ 159              		.loc 1 19 5 view .LVU18
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 160              		.loc 1 20 5 view .LVU19
+ 161              	.LBB88:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 162              		.loc 1 20 5 view .LVU20
+ 163 000a 154B     		ldr	r3, .L14+4
+ 164 000c 1C68     		ldr	r4, [r3]
+ 165              	.LVL8:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 166              		.loc 1 20 5 view .LVU21
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 167              		.loc 1 20 5 view .LVU22
+ 168 000e 903C     		subs	r4, r4, #144
+ 169              	.LVL9:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 170              		.loc 1 20 5 is_stmt 0 view .LVU23
+ 171              	.LBE88:
+ 172 0010 08E0     		b	.L9
+ 173              	.LVL10:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 6
+
+
+ 174              	.L10:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 175              		.loc 1 21 10 is_stmt 1 view .LVU24
+ 176 0012 A368     		ldr	r3, [r4, #8]
+ 177 0014 E26C     		ldr	r2, [r4, #76]
+ 178 0016 1349     		ldr	r1, .L14+8
+ 179 0018 0620     		movs	r0, #6
+ 180 001a FFF7FEFF 		bl	printk
+ 181              	.LVL11:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 182              		.loc 1 20 5 discriminator 3 view .LVU25
+ 183              	.LBB89:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 184              		.loc 1 20 5 discriminator 3 view .LVU26
+ 185 001e D4F89040 		ldr	r4, [r4, #144]
+ 186              	.LVL12:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 187              		.loc 1 20 5 discriminator 3 view .LVU27
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 188              		.loc 1 20 5 discriminator 3 view .LVU28
+ 189 0022 903C     		subs	r4, r4, #144
+ 190              	.LVL13:
+ 191              	.L9:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 192              		.loc 1 20 5 is_stmt 0 discriminator 3 view .LVU29
+ 193              	.LBE89:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****          printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 194              		.loc 1 20 5 is_stmt 1 discriminator 1 view .LVU30
+ 195 0024 04F19002 		add	r2, r4, #144
+ 196 0028 0D4B     		ldr	r3, .L14+4
+ 197 002a 9A42     		cmp	r2, r3
+ 198 002c F1D1     		bne	.L10
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_for_each_entry(pos,&Death_task_List,task_node){
+ 199              		.loc 1 23 5 view .LVU31
+ 200 002e 0E49     		ldr	r1, .L14+12
+ 201 0030 0620     		movs	r0, #6
+ 202 0032 FFF7FEFF 		bl	printk
+ 203              	.LVL14:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 204              		.loc 1 24 5 view .LVU32
+ 205              	.LBB90:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 206              		.loc 1 24 5 view .LVU33
+ 207 0036 0D4B     		ldr	r3, .L14+16
+ 208 0038 1C68     		ldr	r4, [r3]
+ 209              	.LVL15:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 210              		.loc 1 24 5 view .LVU34
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 211              		.loc 1 24 5 view .LVU35
+ 212 003a 903C     		subs	r4, r4, #144
+ 213              	.LVL16:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 214              		.loc 1 24 5 is_stmt 0 view .LVU36
+ 215              	.LBE90:
+ 216 003c 08E0     		b	.L11
+ 217              	.LVL17:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 7
+
+
+ 218              	.L12:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 219              		.loc 1 25 9 is_stmt 1 view .LVU37
+ 220 003e A368     		ldr	r3, [r4, #8]
+ 221 0040 E26C     		ldr	r2, [r4, #76]
+ 222 0042 0849     		ldr	r1, .L14+8
+ 223 0044 0620     		movs	r0, #6
+ 224 0046 FFF7FEFF 		bl	printk
+ 225              	.LVL18:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 226              		.loc 1 24 5 discriminator 3 view .LVU38
+ 227              	.LBB91:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 228              		.loc 1 24 5 discriminator 3 view .LVU39
+ 229 004a D4F89040 		ldr	r4, [r4, #144]
+ 230              	.LVL19:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 231              		.loc 1 24 5 discriminator 3 view .LVU40
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 232              		.loc 1 24 5 discriminator 3 view .LVU41
+ 233 004e 903C     		subs	r4, r4, #144
+ 234              	.LVL20:
+ 235              	.L11:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 236              		.loc 1 24 5 is_stmt 0 discriminator 3 view .LVU42
+ 237              	.LBE91:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         printk(KERN_INFO "  - Task: %s (pid: %d)\n", pos->comm, pos->pid);
+ 238              		.loc 1 24 5 is_stmt 1 discriminator 1 view .LVU43
+ 239 0050 04F19002 		add	r2, r4, #144
+ 240 0054 054B     		ldr	r3, .L14+16
+ 241 0056 9A42     		cmp	r2, r3
+ 242 0058 F1D1     		bne	.L12
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 243              		.loc 1 27 1 is_stmt 0 view .LVU44
+ 244 005a 10BD     		pop	{r4, pc}
+ 245              	.LVL21:
+ 246              	.L15:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 247              		.loc 1 27 1 view .LVU45
+ 248              		.align	2
+ 249              	.L14:
+ 250 005c 00000000 		.word	.LC0
+ 251 0060 00000000 		.word	Task_List
+ 252 0064 28000000 		.word	.LC1
+ 253 0068 40000000 		.word	.LC2
+ 254 006c 00000000 		.word	Death_task_List
+ 255              		.cfi_endproc
+ 256              	.LFE806:
+ 258              		.section	.text.__Task_manager_init,"ax",%progbits
+ 259              		.align	1
+ 260              		.global	__Task_manager_init
+ 261              		.syntax unified
+ 262              		.thumb
+ 263              		.thumb_func
+ 265              	__Task_manager_init:
+ 266              	.LFB807:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock_init(&Task_List_lock);
+ARM GAS  /tmp/ccTmUZ8o.s 			page 8
+
+
+ 267              		.loc 1 30 27 is_stmt 1 view -0
+ 268              		.cfi_startproc
+ 269              		@ args = 0, pretend = 0, frame = 0
+ 270              		@ frame_needed = 0, uses_anonymous_args = 0
+ 271 0000 08B5     		push	{r3, lr}
+ 272              	.LCFI4:
+ 273              		.cfi_def_cfa_offset 8
+ 274              		.cfi_offset 3, -8
+ 275              		.cfi_offset 14, -4
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&Task_List);
+ 276              		.loc 1 31 5 view .LVU47
+ 277 0002 0548     		ldr	r0, .L18
+ 278 0004 FFF7FEFF 		bl	spin_lock_init
+ 279              	.LVL22:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&Death_task_List);
+ 280              		.loc 1 32 5 view .LVU48
+ 281              	.LBB92:
+ 282              	.LBI92:
+ 283              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #ifndef _LINUX_LIST_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #define _LINUX_LIST_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/container_of.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/types.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/stddef.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/poison.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/const.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <asm/barrier.h>
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #include <linux/rwonce.h>
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Circular doubly linked list implementation.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Some of the internal functions ("__xxx") are useful when
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * manipulating whole lists rather than single entries, as
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * sometimes we already know the next/prev entries and we can
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * generate better code by using them directly rather than
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * using the generic single-entry routines.
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #define LIST_HEAD_INIT(name) { &(name), &(name) }
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #define LIST_HEAD(name) \
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	struct list_head name = LIST_HEAD_INIT(name)
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /**
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * INIT_LIST_HEAD - Initialize a list_head structure
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @list: list_head structure to be initialized.
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Initializes the list_head to point to itself.  If it is a list header,
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * the result is an empty list.
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void INIT_LIST_HEAD(struct list_head *list)
+ 284              		.loc 3 35 20 view .LVU49
+ 285              	.LBB93:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ARM GAS  /tmp/ccTmUZ8o.s 			page 9
+
+
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->next, list);
+ 286              		.loc 3 37 2 view .LVU50
+ 287              		.loc 3 37 2 view .LVU51
+ 288              	.LBB94:
+ 289              		.loc 3 37 2 view .LVU52
+ 290              		.loc 3 37 2 view .LVU53
+ 291              	.LBE94:
+ 292              		.loc 3 37 2 discriminator 2 view .LVU54
+ 293              		.loc 3 37 2 discriminator 2 view .LVU55
+ 294              		.loc 3 37 2 discriminator 2 view .LVU56
+ 295 0008 044B     		ldr	r3, .L18+4
+ 296 000a 1B60     		str	r3, [r3]
+ 297              		.loc 3 37 2 discriminator 2 view .LVU57
+ 298              		.loc 3 37 2 discriminator 2 view .LVU58
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 299              		.loc 3 38 2 view .LVU59
+ 300              		.loc 3 38 2 view .LVU60
+ 301              	.LBB95:
+ 302              		.loc 3 38 2 view .LVU61
+ 303              		.loc 3 38 2 view .LVU62
+ 304              	.LBE95:
+ 305              		.loc 3 38 2 discriminator 2 view .LVU63
+ 306              		.loc 3 38 2 discriminator 2 view .LVU64
+ 307              		.loc 3 38 2 discriminator 2 view .LVU65
+ 308 000c 5B60     		str	r3, [r3, #4]
+ 309              		.loc 3 38 2 discriminator 2 view .LVU66
+ 310              		.loc 3 38 2 discriminator 2 view .LVU67
+ 311              	.LVL23:
+ 312              		.loc 3 38 2 is_stmt 0 discriminator 2 view .LVU68
+ 313              	.LBE93:
+ 314              	.LBE92:
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+ 315              		.loc 1 33 5 is_stmt 1 view .LVU69
+ 316              	.LBB96:
+ 317              	.LBI96:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 318              		.loc 3 35 20 view .LVU70
+ 319              	.LBB97:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 320              		.loc 3 37 2 view .LVU71
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 321              		.loc 3 37 2 view .LVU72
+ 322              	.LBB98:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 323              		.loc 3 37 2 view .LVU73
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 324              		.loc 3 37 2 view .LVU74
+ 325              	.LBE98:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 326              		.loc 3 37 2 discriminator 2 view .LVU75
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 327              		.loc 3 37 2 discriminator 2 view .LVU76
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 328              		.loc 3 37 2 discriminator 2 view .LVU77
+ 329 000e 044B     		ldr	r3, .L18+8
+ 330 0010 1B60     		str	r3, [r3]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ARM GAS  /tmp/ccTmUZ8o.s 			page 10
+
+
+ 331              		.loc 3 37 2 discriminator 2 view .LVU78
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 332              		.loc 3 37 2 discriminator 2 view .LVU79
+ 333              		.loc 3 38 2 view .LVU80
+ 334              		.loc 3 38 2 view .LVU81
+ 335              	.LBB99:
+ 336              		.loc 3 38 2 view .LVU82
+ 337              		.loc 3 38 2 view .LVU83
+ 338              	.LBE99:
+ 339              		.loc 3 38 2 discriminator 2 view .LVU84
+ 340              		.loc 3 38 2 discriminator 2 view .LVU85
+ 341              		.loc 3 38 2 discriminator 2 view .LVU86
+ 342 0012 5B60     		str	r3, [r3, #4]
+ 343              		.loc 3 38 2 discriminator 2 view .LVU87
+ 344              		.loc 3 38 2 discriminator 2 view .LVU88
+ 345              	.LVL24:
+ 346              		.loc 3 38 2 is_stmt 0 discriminator 2 view .LVU89
+ 347              	.LBE97:
+ 348              	.LBE96:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 349              		.loc 1 34 1 view .LVU90
+ 350 0014 08BD     		pop	{r3, pc}
+ 351              	.L19:
+ 352 0016 00BF     		.align	2
+ 353              	.L18:
+ 354 0018 00000000 		.word	Task_List_lock
+ 355 001c 00000000 		.word	Task_List
+ 356 0020 00000000 		.word	Death_task_List
+ 357              		.cfi_endproc
+ 358              	.LFE807:
+ 360              		.section	.text.__save_Task,"ax",%progbits
+ 361              		.align	1
+ 362              		.global	__save_Task
+ 363              		.syntax unified
+ 364              		.thumb
+ 365              		.thumb_func
+ 367              	__save_Task:
+ 368              	.LVL25:
+ 369              	.LFB808:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     atomic_set(&new->use_count,1);
+ 370              		.loc 1 36 42 is_stmt 1 view -0
+ 371              		.cfi_startproc
+ 372              		@ args = 0, pretend = 0, frame = 0
+ 373              		@ frame_needed = 0, uses_anonymous_args = 0
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     atomic_set(&new->use_count,1);
+ 374              		.loc 1 36 42 is_stmt 0 view .LVU92
+ 375 0000 70B5     		push	{r4, r5, r6, lr}
+ 376              	.LCFI5:
+ 377              		.cfi_def_cfa_offset 16
+ 378              		.cfi_offset 4, -16
+ 379              		.cfi_offset 5, -12
+ 380              		.cfi_offset 6, -8
+ 381              		.cfi_offset 14, -4
+ 382 0002 0446     		mov	r4, r0
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     new->parent = current;
+ 383              		.loc 1 37 5 is_stmt 1 view .LVU93
+ 384              	.LVL26:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 11
+
+
+ 385              	.LBB100:
+ 386              	.LBI100:
+ 387              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumente
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** // Generated by scripts/atomic/gen-atomic-instrumented.sh 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** // DO NOT MODIFY THIS FILE DIRECTLY
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** /*
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * This file provoides atomic operations with explicit instrumentation (e.g.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * KASAN, KCSAN), which should be used unless it is necessary to avoid
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * instrumentation. Where it is necessary to aovid instrumenation, the
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * raw_atomic*() operations should be used.
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  */
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** #ifndef _LINUX_ATOMIC_INSTRUMENTED_H
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** #define _LINUX_ATOMIC_INSTRUMENTED_H
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** #include <linux/build_bug.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** #include <linux/compiler.h>
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** #include <linux/instrumented.h>
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** /**
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * atomic_read() - atomic load with relaxed ordering
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * @v: pointer to atomic_t
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Atomically loads the value of @v with relaxed ordering.
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Unsafe to use in noinstr code; use raw_atomic_read() there.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Return: The value loaded from @v.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** static __always_inline int
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** atomic_read(const atomic_t *v)
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** {
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	instrument_atomic_read(v, sizeof(*v));
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	return raw_atomic_read(v);
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** }
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** /**
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * atomic_read_acquire() - atomic load with acquire ordering
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * @v: pointer to atomic_t
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Atomically loads the value of @v with acquire ordering.
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Unsafe to use in noinstr code; use raw_atomic_read_acquire() there.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Return: The value loaded from @v.
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  */
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** static __always_inline int
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** atomic_read_acquire(const atomic_t *v)
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** {
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	instrument_atomic_read(v, sizeof(*v));
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	return raw_atomic_read_acquire(v);
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** }
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** /**
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * atomic_set() - atomic set with relaxed ordering
+ARM GAS  /tmp/ccTmUZ8o.s 			page 12
+
+
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * @v: pointer to atomic_t
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * @i: int value to assign
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Atomically sets @v to @i with relaxed ordering.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Unsafe to use in noinstr code; use raw_atomic_set() there.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  *
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  * Return: Nothing.
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h ****  */
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** static __always_inline void
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** atomic_set(atomic_t *v, int i)
+ 388              		.loc 4 65 1 view .LVU94
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** {
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	instrument_atomic_write(v, sizeof(*v));
+ 389              		.loc 4 67 2 view .LVU95
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-instrumented.h **** 	raw_atomic_set(v, i);
+ 390              		.loc 4 68 2 view .LVU96
+ 391              	.LBB101:
+ 392              	.LBI101:
+ 393              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallba
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** // SPDX-License-Identifier: GPL-2.0
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** // Generated by scripts/atomic/gen-atomic-fallback.sh
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** // DO NOT MODIFY THIS FILE DIRECTLY
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #ifndef _LINUX_ATOMIC_FALLBACK_H
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define _LINUX_ATOMIC_FALLBACK_H
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #include <linux/compiler.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_xchg)
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg arch_xchg
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg_relaxed)
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg(...) \
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_xchg, __VA_ARGS__)
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_xchg_not_implemented(void);
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg(...) raw_xchg_not_implemented()
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_xchg_acquire)
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_acquire arch_xchg_acquire
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg_relaxed)
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_acquire(...) \
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_xchg, __VA_ARGS__)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg)
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_acquire arch_xchg
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_xchg_acquire_not_implemented(void);
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_acquire(...) raw_xchg_acquire_not_implemented()
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_xchg_release)
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_release arch_xchg_release
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg_relaxed)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_release(...) \
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_xchg, __VA_ARGS__)
+ARM GAS  /tmp/ccTmUZ8o.s 			page 13
+
+
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_release arch_xchg
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_xchg_release_not_implemented(void);
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_release(...) raw_xchg_release_not_implemented()
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_xchg_relaxed)
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_relaxed arch_xchg_relaxed
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_xchg)
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_relaxed arch_xchg
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_xchg_relaxed_not_implemented(void);
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_xchg_relaxed(...) raw_xchg_relaxed_not_implemented()
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg)
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg arch_cmpxchg
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg_relaxed)
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg(...) \
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_cmpxchg, __VA_ARGS__)
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg_not_implemented(void);
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg(...) raw_cmpxchg_not_implemented()
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg_acquire)
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_acquire arch_cmpxchg_acquire
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg_relaxed)
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_acquire(...) \
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_cmpxchg, __VA_ARGS__)
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg)
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_acquire arch_cmpxchg
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg_acquire_not_implemented(void);
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_acquire(...) raw_cmpxchg_acquire_not_implemented()
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg_release)
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_release arch_cmpxchg_release
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg_relaxed)
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_release(...) \
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_cmpxchg, __VA_ARGS__)
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg)
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_release arch_cmpxchg
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg_release_not_implemented(void);
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_release(...) raw_cmpxchg_release_not_implemented()
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg_relaxed)
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_relaxed arch_cmpxchg_relaxed
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg)
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_relaxed arch_cmpxchg
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg_relaxed_not_implemented(void);
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_relaxed(...) raw_cmpxchg_relaxed_not_implemented()
+ARM GAS  /tmp/ccTmUZ8o.s 			page 14
+
+
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg64)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64 arch_cmpxchg64
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64_relaxed)
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64(...) \
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_cmpxchg64, __VA_ARGS__)
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg64_not_implemented(void);
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64(...) raw_cmpxchg64_not_implemented()
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg64_acquire)
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_acquire arch_cmpxchg64_acquire
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64_relaxed)
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_acquire(...) \
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_cmpxchg64, __VA_ARGS__)
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64)
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_acquire arch_cmpxchg64
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg64_acquire_not_implemented(void);
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_acquire(...) raw_cmpxchg64_acquire_not_implemented()
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg64_release)
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_release arch_cmpxchg64_release
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64_relaxed)
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_release(...) \
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_cmpxchg64, __VA_ARGS__)
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64)
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_release arch_cmpxchg64
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg64_release_not_implemented(void);
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_release(...) raw_cmpxchg64_release_not_implemented()
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg64_relaxed)
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_relaxed arch_cmpxchg64_relaxed
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg64)
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_relaxed arch_cmpxchg64
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg64_relaxed_not_implemented(void);
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_relaxed(...) raw_cmpxchg64_relaxed_not_implemented()
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg128)
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128 arch_cmpxchg128
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128_relaxed)
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128(...) \
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_cmpxchg128, __VA_ARGS__)
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg128_not_implemented(void);
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128(...) raw_cmpxchg128_not_implemented()
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg128_acquire)
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_acquire arch_cmpxchg128_acquire
+ARM GAS  /tmp/ccTmUZ8o.s 			page 15
+
+
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128_relaxed)
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_acquire(...) \
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_cmpxchg128, __VA_ARGS__)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128)
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_acquire arch_cmpxchg128
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg128_acquire_not_implemented(void);
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_acquire(...) raw_cmpxchg128_acquire_not_implemented()
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg128_release)
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_release arch_cmpxchg128_release
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128_relaxed)
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_release(...) \
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_cmpxchg128, __VA_ARGS__)
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128)
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_release arch_cmpxchg128
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg128_release_not_implemented(void);
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_release(...) raw_cmpxchg128_release_not_implemented()
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_cmpxchg128_relaxed)
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_relaxed arch_cmpxchg128_relaxed
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_cmpxchg128)
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_relaxed arch_cmpxchg128
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** extern void raw_cmpxchg128_relaxed_not_implemented(void);
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_relaxed(...) raw_cmpxchg128_relaxed_not_implemented()
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg)
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg arch_try_cmpxchg
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg_relaxed)
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg(...) \
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_try_cmpxchg, __VA_ARGS__)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg(_ptr, _oldp, _new) \
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg((_ptr), ___o, (_new)); \
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg_acquire)
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_acquire arch_try_cmpxchg_acquire
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg_relaxed)
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_acquire(...) \
+ARM GAS  /tmp/ccTmUZ8o.s 			page 16
+
+
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_try_cmpxchg, __VA_ARGS__)
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg)
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_acquire arch_try_cmpxchg
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_acquire(_ptr, _oldp, _new) \
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg_acquire((_ptr), ___o, (_new)); \
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg_release)
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_release arch_try_cmpxchg_release
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg_relaxed)
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_release(...) \
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_try_cmpxchg, __VA_ARGS__)
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg)
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_release arch_try_cmpxchg
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_release(_ptr, _oldp, _new) \
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg_release((_ptr), ___o, (_new)); \
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg_relaxed)
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_relaxed arch_try_cmpxchg_relaxed
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg)
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_relaxed arch_try_cmpxchg
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_relaxed(_ptr, _oldp, _new) \
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg_relaxed((_ptr), ___o, (_new)); \
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg64)
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64 arch_try_cmpxchg64
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64_relaxed)
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64(...) \
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_try_cmpxchg64, __VA_ARGS__)
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64(_ptr, _oldp, _new) \
+ 263:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 264:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 265:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg64((_ptr), ___o, (_new)); \
+ARM GAS  /tmp/ccTmUZ8o.s 			page 17
+
+
+ 266:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 267:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 268:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 269:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 270:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 271:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 272:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg64_acquire)
+ 273:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_acquire arch_try_cmpxchg64_acquire
+ 274:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64_relaxed)
+ 275:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_acquire(...) \
+ 276:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_try_cmpxchg64, __VA_ARGS__)
+ 277:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64)
+ 278:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_acquire arch_try_cmpxchg64
+ 279:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 280:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_acquire(_ptr, _oldp, _new) \
+ 281:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 282:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 283:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg64_acquire((_ptr), ___o, (_new)); \
+ 284:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 285:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 286:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 287:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 288:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 289:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 290:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg64_release)
+ 291:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_release arch_try_cmpxchg64_release
+ 292:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64_relaxed)
+ 293:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_release(...) \
+ 294:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_try_cmpxchg64, __VA_ARGS__)
+ 295:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64)
+ 296:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_release arch_try_cmpxchg64
+ 297:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 298:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_release(_ptr, _oldp, _new) \
+ 299:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 300:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 301:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg64_release((_ptr), ___o, (_new)); \
+ 302:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 303:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 304:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 305:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 306:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 307:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 308:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg64_relaxed)
+ 309:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_relaxed arch_try_cmpxchg64_relaxed
+ 310:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg64)
+ 311:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_relaxed arch_try_cmpxchg64
+ 312:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 313:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_relaxed(_ptr, _oldp, _new) \
+ 314:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 315:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 316:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg64_relaxed((_ptr), ___o, (_new)); \
+ 317:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 318:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 319:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 320:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 321:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 322:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ARM GAS  /tmp/ccTmUZ8o.s 			page 18
+
+
+ 323:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg128)
+ 324:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128 arch_try_cmpxchg128
+ 325:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128_relaxed)
+ 326:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128(...) \
+ 327:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_fence(arch_try_cmpxchg128, __VA_ARGS__)
+ 328:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 329:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128(_ptr, _oldp, _new) \
+ 330:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 331:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 332:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg128((_ptr), ___o, (_new)); \
+ 333:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 334:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 335:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 336:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 337:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 338:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 339:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg128_acquire)
+ 340:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_acquire arch_try_cmpxchg128_acquire
+ 341:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128_relaxed)
+ 342:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_acquire(...) \
+ 343:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_acquire(arch_try_cmpxchg128, __VA_ARGS__)
+ 344:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128)
+ 345:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_acquire arch_try_cmpxchg128
+ 346:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 347:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_acquire(_ptr, _oldp, _new) \
+ 348:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 349:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 350:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg128_acquire((_ptr), ___o, (_new)); \
+ 351:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 352:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 353:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 354:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 355:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 356:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 357:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg128_release)
+ 358:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_release arch_try_cmpxchg128_release
+ 359:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128_relaxed)
+ 360:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_release(...) \
+ 361:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	__atomic_op_release(arch_try_cmpxchg128, __VA_ARGS__)
+ 362:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128)
+ 363:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_release arch_try_cmpxchg128
+ 364:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 365:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_release(_ptr, _oldp, _new) \
+ 366:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 367:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 368:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg128_release((_ptr), ___o, (_new)); \
+ 369:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 370:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 371:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 372:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 373:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 374:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 375:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_try_cmpxchg128_relaxed)
+ 376:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_relaxed arch_try_cmpxchg128_relaxed
+ 377:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #elif defined(arch_try_cmpxchg128)
+ 378:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_relaxed arch_try_cmpxchg128
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ARM GAS  /tmp/ccTmUZ8o.s 			page 19
+
+
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_relaxed(_ptr, _oldp, _new) \
+ 381:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 382:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 383:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg128_relaxed((_ptr), ___o, (_new)); \
+ 384:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 385:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 386:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 387:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 388:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 389:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 390:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg_local arch_cmpxchg_local
+ 391:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 392:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #ifdef arch_try_cmpxchg_local
+ 393:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_local arch_try_cmpxchg_local
+ 394:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 395:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg_local(_ptr, _oldp, _new) \
+ 396:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 397:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 398:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg_local((_ptr), ___o, (_new)); \
+ 399:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 400:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 401:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 402:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 403:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 404:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 405:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg64_local arch_cmpxchg64_local
+ 406:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 407:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #ifdef arch_try_cmpxchg64_local
+ 408:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_local arch_try_cmpxchg64_local
+ 409:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 410:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg64_local(_ptr, _oldp, _new) \
+ 411:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 412:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 413:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg64_local((_ptr), ___o, (_new)); \
+ 414:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 415:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 416:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 417:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 418:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 419:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 420:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_cmpxchg128_local arch_cmpxchg128_local
+ 421:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 422:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #ifdef arch_try_cmpxchg128_local
+ 423:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_local arch_try_cmpxchg128_local
+ 424:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 425:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_try_cmpxchg128_local(_ptr, _oldp, _new) \
+ 426:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 427:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 428:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_cmpxchg128_local((_ptr), ___o, (_new)); \
+ 429:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 430:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 431:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 432:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 433:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 434:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 435:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_sync_cmpxchg arch_sync_cmpxchg
+ 436:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ARM GAS  /tmp/ccTmUZ8o.s 			page 20
+
+
+ 437:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #ifdef arch_sync_try_cmpxchg
+ 438:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_sync_try_cmpxchg arch_sync_try_cmpxchg
+ 439:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 440:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #define raw_sync_try_cmpxchg(_ptr, _oldp, _new) \
+ 441:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** ({ \
+ 442:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
+ 443:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	___r = raw_sync_cmpxchg((_ptr), ___o, (_new)); \
+ 444:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (unlikely(___r != ___o)) \
+ 445:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		*___op = ___r; \
+ 446:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	likely(___r == ___o); \
+ 447:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** })
+ 448:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 449:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 450:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** /**
+ 451:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * raw_atomic_read() - atomic load with relaxed ordering
+ 452:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * @v: pointer to atomic_t
+ 453:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 454:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Atomically loads the value of @v with relaxed ordering.
+ 455:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 456:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Safe to use in noinstr code; prefer atomic_read() elsewhere.
+ 457:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 458:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Return: The value loaded from @v.
+ 459:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  */
+ 460:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** static __always_inline int
+ 461:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** raw_atomic_read(const atomic_t *v)
+ 462:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** {
+ 463:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	return arch_atomic_read(v);
+ 464:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** }
+ 465:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 466:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** /**
+ 467:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * raw_atomic_read_acquire() - atomic load with acquire ordering
+ 468:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * @v: pointer to atomic_t
+ 469:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 470:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Atomically loads the value of @v with acquire ordering.
+ 471:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 472:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Safe to use in noinstr code; prefer atomic_read_acquire() elsewhere.
+ 473:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 474:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Return: The value loaded from @v.
+ 475:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  */
+ 476:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** static __always_inline int
+ 477:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** raw_atomic_read_acquire(const atomic_t *v)
+ 478:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** {
+ 479:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #if defined(arch_atomic_read_acquire)
+ 480:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	return arch_atomic_read_acquire(v);
+ 481:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #else
+ 482:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	int ret;
+ 483:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 484:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	if (__native_word(atomic_t)) {
+ 485:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		ret = smp_load_acquire(&(v)->counter);
+ 486:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	} else {
+ 487:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		ret = raw_atomic_read(v);
+ 488:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 		__atomic_acquire_fence();
+ 489:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	}
+ 490:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 491:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	return ret;
+ 492:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** #endif
+ 493:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** }
+ARM GAS  /tmp/ccTmUZ8o.s 			page 21
+
+
+ 494:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 
+ 495:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** /**
+ 496:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * raw_atomic_set() - atomic set with relaxed ordering
+ 497:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * @v: pointer to atomic_t
+ 498:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * @i: int value to assign
+ 499:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 500:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Atomically sets @v to @i with relaxed ordering.
+ 501:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 502:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Safe to use in noinstr code; prefer atomic_set() elsewhere.
+ 503:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  *
+ 504:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  * Return: Nothing.
+ 505:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h ****  */
+ 506:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** static __always_inline void
+ 507:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** raw_atomic_set(atomic_t *v, int i)
+ 394              		.loc 5 507 1 view .LVU97
+ 395              	.LBB102:
+ 508:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** {
+ 509:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/atomic/atomic-arch-fallback.h **** 	arch_atomic_set(v, i);
+ 396              		.loc 5 509 2 view .LVU98
+ 397              		.loc 5 509 2 view .LVU99
+ 398              	.LBB103:
+ 399              		.loc 5 509 2 view .LVU100
+ 400              		.loc 5 509 2 view .LVU101
+ 401              	.LBE103:
+ 402              		.loc 5 509 2 discriminator 2 view .LVU102
+ 403              		.loc 5 509 2 discriminator 2 view .LVU103
+ 404              		.loc 5 509 2 discriminator 2 view .LVU104
+ 405 0004 0123     		movs	r3, #1
+ 406 0006 C0F8A030 		str	r3, [r0, #160]
+ 407              		.loc 5 509 2 discriminator 2 view .LVU105
+ 408              		.loc 5 509 2 discriminator 2 view .LVU106
+ 409              	.LVL27:
+ 410              		.loc 5 509 2 is_stmt 0 discriminator 2 view .LVU107
+ 411              	.LBE102:
+ 412              	.LBE101:
+ 413              	.LBE100:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->task_node);
+ 414              		.loc 1 38 5 is_stmt 1 view .LVU108
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->task_node);
+ 415              		.loc 1 38 19 is_stmt 0 view .LVU109
+ 416 000a FFF7FEFF 		bl	get_current_task
+ 417              	.LVL28:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->task_node);
+ 418              		.loc 1 38 17 discriminator 1 view .LVU110
+ 419 000e C4F8A400 		str	r0, [r4, #164]
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->children);
+ 420              		.loc 1 39 5 is_stmt 1 view .LVU111
+ 421 0012 04F19005 		add	r5, r4, #144
+ 422              	.LVL29:
+ 423              	.LBB104:
+ 424              	.LBI104:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 425              		.loc 3 35 20 view .LVU112
+ 426              	.LBB105:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 427              		.loc 3 37 2 view .LVU113
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ARM GAS  /tmp/ccTmUZ8o.s 			page 22
+
+
+ 428              		.loc 3 37 2 view .LVU114
+ 429              	.LBB106:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 430              		.loc 3 37 2 view .LVU115
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 431              		.loc 3 37 2 view .LVU116
+ 432              	.LBE106:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 433              		.loc 3 37 2 discriminator 2 view .LVU117
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 434              		.loc 3 37 2 discriminator 2 view .LVU118
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 435              		.loc 3 37 2 discriminator 2 view .LVU119
+ 436 0016 C4F89050 		str	r5, [r4, #144]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 437              		.loc 3 37 2 discriminator 2 view .LVU120
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 438              		.loc 3 37 2 discriminator 2 view .LVU121
+ 439              		.loc 3 38 2 view .LVU122
+ 440              		.loc 3 38 2 view .LVU123
+ 441              	.LBB107:
+ 442              		.loc 3 38 2 view .LVU124
+ 443              		.loc 3 38 2 view .LVU125
+ 444              	.LBE107:
+ 445              		.loc 3 38 2 discriminator 2 view .LVU126
+ 446              		.loc 3 38 2 discriminator 2 view .LVU127
+ 447              		.loc 3 38 2 discriminator 2 view .LVU128
+ 448 001a C4F89450 		str	r5, [r4, #148]
+ 449              		.loc 3 38 2 discriminator 2 view .LVU129
+ 450              		.loc 3 38 2 discriminator 2 view .LVU130
+ 451              	.LVL30:
+ 452              		.loc 3 38 2 is_stmt 0 discriminator 2 view .LVU131
+ 453              	.LBE105:
+ 454              	.LBE104:
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     INIT_LIST_HEAD(&new->this_task_node);
+ 455              		.loc 1 40 5 is_stmt 1 view .LVU132
+ 456 001e 04F18803 		add	r3, r4, #136
+ 457              	.LVL31:
+ 458              	.LBB108:
+ 459              	.LBI108:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 460              		.loc 3 35 20 view .LVU133
+ 461              	.LBB109:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 462              		.loc 3 37 2 view .LVU134
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 463              		.loc 3 37 2 view .LVU135
+ 464              	.LBB110:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 465              		.loc 3 37 2 view .LVU136
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 466              		.loc 3 37 2 view .LVU137
+ 467              	.LBE110:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 468              		.loc 3 37 2 discriminator 2 view .LVU138
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 469              		.loc 3 37 2 discriminator 2 view .LVU139
+ARM GAS  /tmp/ccTmUZ8o.s 			page 23
+
+
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 470              		.loc 3 37 2 discriminator 2 view .LVU140
+ 471 0022 C4F88830 		str	r3, [r4, #136]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 472              		.loc 3 37 2 discriminator 2 view .LVU141
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 473              		.loc 3 37 2 discriminator 2 view .LVU142
+ 474              		.loc 3 38 2 view .LVU143
+ 475              		.loc 3 38 2 view .LVU144
+ 476              	.LBB111:
+ 477              		.loc 3 38 2 view .LVU145
+ 478              		.loc 3 38 2 view .LVU146
+ 479              	.LBE111:
+ 480              		.loc 3 38 2 discriminator 2 view .LVU147
+ 481              		.loc 3 38 2 discriminator 2 view .LVU148
+ 482              		.loc 3 38 2 discriminator 2 view .LVU149
+ 483 0026 C4F88C30 		str	r3, [r4, #140]
+ 484              		.loc 3 38 2 discriminator 2 view .LVU150
+ 485              		.loc 3 38 2 discriminator 2 view .LVU151
+ 486              	.LVL32:
+ 487              		.loc 3 38 2 is_stmt 0 discriminator 2 view .LVU152
+ 488              	.LBE109:
+ 489              	.LBE108:
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     if(current != NULL)
+ 490              		.loc 1 41 5 is_stmt 1 view .LVU153
+ 491 002a 04F19806 		add	r6, r4, #152
+ 492              	.LVL33:
+ 493              	.LBB112:
+ 494              	.LBI112:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 495              		.loc 3 35 20 view .LVU154
+ 496              	.LBB113:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 497              		.loc 3 37 2 view .LVU155
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 498              		.loc 3 37 2 view .LVU156
+ 499              	.LBB114:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 500              		.loc 3 37 2 view .LVU157
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 501              		.loc 3 37 2 view .LVU158
+ 502              	.LBE114:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 503              		.loc 3 37 2 discriminator 2 view .LVU159
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 504              		.loc 3 37 2 discriminator 2 view .LVU160
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 505              		.loc 3 37 2 discriminator 2 view .LVU161
+ 506 002e C4F89860 		str	r6, [r4, #152]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 507              		.loc 3 37 2 discriminator 2 view .LVU162
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(list->prev, list);
+ 508              		.loc 3 37 2 discriminator 2 view .LVU163
+ 509              		.loc 3 38 2 view .LVU164
+ 510              		.loc 3 38 2 view .LVU165
+ 511              	.LBB115:
+ 512              		.loc 3 38 2 view .LVU166
+ARM GAS  /tmp/ccTmUZ8o.s 			page 24
+
+
+ 513              		.loc 3 38 2 view .LVU167
+ 514              	.LBE115:
+ 515              		.loc 3 38 2 discriminator 2 view .LVU168
+ 516              		.loc 3 38 2 discriminator 2 view .LVU169
+ 517              		.loc 3 38 2 discriminator 2 view .LVU170
+ 518 0032 C4F89C60 		str	r6, [r4, #156]
+ 519              		.loc 3 38 2 discriminator 2 view .LVU171
+ 520              		.loc 3 38 2 discriminator 2 view .LVU172
+ 521              	.LVL34:
+ 522              		.loc 3 38 2 is_stmt 0 discriminator 2 view .LVU173
+ 523              	.LBE113:
+ 524              	.LBE112:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->this_task_node,&current->children);
+ 525              		.loc 1 42 5 is_stmt 1 view .LVU174
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->this_task_node,&current->children);
+ 526              		.loc 1 42 8 is_stmt 0 view .LVU175
+ 527 0036 FFF7FEFF 		bl	get_current_task
+ 528              	.LVL35:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->this_task_node,&current->children);
+ 529              		.loc 1 42 7 discriminator 1 view .LVU176
+ 530 003a 60B1     		cbz	r0, .L21
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+ 531              		.loc 1 43 5 is_stmt 1 view .LVU177
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+ 532              		.loc 1 43 36 is_stmt 0 view .LVU178
+ 533 003c FFF7FEFF 		bl	get_current_task
+ 534              	.LVL36:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+ 535              		.loc 1 43 5 discriminator 1 view .LVU179
+ 536 0040 00F18802 		add	r2, r0, #136
+ 537              	.LVL37:
+ 538              	.LBB116:
+ 539              	.LBI116:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #ifdef CONFIG_LIST_HARDENED
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #ifdef CONFIG_DEBUG_LIST
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** # define __list_valid_slowpath
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #else
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** # define __list_valid_slowpath __cold __preserve_most
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #endif
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Performs the full set of list corruption checks before __list_add().
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** extern bool __list_valid_slowpath __list_add_valid_or_report(struct list_head *new,
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 							     struct list_head *prev,
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 							     struct list_head *next);
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Performs list corruption checks before __list_add(). Returns false if a
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * corruption is detected, true otherwise.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ARM GAS  /tmp/ccTmUZ8o.s 			page 25
+
+
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * detected calls the reporting function __list_add_valid_or_report().
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static __always_inline bool __list_add_valid(struct list_head *new,
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 					     struct list_head *prev,
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 					     struct list_head *next)
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	bool ret = true;
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		/*
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * are NULL, since the immediate dereference of them below would
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * result in a fault if NULL.
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 *
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * With the reduced set of checks, we can afford to inline the
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * checks, which also gives the compiler a chance to elide some
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * of them completely if they can be proven at compile-time. If
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * one of the pre-conditions does not hold, the slow-path will
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * show a report which pre-condition failed.
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 */
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		if (likely(next->prev == prev && prev->next == next && new != prev && new != next))
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			return true;
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		ret = false;
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	}
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	ret &= __list_add_valid_or_report(new, prev, next);
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	return ret;
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Performs the full set of list corruption checks before __list_del_entry().
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * On list corruption reports a warning, and returns false.
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** extern bool __list_valid_slowpath __list_del_entry_valid_or_report(struct list_head *entry);
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Performs list corruption checks before __list_del_entry(). Returns false if a
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * corruption is detected, true otherwise.
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * With CONFIG_LIST_HARDENED only, performs minimal list integrity checking
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * inline to catch non-faulting corruptions, and only if a corruption is
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * detected calls the reporting function __list_del_entry_valid_or_report().
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static __always_inline bool __list_del_entry_valid(struct list_head *entry)
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	bool ret = true;
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	if (!IS_ENABLED(CONFIG_DEBUG_LIST)) {
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		struct list_head *prev = entry->prev;
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		struct list_head *next = entry->next;
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		/*
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * With the hardening version, elide checking if next and prev
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * are NULL, LIST_POISON1 or LIST_POISON2, since the immediate
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 * dereference of them below would result in a fault.
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		 */
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		if (likely(prev->next == entry && next->prev == entry))
+ARM GAS  /tmp/ccTmUZ8o.s 			page 26
+
+
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			return true;
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		ret = false;
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	}
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	ret &= __list_del_entry_valid_or_report(entry);
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	return ret;
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #else
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline bool __list_add_valid(struct list_head *new,
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 				struct list_head *prev,
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 				struct list_head *next)
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	return true;
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline bool __list_del_entry_valid(struct list_head *entry)
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	return true;
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** #endif
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Insert a new entry between two known consecutive entries.
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * the prev/next entries already!
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void __list_add(struct list_head *new,
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			      struct list_head *prev,
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			      struct list_head *next)
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	if (!__list_add_valid(new, prev, next))
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	next->prev = new;
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /**
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * list_add - add a new entry
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @new: new entry to be added
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @head: list head to add it after
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Insert a new entry after the specified head.
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * This is good for implementing stacks.
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void list_add(struct list_head *new, struct list_head *head)
+ 540              		.loc 3 167 20 is_stmt 1 view .LVU180
+ 541              	.LBB117:
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	__list_add(new, head, head->next);
+ 542              		.loc 3 169 2 view .LVU181
+ 543 0044 D0F88830 		ldr	r3, [r0, #136]
+ 544              	.LVL38:
+ 545              	.LBB118:
+ 546              	.LBI118:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 27
+
+
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			      struct list_head *prev,
+ 547              		.loc 3 146 20 view .LVU182
+ 548              	.LBB119:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 549              		.loc 3 150 2 view .LVU183
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 550              		.loc 3 153 2 view .LVU184
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 551              		.loc 3 153 13 is_stmt 0 view .LVU185
+ 552 0048 5E60     		str	r6, [r3, #4]
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 553              		.loc 3 154 2 is_stmt 1 view .LVU186
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 554              		.loc 3 154 12 is_stmt 0 view .LVU187
+ 555 004a C4F89830 		str	r3, [r4, #152]
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 556              		.loc 3 155 2 is_stmt 1 view .LVU188
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 557              		.loc 3 155 12 is_stmt 0 view .LVU189
+ 558 004e C4F89C20 		str	r2, [r4, #156]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 559              		.loc 3 156 2 is_stmt 1 view .LVU190
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 560              		.loc 3 156 2 view .LVU191
+ 561              	.LBB120:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 562              		.loc 3 156 2 view .LVU192
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 563              		.loc 3 156 2 view .LVU193
+ 564              	.LBE120:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 565              		.loc 3 156 2 discriminator 2 view .LVU194
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 566              		.loc 3 156 2 discriminator 2 view .LVU195
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 567              		.loc 3 156 2 discriminator 2 view .LVU196
+ 568 0052 C0F88860 		str	r6, [r0, #136]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 569              		.loc 3 156 2 discriminator 3 view .LVU197
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 570              		.loc 3 156 2 discriminator 3 view .LVU198
+ 571              	.LVL39:
+ 572              	.L21:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 573              		.loc 3 156 2 is_stmt 0 discriminator 3 view .LVU199
+ 574              	.LBE119:
+ 575              	.LBE118:
+ 576              	.LBE117:
+ 577              	.LBE116:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->task_node,&Task_List);
+ 578              		.loc 1 44 5 is_stmt 1 view .LVU200
+ 579 0056 094E     		ldr	r6, .L23
+ 580 0058 3046     		mov	r0, r6
+ 581 005a FFF7FEFF 		bl	spin_lock
+ 582              	.LVL40:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_unlock(&Task_List_lock);
+ 583              		.loc 1 45 5 view .LVU201
+ARM GAS  /tmp/ccTmUZ8o.s 			page 28
+
+
+ 584              	.LBB121:
+ 585              	.LBI121:
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 586              		.loc 3 167 20 view .LVU202
+ 587              	.LBB122:
+ 588              		.loc 3 169 2 view .LVU203
+ 589 005e 084B     		ldr	r3, .L23+4
+ 590 0060 1A68     		ldr	r2, [r3]
+ 591              	.LVL41:
+ 592              	.LBB123:
+ 593              	.LBI123:
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			      struct list_head *prev,
+ 594              		.loc 3 146 20 view .LVU204
+ 595              	.LBB124:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 596              		.loc 3 150 2 view .LVU205
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 597              		.loc 3 153 2 view .LVU206
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 598              		.loc 3 153 13 is_stmt 0 view .LVU207
+ 599 0062 5560     		str	r5, [r2, #4]
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 600              		.loc 3 154 2 is_stmt 1 view .LVU208
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 601              		.loc 3 154 12 is_stmt 0 view .LVU209
+ 602 0064 C4F89020 		str	r2, [r4, #144]
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 603              		.loc 3 155 2 is_stmt 1 view .LVU210
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 604              		.loc 3 155 12 is_stmt 0 view .LVU211
+ 605 0068 C4F89430 		str	r3, [r4, #148]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 606              		.loc 3 156 2 is_stmt 1 view .LVU212
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 607              		.loc 3 156 2 view .LVU213
+ 608              	.LBB125:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 609              		.loc 3 156 2 view .LVU214
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 610              		.loc 3 156 2 view .LVU215
+ 611              	.LBE125:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 612              		.loc 3 156 2 discriminator 2 view .LVU216
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 613              		.loc 3 156 2 discriminator 2 view .LVU217
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 614              		.loc 3 156 2 discriminator 2 view .LVU218
+ 615 006c 1D60     		str	r5, [r3]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 616              		.loc 3 156 2 discriminator 3 view .LVU219
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 617              		.loc 3 156 2 discriminator 3 view .LVU220
+ 618              	.LVL42:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 619              		.loc 3 156 2 is_stmt 0 discriminator 3 view .LVU221
+ 620              	.LBE124:
+ 621              	.LBE123:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 29
+
+
+ 622              	.LBE122:
+ 623              	.LBE121:
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     __List_All_Tasks();
+ 624              		.loc 1 46 5 is_stmt 1 view .LVU222
+ 625 006e 3046     		mov	r0, r6
+ 626 0070 FFF7FEFF 		bl	spin_unlock
+ 627              	.LVL43:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+ 628              		.loc 1 47 5 view .LVU223
+ 629 0074 FFF7FEFF 		bl	__List_All_Tasks
+ 630              	.LVL44:
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 631              		.loc 1 48 1 is_stmt 0 view .LVU224
+ 632 0078 70BD     		pop	{r4, r5, r6, pc}
+ 633              	.LVL45:
+ 634              	.L24:
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 635              		.loc 1 48 1 view .LVU225
+ 636 007a 00BF     		.align	2
+ 637              	.L23:
+ 638 007c 00000000 		.word	Task_List_lock
+ 639 0080 00000000 		.word	Task_List
+ 640              		.cfi_endproc
+ 641              	.LFE808:
+ 643              		.section	.text.__Kill_Task,"ax",%progbits
+ 644              		.align	1
+ 645              		.global	__Kill_Task
+ 646              		.syntax unified
+ 647              		.thumb
+ 648              		.thumb_func
+ 650              	__Kill_Task:
+ 651              	.LVL46:
+ 652              	.LFB809:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+ 653              		.loc 1 51 1 is_stmt 1 view -0
+ 654              		.cfi_startproc
+ 655              		@ args = 0, pretend = 0, frame = 0
+ 656              		@ frame_needed = 0, uses_anonymous_args = 0
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_lock(&Task_List_lock);
+ 657              		.loc 1 51 1 is_stmt 0 view .LVU227
+ 658 0000 38B5     		push	{r3, r4, r5, lr}
+ 659              	.LCFI6:
+ 660              		.cfi_def_cfa_offset 16
+ 661              		.cfi_offset 3, -16
+ 662              		.cfi_offset 4, -12
+ 663              		.cfi_offset 5, -8
+ 664              		.cfi_offset 14, -4
+ 665 0002 0446     		mov	r4, r0
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_del(&new->task_node);
+ 666              		.loc 1 52 5 is_stmt 1 view .LVU228
+ 667 0004 104D     		ldr	r5, .L27
+ 668 0006 2846     		mov	r0, r5
+ 669              	.LVL47:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_del(&new->task_node);
+ 670              		.loc 1 52 5 is_stmt 0 view .LVU229
+ 671 0008 FFF7FEFF 		bl	spin_lock
+ 672              	.LVL48:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 30
+
+
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_add(&new->task_node,&Death_task_List);
+ 673              		.loc 1 53 5 is_stmt 1 view .LVU230
+ 674              	.LBB126:
+ 675              	.LBI126:
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /**
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * list_add_tail - add a new entry
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @new: new entry to be added
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @head: list head to add it before
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Insert a new entry before the specified head.
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * This is useful for implementing queues.
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void list_add_tail(struct list_head *new, struct list_head *head)
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	__list_add(new, head->prev, head);
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Delete a list entry by making the prev/next entries
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * point to each other.
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * This is only for internal list manipulation where we know
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * the prev/next entries already!
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void __list_del(struct list_head * prev, struct list_head * next)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	next->prev = prev;
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /*
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Delete a list entry and clear the 'prev' pointer.
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  *
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * This is a special-purpose list clearing method used in the networking code
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * for lists allocated as per-cpu, where we don't want to incur the extra
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * WRITE_ONCE() overhead of a regular list_del_init(). The code that uses this
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * needs to check the node 'prev' pointer instead of calling list_empty().
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void __list_del_clearprev(struct list_head *entry)
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	entry->prev = NULL;
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void __list_del_entry(struct list_head *entry)
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	if (!__list_del_entry_valid(entry))
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	__list_del(entry->prev, entry->next);
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** /**
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * list_del - deletes entry from list.
+ARM GAS  /tmp/ccTmUZ8o.s 			page 31
+
+
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * @entry: the element to delete from the list.
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * Note: list_empty() on entry does not return true after this, the entry is
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  * in an undefined state.
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h ****  */
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** static inline void list_del(struct list_head *entry)
+ 676              		.loc 3 227 20 view .LVU231
+ 677              	.LBB127:
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	__list_del_entry(entry);
+ 678              		.loc 3 229 2 view .LVU232
+ 679              	.LBB128:
+ 680              	.LBI128:
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 681              		.loc 3 213 20 view .LVU233
+ 682              	.LBB129:
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 683              		.loc 3 215 2 view .LVU234
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 684              		.loc 3 218 2 view .LVU235
+ 685 000c D4F89430 		ldr	r3, [r4, #148]
+ 686 0010 D4F89020 		ldr	r2, [r4, #144]
+ 687              	.LVL49:
+ 688              	.LBB130:
+ 689              	.LBI130:
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 690              		.loc 3 193 20 view .LVU236
+ 691              	.LBB131:
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 692              		.loc 3 195 2 view .LVU237
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, next);
+ 693              		.loc 3 195 13 is_stmt 0 view .LVU238
+ 694 0014 5360     		str	r3, [r2, #4]
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 695              		.loc 3 196 2 is_stmt 1 view .LVU239
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 696              		.loc 3 196 2 view .LVU240
+ 697              	.LBB132:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 698              		.loc 3 196 2 view .LVU241
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 699              		.loc 3 196 2 view .LVU242
+ 700              	.LBE132:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 701              		.loc 3 196 2 discriminator 2 view .LVU243
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 702              		.loc 3 196 2 discriminator 2 view .LVU244
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 703              		.loc 3 196 2 discriminator 2 view .LVU245
+ 704 0016 1A60     		str	r2, [r3]
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 705              		.loc 3 196 2 discriminator 2 view .LVU246
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 706              		.loc 3 196 2 discriminator 2 view .LVU247
+ 707              	.LVL50:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 708              		.loc 3 196 2 is_stmt 0 discriminator 2 view .LVU248
+ 709              	.LBE131:
+ARM GAS  /tmp/ccTmUZ8o.s 			page 32
+
+
+ 710              	.LBE130:
+ 711              	.LBE129:
+ 712              	.LBE128:
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	entry->next = LIST_POISON1;
+ 713              		.loc 3 230 2 is_stmt 1 view .LVU249
+ 714              		.loc 3 230 14 is_stmt 0 view .LVU250
+ 715 0018 4FF48073 		mov	r3, #256
+ 716 001c C4F89030 		str	r3, [r4, #144]
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	entry->prev = LIST_POISON2;
+ 717              		.loc 3 231 2 is_stmt 1 view .LVU251
+ 718              		.loc 3 231 14 is_stmt 0 view .LVU252
+ 719 0020 4FF49173 		mov	r3, #290
+ 720 0024 C4F89430 		str	r3, [r4, #148]
+ 721              	.LVL51:
+ 722              		.loc 3 231 14 view .LVU253
+ 723              	.LBE127:
+ 724              	.LBE126:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     spin_unlock(&Task_List_lock); 
+ 725              		.loc 1 54 5 is_stmt 1 view .LVU254
+ 726 0028 04F19002 		add	r2, r4, #144
+ 727              	.LVL52:
+ 728              	.LBB133:
+ 729              	.LBI133:
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** {
+ 730              		.loc 3 167 20 view .LVU255
+ 731              	.LBB134:
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 732              		.loc 3 169 2 view .LVU256
+ 733 002c 074B     		ldr	r3, .L27+4
+ 734 002e 1968     		ldr	r1, [r3]
+ 735              	.LVL53:
+ 736              	.LBB135:
+ 737              	.LBI135:
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 			      struct list_head *prev,
+ 738              		.loc 3 146 20 view .LVU257
+ 739              	.LBB136:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 		return;
+ 740              		.loc 3 150 2 view .LVU258
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 741              		.loc 3 153 2 view .LVU259
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->next = next;
+ 742              		.loc 3 153 13 is_stmt 0 view .LVU260
+ 743 0030 4A60     		str	r2, [r1, #4]
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 744              		.loc 3 154 2 is_stmt 1 view .LVU261
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	new->prev = prev;
+ 745              		.loc 3 154 12 is_stmt 0 view .LVU262
+ 746 0032 C4F89010 		str	r1, [r4, #144]
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 747              		.loc 3 155 2 is_stmt 1 view .LVU263
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** 	WRITE_ONCE(prev->next, new);
+ 748              		.loc 3 155 12 is_stmt 0 view .LVU264
+ 749 0036 C4F89430 		str	r3, [r4, #148]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 750              		.loc 3 156 2 is_stmt 1 view .LVU265
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 751              		.loc 3 156 2 view .LVU266
+ARM GAS  /tmp/ccTmUZ8o.s 			page 33
+
+
+ 752              	.LBB137:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 753              		.loc 3 156 2 view .LVU267
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 754              		.loc 3 156 2 view .LVU268
+ 755              	.LBE137:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 756              		.loc 3 156 2 discriminator 2 view .LVU269
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 757              		.loc 3 156 2 discriminator 2 view .LVU270
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 758              		.loc 3 156 2 discriminator 2 view .LVU271
+ 759 003a 1A60     		str	r2, [r3]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 760              		.loc 3 156 2 discriminator 3 view .LVU272
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 761              		.loc 3 156 2 discriminator 3 view .LVU273
+ 762              	.LVL54:
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/list.h **** }
+ 763              		.loc 3 156 2 is_stmt 0 discriminator 3 view .LVU274
+ 764              	.LBE136:
+ 765              	.LBE135:
+ 766              	.LBE134:
+ 767              	.LBE133:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     __List_All_Tasks();
+ 768              		.loc 1 55 5 is_stmt 1 view .LVU275
+ 769 003c 2846     		mov	r0, r5
+ 770 003e FFF7FEFF 		bl	spin_unlock
+ 771              	.LVL55:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+ 772              		.loc 1 56 5 view .LVU276
+ 773 0042 FFF7FEFF 		bl	__List_All_Tasks
+ 774              	.LVL56:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 775              		.loc 1 57 1 is_stmt 0 view .LVU277
+ 776 0046 38BD     		pop	{r3, r4, r5, pc}
+ 777              	.LVL57:
+ 778              	.L28:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+ 779              		.loc 1 57 1 view .LVU278
+ 780              		.align	2
+ 781              	.L27:
+ 782 0048 00000000 		.word	Task_List_lock
+ 783 004c 00000000 		.word	Death_task_List
+ 784              		.cfi_endproc
+ 785              	.LFE809:
+ 787              		.section	.rodata.__default_Task_return_function.str1.4,"aMS",%progbits,1
+ 788              		.align	2
+ 789              	.LC3:
+ 790 0000 7461736B 		.ascii	"task : %s has return\012\000"
+ 790      203A2025 
+ 790      73206861 
+ 790      73207265 
+ 790      7475726E 
+ 791              		.section	.text.__default_Task_return_function,"ax",%progbits
+ 792              		.align	1
+ 793              		.global	__default_Task_return_function
+ARM GAS  /tmp/ccTmUZ8o.s 			page 34
+
+
+ 794              		.syntax unified
+ 795              		.thumb
+ 796              		.thumb_func
+ 798              	__default_Task_return_function:
+ 799              	.LFB810:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct* cutrrent_task = current;
+ 800              		.loc 1 59 42 is_stmt 1 view -0
+ 801              		.cfi_startproc
+ 802              		@ args = 0, pretend = 0, frame = 0
+ 803              		@ frame_needed = 0, uses_anonymous_args = 0
+ 804 0000 10B5     		push	{r4, lr}
+ 805              	.LCFI7:
+ 806              		.cfi_def_cfa_offset 8
+ 807              		.cfi_offset 4, -8
+ 808              		.cfi_offset 14, -4
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     pr_info("task : %s has return\n" ,cutrrent_task->task_name);
+ 809              		.loc 1 60 5 view .LVU280
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     pr_info("task : %s has return\n" ,cutrrent_task->task_name);
+ 810              		.loc 1 60 41 is_stmt 0 view .LVU281
+ 811 0002 FFF7FEFF 		bl	get_current_task
+ 812              	.LVL58:
+ 813 0006 0446     		mov	r4, r0
+ 814              	.LVL59:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     while (1){
+ 815              		.loc 1 61 5 is_stmt 1 view .LVU282
+ 816 0008 00F10C02 		add	r2, r0, #12
+ 817 000c 0449     		ldr	r1, .L32
+ 818 000e 0620     		movs	r0, #6
+ 819              	.LVL60:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     while (1){
+ 820              		.loc 1 61 5 is_stmt 0 view .LVU283
+ 821 0010 FFF7FEFF 		bl	printk
+ 822              	.LVL61:
+ 823              	.L30:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_DEAD;
+ 824              		.loc 1 62 5 is_stmt 1 view .LVU284
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         sched();
+ 825              		.loc 1 63 9 view .LVU285
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         sched();
+ 826              		.loc 1 63 30 is_stmt 0 view .LVU286
+ 827 0014 0623     		movs	r3, #6
+ 828 0016 84F86430 		strb	r3, [r4, #100]
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 829              		.loc 1 64 9 is_stmt 1 discriminator 1 view .LVU287
+ 830 001a FFF7FEFF 		bl	sched
+ 831              	.LVL62:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_DEAD;
+ 832              		.loc 1 62 11 view .LVU288
+ 833 001e F9E7     		b	.L30
+ 834              	.L33:
+ 835              		.align	2
+ 836              	.L32:
+ 837 0020 00000000 		.word	.LC3
+ 838              		.cfi_endproc
+ 839              	.LFE810:
+ 841              		.section	.text.sys_wait,"ax",%progbits
+ 842              		.align	1
+ARM GAS  /tmp/ccTmUZ8o.s 			page 35
+
+
+ 843              		.global	sys_wait
+ 844              		.syntax unified
+ 845              		.thumb
+ 846              		.thumb_func
+ 848              	sys_wait:
+ 849              	.LVL63:
+ 850              	.LFB812:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** 
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** pid_t sys_wait(int *status)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** {
+ 851              		.loc 1 76 1 view -0
+ 852              		.cfi_startproc
+ 853              		@ args = 0, pretend = 0, frame = 0
+ 854              		@ frame_needed = 0, uses_anonymous_args = 0
+ 855              		.loc 1 76 1 is_stmt 0 view .LVU290
+ 856 0000 10B5     		push	{r4, lr}
+ 857              	.LCFI8:
+ 858              		.cfi_def_cfa_offset 8
+ 859              		.cfi_offset 4, -8
+ 860              		.cfi_offset 14, -4
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct* cutrrent_task = current;
+ 861              		.loc 1 77 5 is_stmt 1 view .LVU291
+ 862              		.loc 1 77 41 is_stmt 0 view .LVU292
+ 863 0002 FFF7FEFF 		bl	get_current_task
+ 864              	.LVL64:
+ 865              		.loc 1 77 41 view .LVU293
+ 866 0006 0446     		mov	r4, r0
+ 867              	.LVL65:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     cutrrent_task->state = TASK_BLOCKED;       //进入阻塞状态，只能外部唤醒
+ 868              		.loc 1 78 5 is_stmt 1 view .LVU294
+ 869              		.loc 1 78 26 is_stmt 0 view .LVU295
+ 870 0008 0423     		movs	r3, #4
+ 871 000a 80F86430 		strb	r3, [r0, #100]
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     if(i_sched() != 0){                        //注意这是特权指令，只能在中断中调�
+ 872              		.loc 1 79 5 is_stmt 1 view .LVU296
+ 873              		.loc 1 79 8 is_stmt 0 view .LVU297
+ 874 000e FFF7FEFF 		bl	i_sched
+ 875              	.LVL66:
+ 876              		.loc 1 79 7 discriminator 1 view .LVU298
+ 877 0012 38B9     		cbnz	r0, .L41
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_RUNNING;
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         return -1; 
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     cutrrent_task->script = WAITING_SON_TASK;
+ 878              		.loc 1 83 5 is_stmt 1 view .LVU299
+ 879              		.loc 1 83 27 is_stmt 0 view .LVU300
+ 880 0014 0023     		movs	r3, #0
+ 881 0016 84F88430 		strb	r3, [r4, #132]
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     struct task_struct *pos;
+ 882              		.loc 1 84 5 is_stmt 1 view .LVU301
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     list_for_each_entry(pos,&cutrrent_task->children,this_task_node){
+ 883              		.loc 1 85 5 view .LVU302
+ 884              	.LBB138:
+ 885              		.loc 1 85 5 view .LVU303
+ 886 001a D4F88830 		ldr	r3, [r4, #136]
+ 887              	.LVL67:
+ 888              		.loc 1 85 5 view .LVU304
+ARM GAS  /tmp/ccTmUZ8o.s 			page 36
+
+
+ 889              		.loc 1 85 5 view .LVU305
+ 890 001e A3F19800 		sub	r0, r3, #152
+ 891              	.LVL68:
+ 892              		.loc 1 85 5 is_stmt 0 view .LVU306
+ 893              	.LBE138:
+ 894 0022 08E0     		b	.L37
+ 895              	.LVL69:
+ 896              	.L41:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_RUNNING;
+ 897              		.loc 1 80 9 is_stmt 1 view .LVU307
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         cutrrent_task->state = TASK_RUNNING;
+ 898              		.loc 1 80 30 is_stmt 0 view .LVU308
+ 899 0024 0523     		movs	r3, #5
+ 900 0026 84F86430 		strb	r3, [r4, #100]
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 901              		.loc 1 81 9 is_stmt 1 view .LVU309
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 902              		.loc 1 81 16 is_stmt 0 view .LVU310
+ 903 002a 4FF0FF34 		mov	r4, #-1
+ 904              	.LVL70:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+ 905              		.loc 1 81 16 view .LVU311
+ 906 002e 12E0     		b	.L34
+ 907              	.LVL71:
+ 908              	.L38:
+ 909              		.loc 1 85 5 is_stmt 1 discriminator 2 view .LVU312
+ 910              	.LBB139:
+ 911              		.loc 1 85 5 discriminator 2 view .LVU313
+ 912 0030 D0F89800 		ldr	r0, [r0, #152]
+ 913              	.LVL72:
+ 914              		.loc 1 85 5 discriminator 2 view .LVU314
+ 915              		.loc 1 85 5 discriminator 2 view .LVU315
+ 916 0034 9838     		subs	r0, r0, #152
+ 917              	.LVL73:
+ 918              	.L37:
+ 919              		.loc 1 85 5 is_stmt 0 discriminator 2 view .LVU316
+ 920              	.LBE139:
+ 921              		.loc 1 85 5 is_stmt 1 discriminator 1 view .LVU317
+ 922 0036 00F19803 		add	r3, r0, #152
+ 923 003a 04F18802 		add	r2, r4, #136
+ 924 003e 9342     		cmp	r3, r2
+ 925 0040 07D0     		beq	.L42
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         if(pos->state == TASK_DEAD){
+ 926              		.loc 1 86 9 view .LVU318
+ 927              		.loc 1 86 15 is_stmt 0 view .LVU319
+ 928 0042 90F86430 		ldrb	r3, [r0, #100]	@ zero_extendqisi2
+ 929              		.loc 1 86 11 view .LVU320
+ 930 0046 062B     		cmp	r3, #6
+ 931 0048 F2D1     		bne	.L38
+ 932              	.LBB140:
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****             pid_t pid = pos->pid;
+ 933              		.loc 1 87 13 is_stmt 1 view .LVU321
+ 934              		.loc 1 87 28 is_stmt 0 view .LVU322
+ 935 004a 8468     		ldr	r4, [r0, #8]
+ 936              	.LVL74:
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****             clean_task(pos);
+ 937              		.loc 1 88 13 is_stmt 1 view .LVU323
+ARM GAS  /tmp/ccTmUZ8o.s 			page 37
+
+
+ 938 004c FFF7FEFF 		bl	clean_task
+ 939              	.LVL75:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****             return pid;        
+ 940              		.loc 1 89 13 view .LVU324
+ 941              		.loc 1 89 20 is_stmt 0 view .LVU325
+ 942 0050 01E0     		b	.L34
+ 943              	.LVL76:
+ 944              	.L42:
+ 945              		.loc 1 89 20 view .LVU326
+ 946              	.LBE140:
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****         }
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     }
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c ****     return -1;
+ 947              		.loc 1 92 12 view .LVU327
+ 948 0052 4FF0FF34 		mov	r4, #-1
+ 949              	.LVL77:
+ 950              	.L34:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/taskmanager.c **** }
+ 951              		.loc 1 93 1 view .LVU328
+ 952 0056 2046     		mov	r0, r4
+ 953 0058 10BD     		pop	{r4, pc}
+ 954              		.cfi_endproc
+ 955              	.LFE812:
+ 957              		.global	init
+ 958              		.section	.bss.init,"aw",%nobits
+ 959              		.align	2
+ 962              	init:
+ 963 0000 00000000 		.space	4
+ 964              		.section	.bss.Death_task_List,"aw",%nobits
+ 965              		.align	2
+ 968              	Death_task_List:
+ 969 0000 00000000 		.space	8
+ 969      00000000 
+ 970              		.section	.bss.Task_List,"aw",%nobits
+ 971              		.align	2
+ 974              	Task_List:
+ 975 0000 00000000 		.space	8
+ 975      00000000 
+ 976              		.section	.bss.Task_List_lock,"aw",%nobits
+ 977              		.align	2
+ 980              	Task_List_lock:
+ 981 0000 00000000 		.space	16
+ 981      00000000 
+ 981      00000000 
+ 981      00000000 
+ 982              		.text
+ 983              	.Letext0:
+ 984              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 985              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 986              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 987              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 988              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 989              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 990              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 991              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 992              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 993              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/ccTmUZ8o.s 			page 38
+
+
+ 994              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/instrumented.h"
+ 995              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kcsan-checks.h"
+ 996              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kasan-checks.h"
+ 997              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stddef.h"
+ARM GAS  /tmp/ccTmUZ8o.s 			page 39
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 taskmanager.c
+     /tmp/ccTmUZ8o.s:22     .text.spin_lock_init:00000000 $t
+     /tmp/ccTmUZ8o.s:27     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/ccTmUZ8o.s:46     .text.spin_lock:00000000 $t
+     /tmp/ccTmUZ8o.s:51     .text.spin_lock:00000000 spin_lock
+     /tmp/ccTmUZ8o.s:73     .text.spin_unlock:00000000 $t
+     /tmp/ccTmUZ8o.s:78     .text.spin_unlock:00000000 spin_unlock
+     /tmp/ccTmUZ8o.s:100    .text.clean_task:00000000 $t
+     /tmp/ccTmUZ8o.s:105    .text.clean_task:00000000 clean_task
+     /tmp/ccTmUZ8o.s:127    .rodata.__List_All_Tasks.str1.4:00000000 $d
+     /tmp/ccTmUZ8o.s:137    .text.__List_All_Tasks:00000000 $t
+     /tmp/ccTmUZ8o.s:143    .text.__List_All_Tasks:00000000 __List_All_Tasks
+     /tmp/ccTmUZ8o.s:250    .text.__List_All_Tasks:0000005c $d
+     /tmp/ccTmUZ8o.s:974    .bss.Task_List:00000000 Task_List
+     /tmp/ccTmUZ8o.s:968    .bss.Death_task_List:00000000 Death_task_List
+     /tmp/ccTmUZ8o.s:259    .text.__Task_manager_init:00000000 $t
+     /tmp/ccTmUZ8o.s:265    .text.__Task_manager_init:00000000 __Task_manager_init
+     /tmp/ccTmUZ8o.s:354    .text.__Task_manager_init:00000018 $d
+     /tmp/ccTmUZ8o.s:980    .bss.Task_List_lock:00000000 Task_List_lock
+     /tmp/ccTmUZ8o.s:361    .text.__save_Task:00000000 $t
+     /tmp/ccTmUZ8o.s:367    .text.__save_Task:00000000 __save_Task
+     /tmp/ccTmUZ8o.s:638    .text.__save_Task:0000007c $d
+     /tmp/ccTmUZ8o.s:644    .text.__Kill_Task:00000000 $t
+     /tmp/ccTmUZ8o.s:650    .text.__Kill_Task:00000000 __Kill_Task
+     /tmp/ccTmUZ8o.s:782    .text.__Kill_Task:00000048 $d
+     /tmp/ccTmUZ8o.s:788    .rodata.__default_Task_return_function.str1.4:00000000 $d
+     /tmp/ccTmUZ8o.s:792    .text.__default_Task_return_function:00000000 $t
+     /tmp/ccTmUZ8o.s:798    .text.__default_Task_return_function:00000000 __default_Task_return_function
+     /tmp/ccTmUZ8o.s:837    .text.__default_Task_return_function:00000020 $d
+     /tmp/ccTmUZ8o.s:842    .text.sys_wait:00000000 $t
+     /tmp/ccTmUZ8o.s:848    .text.sys_wait:00000000 sys_wait
+     /tmp/ccTmUZ8o.s:962    .bss.init:00000000 init
+     /tmp/ccTmUZ8o.s:959    .bss.init:00000000 $d
+     /tmp/ccTmUZ8o.s:965    .bss.Death_task_List:00000000 $d
+     /tmp/ccTmUZ8o.s:971    .bss.Task_List:00000000 $d
+     /tmp/ccTmUZ8o.s:977    .bss.Task_List_lock:00000000 $d
+
+UNDEFINED SYMBOLS
+_spin_lock
+_spin_unlock
+kfree
+printk
+get_current_task
+sched
+i_sched

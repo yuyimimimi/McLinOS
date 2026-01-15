@@ -1,2 +1,5 @@
-C_SOURCES += 	\
-	$(BASE_DIR)/drivers/tick/$(PLATFORM)_tick.c
+ifeq ($(wildcard $(BASE_DIR)/drivers/tick/$(PLATFORM)),)
+else
+include $(BASE_DIR)/drivers/tick/$(PLATFORM)/makefile
+endif
+

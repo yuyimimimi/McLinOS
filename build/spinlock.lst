@@ -1,0 +1,332 @@
+ARM GAS  /tmp/cczMg1vC.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"spinlock.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c"
+  21              		.section	.text.local_irq_disable,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	local_irq_disable:
+  28              	.LFB0:
+  29              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** #ifndef  __IRQFLAG_H_
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** #define  __IRQFLAG_H_
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** extern void __enable_irq();
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** extern void __disable_irq();
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** static void local_irq_disable(){
+  30              		.loc 2 7 32 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h ****     __disable_irq();
+  39              		.loc 2 8 5 view .LVU1
+  40 0002 FFF7FEFF 		bl	__disable_irq
+  41              	.LVL0:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** }
+  42              		.loc 2 9 1 is_stmt 0 view .LVU2
+  43 0006 08BD     		pop	{r3, pc}
+  44              		.cfi_endproc
+  45              	.LFE0:
+  47              		.section	.text.local_irq_enable,"ax",%progbits
+  48              		.align	1
+  49              		.syntax unified
+  50              		.thumb
+ARM GAS  /tmp/cczMg1vC.s 			page 2
+
+
+  51              		.thumb_func
+  53              	local_irq_enable:
+  54              	.LFB1:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** static void local_irq_enable(){
+  55              		.loc 2 11 31 is_stmt 1 view -0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59 0000 08B5     		push	{r3, lr}
+  60              	.LCFI1:
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 3, -8
+  63              		.cfi_offset 14, -4
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h ****     __enable_irq();
+  64              		.loc 2 12 5 view .LVU4
+  65 0002 FFF7FEFF 		bl	__enable_irq
+  66              	.LVL1:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** }
+  67              		.loc 2 13 1 is_stmt 0 view .LVU5
+  68 0006 08BD     		pop	{r3, pc}
+  69              		.cfi_endproc
+  70              	.LFE1:
+  72              		.section	.text.try_atomic_set_flag,"ax",%progbits
+  73              		.align	1
+  74              		.weak	try_atomic_set_flag
+  75              		.syntax unified
+  76              		.thumb
+  77              		.thumb_func
+  79              	try_atomic_set_flag:
+  80              	.LVL2:
+  81              	.LFB114:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** #include <linux/irqflags.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** #include <linux/spinlock.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** int __weak try_atomic_set_flag(int* lock, int flag);
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** int __weak try_atomic_set_flag(int* lock, int flag)
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** {
+  82              		.loc 1 6 1 is_stmt 1 view -0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		.loc 1 6 1 is_stmt 0 view .LVU7
+  87 0000 38B5     		push	{r3, r4, r5, lr}
+  88              	.LCFI2:
+  89              		.cfi_def_cfa_offset 16
+  90              		.cfi_offset 3, -16
+  91              		.cfi_offset 4, -12
+  92              		.cfi_offset 5, -8
+  93              		.cfi_offset 14, -4
+  94 0002 0446     		mov	r4, r0
+  95 0004 0D46     		mov	r5, r1
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     local_irq_disable();
+  96              		.loc 1 7 5 is_stmt 1 view .LVU8
+  97 0006 FFF7FEFF 		bl	local_irq_disable
+  98              	.LVL3:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     int ret = -1;
+ARM GAS  /tmp/cczMg1vC.s 			page 3
+
+
+  99              		.loc 1 8 5 view .LVU9
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     if (*lock != flag) {
+ 100              		.loc 1 9 5 view .LVU10
+ 101              		.loc 1 9 9 is_stmt 0 view .LVU11
+ 102 000a 2368     		ldr	r3, [r4]
+ 103              		.loc 1 9 8 view .LVU12
+ 104 000c AB42     		cmp	r3, r5
+ 105 000e 05D0     		beq	.L7
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         *lock = flag;
+ 106              		.loc 1 10 9 is_stmt 1 view .LVU13
+ 107              		.loc 1 10 15 is_stmt 0 view .LVU14
+ 108 0010 2560     		str	r5, [r4]
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         ret = 0;
+ 109              		.loc 1 11 9 is_stmt 1 view .LVU15
+ 110              	.LVL4:
+ 111              		.loc 1 11 13 is_stmt 0 view .LVU16
+ 112 0012 0024     		movs	r4, #0
+ 113              	.LVL5:
+ 114              	.L6:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     }
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     local_irq_enable();
+ 115              		.loc 1 13 5 is_stmt 1 view .LVU17
+ 116 0014 FFF7FEFF 		bl	local_irq_enable
+ 117              	.LVL6:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     return ret;
+ 118              		.loc 1 14 5 view .LVU18
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** }
+ 119              		.loc 1 15 1 is_stmt 0 view .LVU19
+ 120 0018 2046     		mov	r0, r4
+ 121 001a 38BD     		pop	{r3, r4, r5, pc}
+ 122              	.LVL7:
+ 123              	.L7:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     if (*lock != flag) {
+ 124              		.loc 1 8 9 view .LVU20
+ 125 001c 4FF0FF34 		mov	r4, #-1
+ 126              	.LVL8:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     if (*lock != flag) {
+ 127              		.loc 1 8 9 view .LVU21
+ 128 0020 F8E7     		b	.L6
+ 129              		.cfi_endproc
+ 130              	.LFE114:
+ 132              		.section	.text._spin_lock,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	_spin_lock
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	_spin_lock:
+ 140              	.LVL9:
+ 141              	.LFB115:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** 
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** void _spin_lock(spinlock_t* lock)
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** {
+ 142              		.loc 1 19 1 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cczMg1vC.s 			page 4
+
+
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		.loc 1 19 1 is_stmt 0 view .LVU23
+ 147 0000 38B5     		push	{r3, r4, r5, lr}
+ 148              	.LCFI3:
+ 149              		.cfi_def_cfa_offset 16
+ 150              		.cfi_offset 3, -16
+ 151              		.cfi_offset 4, -12
+ 152              		.cfi_offset 5, -8
+ 153              		.cfi_offset 14, -4
+ 154 0002 0446     		mov	r4, r0
+ 155 0004 06E0     		b	.L12
+ 156              	.LVL10:
+ 157              	.L14:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     while (1)
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     {
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         if(try_atomic_set_flag(&lock->flag,1) == 0){
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             lock->owner = get_current_task();
+ 158              		.loc 1 23 13 is_stmt 1 view .LVU24
+ 159              		.loc 1 23 27 is_stmt 0 view .LVU25
+ 160 0006 FFF7FEFF 		bl	get_current_task
+ 161              	.LVL11:
+ 162              		.loc 1 23 25 discriminator 1 view .LVU26
+ 163 000a 2060     		str	r0, [r4]
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             break;
+ 164              		.loc 1 24 13 is_stmt 1 view .LVU27
+ 165              	.L9:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         }
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         else if(lock->owner == get_current_task()){  //如果已经被锁住但是锁是自己的�
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             return;   
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         }
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         else{
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             __delay(5); //主动让出时间片
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         }
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     }
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** }
+ 166              		.loc 1 33 1 is_stmt 0 view .LVU28
+ 167 000c 38BD     		pop	{r3, r4, r5, pc}
+ 168              	.LVL12:
+ 169              	.L15:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****         }
+ 170              		.loc 1 30 13 is_stmt 1 view .LVU29
+ 171 000e 0520     		movs	r0, #5
+ 172 0010 FFF7FEFF 		bl	__delay
+ 173              	.LVL13:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     {
+ 174              		.loc 1 20 11 view .LVU30
+ 175              	.L12:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     {
+ 176              		.loc 1 20 5 view .LVU31
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             lock->owner = get_current_task();
+ 177              		.loc 1 22 9 view .LVU32
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             lock->owner = get_current_task();
+ 178              		.loc 1 22 12 is_stmt 0 view .LVU33
+ 179 0014 0121     		movs	r1, #1
+ 180 0016 2046     		mov	r0, r4
+ 181 0018 FFF7FEFF 		bl	try_atomic_set_flag
+ 182              	.LVL14:
+ARM GAS  /tmp/cczMg1vC.s 			page 5
+
+
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             lock->owner = get_current_task();
+ 183              		.loc 1 22 11 discriminator 1 view .LVU34
+ 184 001c 0028     		cmp	r0, #0
+ 185 001e F2D0     		beq	.L14
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             return;   
+ 186              		.loc 1 26 14 is_stmt 1 view .LVU35
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             return;   
+ 187              		.loc 1 26 21 is_stmt 0 view .LVU36
+ 188 0020 2568     		ldr	r5, [r4]
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             return;   
+ 189              		.loc 1 26 32 view .LVU37
+ 190 0022 FFF7FEFF 		bl	get_current_task
+ 191              	.LVL15:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****             return;   
+ 192              		.loc 1 26 16 discriminator 1 view .LVU38
+ 193 0026 8542     		cmp	r5, r0
+ 194 0028 F1D1     		bne	.L15
+ 195 002a EFE7     		b	.L9
+ 196              		.cfi_endproc
+ 197              	.LFE115:
+ 199              		.section	.text._spin_unlock,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	_spin_unlock
+ 202              		.syntax unified
+ 203              		.thumb
+ 204              		.thumb_func
+ 206              	_spin_unlock:
+ 207              	.LVL16:
+ 208              	.LFB116:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** 
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** 
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** void _spin_unlock(spinlock_t* lock)
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** {
+ 209              		.loc 1 37 1 is_stmt 1 view -0
+ 210              		.cfi_startproc
+ 211              		@ args = 0, pretend = 0, frame = 0
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213              		.loc 1 37 1 is_stmt 0 view .LVU40
+ 214 0000 08B5     		push	{r3, lr}
+ 215              	.LCFI4:
+ 216              		.cfi_def_cfa_offset 8
+ 217              		.cfi_offset 3, -8
+ 218              		.cfi_offset 14, -4
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c ****     try_atomic_set_flag(&lock->flag,0);
+ 219              		.loc 1 38 5 is_stmt 1 view .LVU41
+ 220 0002 0021     		movs	r1, #0
+ 221 0004 FFF7FEFF 		bl	try_atomic_set_flag
+ 222              	.LVL17:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/lock/spinlock.c **** }...
+ 223              		.loc 1 39 1 is_stmt 0 view .LVU42
+ 224 0008 08BD     		pop	{r3, pc}
+ 225              		.cfi_endproc
+ 226              	.LFE116:
+ 228              		.text
+ 229              	.Letext0:
+ 230              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 231              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ARM GAS  /tmp/cczMg1vC.s 			page 6
+
+
+ 232              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 233              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 234              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 235              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 236              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 237              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 238              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 239              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+ARM GAS  /tmp/cczMg1vC.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 spinlock.c
+     /tmp/cczMg1vC.s:22     .text.local_irq_disable:00000000 $t
+     /tmp/cczMg1vC.s:27     .text.local_irq_disable:00000000 local_irq_disable
+     /tmp/cczMg1vC.s:48     .text.local_irq_enable:00000000 $t
+     /tmp/cczMg1vC.s:53     .text.local_irq_enable:00000000 local_irq_enable
+     /tmp/cczMg1vC.s:73     .text.try_atomic_set_flag:00000000 $t
+     /tmp/cczMg1vC.s:79     .text.try_atomic_set_flag:00000000 try_atomic_set_flag
+     /tmp/cczMg1vC.s:133    .text._spin_lock:00000000 $t
+     /tmp/cczMg1vC.s:139    .text._spin_lock:00000000 _spin_lock
+     /tmp/cczMg1vC.s:200    .text._spin_unlock:00000000 $t
+     /tmp/cczMg1vC.s:206    .text._spin_unlock:00000000 _spin_unlock
+
+UNDEFINED SYMBOLS
+__disable_irq
+__enable_irq
+get_current_task
+__delay

@@ -1,5 +1,15 @@
 menu "sched"
 
+
+
+config SYSTEM_TICK_FREQUENCY
+      int "SYSTEM TICK (HZ)"
+      default 500
+      help
+        Set the tick frequency
+
+
+
 config CPU_NUM
     int "Number of CPUs"
     default 1

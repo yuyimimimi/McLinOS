@@ -35,6 +35,9 @@
  * There are no real SMP implementations of such cores.
  */
 
+
+
+ 
 #define mb()	asm volatile("sync\n" : : : "memory")
 
 #endif

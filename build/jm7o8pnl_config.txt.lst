@@ -1,0 +1,143 @@
+ARM GAS  /tmp/ccvyeMIe.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"jm7o8pnl_config.txt.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/user/rootfs_file_out/jm7o8pnl_config.tx
+  21              		.section	.rodata.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 2F626F6F 		.ascii	"/boot/config.txt\000"
+  24      742F636F 
+  24      6E666967 
+  24      2E747874 
+  24      00
+  25              		.section	.init_ramfs_files,"aw"
+  26              		.align	2
+  29              	register_file_file_data:
+  30 0000 00000000 		.word	.LC0
+  31 0004 5A020000 		.word	602
+  32 0008 00000000 		.word	filedata
+  33 000c 00       		.byte	0
+  34 000d 000000   		.space	3
+  35              		.section	.rodata.filedata,"a"
+  36              		.align	2
+  39              	filedata:
+  40 0000 0D0A0D0A 		.ascii	"\015\012\015\012###############################\015"
+  40      23232323 
+  40      23232323 
+  40      23232323 
+  40      23232323 
+  41 0024 0A232F62 		.ascii	"\012#/boot/config.txt this file is for boot config "
+  41      6F6F742F 
+  41      636F6E66 
+  41      69672E74 
+  41      78742074 
+  42 0054 200D0A23 		.ascii	" \015\012###############################\015\012\015"
+  42      23232323 
+  42      23232323 
+  42      23232323 
+  42      23232323 
+  43 0079 0A205B73 		.ascii	"\012 [syscall]\015\012SyscallTable = /etc/syscall.t"
+  43      79736361 
+  43      6C6C5D0D 
+ARM GAS  /tmp/ccvyeMIe.s 			page 2
+
+
+  43      0A537973 
+  43      63616C6C 
+  44 00a3 626C0D0A 		.ascii	"bl\015\012\015\012\015\012 [Loader_Config]\015\012m"
+  44      0D0A0D0A 
+  44      205B4C6F 
+  44      61646572 
+  44      5F436F6E 
+  45 00be 61676963 		.ascii	"agic            = 12345678 \015\012min_kernel_ver  "
+  45      20202020 
+  45      20202020 
+  45      20202020 
+  45      3D203132 
+  46 00eb 203D2030 		.ascii	" = 0   \015\012max_kernel_ver   = 2    \015\012cmd "
+  46      2020200D 
+  46      0A6D6178 
+  46      5F6B6572 
+  46      6E656C5F 
+  47 0112 20202020 		.ascii	"             = 1  \015\012max_stack_size_limit   = "
+  47      20202020 
+  47      20202020 
+  47      203D2031 
+  47      20200D0A 
+  48 013f 38202020 		.ascii	"8    \015\012default_priority = 7  \015\012arch_fla"
+  48      200D0A64 
+  48      65666175 
+  48      6C745F70 
+  48      72696F72 
+  49 0166 67732020 		.ascii	"gs       = 7    \015\012max_app_size     = Auto \015"
+  49      20202020 
+  49      203D2037 
+  49      20202020 
+  49      0D0A6D61 
+  50 0191 0A636F6D 		.ascii	"\012compatable       = cortex_m33\015\012\015\012 ["
+  50      70617461 
+  50      626C6520 
+  50      20202020 
+  50      20203D20 
+  51 01b5 75736572 		.ascii	"user_start_app]\015\012path            =  /bin/init"
+  51      5F737461 
+  51      72745F61 
+  51      70705D0D 
+  51      0A706174 
+  52 01e2 2E656C66 		.ascii	".elf\015\012\015\012 [system]\015\012cpu_fq    =  1"
+  52      0D0A0D0A 
+  52      205B7379 
+  52      7374656D 
+  52      5D0D0A63 
+  53 0203 35300D0A 		.ascii	"50\015\012\015\012 [file_system]\015\012use_initram"
+  53      0D0A205B 
+  53      66696C65 
+  53      5F737973 
+  53      74656D5D 
+  54 0224 66735F6F 		.ascii	"fs_only = y \015\012\015\012 [console]\015\012kerne"
+  54      6E6C7920 
+  54      3D207920 
+  54      0D0A0D0A 
+  54      205B636F 
+ARM GAS  /tmp/ccvyeMIe.s 			page 3
+
+
+  55 0245 6C2E6C6F 		.ascii	"l.log_level= \"7417\"\015\012"
+  55      675F6C65 
+  55      76656C3D 
+  55      20223734 
+  55      3137220D 
+  56              		.text
+  57              	.Letext0:
+  58              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/initramfs.h"
+ARM GAS  /tmp/ccvyeMIe.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 jm7o8pnl_config.txt.c
+     /tmp/ccvyeMIe.s:22     .rodata.str1.4:00000000 $d
+     /tmp/ccvyeMIe.s:26     .init_ramfs_files:00000000 $d
+     /tmp/ccvyeMIe.s:29     .init_ramfs_files:00000000 register_file_file_data
+     /tmp/ccvyeMIe.s:39     .rodata.filedata:00000000 filedata
+     /tmp/ccvyeMIe.s:36     .rodata.filedata:00000000 $d
+
+NO UNDEFINED SYMBOLS

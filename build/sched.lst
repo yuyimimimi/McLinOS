@@ -1,0 +1,1605 @@
+ARM GAS  /tmp/cc9gOcCY.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sched.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c"
+  21              		.section	.text.save_context,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	save_context:
+  28              	.LVL0:
+  29              	.LFB223:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #ifndef __CONTEXT_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #define __CONTEXT_H__                
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** extern void __init_Taskcontext(struct task_struct* task_data,uint32_t pic_offset);
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void init_task_context(struct task_struct* task_data,uint32_t pic_offset){
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     __init_Taskcontext(task_data,pic_offset);
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** } 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** extern int __get_task_using_cpu_core(void);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static int get_task_using_cpu_core(void){
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****      return  __get_task_using_cpu_core();
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void save_context(struct task_struct *this_task,uint32_t data){
+  31              		.loc 2 16 70 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****         this_task->context.psp = data;
+  36              		.loc 2 17 9 view .LVU1
+  37              		.loc 2 17 32 is_stmt 0 view .LVU2
+  38 0000 0165     		str	r1, [r0, #80]
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  39              		.loc 2 18 1 view .LVU3
+  40 0002 7047     		bx	lr
+ARM GAS  /tmp/cc9gOcCY.s 			page 2
+
+
+  41              		.cfi_endproc
+  42              	.LFE223:
+  44              		.section	.text.load_task,"ax",%progbits
+  45              		.align	1
+  46              		.syntax unified
+  47              		.thumb
+  48              		.thumb_func
+  50              	load_task:
+  51              	.LVL1:
+  52              	.LFB224:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static uint32_t load_task(struct task_struct *this_task) {
+  53              		.loc 2 19 58 is_stmt 1 view -0
+  54              		.cfi_startproc
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		@ link register save eliminated.
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     return this_task->context.psp;
+  58              		.loc 2 20 5 view .LVU5
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** };
+  59              		.loc 2 21 1 is_stmt 0 view .LVU6
+  60 0000 006D     		ldr	r0, [r0, #80]
+  61              	.LVL2:
+  62              		.loc 2 21 1 view .LVU7
+  63 0002 7047     		bx	lr
+  64              		.cfi_endproc
+  65              	.LFE224:
+  67              		.section	.text.get_task_using_cpu_core,"ax",%progbits
+  68              		.align	1
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  73              	get_task_using_cpu_core:
+  74              	.LFB222:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****      return  __get_task_using_cpu_core();
+  75              		.loc 2 12 41 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79 0000 08B5     		push	{r3, lr}
+  80              	.LCFI0:
+  81              		.cfi_def_cfa_offset 8
+  82              		.cfi_offset 3, -8
+  83              		.cfi_offset 14, -4
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  84              		.loc 2 13 6 view .LVU9
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** }
+  85              		.loc 2 13 14 is_stmt 0 view .LVU10
+  86 0002 FFF7FEFF 		bl	__get_task_using_cpu_core
+  87              	.LVL3:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+  88              		.loc 2 14 1 view .LVU11
+  89 0006 08BD     		pop	{r3, pc}
+  90              		.cfi_endproc
+  91              	.LFE222:
+  93              		.section	.rodata.default_task.str1.4,"aMS",%progbits,1
+  94              		.align	2
+  95              	.LC0:
+ARM GAS  /tmp/cc9gOcCY.s 			page 3
+
+
+  96 0000 73797374 		.ascii	"system free memory size:%d kb core:%d\012\015\000"
+  96      656D2066 
+  96      72656520 
+  96      6D656D6F 
+  96      72792073 
+  97              		.section	.text.default_task,"ax",%progbits
+  98              		.align	1
+  99              		.global	default_task
+ 100              		.syntax unified
+ 101              		.thumb
+ 102              		.thumb_func
+ 104              	default_task:
+ 105              	.LVL4:
+ 106              	.LFB253:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #include <linux/sys_call.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #include <linux/sched.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #include <linux/error.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #include <generated/autoconf.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static struct scheduler k_scheduler[CONFIG_CPU_NUM];
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** struct scheduler *get_scheduler_by_cpu_core_id(uint32_t core_id){
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(core_id >= CONFIG_CPU_NUM) return NULL;
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return &k_scheduler[core_id];
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static void scheduler_init( struct scheduler* uninit_scheduler,char* pool_name,int cpu_number)
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** {
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct task_pool_types * task_pool = find_task_pool(pool_name);
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task_pool == NULL) {
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not find this task_pool:%s\n",pool_name);while (1){}
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_task_pool = task_pool->alloc_task_pool(uninit_scheduler);
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not init create scheduler\n");while (1){}
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->scheduler_timer = 0;
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->magic  = scheduler_scheduler;
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_flag = SCHEDULER_BLOCKED;
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->current_task = NULL;
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->t_pop  = task_pool->t_op;
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_core = cpu_number;
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** extern size_t get_global_heap_size(void);
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void default_task(void* argv){
+ 107              		.loc 1 34 30 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 8
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		.loc 1 34 30 is_stmt 0 view .LVU13
+ 112 0000 10B5     		push	{r4, lr}
+ 113              	.LCFI1:
+ 114              		.cfi_def_cfa_offset 8
+ 115              		.cfi_offset 4, -8
+ARM GAS  /tmp/cc9gOcCY.s 			page 4
+
+
+ 116              		.cfi_offset 14, -4
+ 117 0002 82B0     		sub	sp, sp, #8
+ 118              	.LCFI2:
+ 119              		.cfi_def_cfa_offset 16
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     volatile int j  = 0;
+ 120              		.loc 1 35 5 is_stmt 1 view .LVU14
+ 121              		.loc 1 35 18 is_stmt 0 view .LVU15
+ 122 0004 0023     		movs	r3, #0
+ 123 0006 0193     		str	r3, [sp, #4]
+ 124 0008 11E0     		b	.L8
+ 125              	.LVL5:
+ 126              	.L7:
+ 127              	.LBB4:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while (1){
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         for(int i =0;i<50000000;i++){j++;}
+ 128              		.loc 1 37 38 is_stmt 1 discriminator 3 view .LVU16
+ 129              		.loc 1 37 39 is_stmt 0 discriminator 3 view .LVU17
+ 130 000a 019B     		ldr	r3, [sp, #4]
+ 131 000c 0133     		adds	r3, r3, #1
+ 132 000e 0193     		str	r3, [sp, #4]
+ 133              		.loc 1 37 34 is_stmt 1 discriminator 3 view .LVU18
+ 134 0010 0132     		adds	r2, r2, #1
+ 135              	.LVL6:
+ 136              	.L6:
+ 137              		.loc 1 37 23 discriminator 1 view .LVU19
+ 138 0012 084B     		ldr	r3, .L10
+ 139 0014 9A42     		cmp	r2, r3
+ 140 0016 F8DD     		ble	.L7
+ 141              	.LBE4:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,_
+ 142              		.loc 1 38 9 view .LVU20
+ 143              		.loc 1 38 71 is_stmt 0 view .LVU21
+ 144 0018 FFF7FEFF 		bl	get_global_heap_size
+ 145              	.LVL7:
+ 146              		.loc 1 38 71 view .LVU22
+ 147 001c 0446     		mov	r4, r0
+ 148              		.loc 1 38 9 discriminator 1 view .LVU23
+ 149 001e FFF7FEFF 		bl	__get_task_using_cpu_core
+ 150              	.LVL8:
+ 151 0022 0346     		mov	r3, r0
+ 152              		.loc 1 38 9 discriminator 2 view .LVU24
+ 153 0024 A20A     		lsrs	r2, r4, #10
+ 154 0026 0449     		ldr	r1, .L10+4
+ 155 0028 0720     		movs	r0, #7
+ 156 002a FFF7FEFF 		bl	printk
+ 157              	.LVL9:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while (1){
+ 158              		.loc 1 36 11 is_stmt 1 view .LVU25
+ 159              	.L8:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while (1){
+ 160              		.loc 1 36 5 view .LVU26
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,_
+ 161              		.loc 1 37 9 view .LVU27
+ 162              	.LBB5:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,_
+ 163              		.loc 1 37 13 view .LVU28
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,_
+ARM GAS  /tmp/cc9gOcCY.s 			page 5
+
+
+ 164              		.loc 1 37 17 is_stmt 0 view .LVU29
+ 165 002e 0022     		movs	r2, #0
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,_
+ 166              		.loc 1 37 9 view .LVU30
+ 167 0030 EFE7     		b	.L6
+ 168              	.L11:
+ 169 0032 00BF     		.align	2
+ 170              	.L10:
+ 171 0034 7FF0FA02 		.word	49999999
+ 172 0038 00000000 		.word	.LC0
+ 173              	.LBE5:
+ 174              		.cfi_endproc
+ 175              	.LFE253:
+ 177              		.section	.rodata.scheduler_init.str1.4,"aMS",%progbits,1
+ 178              		.align	2
+ 179              	.LC1:
+ 180 0000 63616E20 		.ascii	"can not find this task_pool:%s\012\000"
+ 180      6E6F7420 
+ 180      66696E64 
+ 180      20746869 
+ 180      73207461 
+ 181              		.align	2
+ 182              	.LC2:
+ 183 0020 63616E20 		.ascii	"can not init create scheduler\012\000"
+ 183      6E6F7420 
+ 183      696E6974 
+ 183      20637265 
+ 183      61746520 
+ 184              		.section	.text.scheduler_init,"ax",%progbits
+ 185              		.align	1
+ 186              		.syntax unified
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	scheduler_init:
+ 191              	.LVL10:
+ 192              	.LFB252:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct task_pool_types * task_pool = find_task_pool(pool_name);
+ 193              		.loc 1 15 1 is_stmt 1 view -0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct task_pool_types * task_pool = find_task_pool(pool_name);
+ 197              		.loc 1 15 1 is_stmt 0 view .LVU32
+ 198 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 199              	.LCFI3:
+ 200              		.cfi_def_cfa_offset 24
+ 201              		.cfi_offset 3, -24
+ 202              		.cfi_offset 4, -20
+ 203              		.cfi_offset 5, -16
+ 204              		.cfi_offset 6, -12
+ 205              		.cfi_offset 7, -8
+ 206              		.cfi_offset 14, -4
+ 207 0002 0446     		mov	r4, r0
+ 208 0004 0D46     		mov	r5, r1
+ 209 0006 1646     		mov	r6, r2
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task_pool == NULL) {
+ 210              		.loc 1 16 5 is_stmt 1 view .LVU33
+ARM GAS  /tmp/cc9gOcCY.s 			page 6
+
+
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task_pool == NULL) {
+ 211              		.loc 1 16 42 is_stmt 0 view .LVU34
+ 212 0008 0846     		mov	r0, r1
+ 213              	.LVL11:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task_pool == NULL) {
+ 214              		.loc 1 16 42 view .LVU35
+ 215 000a FFF7FEFF 		bl	find_task_pool
+ 216              	.LVL12:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not find this task_pool:%s\n",pool_name);while (1){}
+ 217              		.loc 1 17 5 is_stmt 1 view .LVU36
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not find this task_pool:%s\n",pool_name);while (1){}
+ 218              		.loc 1 17 7 is_stmt 0 view .LVU37
+ 219 000e 88B1     		cbz	r0, .L18
+ 220 0010 0746     		mov	r7, r0
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+ 221              		.loc 1 20 5 is_stmt 1 view .LVU38
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+ 222              		.loc 1 20 46 is_stmt 0 view .LVU39
+ 223 0012 0369     		ldr	r3, [r0, #16]
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+ 224              		.loc 1 20 37 view .LVU40
+ 225 0014 2046     		mov	r0, r4
+ 226              	.LVL13:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+ 227              		.loc 1 20 37 view .LVU41
+ 228 0016 9847     		blx	r3
+ 229              	.LVL14:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(IS_ERR(uninit_scheduler->s_task_pool)) {
+ 230              		.loc 1 20 35 discriminator 1 view .LVU42
+ 231 0018 A060     		str	r0, [r4, #8]
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not init create scheduler\n");while (1){}
+ 232              		.loc 1 21 5 is_stmt 1 view .LVU43
+ 233              	.LVL15:
+ 234              	.LBB6:
+ 235              	.LBI6:
+ 236              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+ARM GAS  /tmp/cc9gOcCY.s 			page 7
+
+
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 237              		.loc 3 75 33 view .LVU44
+ 238              	.LBB7:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+ARM GAS  /tmp/cc9gOcCY.s 			page 8
+
+
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 239              		.loc 3 77 2 view .LVU45
+ 240              		.loc 3 77 2 is_stmt 0 view .LVU46
+ 241              	.LBE7:
+ 242              	.LBE6:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("can not init create scheduler\n");while (1){}
+ 243              		.loc 1 21 7 discriminator 1 view .LVU47
+ 244 001a 10F5805F 		cmn	r0, #4096
+ 245 001e 0FD8     		bhi	.L19
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->magic  = scheduler_scheduler;
+ 246              		.loc 1 24 5 is_stmt 1 view .LVU48
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->magic  = scheduler_scheduler;
+ 247              		.loc 1 24 39 is_stmt 0 view .LVU49
+ 248 0020 0023     		movs	r3, #0
+ 249 0022 2360     		str	r3, [r4]
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_flag = SCHEDULER_BLOCKED;
+ 250              		.loc 1 25 5 is_stmt 1 view .LVU50
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_flag = SCHEDULER_BLOCKED;
+ 251              		.loc 1 25 30 is_stmt 0 view .LVU51
+ 252 0024 094A     		ldr	r2, .L20
+ 253 0026 6260     		str	r2, [r4, #4]
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->current_task = NULL;
+ 254              		.loc 1 26 5 is_stmt 1 view .LVU52
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->current_task = NULL;
+ 255              		.loc 1 26 30 is_stmt 0 view .LVU53
+ 256 0028 2375     		strb	r3, [r4, #20]
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->t_pop  = task_pool->t_op;
+ 257              		.loc 1 27 5 is_stmt 1 view .LVU54
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->t_pop  = task_pool->t_op;
+ 258              		.loc 1 27 36 is_stmt 0 view .LVU55
+ 259 002a A361     		str	r3, [r4, #24]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_core = cpu_number;
+ 260              		.loc 1 28 5 is_stmt 1 view .LVU56
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_core = cpu_number;
+ 261              		.loc 1 28 41 is_stmt 0 view .LVU57
+ 262 002c FB68     		ldr	r3, [r7, #12]
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uninit_scheduler->s_core = cpu_number;
+ 263              		.loc 1 28 30 view .LVU58
+ 264 002e 2361     		str	r3, [r4, #16]
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 265              		.loc 1 29 5 is_stmt 1 view .LVU59
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 266              		.loc 1 29 30 is_stmt 0 view .LVU60
+ 267 0030 E660     		str	r6, [r4, #12]
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 268              		.loc 1 30 1 view .LVU61
+ 269 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 270              	.LVL16:
+ 271              	.L18:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 272              		.loc 1 18 9 is_stmt 1 view .LVU62
+ 273 0034 2A46     		mov	r2, r5
+ 274 0036 0649     		ldr	r1, .L20+4
+ 275 0038 0320     		movs	r0, #3
+ 276              	.LVL17:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 277              		.loc 1 18 9 is_stmt 0 view .LVU63
+ARM GAS  /tmp/cc9gOcCY.s 			page 9
+
+
+ 278 003a FFF7FEFF 		bl	printk
+ 279              	.LVL18:
+ 280              	.L14:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 281              		.loc 1 18 62 is_stmt 1 discriminator 1 view .LVU64
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 282              		.loc 1 18 72 discriminator 1 view .LVU65
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 283              		.loc 1 18 68 discriminator 1 view .LVU66
+ 284 003e FEE7     		b	.L14
+ 285              	.LVL19:
+ 286              	.L19:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 287              		.loc 1 22 9 view .LVU67
+ 288 0040 0449     		ldr	r1, .L20+8
+ 289 0042 0320     		movs	r0, #3
+ 290 0044 FFF7FEFF 		bl	printk
+ 291              	.LVL20:
+ 292              	.L16:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 293              		.loc 1 22 51 discriminator 1 view .LVU68
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 294              		.loc 1 22 61 discriminator 1 view .LVU69
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 295              		.loc 1 22 57 discriminator 1 view .LVU70
+ 296 0048 FEE7     		b	.L16
+ 297              	.L21:
+ 298 004a 00BF     		.align	2
+ 299              	.L20:
+ 300 004c 56341200 		.word	1193046
+ 301 0050 00000000 		.word	.LC1
+ 302 0054 20000000 		.word	.LC2
+ 303              		.cfi_endproc
+ 304              	.LFE252:
+ 306              		.section	.rodata.current_sched_start.str1.4,"aMS",%progbits,1
+ 307              		.align	2
+ 308              	.LC3:
+ 309 0000 67657420 		.ascii	"get cpu(%d) scheruler\012\000"
+ 309      63707528 
+ 309      25642920 
+ 309      73636865 
+ 309      72756C65 
+ 310              		.section	.text.current_sched_start,"ax",%progbits
+ 311              		.align	1
+ 312              		.global	current_sched_start
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 317              	current_sched_start:
+ 318              	.LFB259:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifndef  CONFIG_SCHED_CPU0
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #error "cpu core number is not zero"    
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+ARM GAS  /tmp/cc9gOcCY.s 			page 10
+
+
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifndef CONFIG_SCHED_CPU1
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifdef  CONFIG_SCHED_CPU0
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static char* sched_config[] = {
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU0
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** };
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif 
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif 
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifndef CONFIG_SCHED_CPU2
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifdef  CONFIG_SCHED_CPU1
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static char* sched_config[] = {
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU0,
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU1,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** };
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifndef CONFIG_SCHED_CPU3
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifdef CONFIG_SCHED_CPU2
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static char* sched_config[] = {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU0,
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU1,
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU2,
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** };
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #ifdef CONFIG_SCHED_CPU3
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static char* sched_config[] = {
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU0,
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU1,
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU2,
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     CONFIG_SCHED_CPU3,
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** };
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** #endif
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** static void init_all_scheduler(void){
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     for(int i =0 ;i < CONFIG_CPU_NUM ;i++){
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         task_run(default_task,512,10,1,"system_default_task",i,0);
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** uint32_t Scheduler_Task(uint32_t context)
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** {
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct scheduler * curren_scheduler = get_current_scheduler();
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->s_flag == SCHEDULER_BLOCKED)
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return context;
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task != NULL)
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     save_context(curren_scheduler->current_task, context);
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct task_struct* t1 = curren_scheduler->current_task;
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     curren_scheduler->current_task = curren_scheduler->t_pop->get_next_task(curren_scheduler);
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return load_task(curren_scheduler->current_task);        
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     else
+ARM GAS  /tmp/cc9gOcCY.s 			page 11
+
+
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return context;
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void __user_error_process(void){
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct  task_struct* task = get_current_task();
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("__user_error_process: Task:%s get ERROR\n",task->task_name);
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     task->state = TASK_BROKEN;
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __sched();
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** extern int check_haper_completeness(void);
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** extern void __destory_task(struct task_struct *t);
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** extern size_t get_global_heap_size(void);
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void __kernel_error_process(void)
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** {
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uint32_t core_id = get_task_using_cpu_core();
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("cpu core: (%d) get ERROR\n",core_id);
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("checking memory completeness\n");
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uint32_t err = check_haper_completeness();
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(err > 0){
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("memory ERROR:(%d)\n",err);
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     else {
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct scheduler* current_sched = &k_scheduler[core_id];
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(current_sched->magic != scheduler_scheduler){
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Can not get core: (%d) scheduler handler may be task is broken\n",core_id);
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("get core: (%d) scheduler handler\n",core_id);
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct  task_struct* task = current_sched->current_task;
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task == NULL){
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("scheduler is not working\n");
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         i_sched();
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         return;
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task->magic != task_struct_magic){
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller is broken \n");
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("__kernel_error_process: Task: %s get ERROR\n",task->task_name);
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(current_sched->t_pop->check_task_completeness(current_sched) < 0){
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;        
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     task->state = TASK_BROKEN;
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->current_task = NULL;
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->t_pop->remove_task(task,current_sched);
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __destory_task(task);
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     i_sched();
+ARM GAS  /tmp/cc9gOcCY.s 			page 12
+
+
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return;
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     block:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("System get Unfixable errors\n");
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while (1){}
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void scheduler_start();
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void __Task_manager_init();
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void sched_init(){
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_info("sched: init all scheduler\n");
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __Task_manager_init();
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     init_all_scheduler();    
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** core_initcall_sync(sched_init);
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** void current_sched_start()
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** {
+ 319              		.loc 1 181 1 view -0
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323 0000 10B5     		push	{r4, lr}
+ 324              	.LCFI4:
+ 325              		.cfi_def_cfa_offset 8
+ 326              		.cfi_offset 4, -8
+ 327              		.cfi_offset 14, -4
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct scheduler * curren_scheduler = get_current_scheduler();
+ 328              		.loc 1 182 5 view .LVU72
+ 329              		.loc 1 182 43 is_stmt 0 view .LVU73
+ 330 0002 FFF7FEFF 		bl	get_current_scheduler
+ 331              	.LVL21:
+ 332 0006 0446     		mov	r4, r0
+ 333              	.LVL22:
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_info("get cpu(%d) scheruler\n",curren_scheduler->s_core);
+ 334              		.loc 1 183 5 is_stmt 1 view .LVU74
+ 335 0008 C268     		ldr	r2, [r0, #12]
+ 336 000a 0549     		ldr	r1, .L25
+ 337 000c 0620     		movs	r0, #6
+ 338              	.LVL23:
+ 339              		.loc 1 183 5 is_stmt 0 view .LVU75
+ 340 000e FFF7FEFF 		bl	printk
+ 341              	.LVL24:
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     change_to_task_mode();
+ 342              		.loc 1 184 5 is_stmt 1 view .LVU76
+ 343 0012 FFF7FEFF 		bl	change_to_task_mode
+ 344              	.LVL25:
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     curren_scheduler->s_flag = SCHEDULER_RUN;
+ 345              		.loc 1 185 5 view .LVU77
+ 346              		.loc 1 185 30 is_stmt 0 view .LVU78
+ 347 0016 0123     		movs	r3, #1
+ 348 0018 2375     		strb	r3, [r4, #20]
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     scheduler_start();
+ARM GAS  /tmp/cc9gOcCY.s 			page 13
+
+
+ 349              		.loc 1 186 5 is_stmt 1 view .LVU79
+ 350 001a FFF7FEFF 		bl	scheduler_start
+ 351              	.LVL26:
+ 352              	.L23:
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while(1){};
+ 353              		.loc 1 187 5 view .LVU80
+ 354              		.loc 1 187 14 view .LVU81
+ 355              		.loc 1 187 10 view .LVU82
+ 356 001e FEE7     		b	.L23
+ 357              	.L26:
+ 358              		.align	2
+ 359              	.L25:
+ 360 0020 00000000 		.word	.LC3
+ 361              		.cfi_endproc
+ 362              	.LFE259:
+ 364              		.section	.text.get_scheduler_by_cpu_core_id,"ax",%progbits
+ 365              		.align	1
+ 366              		.global	get_scheduler_by_cpu_core_id
+ 367              		.syntax unified
+ 368              		.thumb
+ 369              		.thumb_func
+ 371              	get_scheduler_by_cpu_core_id:
+ 372              	.LVL27:
+ 373              	.LFB251:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(core_id >= CONFIG_CPU_NUM) return NULL;
+ 374              		.loc 1 9 65 view -0
+ 375              		.cfi_startproc
+ 376              		@ args = 0, pretend = 0, frame = 0
+ 377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 378              		@ link register save eliminated.
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return &k_scheduler[core_id];
+ 379              		.loc 1 10 5 view .LVU84
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return &k_scheduler[core_id];
+ 380              		.loc 1 10 7 is_stmt 0 view .LVU85
+ 381 0000 0128     		cmp	r0, #1
+ 382 0002 05D8     		bhi	.L29
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 383              		.loc 1 11 5 is_stmt 1 view .LVU86
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 384              		.loc 1 11 12 is_stmt 0 view .LVU87
+ 385 0004 C0EBC000 		rsb	r0, r0, r0, lsl #3
+ 386              	.LVL28:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 387              		.loc 1 11 12 view .LVU88
+ 388 0008 024B     		ldr	r3, .L30
+ 389 000a 03EB8000 		add	r0, r3, r0, lsl #2
+ 390 000e 7047     		bx	lr
+ 391              	.LVL29:
+ 392              	.L29:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return &k_scheduler[core_id];
+ 393              		.loc 1 10 42 discriminator 1 view .LVU89
+ 394 0010 0020     		movs	r0, #0
+ 395              	.LVL30:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 396              		.loc 1 12 1 view .LVU90
+ 397 0012 7047     		bx	lr
+ 398              	.L31:
+ARM GAS  /tmp/cc9gOcCY.s 			page 14
+
+
+ 399              		.align	2
+ 400              	.L30:
+ 401 0014 00000000 		.word	k_scheduler
+ 402              		.cfi_endproc
+ 403              	.LFE251:
+ 405              		.section	.rodata.init_all_scheduler.str1.4,"aMS",%progbits,1
+ 406              		.align	2
+ 407              	.LC4:
+ 408 0000 73797374 		.ascii	"system_default_task\000"
+ 408      656D5F64 
+ 408      65666175 
+ 408      6C745F74 
+ 408      61736B00 
+ 409              		.section	.text.init_all_scheduler,"ax",%progbits
+ 410              		.align	1
+ 411              		.syntax unified
+ 412              		.thumb
+ 413              		.thumb_func
+ 415              	init_all_scheduler:
+ 416              	.LFB254:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     for(int i =0 ;i < CONFIG_CPU_NUM ;i++){
+ 417              		.loc 1 78 37 is_stmt 1 view -0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 0
+ 420              		@ frame_needed = 0, uses_anonymous_args = 0
+ 421 0000 10B5     		push	{r4, lr}
+ 422              	.LCFI5:
+ 423              		.cfi_def_cfa_offset 8
+ 424              		.cfi_offset 4, -8
+ 425              		.cfi_offset 14, -4
+ 426 0002 84B0     		sub	sp, sp, #16
+ 427              	.LCFI6:
+ 428              		.cfi_def_cfa_offset 24
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 429              		.loc 1 79 5 view .LVU92
+ 430              	.LBB8:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 431              		.loc 1 79 9 view .LVU93
+ 432              	.LVL31:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 433              		.loc 1 79 13 is_stmt 0 view .LVU94
+ 434 0004 0024     		movs	r4, #0
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 435              		.loc 1 79 5 view .LVU95
+ 436 0006 15E0     		b	.L33
+ 437              	.LVL32:
+ 438              	.L34:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         task_run(default_task,512,10,1,"system_default_task",i,0);
+ 439              		.loc 1 80 9 is_stmt 1 view .LVU96
+ 440 0008 2046     		mov	r0, r4
+ 441 000a FFF7FEFF 		bl	get_scheduler_by_cpu_core_id
+ 442              	.LVL33:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         task_run(default_task,512,10,1,"system_default_task",i,0);
+ 443              		.loc 1 80 9 is_stmt 0 discriminator 1 view .LVU97
+ 444 000e 2246     		mov	r2, r4
+ 445 0010 0A4B     		ldr	r3, .L36
+ 446 0012 53F82410 		ldr	r1, [r3, r4, lsl #2]
+ARM GAS  /tmp/cc9gOcCY.s 			page 15
+
+
+ 447 0016 FFF7FEFF 		bl	scheduler_init
+ 448              	.LVL34:
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 449              		.loc 1 81 9 is_stmt 1 view .LVU98
+ 450 001a 0023     		movs	r3, #0
+ 451 001c 0293     		str	r3, [sp, #8]
+ 452 001e 0194     		str	r4, [sp, #4]
+ 453 0020 074B     		ldr	r3, .L36+4
+ 454 0022 0093     		str	r3, [sp]
+ 455 0024 0123     		movs	r3, #1
+ 456 0026 0A22     		movs	r2, #10
+ 457 0028 4FF40071 		mov	r1, #512
+ 458 002c 0548     		ldr	r0, .L36+8
+ 459 002e FFF7FEFF 		bl	task_run
+ 460              	.LVL35:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 461              		.loc 1 79 40 discriminator 3 view .LVU99
+ 462 0032 0134     		adds	r4, r4, #1
+ 463              	.LVL36:
+ 464              	.L33:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
+ 465              		.loc 1 79 21 discriminator 1 view .LVU100
+ 466 0034 012C     		cmp	r4, #1
+ 467 0036 E7DD     		ble	.L34
+ 468              	.LBE8:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 469              		.loc 1 83 1 is_stmt 0 view .LVU101
+ 470 0038 04B0     		add	sp, sp, #16
+ 471              	.LCFI7:
+ 472              		.cfi_def_cfa_offset 8
+ 473              		@ sp needed
+ 474 003a 10BD     		pop	{r4, pc}
+ 475              	.LVL37:
+ 476              	.L37:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 477              		.loc 1 83 1 view .LVU102
+ 478              		.align	2
+ 479              	.L36:
+ 480 003c 00000000 		.word	sched_config
+ 481 0040 00000000 		.word	.LC4
+ 482 0044 00000000 		.word	default_task
+ 483              		.cfi_endproc
+ 484              	.LFE254:
+ 486              		.section	.rodata.sched_init.str1.4,"aMS",%progbits,1
+ 487              		.align	2
+ 488              	.LC5:
+ 489 0000 73636865 		.ascii	"sched: init all scheduler\012\000"
+ 489      643A2069 
+ 489      6E697420 
+ 489      616C6C20 
+ 489      73636865 
+ 490              		.section	.text.sched_init,"ax",%progbits
+ 491              		.align	1
+ 492              		.global	sched_init
+ 493              		.syntax unified
+ 494              		.thumb
+ 495              		.thumb_func
+ARM GAS  /tmp/cc9gOcCY.s 			page 16
+
+
+ 497              	sched_init:
+ 498              	.LFB258:
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_info("sched: init all scheduler\n");
+ 499              		.loc 1 171 18 is_stmt 1 view -0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 0
+ 502              		@ frame_needed = 0, uses_anonymous_args = 0
+ 503 0000 08B5     		push	{r3, lr}
+ 504              	.LCFI8:
+ 505              		.cfi_def_cfa_offset 8
+ 506              		.cfi_offset 3, -8
+ 507              		.cfi_offset 14, -4
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __Task_manager_init();
+ 508              		.loc 1 172 5 view .LVU104
+ 509 0002 0449     		ldr	r1, .L40
+ 510 0004 0620     		movs	r0, #6
+ 511 0006 FFF7FEFF 		bl	printk
+ 512              	.LVL38:
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     init_all_scheduler();    
+ 513              		.loc 1 173 5 view .LVU105
+ 514 000a FFF7FEFF 		bl	__Task_manager_init
+ 515              	.LVL39:
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 516              		.loc 1 174 5 view .LVU106
+ 517 000e FFF7FEFF 		bl	init_all_scheduler
+ 518              	.LVL40:
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** core_initcall_sync(sched_init);
+ 519              		.loc 1 175 1 is_stmt 0 view .LVU107
+ 520 0012 08BD     		pop	{r3, pc}
+ 521              	.L41:
+ 522              		.align	2
+ 523              	.L40:
+ 524 0014 00000000 		.word	.LC5
+ 525              		.cfi_endproc
+ 526              	.LFE258:
+ 528              		.section	.text.Scheduler_Task,"ax",%progbits
+ 529              		.align	1
+ 530              		.global	Scheduler_Task
+ 531              		.syntax unified
+ 532              		.thumb
+ 533              		.thumb_func
+ 535              	Scheduler_Task:
+ 536              	.LVL41:
+ 537              	.LFB255:
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct scheduler * curren_scheduler = get_current_scheduler();
+ 538              		.loc 1 90 1 is_stmt 1 view -0
+ 539              		.cfi_startproc
+ 540              		@ args = 0, pretend = 0, frame = 0
+ 541              		@ frame_needed = 0, uses_anonymous_args = 0
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct scheduler * curren_scheduler = get_current_scheduler();
+ 542              		.loc 1 90 1 is_stmt 0 view .LVU109
+ 543 0000 38B5     		push	{r3, r4, r5, lr}
+ 544              	.LCFI9:
+ 545              		.cfi_def_cfa_offset 16
+ 546              		.cfi_offset 3, -16
+ 547              		.cfi_offset 4, -12
+ 548              		.cfi_offset 5, -8
+ARM GAS  /tmp/cc9gOcCY.s 			page 17
+
+
+ 549              		.cfi_offset 14, -4
+ 550 0002 0546     		mov	r5, r0
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 551              		.loc 1 91 5 is_stmt 1 view .LVU110
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 552              		.loc 1 91 43 is_stmt 0 view .LVU111
+ 553 0004 FFF7FEFF 		bl	get_current_scheduler
+ 554              	.LVL42:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return context;
+ 555              		.loc 1 93 5 is_stmt 1 view .LVU112
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return context;
+ 556              		.loc 1 93 24 is_stmt 0 view .LVU113
+ 557 0008 037D     		ldrb	r3, [r0, #20]	@ zero_extendqisi2
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return context;
+ 558              		.loc 1 93 7 view .LVU114
+ 559 000a 73B1     		cbz	r3, .L43
+ 560 000c 0446     		mov	r4, r0
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     save_context(curren_scheduler->current_task, context);
+ 561              		.loc 1 96 5 is_stmt 1 view .LVU115
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     save_context(curren_scheduler->current_task, context);
+ 562              		.loc 1 96 24 is_stmt 0 view .LVU116
+ 563 000e 8069     		ldr	r0, [r0, #24]
+ 564              	.LVL43:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     save_context(curren_scheduler->current_task, context);
+ 565              		.loc 1 96 7 view .LVU117
+ 566 0010 10B1     		cbz	r0, .L44
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct task_struct* t1 = curren_scheduler->current_task;
+ 567              		.loc 1 97 5 is_stmt 1 view .LVU118
+ 568 0012 2946     		mov	r1, r5
+ 569 0014 FFF7FEFF 		bl	save_context
+ 570              	.LVL44:
+ 571              	.L44:
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     curren_scheduler->current_task = curren_scheduler->t_pop->get_next_task(curren_scheduler);
+ 572              		.loc 1 98 5 view .LVU119
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 573              		.loc 1 99 5 view .LVU120
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 574              		.loc 1 99 54 is_stmt 0 view .LVU121
+ 575 0018 2369     		ldr	r3, [r4, #16]
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 576              		.loc 1 99 61 view .LVU122
+ 577 001a 1B68     		ldr	r3, [r3]
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 578              		.loc 1 99 38 view .LVU123
+ 579 001c 2046     		mov	r0, r4
+ 580 001e 9847     		blx	r3
+ 581              	.LVL45:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(curren_scheduler->current_task!= NULL)
+ 582              		.loc 1 99 36 discriminator 1 view .LVU124
+ 583 0020 A061     		str	r0, [r4, #24]
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return load_task(curren_scheduler->current_task);        
+ 584              		.loc 1 100 5 is_stmt 1 view .LVU125
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return load_task(curren_scheduler->current_task);        
+ 585              		.loc 1 100 7 is_stmt 0 view .LVU126
+ 586 0022 10B1     		cbz	r0, .L43
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     else
+ 587              		.loc 1 101 5 is_stmt 1 view .LVU127
+ARM GAS  /tmp/cc9gOcCY.s 			page 18
+
+
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     else
+ 588              		.loc 1 101 12 is_stmt 0 view .LVU128
+ 589 0024 FFF7FEFF 		bl	load_task
+ 590              	.LVL46:
+ 591 0028 0546     		mov	r5, r0
+ 592              	.LVL47:
+ 593              	.L43:
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 594              		.loc 1 104 1 view .LVU129
+ 595 002a 2846     		mov	r0, r5
+ 596 002c 38BD     		pop	{r3, r4, r5, pc}
+ 597              		.cfi_endproc
+ 598              	.LFE255:
+ 600              		.section	.rodata.__user_error_process.str1.4,"aMS",%progbits,1
+ 601              		.align	2
+ 602              	.LC6:
+ 603 0000 5F5F7573 		.ascii	"__user_error_process: Task:%s get ERROR\012\000"
+ 603      65725F65 
+ 603      72726F72 
+ 603      5F70726F 
+ 603      63657373 
+ 604              		.section	.text.__user_error_process,"ax",%progbits
+ 605              		.align	1
+ 606              		.global	__user_error_process
+ 607              		.syntax unified
+ 608              		.thumb
+ 609              		.thumb_func
+ 611              	__user_error_process:
+ 612              	.LFB256:
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct  task_struct* task = get_current_task();
+ 613              		.loc 1 109 32 is_stmt 1 view -0
+ 614              		.cfi_startproc
+ 615              		@ args = 0, pretend = 0, frame = 0
+ 616              		@ frame_needed = 0, uses_anonymous_args = 0
+ 617 0000 10B5     		push	{r4, lr}
+ 618              	.LCFI10:
+ 619              		.cfi_def_cfa_offset 8
+ 620              		.cfi_offset 4, -8
+ 621              		.cfi_offset 14, -4
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("__user_error_process: Task:%s get ERROR\n",task->task_name);
+ 622              		.loc 1 110 5 view .LVU131
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("__user_error_process: Task:%s get ERROR\n",task->task_name);
+ 623              		.loc 1 110 33 is_stmt 0 view .LVU132
+ 624 0002 FFF7FEFF 		bl	get_current_task
+ 625              	.LVL48:
+ 626 0006 0446     		mov	r4, r0
+ 627              	.LVL49:
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     task->state = TASK_BROKEN;
+ 628              		.loc 1 111 5 is_stmt 1 view .LVU133
+ 629 0008 00F10C02 		add	r2, r0, #12
+ 630 000c 0449     		ldr	r1, .L48
+ 631 000e 0320     		movs	r0, #3
+ 632              	.LVL50:
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     task->state = TASK_BROKEN;
+ 633              		.loc 1 111 5 is_stmt 0 view .LVU134
+ 634 0010 FFF7FEFF 		bl	printk
+ 635              	.LVL51:
+ARM GAS  /tmp/cc9gOcCY.s 			page 19
+
+
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __sched();
+ 636              		.loc 1 112 5 is_stmt 1 view .LVU135
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __sched();
+ 637              		.loc 1 112 17 is_stmt 0 view .LVU136
+ 638 0014 0723     		movs	r3, #7
+ 639 0016 84F86430 		strb	r3, [r4, #100]
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 640              		.loc 1 113 5 is_stmt 1 view .LVU137
+ 641 001a FFF7FEFF 		bl	__sched
+ 642              	.LVL52:
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 643              		.loc 1 114 1 is_stmt 0 view .LVU138
+ 644 001e 10BD     		pop	{r4, pc}
+ 645              	.LVL53:
+ 646              	.L49:
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 647              		.loc 1 114 1 view .LVU139
+ 648              		.align	2
+ 649              	.L48:
+ 650 0020 00000000 		.word	.LC6
+ 651              		.cfi_endproc
+ 652              	.LFE256:
+ 654              		.section	.rodata.__kernel_error_process.str1.4,"aMS",%progbits,1
+ 655              		.align	2
+ 656              	.LC7:
+ 657 0000 63707520 		.ascii	"cpu core: (%d) get ERROR\012\000"
+ 657      636F7265 
+ 657      3A202825 
+ 657      64292067 
+ 657      65742045 
+ 658 001a 0000     		.align	2
+ 659              	.LC8:
+ 660 001c 63686563 		.ascii	"checking memory completeness\012\000"
+ 660      6B696E67 
+ 660      206D656D 
+ 660      6F727920 
+ 660      636F6D70 
+ 661 003a 0000     		.align	2
+ 662              	.LC9:
+ 663 003c 6D656D6F 		.ascii	"memory ERROR:(%d)\012\000"
+ 663      72792045 
+ 663      52524F52 
+ 663      3A282564 
+ 663      290A00
+ 664 004f 00       		.align	2
+ 665              	.LC10:
+ 666 0050 73797374 		.ascii	"system free memory size:%d kb\012\015\000"
+ 666      656D2066 
+ 666      72656520 
+ 666      6D656D6F 
+ 666      72792073 
+ 667              		.align	2
+ 668              	.LC11:
+ 669 0070 43616E20 		.ascii	"Can not get core: (%d) scheduler handler may be tas"
+ 669      6E6F7420 
+ 669      67657420 
+ 669      636F7265 
+ARM GAS  /tmp/cc9gOcCY.s 			page 20
+
+
+ 669      3A202825 
+ 670 00a3 6B206973 		.ascii	"k is broken\012\000"
+ 670      2062726F 
+ 670      6B656E0A 
+ 670      00
+ 671              		.align	2
+ 672              	.LC12:
+ 673 00b0 67657420 		.ascii	"get core: (%d) scheduler handler\012\000"
+ 673      636F7265 
+ 673      3A202825 
+ 673      64292073 
+ 673      63686564 
+ 674 00d2 0000     		.align	2
+ 675              	.LC13:
+ 676 00d4 73636865 		.ascii	"scheduler is not working\012\000"
+ 676      64756C65 
+ 676      72206973 
+ 676      206E6F74 
+ 676      20776F72 
+ 677 00ee 0000     		.align	2
+ 678              	.LC14:
+ 679 00f0 5461736B 		.ascii	"Task controller is broken \012\000"
+ 679      20636F6E 
+ 679      74726F6C 
+ 679      6C657220 
+ 679      69732062 
+ 680              		.align	2
+ 681              	.LC15:
+ 682 010c 5F5F6B65 		.ascii	"__kernel_error_process: Task: %s get ERROR\012\000"
+ 682      726E656C 
+ 682      5F657272 
+ 682      6F725F70 
+ 682      726F6365 
+ 683              		.align	2
+ 684              	.LC16:
+ 685 0138 5461736B 		.ascii	"Task controller has been broken \012\000"
+ 685      20636F6E 
+ 685      74726F6C 
+ 685      6C657220 
+ 685      68617320 
+ 686 015a 0000     		.align	2
+ 687              	.LC17:
+ 688 015c 53797374 		.ascii	"System get Unfixable errors\012\000"
+ 688      656D2067 
+ 688      65742055 
+ 688      6E666978 
+ 688      61626C65 
+ 689              		.section	.text.__kernel_error_process,"ax",%progbits
+ 690              		.align	1
+ 691              		.global	__kernel_error_process
+ 692              		.syntax unified
+ 693              		.thumb
+ 694              		.thumb_func
+ 696              	__kernel_error_process:
+ 697              	.LFB257:
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uint32_t core_id = get_task_using_cpu_core();
+ 698              		.loc 1 122 1 is_stmt 1 view -0
+ARM GAS  /tmp/cc9gOcCY.s 			page 21
+
+
+ 699              		.cfi_startproc
+ 700              		@ args = 0, pretend = 0, frame = 0
+ 701              		@ frame_needed = 0, uses_anonymous_args = 0
+ 702 0000 70B5     		push	{r4, r5, r6, lr}
+ 703              	.LCFI11:
+ 704              		.cfi_def_cfa_offset 16
+ 705              		.cfi_offset 4, -16
+ 706              		.cfi_offset 5, -12
+ 707              		.cfi_offset 6, -8
+ 708              		.cfi_offset 14, -4
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("cpu core: (%d) get ERROR\n",core_id);
+ 709              		.loc 1 123 5 view .LVU141
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("cpu core: (%d) get ERROR\n",core_id);
+ 710              		.loc 1 123 24 is_stmt 0 view .LVU142
+ 711 0002 FFF7FEFF 		bl	get_task_using_cpu_core
+ 712              	.LVL54:
+ 713 0006 0446     		mov	r4, r0
+ 714              	.LVL55:
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("checking memory completeness\n");
+ 715              		.loc 1 124 5 is_stmt 1 view .LVU143
+ 716 0008 0246     		mov	r2, r0
+ 717 000a 3949     		ldr	r1, .L63
+ 718 000c 0320     		movs	r0, #3
+ 719              	.LVL56:
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     pr_err("checking memory completeness\n");
+ 720              		.loc 1 124 5 is_stmt 0 view .LVU144
+ 721 000e FFF7FEFF 		bl	printk
+ 722              	.LVL57:
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     uint32_t err = check_haper_completeness();
+ 723              		.loc 1 125 5 is_stmt 1 view .LVU145
+ 724 0012 3849     		ldr	r1, .L63+4
+ 725 0014 0320     		movs	r0, #3
+ 726 0016 FFF7FEFF 		bl	printk
+ 727              	.LVL58:
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(err > 0){
+ 728              		.loc 1 126 5 view .LVU146
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(err > 0){
+ 729              		.loc 1 126 20 is_stmt 0 view .LVU147
+ 730 001a FFF7FEFF 		bl	check_haper_completeness
+ 731              	.LVL59:
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("memory ERROR:(%d)\n",err);
+ 732              		.loc 1 127 5 is_stmt 1 view .LVU148
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("memory ERROR:(%d)\n",err);
+ 733              		.loc 1 127 7 is_stmt 0 view .LVU149
+ 734 001e B8B1     		cbz	r0, .L51
+ 735 0020 0246     		mov	r2, r0
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 736              		.loc 1 128 9 is_stmt 1 view .LVU150
+ 737 0022 3549     		ldr	r1, .L63+8
+ 738 0024 0320     		movs	r0, #3
+ 739              	.LVL60:
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 740              		.loc 1 128 9 is_stmt 0 view .LVU151
+ 741 0026 FFF7FEFF 		bl	printk
+ 742              	.LVL61:
+ 743              	.L52:
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(current_sched->magic != scheduler_scheduler){
+ARM GAS  /tmp/cc9gOcCY.s 			page 22
+
+
+ 744              		.loc 1 133 5 is_stmt 1 view .LVU152
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(current_sched->magic != scheduler_scheduler){
+ 745              		.loc 1 133 23 is_stmt 0 view .LVU153
+ 746 002a C4EBC403 		rsb	r3, r4, r4, lsl #3
+ 747 002e 334D     		ldr	r5, .L63+12
+ 748 0030 05EB8305 		add	r5, r5, r3, lsl #2
+ 749              	.LVL62:
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Can not get core: (%d) scheduler handler may be task is broken\n",core_id);
+ 750              		.loc 1 134 5 is_stmt 1 view .LVU154
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Can not get core: (%d) scheduler handler may be task is broken\n",core_id);
+ 751              		.loc 1 134 21 is_stmt 0 view .LVU155
+ 752 0034 6A68     		ldr	r2, [r5, #4]
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Can not get core: (%d) scheduler handler may be task is broken\n",core_id);
+ 753              		.loc 1 134 7 view .LVU156
+ 754 0036 324B     		ldr	r3, .L63+16
+ 755 0038 9A42     		cmp	r2, r3
+ 756 003a 11D0     		beq	.L53
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;
+ 757              		.loc 1 135 9 is_stmt 1 view .LVU157
+ 758 003c 2246     		mov	r2, r4
+ 759 003e 3149     		ldr	r1, .L63+20
+ 760 0040 0320     		movs	r0, #3
+ 761 0042 FFF7FEFF 		bl	printk
+ 762              	.LVL63:
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 763              		.loc 1 136 9 view .LVU158
+ 764              	.L54:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     while (1){}
+ 765              		.loc 1 163 5 view .LVU159
+ 766 0046 3049     		ldr	r1, .L63+24
+ 767 0048 0320     		movs	r0, #3
+ 768 004a FFF7FEFF 		bl	printk
+ 769              	.LVL64:
+ 770              	.L59:
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 771              		.loc 1 164 5 view .LVU160
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 772              		.loc 1 164 15 view .LVU161
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** }
+ 773              		.loc 1 164 11 view .LVU162
+ 774 004e FEE7     		b	.L59
+ 775              	.LVL65:
+ 776              	.L51:
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 777              		.loc 1 131 9 view .LVU163
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 778              		.loc 1 131 63 is_stmt 0 view .LVU164
+ 779 0050 FFF7FEFF 		bl	get_global_heap_size
+ 780              	.LVL66:
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 781              		.loc 1 131 9 discriminator 1 view .LVU165
+ 782 0054 820A     		lsrs	r2, r0, #10
+ 783 0056 2D49     		ldr	r1, .L63+28
+ 784 0058 0720     		movs	r0, #7
+ 785 005a FFF7FEFF 		bl	printk
+ 786              	.LVL67:
+ 787 005e E4E7     		b	.L52
+ARM GAS  /tmp/cc9gOcCY.s 			page 23
+
+
+ 788              	.LVL68:
+ 789              	.L53:
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     struct  task_struct* task = current_sched->current_task;
+ 790              		.loc 1 138 5 is_stmt 1 view .LVU166
+ 791 0060 2246     		mov	r2, r4
+ 792 0062 2B49     		ldr	r1, .L63+32
+ 793 0064 0320     		movs	r0, #3
+ 794 0066 FFF7FEFF 		bl	printk
+ 795              	.LVL69:
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task == NULL){
+ 796              		.loc 1 139 5 view .LVU167
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(task == NULL){
+ 797              		.loc 1 139 26 is_stmt 0 view .LVU168
+ 798 006a C4EBC402 		rsb	r2, r4, r4, lsl #3
+ 799 006e 234B     		ldr	r3, .L63+12
+ 800 0070 03EB8203 		add	r3, r3, r2, lsl #2
+ 801 0074 9E69     		ldr	r6, [r3, #24]
+ 802              	.LVL70:
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("scheduler is not working\n");
+ 803              		.loc 1 140 5 is_stmt 1 view .LVU169
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("scheduler is not working\n");
+ 804              		.loc 1 140 7 is_stmt 0 view .LVU170
+ 805 0076 46B1     		cbz	r6, .L61
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller is broken \n");
+ 806              		.loc 1 145 5 is_stmt 1 view .LVU171
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller is broken \n");
+ 807              		.loc 1 145 12 is_stmt 0 view .LVU172
+ 808 0078 3268     		ldr	r2, [r6]
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller is broken \n");
+ 809              		.loc 1 145 7 view .LVU173
+ 810 007a 264B     		ldr	r3, .L63+36
+ 811 007c 9A42     		cmp	r2, r3
+ 812 007e 0BD0     		beq	.L57
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;
+ 813              		.loc 1 146 9 is_stmt 1 view .LVU174
+ 814 0080 2549     		ldr	r1, .L63+40
+ 815 0082 0320     		movs	r0, #3
+ 816 0084 FFF7FEFF 		bl	printk
+ 817              	.LVL71:
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 818              		.loc 1 147 9 view .LVU175
+ 819 0088 DDE7     		b	.L54
+ 820              	.L61:
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         i_sched();
+ 821              		.loc 1 141 9 view .LVU176
+ 822 008a 2449     		ldr	r1, .L63+44
+ 823 008c 0320     		movs	r0, #3
+ 824 008e FFF7FEFF 		bl	printk
+ 825              	.LVL72:
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         return;
+ 826              		.loc 1 142 9 view .LVU177
+ 827 0092 FFF7FEFF 		bl	i_sched
+ 828              	.LVL73:
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 829              		.loc 1 143 9 view .LVU178
+ 830 0096 24E0     		b	.L50
+ 831              	.L57:
+ARM GAS  /tmp/cc9gOcCY.s 			page 24
+
+
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     if(current_sched->t_pop->check_task_completeness(current_sched) < 0){
+ 832              		.loc 1 149 5 view .LVU179
+ 833 0098 06F10C02 		add	r2, r6, #12
+ 834 009c 2049     		ldr	r1, .L63+48
+ 835 009e 0320     		movs	r0, #3
+ 836 00a0 FFF7FEFF 		bl	printk
+ 837              	.LVL74:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 838              		.loc 1 150 5 view .LVU180
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 839              		.loc 1 150 21 is_stmt 0 view .LVU181
+ 840 00a4 C4EBC402 		rsb	r2, r4, r4, lsl #3
+ 841 00a8 144B     		ldr	r3, .L63+12
+ 842 00aa 03EB8203 		add	r3, r3, r2, lsl #2
+ 843 00ae 1B69     		ldr	r3, [r3, #16]
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 844              		.loc 1 150 28 view .LVU182
+ 845 00b0 DB68     		ldr	r3, [r3, #12]
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 846              		.loc 1 150 8 view .LVU183
+ 847 00b2 2846     		mov	r0, r5
+ 848 00b4 9847     		blx	r3
+ 849              	.LVL75:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         pr_err("Task controller has been broken \n");
+ 850              		.loc 1 150 7 discriminator 1 view .LVU184
+ 851 00b6 0028     		cmp	r0, #0
+ 852 00b8 14DB     		blt	.L62
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->current_task = NULL;
+ 853              		.loc 1 155 5 is_stmt 1 view .LVU185
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->current_task = NULL;
+ 854              		.loc 1 155 17 is_stmt 0 view .LVU186
+ 855 00ba 0723     		movs	r3, #7
+ 856 00bc 86F86430 		strb	r3, [r6, #100]
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->t_pop->remove_task(task,current_sched);
+ 857              		.loc 1 156 5 is_stmt 1 view .LVU187
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     current_sched->t_pop->remove_task(task,current_sched);
+ 858              		.loc 1 156 33 is_stmt 0 view .LVU188
+ 859 00c0 0E4B     		ldr	r3, .L63+12
+ 860 00c2 C4EBC402 		rsb	r2, r4, r4, lsl #3
+ 861 00c6 03EB8202 		add	r2, r3, r2, lsl #2
+ 862 00ca 0021     		movs	r1, #0
+ 863 00cc 9161     		str	r1, [r2, #24]
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __destory_task(task);
+ 864              		.loc 1 157 5 is_stmt 1 view .LVU189
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __destory_task(task);
+ 865              		.loc 1 157 18 is_stmt 0 view .LVU190
+ 866 00ce 1369     		ldr	r3, [r2, #16]
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __destory_task(task);
+ 867              		.loc 1 157 25 view .LVU191
+ 868 00d0 9B68     		ldr	r3, [r3, #8]
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     __destory_task(task);
+ 869              		.loc 1 157 5 view .LVU192
+ 870 00d2 2946     		mov	r1, r5
+ 871 00d4 3046     		mov	r0, r6
+ 872 00d6 9847     		blx	r3
+ 873              	.LVL76:
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     i_sched();
+ARM GAS  /tmp/cc9gOcCY.s 			page 25
+
+
+ 874              		.loc 1 158 5 is_stmt 1 view .LVU193
+ 875 00d8 3046     		mov	r0, r6
+ 876 00da FFF7FEFF 		bl	__destory_task
+ 877              	.LVL77:
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     return;
+ 878              		.loc 1 159 5 view .LVU194
+ 879 00de FFF7FEFF 		bl	i_sched
+ 880              	.LVL78:
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 881              		.loc 1 160 5 view .LVU195
+ 882              	.L50:
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c **** 
+ 883              		.loc 1 165 1 is_stmt 0 view .LVU196
+ 884 00e2 70BD     		pop	{r4, r5, r6, pc}
+ 885              	.LVL79:
+ 886              	.L62:
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****         goto block;        
+ 887              		.loc 1 151 9 is_stmt 1 view .LVU197
+ 888 00e4 0F49     		ldr	r1, .L63+52
+ 889 00e6 0320     		movs	r0, #3
+ 890 00e8 FFF7FEFF 		bl	printk
+ 891              	.LVL80:
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/sched.c ****     }
+ 892              		.loc 1 152 9 view .LVU198
+ 893 00ec ABE7     		b	.L54
+ 894              	.L64:
+ 895 00ee 00BF     		.align	2
+ 896              	.L63:
+ 897 00f0 00000000 		.word	.LC7
+ 898 00f4 1C000000 		.word	.LC8
+ 899 00f8 3C000000 		.word	.LC9
+ 900 00fc 00000000 		.word	k_scheduler
+ 901 0100 56341200 		.word	1193046
+ 902 0104 70000000 		.word	.LC11
+ 903 0108 5C010000 		.word	.LC17
+ 904 010c 50000000 		.word	.LC10
+ 905 0110 B0000000 		.word	.LC12
+ 906 0114 40E20100 		.word	123456
+ 907 0118 F0000000 		.word	.LC14
+ 908 011c D4000000 		.word	.LC13
+ 909 0120 0C010000 		.word	.LC15
+ 910 0124 38010000 		.word	.LC16
+ 911              		.cfi_endproc
+ 912              	.LFE257:
+ 914              		.section	.postcore_initcall_sync,"aw"
+ 915              		.align	2
+ 918              	_initcall_current_sched_start:
+ 919 0000 00000000 		.word	current_sched_start
+ 920              		.section	.core_initcall_sync,"aw"
+ 921              		.align	2
+ 924              	_initcall_sched_init:
+ 925 0000 00000000 		.word	sched_init
+ 926              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 927              		.align	2
+ 928              	.LC18:
+ 929 0000 50726565 		.ascii	"Preemptive\000"
+ 929      6D707469 
+ARM GAS  /tmp/cc9gOcCY.s 			page 26
+
+
+ 929      766500
+ 930              		.section	.rodata.sched_config,"a"
+ 931              		.align	2
+ 934              	sched_config:
+ 935 0000 00000000 		.word	.LC18
+ 936 0004 00000000 		.word	.LC18
+ 937              		.section	.bss.k_scheduler,"aw",%nobits
+ 938              		.align	2
+ 941              	k_scheduler:
+ 942 0000 00000000 		.space	56
+ 942      00000000 
+ 942      00000000 
+ 942      00000000 
+ 942      00000000 
+ 943              		.text
+ 944              	.Letext0:
+ 945              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 946              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 947              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 948              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/init.h"
+ 949              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 950              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 951              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 952              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 953              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 954              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 955              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 956              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/error.h"
+ 957              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+ 958              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/cc9gOcCY.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sched.c
+     /tmp/cc9gOcCY.s:22     .text.save_context:00000000 $t
+     /tmp/cc9gOcCY.s:27     .text.save_context:00000000 save_context
+     /tmp/cc9gOcCY.s:45     .text.load_task:00000000 $t
+     /tmp/cc9gOcCY.s:50     .text.load_task:00000000 load_task
+     /tmp/cc9gOcCY.s:68     .text.get_task_using_cpu_core:00000000 $t
+     /tmp/cc9gOcCY.s:73     .text.get_task_using_cpu_core:00000000 get_task_using_cpu_core
+     /tmp/cc9gOcCY.s:94     .rodata.default_task.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:98     .text.default_task:00000000 $t
+     /tmp/cc9gOcCY.s:104    .text.default_task:00000000 default_task
+     /tmp/cc9gOcCY.s:171    .text.default_task:00000034 $d
+     /tmp/cc9gOcCY.s:178    .rodata.scheduler_init.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:185    .text.scheduler_init:00000000 $t
+     /tmp/cc9gOcCY.s:190    .text.scheduler_init:00000000 scheduler_init
+     /tmp/cc9gOcCY.s:300    .text.scheduler_init:0000004c $d
+     /tmp/cc9gOcCY.s:307    .rodata.current_sched_start.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:311    .text.current_sched_start:00000000 $t
+     /tmp/cc9gOcCY.s:317    .text.current_sched_start:00000000 current_sched_start
+     /tmp/cc9gOcCY.s:360    .text.current_sched_start:00000020 $d
+     /tmp/cc9gOcCY.s:365    .text.get_scheduler_by_cpu_core_id:00000000 $t
+     /tmp/cc9gOcCY.s:371    .text.get_scheduler_by_cpu_core_id:00000000 get_scheduler_by_cpu_core_id
+     /tmp/cc9gOcCY.s:401    .text.get_scheduler_by_cpu_core_id:00000014 $d
+     /tmp/cc9gOcCY.s:941    .bss.k_scheduler:00000000 k_scheduler
+     /tmp/cc9gOcCY.s:406    .rodata.init_all_scheduler.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:410    .text.init_all_scheduler:00000000 $t
+     /tmp/cc9gOcCY.s:415    .text.init_all_scheduler:00000000 init_all_scheduler
+     /tmp/cc9gOcCY.s:480    .text.init_all_scheduler:0000003c $d
+     /tmp/cc9gOcCY.s:934    .rodata.sched_config:00000000 sched_config
+     /tmp/cc9gOcCY.s:487    .rodata.sched_init.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:491    .text.sched_init:00000000 $t
+     /tmp/cc9gOcCY.s:497    .text.sched_init:00000000 sched_init
+     /tmp/cc9gOcCY.s:524    .text.sched_init:00000014 $d
+     /tmp/cc9gOcCY.s:529    .text.Scheduler_Task:00000000 $t
+     /tmp/cc9gOcCY.s:535    .text.Scheduler_Task:00000000 Scheduler_Task
+     /tmp/cc9gOcCY.s:601    .rodata.__user_error_process.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:605    .text.__user_error_process:00000000 $t
+     /tmp/cc9gOcCY.s:611    .text.__user_error_process:00000000 __user_error_process
+     /tmp/cc9gOcCY.s:650    .text.__user_error_process:00000020 $d
+     /tmp/cc9gOcCY.s:655    .rodata.__kernel_error_process.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:690    .text.__kernel_error_process:00000000 $t
+     /tmp/cc9gOcCY.s:696    .text.__kernel_error_process:00000000 __kernel_error_process
+     /tmp/cc9gOcCY.s:897    .text.__kernel_error_process:000000f0 $d
+     /tmp/cc9gOcCY.s:915    .postcore_initcall_sync:00000000 $d
+     /tmp/cc9gOcCY.s:918    .postcore_initcall_sync:00000000 _initcall_current_sched_start
+     /tmp/cc9gOcCY.s:921    .core_initcall_sync:00000000 $d
+     /tmp/cc9gOcCY.s:924    .core_initcall_sync:00000000 _initcall_sched_init
+     /tmp/cc9gOcCY.s:927    .rodata.str1.4:00000000 $d
+     /tmp/cc9gOcCY.s:931    .rodata.sched_config:00000000 $d
+     /tmp/cc9gOcCY.s:938    .bss.k_scheduler:00000000 $d
+
+UNDEFINED SYMBOLS
+__get_task_using_cpu_core
+get_global_heap_size
+printk
+find_task_pool
+get_current_scheduler
+ARM GAS  /tmp/cc9gOcCY.s 			page 28
+
+
+change_to_task_mode
+scheduler_start
+task_run
+__Task_manager_init
+get_current_task
+__sched
+check_haper_completeness
+i_sched
+__destory_task

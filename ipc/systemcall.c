@@ -167,7 +167,6 @@ static int parse_syscall_table(char *table_data)
             load_syscall(&syscall_data);
         }
     }
-    pr_info("syscall table read sucessful\n");
     return 0;
 }
 

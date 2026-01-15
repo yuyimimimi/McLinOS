@@ -7,14 +7,18 @@ menu " Library Configuration "
         help
           Set system log out put Device.
   endmenu
+
+
   
-  menu "system tick"
-  config SYSTEM_TICK_FREQUENCY
-      int "SYSTEM TICK (HZ)"
-      default 500
+  menu "system timer HZ"
+  config SYSTEM_TIMER_HZ
+      int "SYSTEM TIMER (HZ)"
+      default 1000000
       help
         Set the tick frequency
   endmenu  
+
+
 
 
   menu "Sched Support"

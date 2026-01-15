@@ -1,0 +1,55 @@
+ARM GAS  /tmp/ccTaOyR2.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"1yvmrjhv_profile.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/user/rootfs_file_out/1yvmrjhv_profile.c
+  21              		.section	.rodata.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 2F657463 		.ascii	"/etc/profile\000"
+  24      2F70726F 
+  24      66696C65 
+  24      00
+  25              		.section	.init_ramfs_files,"aw"
+  26              		.align	2
+  29              	register_file_file_data:
+  30 0000 00000000 		.word	.LC0
+  31 0004 00000000 		.word	0
+  32 0008 00000000 		.word	filedata
+  33 000c 00       		.byte	0
+  34 000d 000000   		.space	3
+  35              		.section	.rodata.filedata,"a"
+  36              		.align	2
+  39              	filedata:
+  40              		.text
+  41              	.Letext0:
+  42              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/initramfs.h"
+ARM GAS  /tmp/ccTaOyR2.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 1yvmrjhv_profile.c
+     /tmp/ccTaOyR2.s:22     .rodata.str1.4:00000000 $d
+     /tmp/ccTaOyR2.s:26     .init_ramfs_files:00000000 $d
+     /tmp/ccTaOyR2.s:29     .init_ramfs_files:00000000 register_file_file_data
+     /tmp/ccTaOyR2.s:39     .rodata.filedata:00000000 filedata
+
+NO UNDEFINED SYMBOLS

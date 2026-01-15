@@ -1,0 +1,10 @@
+menu "ARCH Config" 
+
+
+endmenu   
+
+
+
+
+source "arch/arm_m/kernel/kconfig"
+source "kconfig"

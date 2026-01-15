@@ -11,7 +11,7 @@ struct scheduler *get_scheduler_by_cpu_core_id(uint32_t core_id){
     return &k_scheduler[core_id];
 }
 
-static void scheduler_init( struct scheduler* uninit_scheduler,char* pool_name)
+static void scheduler_init( struct scheduler* uninit_scheduler,char* pool_name,int cpu_number)
 {
     struct task_pool_types * task_pool = find_task_pool(pool_name);
     if(task_pool == NULL) {
@@ -21,18 +21,21 @@ static void scheduler_init( struct scheduler* uninit_scheduler,char* pool_name)
     if(IS_ERR(uninit_scheduler->s_task_pool)) {
         pr_err("can not init create scheduler\n");while (1){}
     }
+    uninit_scheduler->scheduler_timer = 0;
     uninit_scheduler->magic  = scheduler_scheduler;
-    uninit_scheduler->s_flag = SCHEDULER_RUN;
+    uninit_scheduler->s_flag = SCHEDULER_BLOCKED;
     uninit_scheduler->current_task = NULL;
     uninit_scheduler->t_pop  = task_pool->t_op;
+    uninit_scheduler->s_core = cpu_number;
 }
+
 
 extern size_t get_global_heap_size(void);
 void default_task(void* argv){
     volatile int j  = 0;
     while (1){
-        for(int i =0;i<1000000000;i++){j++;}
-        printk(KERN_DEBUG "system free memory size:%d kb\n\r",get_global_heap_size()/1024);  
+        for(int i =0;i<50000000;i++){j++;}
+        printk(KERN_DEBUG "system free memory size:%d kb core:%d\n\r",get_global_heap_size()/1024,__get_task_using_cpu_core());  
     }
 }
 
@@ -74,15 +77,20 @@ static char* sched_config[] = {
 #endif
 static void init_all_scheduler(void){
     for(int i =0 ;i < CONFIG_CPU_NUM ;i++){
-        scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i]);
+        scheduler_init(get_scheduler_by_cpu_core_id(i),sched_config[i],i);
         task_run(default_task,512,10,1,"system_default_task",i,0);
     }
 }
 
+
+
+
+
 uint32_t Scheduler_Task(uint32_t context)
 {
     struct scheduler * curren_scheduler = get_current_scheduler();
-    if(curren_scheduler->s_flag == SCHEDULER_BLOCKED )
+
+    if(curren_scheduler->s_flag == SCHEDULER_BLOCKED)
     return context;
 
     if(curren_scheduler->current_task != NULL)
@@ -130,8 +138,9 @@ void __kernel_error_process(void)
     pr_err("get core: (%d) scheduler handler\n",core_id);
     struct  task_struct* task = current_sched->current_task;
     if(task == NULL){
-        pr_err("can not get current task\n");
-        goto block;
+        pr_err("scheduler is not working\n");
+        i_sched();
+        return;
     }
     if(task->magic != task_struct_magic){
         pr_err("Task controller is broken \n");
@@ -158,18 +167,23 @@ void __kernel_error_process(void)
 
 void scheduler_start();
 
+void __Task_manager_init();
 void sched_init(){
     pr_info("sched: init all scheduler\n");
+    __Task_manager_init();
     init_all_scheduler();    
 }
 core_initcall_sync(sched_init);
 
-void sched_start(){
+
+
+void current_sched_start()
+{
+    struct scheduler * curren_scheduler = get_current_scheduler();
+    pr_info("get cpu(%d) scheruler\n",curren_scheduler->s_core);
     change_to_task_mode();
+    curren_scheduler->s_flag = SCHEDULER_RUN;
     scheduler_start();
-    sched();
+    while(1){};
 }
-postcore_initcall_sync(sched_start);
-
-
-
+postcore_initcall_sync(current_sched_start);

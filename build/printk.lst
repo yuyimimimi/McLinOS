@@ -1,0 +1,941 @@
+ARM GAS  /tmp/cc2xUzc9.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"printk.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c"
+  21              		.section	.text.spin_lock_init,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	spin_lock_init:
+  28              	.LVL0:
+  29              	.LFB228:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #ifndef __SPINLOCK_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #define __SPINLOCK_H__
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/types.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <linux/spinlock_types.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** #include <asm/irqflags.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** struct task_struct* get_current_task(void);
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void __delay(uint32_t time);
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_lock(spinlock_t* lock);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** void _spin_unlock(spinlock_t* lock);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock_init(spinlock_t* lock){
+  31              		.loc 2 17 45 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     lock->flag = 0;
+  36              		.loc 2 18 5 view .LVU1
+  37              		.loc 2 18 16 is_stmt 0 view .LVU2
+  38 0000 0023     		movs	r3, #0
+  39 0002 0360     		str	r3, [r0]
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+ARM GAS  /tmp/cc2xUzc9.s 			page 2
+
+
+  40              		.loc 2 19 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE228:
+  45              		.section	.text.spin_lock,"ax",%progbits
+  46              		.align	1
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  51              	spin_lock:
+  52              	.LVL1:
+  53              	.LFB229:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_lock(spinlock_t* lock)
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {  
+  54              		.loc 2 22 1 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		.loc 2 22 1 is_stmt 0 view .LVU5
+  59 0000 08B5     		push	{r3, lr}
+  60              	.LCFI0:
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 3, -8
+  63              		.cfi_offset 14, -4
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_lock(lock);
+  64              		.loc 2 23 5 is_stmt 1 view .LVU6
+  65 0002 FFF7FEFF 		bl	_spin_lock
+  66              	.LVL2:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+  67              		.loc 2 24 1 is_stmt 0 view .LVU7
+  68 0006 08BD     		pop	{r3, pc}
+  69              		.cfi_endproc
+  70              	.LFE229:
+  72              		.section	.text.tty_write,"ax",%progbits
+  73              		.align	1
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	tty_write:
+  79              	.LVL3:
+  80              	.LFB1033:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/init.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/fs.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/stdarg.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/string.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/stddef.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/init.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/time.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <linux/spinlock.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** #include <generated/autoconf.h>
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static struct file* tty_device = NULL;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static struct spinlock printk_spinlock;
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** int printk_service_init(void) {
+ARM GAS  /tmp/cc2xUzc9.s 			page 3
+
+
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     tty_device = filp_open(CONFIG_PRINTTK_USE_TTY_DEVICE, O_RDWR, 0);
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (IS_ERR(tty_device)) {
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         printk("tty device:%s open failed,use early printk to out put continue\n",CONFIG_PRINTTK_US
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         tty_device = NULL;
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         return -1;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     spin_lock_init(&printk_spinlock);
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     return 0;
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static void tty_write(const char *buf) {
+  81              		.loc 1 26 40 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		.loc 1 26 40 is_stmt 0 view .LVU9
+  86 0000 38B5     		push	{r3, r4, r5, lr}
+  87              	.LCFI1:
+  88              		.cfi_def_cfa_offset 16
+  89              		.cfi_offset 3, -16
+  90              		.cfi_offset 4, -12
+  91              		.cfi_offset 5, -8
+  92              		.cfi_offset 14, -4
+  93 0002 0446     		mov	r4, r0
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (tty_device != NULL)
+  94              		.loc 1 27 5 is_stmt 1 view .LVU10
+  95              		.loc 1 27 20 is_stmt 0 view .LVU11
+  96 0004 074B     		ldr	r3, .L8
+  97 0006 1D68     		ldr	r5, [r3]
+  98              		.loc 1 27 8 view .LVU12
+  99 0008 4DB1     		cbz	r5, .L5
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         kernel_write(tty_device, buf, strlen(buf), &tty_device->f_pos);
+ 100              		.loc 1 28 9 is_stmt 1 view .LVU13
+ 101 000a FFF7FEFF 		bl	strlen
+ 102              	.LVL4:
+ 103              		.loc 1 28 9 is_stmt 0 view .LVU14
+ 104 000e 0246     		mov	r2, r0
+ 105              		.loc 1 28 9 discriminator 1 view .LVU15
+ 106 0010 05F15003 		add	r3, r5, #80
+ 107 0014 2146     		mov	r1, r4
+ 108 0016 2846     		mov	r0, r5
+ 109 0018 FFF7FEFF 		bl	kernel_write
+ 110              	.LVL5:
+ 111              	.L4:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     else 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         early_printk(buf);     
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 112              		.loc 1 31 1 view .LVU16
+ 113 001c 38BD     		pop	{r3, r4, r5, pc}
+ 114              	.LVL6:
+ 115              	.L5:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 116              		.loc 1 30 9 is_stmt 1 view .LVU17
+ 117 001e FFF7FEFF 		bl	early_printk
+ 118              	.LVL7:
+ 119              		.loc 1 31 1 is_stmt 0 view .LVU18
+ 120 0022 FBE7     		b	.L4
+ARM GAS  /tmp/cc2xUzc9.s 			page 4
+
+
+ 121              	.L9:
+ 122              		.align	2
+ 123              	.L8:
+ 124 0024 00000000 		.word	tty_device
+ 125              		.cfi_endproc
+ 126              	.LFE1033:
+ 128              		.section	.text.spin_unlock,"ax",%progbits
+ 129              		.align	1
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	spin_unlock:
+ 135              	.LVL8:
+ 136              	.LFB230:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** static void spin_unlock(spinlock_t* lock)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** {
+ 137              		.loc 2 26 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		.loc 2 26 1 is_stmt 0 view .LVU20
+ 142 0000 08B5     		push	{r3, lr}
+ 143              	.LCFI2:
+ 144              		.cfi_def_cfa_offset 8
+ 145              		.cfi_offset 3, -8
+ 146              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h ****     _spin_unlock(lock);
+ 147              		.loc 2 27 5 is_stmt 1 view .LVU21
+ 148 0002 FFF7FEFF 		bl	_spin_unlock
+ 149              	.LVL9:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock.h **** }
+ 150              		.loc 2 28 1 is_stmt 0 view .LVU22
+ 151 0006 08BD     		pop	{r3, pc}
+ 152              		.cfi_endproc
+ 153              	.LFE230:
+ 155              		.section	.rodata.printk.str1.4,"aMS",%progbits,1
+ 156              		.align	2
+ 157              	.LC0:
+ 158 0000 0D5B2020 		.ascii	"\015[   %u.%06u] %s \000"
+ 158      2025752E 
+ 158      25303675 
+ 158      5D202573 
+ 158      2000
+ 159              		.section	.text.printk,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	printk
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	printk:
+ 167              	.LVL10:
+ 168              	.LFB1034:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static char printk_buf[512];
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static int printk_log_level_threshold = 7;  
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static int printk_show_log_level      = 1;  
+ARM GAS  /tmp/cc2xUzc9.s 			page 5
+
+
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static const char *log_level_str[] = {
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     "<0>", "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>"
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** };
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** void printk(int level, const char *fmt, ...){
+ 169              		.loc 1 45 45 is_stmt 1 view -0
+ 170              		.cfi_startproc
+ 171              		@ args = 4, pretend = 12, frame = 8
+ 172              		@ frame_needed = 0, uses_anonymous_args = 1
+ 173              		.loc 1 45 45 is_stmt 0 view .LVU24
+ 174 0000 0EB4     		push	{r1, r2, r3}
+ 175              	.LCFI3:
+ 176              		.cfi_def_cfa_offset 12
+ 177              		.cfi_offset 1, -12
+ 178              		.cfi_offset 2, -8
+ 179              		.cfi_offset 3, -4
+ 180 0002 30B5     		push	{r4, r5, lr}
+ 181              	.LCFI4:
+ 182              		.cfi_def_cfa_offset 24
+ 183              		.cfi_offset 4, -24
+ 184              		.cfi_offset 5, -20
+ 185              		.cfi_offset 14, -16
+ 186 0004 84B0     		sub	sp, sp, #16
+ 187              	.LCFI5:
+ 188              		.cfi_def_cfa_offset 40
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if(level < 0 || level > printk_log_level_threshold){
+ 189              		.loc 1 46 5 is_stmt 1 view .LVU25
+ 190              		.loc 1 46 7 is_stmt 0 view .LVU26
+ 191 0006 041E     		subs	r4, r0, #0
+ 192 0008 01DB     		blt	.L12
+ 193              		.loc 1 46 18 discriminator 1 view .LVU27
+ 194 000a 072C     		cmp	r4, #7
+ 195 000c 04DD     		ble	.L18
+ 196              	.LVL11:
+ 197              	.L12:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****        return;
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     spin_lock(&printk_spinlock);
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_list args;
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     time64_t now = jiffies;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t sec = now / HZ;
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t nsec = now % HZ ;
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (now != 0){ 
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         if(printk_show_log_level == 1)
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u] %s ", sec, nsec * (1000000/HZ),log
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         else 
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u]", sec, nsec * (1000000/HZ));      
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         tty_write(printk_buf);        
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_start(args, fmt);
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     vsnprintf(printk_buf, sizeof(printk_buf), fmt, args);
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_end(args);
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     tty_write(printk_buf);
+ARM GAS  /tmp/cc2xUzc9.s 			page 6
+
+
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     spin_unlock(&printk_spinlock);
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 198              		.loc 1 66 1 view .LVU28
+ 199 000e 04B0     		add	sp, sp, #16
+ 200              	.LCFI6:
+ 201              		.cfi_remember_state
+ 202              		.cfi_def_cfa_offset 24
+ 203              		@ sp needed
+ 204 0010 BDE83040 		pop	{r4, r5, lr}
+ 205              	.LCFI7:
+ 206              		.cfi_restore 14
+ 207              		.cfi_restore 5
+ 208              		.cfi_restore 4
+ 209              		.cfi_def_cfa_offset 12
+ 210 0014 03B0     		add	sp, sp, #12
+ 211              	.LCFI8:
+ 212              		.cfi_restore 3
+ 213              		.cfi_restore 2
+ 214              		.cfi_restore 1
+ 215              		.cfi_def_cfa_offset 0
+ 216 0016 7047     		bx	lr
+ 217              	.LVL12:
+ 218              	.L18:
+ 219              	.LCFI9:
+ 220              		.cfi_restore_state
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_list args;
+ 221              		.loc 1 49 5 is_stmt 1 view .LVU29
+ 222 0018 1748     		ldr	r0, .L19
+ 223              	.LVL13:
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_list args;
+ 224              		.loc 1 49 5 is_stmt 0 view .LVU30
+ 225 001a FFF7FEFF 		bl	spin_lock
+ 226              	.LVL14:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     time64_t now = jiffies;
+ 227              		.loc 1 50 5 is_stmt 1 view .LVU31
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t sec = now / HZ;
+ 228              		.loc 1 51 5 view .LVU32
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t sec = now / HZ;
+ 229              		.loc 1 51 20 is_stmt 0 view .LVU33
+ 230 001e FFF7FEFF 		bl	ktime_get
+ 231              	.LVL15:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t nsec = now % HZ ;
+ 232              		.loc 1 52 5 is_stmt 1 view .LVU34
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t nsec = now % HZ ;
+ 233              		.loc 1 52 24 is_stmt 0 view .LVU35
+ 234 0022 164B     		ldr	r3, .L19+4
+ 235 0024 1A68     		ldr	r2, [r3]
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     uint32_t nsec = now % HZ ;
+ 236              		.loc 1 52 14 view .LVU36
+ 237 0026 B0FBF2F3 		udiv	r3, r0, r2
+ 238              	.LVL16:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (now != 0){ 
+ 239              		.loc 1 53 5 is_stmt 1 view .LVU37
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (now != 0){ 
+ 240              		.loc 1 53 14 is_stmt 0 view .LVU38
+ 241 002a 02FB130C 		mls	ip, r2, r3, r0
+ 242              	.LVL17:
+ARM GAS  /tmp/cc2xUzc9.s 			page 7
+
+
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         if(printk_show_log_level == 1)
+ 243              		.loc 1 54 5 is_stmt 1 view .LVU39
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         if(printk_show_log_level == 1)
+ 244              		.loc 1 54 8 is_stmt 0 view .LVU40
+ 245 002e 98B1     		cbz	r0, .L16
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         snprintf(printk_buf, sizeof(printk_buf), "\r[   %u.%06u] %s ", sec, nsec * (1000000/HZ),log
+ 246              		.loc 1 55 9 is_stmt 1 view .LVU41
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         else 
+ 247              		.loc 1 56 9 view .LVU42
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         else 
+ 248              		.loc 1 56 92 is_stmt 0 view .LVU43
+ 249 0030 1349     		ldr	r1, .L19+8
+ 250 0032 B1FBF2F2 		udiv	r2, r1, r2
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         else 
+ 251              		.loc 1 56 9 view .LVU44
+ 252 0036 134D     		ldr	r5, .L19+12
+ 253 0038 1349     		ldr	r1, .L19+16
+ 254 003a 51F82410 		ldr	r1, [r1, r4, lsl #2]
+ 255 003e 0191     		str	r1, [sp, #4]
+ 256 0040 0CFB02F2 		mul	r2, ip, r2
+ 257 0044 0092     		str	r2, [sp]
+ 258 0046 114A     		ldr	r2, .L19+20
+ 259 0048 4FF40071 		mov	r1, #512
+ 260 004c 2846     		mov	r0, r5
+ 261              	.LVL18:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         else 
+ 262              		.loc 1 56 9 view .LVU45
+ 263 004e FFF7FEFF 		bl	snprintf
+ 264              	.LVL19:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+ 265              		.loc 1 59 9 is_stmt 1 view .LVU46
+ 266 0052 2846     		mov	r0, r5
+ 267 0054 FFF7FEFF 		bl	tty_write
+ 268              	.LVL20:
+ 269              	.L16:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     vsnprintf(printk_buf, sizeof(printk_buf), fmt, args);
+ 270              		.loc 1 61 5 view .LVU47
+ 271 0058 08AB     		add	r3, sp, #32
+ 272 005a 0393     		str	r3, [sp, #12]
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_end(args);
+ 273              		.loc 1 62 5 view .LVU48
+ 274 005c 094C     		ldr	r4, .L19+12
+ 275              	.LVL21:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     va_end(args);
+ 276              		.loc 1 62 5 is_stmt 0 view .LVU49
+ 277 005e 079A     		ldr	r2, [sp, #28]
+ 278 0060 4FF40071 		mov	r1, #512
+ 279 0064 2046     		mov	r0, r4
+ 280 0066 FFF7FEFF 		bl	vsnprintf
+ 281              	.LVL22:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     tty_write(printk_buf);
+ 282              		.loc 1 63 5 is_stmt 1 view .LVU50
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     spin_unlock(&printk_spinlock);
+ 283              		.loc 1 64 5 view .LVU51
+ 284 006a 2046     		mov	r0, r4
+ 285 006c FFF7FEFF 		bl	tty_write
+ 286              	.LVL23:
+ARM GAS  /tmp/cc2xUzc9.s 			page 8
+
+
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 287              		.loc 1 65 5 view .LVU52
+ 288 0070 0148     		ldr	r0, .L19
+ 289 0072 FFF7FEFF 		bl	spin_unlock
+ 290              	.LVL24:
+ 291 0076 CAE7     		b	.L12
+ 292              	.L20:
+ 293              		.align	2
+ 294              	.L19:
+ 295 0078 00000000 		.word	printk_spinlock
+ 296 007c 00000000 		.word	HZ
+ 297 0080 40420F00 		.word	1000000
+ 298 0084 00000000 		.word	printk_buf
+ 299 0088 00000000 		.word	log_level_str
+ 300 008c 00000000 		.word	.LC0
+ 301              		.cfi_endproc
+ 302              	.LFE1034:
+ 304              		.section	.rodata.printk_service_init.str1.4,"aMS",%progbits,1
+ 305              		.align	2
+ 306              	.LC1:
+ 307 0000 2F646576 		.ascii	"/dev/ttyS0\000"
+ 307      2F747479 
+ 307      533000
+ 308 000b 00       		.align	2
+ 309              	.LC2:
+ 310 000c 74747920 		.ascii	"tty device:%s open failed,use early printk to out p"
+ 310      64657669 
+ 310      63653A25 
+ 310      73206F70 
+ 310      656E2066 
+ 311 003f 75742063 		.ascii	"ut continue\012\000"
+ 311      6F6E7469 
+ 311      6E75650A 
+ 311      00
+ 312              		.section	.text.printk_service_init,"ax",%progbits
+ 313              		.align	1
+ 314              		.global	printk_service_init
+ 315              		.syntax unified
+ 316              		.thumb
+ 317              		.thumb_func
+ 319              	printk_service_init:
+ 320              	.LFB1032:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     tty_device = filp_open(CONFIG_PRINTTK_USE_TTY_DEVICE, O_RDWR, 0);
+ 321              		.loc 1 15 31 view -0
+ 322              		.cfi_startproc
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325 0000 10B5     		push	{r4, lr}
+ 326              	.LCFI10:
+ 327              		.cfi_def_cfa_offset 8
+ 328              		.cfi_offset 4, -8
+ 329              		.cfi_offset 14, -4
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (IS_ERR(tty_device)) {
+ 330              		.loc 1 16 5 view .LVU54
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (IS_ERR(tty_device)) {
+ 331              		.loc 1 16 18 is_stmt 0 view .LVU55
+ 332 0002 0022     		movs	r2, #0
+ARM GAS  /tmp/cc2xUzc9.s 			page 9
+
+
+ 333 0004 0221     		movs	r1, #2
+ 334 0006 0D48     		ldr	r0, .L26
+ 335 0008 FFF7FEFF 		bl	filp_open
+ 336              	.LVL25:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     if (IS_ERR(tty_device)) {
+ 337              		.loc 1 16 16 discriminator 1 view .LVU56
+ 338 000c 0C4B     		ldr	r3, .L26+4
+ 339 000e 1860     		str	r0, [r3]
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         printk("tty device:%s open failed,use early printk to out put continue\n",CONFIG_PRINTTK_US
+ 340              		.loc 1 17 5 is_stmt 1 view .LVU57
+ 341              	.LVL26:
+ 342              	.LBB4:
+ 343              	.LBI4:
+ 344              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+ARM GAS  /tmp/cc2xUzc9.s 			page 10
+
+
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 345              		.loc 3 75 33 view .LVU58
+ 346              	.LBB5:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 347              		.loc 3 77 2 view .LVU59
+ 348              		.loc 3 77 9 is_stmt 0 view .LVU60
+ 349 0010 10F5805F 		cmn	r0, #4096
+ 350 0014 94BF     		ite	ls
+ 351 0016 0024     		movls	r4, #0
+ 352 0018 0124     		movhi	r4, #1
+ 353              	.LVL27:
+ 354              		.loc 3 77 9 view .LVU61
+ 355              	.LBE5:
+ 356              	.LBE4:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         printk("tty device:%s open failed,use early printk to out put continue\n",CONFIG_PRINTTK_US
+ 357              		.loc 1 17 8 discriminator 1 view .LVU62
+ 358 001a 24B9     		cbnz	r4, .L25
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     return 0;
+ 359              		.loc 1 22 5 is_stmt 1 view .LVU63
+ 360 001c 0948     		ldr	r0, .L26+8
+ 361 001e FFF7FEFF 		bl	spin_lock_init
+ 362              	.LVL28:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 363              		.loc 1 23 5 view .LVU64
+ 364              	.L21:
+ARM GAS  /tmp/cc2xUzc9.s 			page 11
+
+
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+ 365              		.loc 1 24 1 is_stmt 0 view .LVU65
+ 366 0022 2046     		mov	r0, r4
+ 367 0024 10BD     		pop	{r4, pc}
+ 368              	.L25:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         tty_device = NULL;
+ 369              		.loc 1 18 9 is_stmt 1 view .LVU66
+ 370 0026 0549     		ldr	r1, .L26
+ 371 0028 0748     		ldr	r0, .L26+12
+ 372 002a FFF7FEFF 		bl	printk
+ 373              	.LVL29:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         return -1;
+ 374              		.loc 1 19 9 view .LVU67
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****         return -1;
+ 375              		.loc 1 19 20 is_stmt 0 view .LVU68
+ 376 002e 044B     		ldr	r3, .L26+4
+ 377 0030 0022     		movs	r2, #0
+ 378 0032 1A60     		str	r2, [r3]
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+ 379              		.loc 1 20 9 is_stmt 1 view .LVU69
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     }
+ 380              		.loc 1 20 16 is_stmt 0 view .LVU70
+ 381 0034 4FF0FF34 		mov	r4, #-1
+ 382 0038 F3E7     		b	.L21
+ 383              	.L27:
+ 384 003a 00BF     		.align	2
+ 385              	.L26:
+ 386 003c 00000000 		.word	.LC1
+ 387 0040 00000000 		.word	tty_device
+ 388 0044 00000000 		.word	printk_spinlock
+ 389 0048 0C000000 		.word	.LC2
+ 390              		.cfi_endproc
+ 391              	.LFE1032:
+ 393              		.section	.rodata.minimal_printk.str1.4,"aMS",%progbits,1
+ 394              		.align	2
+ 395              	.LC3:
+ 396 0000 257300   		.ascii	"%s\000"
+ 397              		.section	.text.minimal_printk,"ax",%progbits
+ 398              		.align	1
+ 399              		.weak	minimal_printk
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 404              	minimal_printk:
+ 405              	.LVL30:
+ 406              	.LFB1035:
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** EXPORT_SYMBOL(printk);
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** static char minimal_buf[1024];
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** void __weak minimal_printk(const char *fmt, va_list args) {
+ 407              		.loc 1 71 59 is_stmt 1 view -0
+ 408              		.cfi_startproc
+ 409              		@ args = 0, pretend = 0, frame = 0
+ 410              		@ frame_needed = 0, uses_anonymous_args = 0
+ 411              		.loc 1 71 59 is_stmt 0 view .LVU72
+ 412 0000 10B5     		push	{r4, lr}
+ARM GAS  /tmp/cc2xUzc9.s 			page 12
+
+
+ 413              	.LCFI11:
+ 414              		.cfi_def_cfa_offset 8
+ 415              		.cfi_offset 4, -8
+ 416              		.cfi_offset 14, -4
+ 417 0002 0246     		mov	r2, r0
+ 418 0004 0B46     		mov	r3, r1
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     vsnprintf(minimal_buf, sizeof(minimal_buf), fmt, args);
+ 419              		.loc 1 72 5 is_stmt 1 view .LVU73
+ 420 0006 054C     		ldr	r4, .L30
+ 421 0008 4FF48061 		mov	r1, #1024
+ 422              	.LVL31:
+ 423              		.loc 1 72 5 is_stmt 0 view .LVU74
+ 424 000c 2046     		mov	r0, r4
+ 425              	.LVL32:
+ 426              		.loc 1 72 5 view .LVU75
+ 427 000e FFF7FEFF 		bl	vsnprintf
+ 428              	.LVL33:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     early_printk("%s", minimal_buf);
+ 429              		.loc 1 73 5 is_stmt 1 view .LVU76
+ 430 0012 2146     		mov	r1, r4
+ 431 0014 0248     		ldr	r0, .L30+4
+ 432 0016 FFF7FEFF 		bl	early_printk
+ 433              	.LVL34:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 434              		.loc 1 74 1 is_stmt 0 view .LVU77
+ 435 001a 10BD     		pop	{r4, pc}
+ 436              	.L31:
+ 437              		.align	2
+ 438              	.L30:
+ 439 001c 00000000 		.word	minimal_buf
+ 440 0020 00000000 		.word	.LC3
+ 441              		.cfi_endproc
+ 442              	.LFE1035:
+ 444              		.section	.rodata.early_putchar.str1.4,"aMS",%progbits,1
+ 445              		.align	2
+ 446              	.LC4:
+ 447 0000 256300   		.ascii	"%c\000"
+ 448              		.section	.text.early_putchar,"ax",%progbits
+ 449              		.align	1
+ 450              		.weak	early_putchar
+ 451              		.syntax unified
+ 452              		.thumb
+ 453              		.thumb_func
+ 455              	early_putchar:
+ 456              	.LVL35:
+ 457              	.LFB1036:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** void __weak early_putchar(char c) {
+ 458              		.loc 1 75 35 is_stmt 1 view -0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              		.loc 1 75 35 is_stmt 0 view .LVU79
+ 463 0000 08B5     		push	{r3, lr}
+ 464              	.LCFI12:
+ 465              		.cfi_def_cfa_offset 8
+ 466              		.cfi_offset 3, -8
+ 467              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc2xUzc9.s 			page 13
+
+
+ 468 0002 0146     		mov	r1, r0
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c ****     early_printk("%c", c);
+ 469              		.loc 1 76 5 is_stmt 1 view .LVU80
+ 470 0004 0148     		ldr	r0, .L34
+ 471              	.LVL36:
+ 472              		.loc 1 76 5 is_stmt 0 view .LVU81
+ 473 0006 FFF7FEFF 		bl	early_printk
+ 474              	.LVL37:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/printk/printk.c **** }
+ 475              		.loc 1 77 1 view .LVU82
+ 476 000a 08BD     		pop	{r3, pc}
+ 477              	.L35:
+ 478              		.align	2
+ 479              	.L34:
+ 480 000c 00000000 		.word	.LC4
+ 481              		.cfi_endproc
+ 482              	.LFE1036:
+ 484              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 485              		.align	2
+ 486              	.LC5:
+ 487 0000 6561726C 		.ascii	"early_printk\000"
+ 487      795F7072 
+ 487      696E746B 
+ 487      00
+ 488 000d 000000   		.align	2
+ 489              	.LC6:
+ 490 0010 00       		.ascii	"\000"
+ 491              		.section	.export_table,"aw"
+ 492              		.align	2
+ 495              	early_printk_export_struct:
+ 496 0000 00000000 		.word	.LC5
+ 497 0004 10000000 		.word	.LC6
+ 498 0008 00000000 		.word	early_printk
+ 499              		.section	.bss.minimal_buf,"aw",%nobits
+ 500              		.align	2
+ 503              	minimal_buf:
+ 504 0000 00000000 		.space	1024
+ 504      00000000 
+ 504      00000000 
+ 504      00000000 
+ 504      00000000 
+ 505              		.section	.rodata.str1.4
+ 506 0011 000000   		.align	2
+ 507              	.LC7:
+ 508 0014 7072696E 		.ascii	"printk\000"
+ 508      746B00
+ 509              		.section	.export_table
+ 510              		.align	2
+ 513              	printk_export_struct:
+ 514 000c 14000000 		.word	.LC7
+ 515 0010 10000000 		.word	.LC6
+ 516 0014 00000000 		.word	printk
+ 517              		.section	.rodata.str1.4
+ 518 001b 00       		.align	2
+ 519              	.LC8:
+ 520 001c 3C303E00 		.ascii	"<0>\000"
+ 521              		.align	2
+ARM GAS  /tmp/cc2xUzc9.s 			page 14
+
+
+ 522              	.LC9:
+ 523 0020 3C313E00 		.ascii	"<1>\000"
+ 524              		.align	2
+ 525              	.LC10:
+ 526 0024 3C323E00 		.ascii	"<2>\000"
+ 527              		.align	2
+ 528              	.LC11:
+ 529 0028 3C333E00 		.ascii	"<3>\000"
+ 530              		.align	2
+ 531              	.LC12:
+ 532 002c 3C343E00 		.ascii	"<4>\000"
+ 533              		.align	2
+ 534              	.LC13:
+ 535 0030 3C353E00 		.ascii	"<5>\000"
+ 536              		.align	2
+ 537              	.LC14:
+ 538 0034 3C363E00 		.ascii	"<6>\000"
+ 539              		.align	2
+ 540              	.LC15:
+ 541 0038 3C373E00 		.ascii	"<7>\000"
+ 542              		.section	.rodata.log_level_str,"a"
+ 543              		.align	2
+ 546              	log_level_str:
+ 547 0000 1C000000 		.word	.LC8
+ 548 0004 20000000 		.word	.LC9
+ 549 0008 24000000 		.word	.LC10
+ 550 000c 28000000 		.word	.LC11
+ 551 0010 2C000000 		.word	.LC12
+ 552 0014 30000000 		.word	.LC13
+ 553 0018 34000000 		.word	.LC14
+ 554 001c 38000000 		.word	.LC15
+ 555              		.section	.bss.printk_buf,"aw",%nobits
+ 556              		.align	2
+ 559              	printk_buf:
+ 560 0000 00000000 		.space	512
+ 560      00000000 
+ 560      00000000 
+ 560      00000000 
+ 560      00000000 
+ 561              		.section	.bss.printk_spinlock,"aw",%nobits
+ 562              		.align	2
+ 565              	printk_spinlock:
+ 566 0000 00000000 		.space	16
+ 566      00000000 
+ 566      00000000 
+ 566      00000000 
+ 567              		.section	.bss.tty_device,"aw",%nobits
+ 568              		.align	2
+ 571              	tty_device:
+ 572 0000 00000000 		.space	4
+ 573              		.text
+ 574              	.Letext0:
+ 575              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stdarg.h"
+ 576              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 577              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 578              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/types.h"
+ 579              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ARM GAS  /tmp/cc2xUzc9.s 			page 15
+
+
+ 580              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/export.h"
+ 581              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/errseq.h"
+ 582              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 583              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 584              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 585              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 586              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rbtree_types.h"
+ 587              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uidgid_types.h"
+ 588              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/projid.h"
+ 589              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/fs.h"
+ 590              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mnt_idmapping.h"
+ 591              		.file 20 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 592              		.file 21 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/uio.h"
+ 593              		.file 22 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/wait.h"
+ 594              		.file 23 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/xarray.h"
+ 595              		.file 24 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/migrate_mode.h"
+ 596              		.file 25 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/rw_hint.h"
+ 597              		.file 26 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/reciprocal_div.h"
+ 598              		.file 27 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+ 599              		.file 28 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mm_type.h"
+ 600              		.file 29 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bvec.h"
+ 601              		.file 30 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk_types.h"
+ 602              		.file 31 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blkdev.h"
+ 603              		.file 32 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/bio.h"
+ 604              		.file 33 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool_super_haper.h"
+ 605              		.file 34 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mempool.h"
+ 606              		.file 35 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockdep_types.h"
+ 607              		.file 36 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/workqueue_types.h"
+ 608              		.file 37 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/blk-mq.h"
+ 609              		.file 38 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/dcache.h"
+ 610              		.file 39 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/uapi/linux/pr.h"
+ 611              		.file 40 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/pr.h"
+ 612              		.file 41 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/hdreg.h"
+ 613              		.file 42 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/lockref.h"
+ 614              		.file 43 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/path.h"
+ 615              		.file 44 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/statfs.h"
+ 616              		.file 45 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stat.h"
+ 617              		.file 46 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 618              		.file 47 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 619              		.file 48 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sprintf.h"
+ 620              		.file 49 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time.h"
+ 621              		.file 50 "<built-in>"
+ARM GAS  /tmp/cc2xUzc9.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 printk.c
+     /tmp/cc2xUzc9.s:22     .text.spin_lock_init:00000000 $t
+     /tmp/cc2xUzc9.s:27     .text.spin_lock_init:00000000 spin_lock_init
+     /tmp/cc2xUzc9.s:46     .text.spin_lock:00000000 $t
+     /tmp/cc2xUzc9.s:51     .text.spin_lock:00000000 spin_lock
+     /tmp/cc2xUzc9.s:73     .text.tty_write:00000000 $t
+     /tmp/cc2xUzc9.s:78     .text.tty_write:00000000 tty_write
+     /tmp/cc2xUzc9.s:124    .text.tty_write:00000024 $d
+     /tmp/cc2xUzc9.s:571    .bss.tty_device:00000000 tty_device
+     /tmp/cc2xUzc9.s:129    .text.spin_unlock:00000000 $t
+     /tmp/cc2xUzc9.s:134    .text.spin_unlock:00000000 spin_unlock
+     /tmp/cc2xUzc9.s:156    .rodata.printk.str1.4:00000000 $d
+     /tmp/cc2xUzc9.s:160    .text.printk:00000000 $t
+     /tmp/cc2xUzc9.s:166    .text.printk:00000000 printk
+     /tmp/cc2xUzc9.s:295    .text.printk:00000078 $d
+     /tmp/cc2xUzc9.s:565    .bss.printk_spinlock:00000000 printk_spinlock
+     /tmp/cc2xUzc9.s:559    .bss.printk_buf:00000000 printk_buf
+     /tmp/cc2xUzc9.s:546    .rodata.log_level_str:00000000 log_level_str
+     /tmp/cc2xUzc9.s:305    .rodata.printk_service_init.str1.4:00000000 $d
+     /tmp/cc2xUzc9.s:313    .text.printk_service_init:00000000 $t
+     /tmp/cc2xUzc9.s:319    .text.printk_service_init:00000000 printk_service_init
+     /tmp/cc2xUzc9.s:386    .text.printk_service_init:0000003c $d
+     /tmp/cc2xUzc9.s:394    .rodata.minimal_printk.str1.4:00000000 $d
+     /tmp/cc2xUzc9.s:398    .text.minimal_printk:00000000 $t
+     /tmp/cc2xUzc9.s:404    .text.minimal_printk:00000000 minimal_printk
+     /tmp/cc2xUzc9.s:439    .text.minimal_printk:0000001c $d
+     /tmp/cc2xUzc9.s:503    .bss.minimal_buf:00000000 minimal_buf
+     /tmp/cc2xUzc9.s:445    .rodata.early_putchar.str1.4:00000000 $d
+     /tmp/cc2xUzc9.s:449    .text.early_putchar:00000000 $t
+     /tmp/cc2xUzc9.s:455    .text.early_putchar:00000000 early_putchar
+     /tmp/cc2xUzc9.s:480    .text.early_putchar:0000000c $d
+     /tmp/cc2xUzc9.s:485    .rodata.str1.4:00000000 $d
+     /tmp/cc2xUzc9.s:492    .export_table:00000000 $d
+     /tmp/cc2xUzc9.s:495    .export_table:00000000 early_printk_export_struct
+     /tmp/cc2xUzc9.s:500    .bss.minimal_buf:00000000 $d
+     /tmp/cc2xUzc9.s:513    .export_table:0000000c printk_export_struct
+     /tmp/cc2xUzc9.s:543    .rodata.log_level_str:00000000 $d
+     /tmp/cc2xUzc9.s:556    .bss.printk_buf:00000000 $d
+     /tmp/cc2xUzc9.s:562    .bss.printk_spinlock:00000000 $d
+     /tmp/cc2xUzc9.s:568    .bss.tty_device:00000000 $d
+
+UNDEFINED SYMBOLS
+_spin_lock
+strlen
+kernel_write
+early_printk
+_spin_unlock
+ktime_get
+snprintf
+vsnprintf
+HZ
+filp_open

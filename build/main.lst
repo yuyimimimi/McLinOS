@@ -1,0 +1,1996 @@
+ARM GAS  /tmp/ccbbwrMK.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"main.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c"
+  21              		.section	.text.do_initcallearly,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	do_initcallearly:
+  28              	.LFB1075:
+  29              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** 
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_initcallearly(void){
+  30              		.loc 2 2 35 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 10B5     		push	{r4, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 14, -4
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_initcallearly; fn != __end_initcallearly; fn++) 
+  39              		.loc 2 3 5 view .LVU1
+  40              	.LBB2:
+  41              		.loc 2 3 10 view .LVU2
+  42              	.LVL0:
+  43              		.loc 2 3 22 is_stmt 0 view .LVU3
+  44 0002 044C     		ldr	r4, .L5
+  45              		.loc 2 3 5 view .LVU4
+  46 0004 02E0     		b	.L2
+  47              	.LVL1:
+  48              	.L3:
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+  49              		.loc 2 4 9 is_stmt 1 view .LVU5
+  50              		.loc 2 4 10 is_stmt 0 view .LVU6
+  51 0006 54F8043B 		ldr	r3, [r4], #4
+  52              	.LVL2:
+  53              		.loc 2 4 10 view .LVU7
+  54 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 2
+
+
+  55              	.LVL3:
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_initcallearly; fn != __end_initcallearly; fn++) 
+  56              		.loc 2 3 79 is_stmt 1 discriminator 3 view .LVU8
+  57              	.L2:
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_initcallearly; fn != __end_initcallearly; fn++) 
+  58              		.loc 2 3 53 discriminator 1 view .LVU9
+  59 000c 024B     		ldr	r3, .L5+4
+  60 000e 9C42     		cmp	r4, r3
+  61 0010 F9D1     		bne	.L3
+  62              	.LBE2:
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+  63              		.loc 2 5 1 is_stmt 0 view .LVU10
+  64 0012 10BD     		pop	{r4, pc}
+  65              	.LVL4:
+  66              	.L6:
+  67              		.loc 2 5 1 view .LVU11
+  68              		.align	2
+  69              	.L5:
+  70 0014 00000000 		.word	__start_initcallearly
+  71 0018 00000000 		.word	__end_initcallearly
+  72              		.cfi_endproc
+  73              	.LFE1075:
+  75              		.section	.text.do_pureinitcall,"ax",%progbits
+  76              		.align	1
+  77              		.syntax unified
+  78              		.thumb
+  79              		.thumb_func
+  81              	do_pureinitcall:
+  82              	.LFB1076:
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_pureinitcall(void){
+  83              		.loc 2 6 34 is_stmt 1 view -0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87 0000 10B5     		push	{r4, lr}
+  88              	.LCFI1:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 4, -8
+  91              		.cfi_offset 14, -4
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_pureinitcall; fn != __end_pureinitcall; fn++) 
+  92              		.loc 2 7 5 view .LVU13
+  93              	.LBB3:
+  94              		.loc 2 7 10 view .LVU14
+  95              	.LVL5:
+  96              		.loc 2 7 22 is_stmt 0 view .LVU15
+  97 0002 044C     		ldr	r4, .L11
+  98              		.loc 2 7 5 view .LVU16
+  99 0004 02E0     		b	.L8
+ 100              	.LVL6:
+ 101              	.L9:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 102              		.loc 2 8 9 is_stmt 1 view .LVU17
+ 103              		.loc 2 8 10 is_stmt 0 view .LVU18
+ 104 0006 54F8043B 		ldr	r3, [r4], #4
+ 105              	.LVL7:
+ 106              		.loc 2 8 10 view .LVU19
+ 107 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 3
+
+
+ 108              	.LVL8:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_pureinitcall; fn != __end_pureinitcall; fn++) 
+ 109              		.loc 2 7 77 is_stmt 1 discriminator 3 view .LVU20
+ 110              	.L8:
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_pureinitcall; fn != __end_pureinitcall; fn++) 
+ 111              		.loc 2 7 52 discriminator 1 view .LVU21
+ 112 000c 024B     		ldr	r3, .L11+4
+ 113 000e 9C42     		cmp	r4, r3
+ 114 0010 F9D1     		bne	.L9
+ 115              	.LBE3:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 116              		.loc 2 9 1 is_stmt 0 view .LVU22
+ 117 0012 10BD     		pop	{r4, pc}
+ 118              	.LVL9:
+ 119              	.L12:
+ 120              		.loc 2 9 1 view .LVU23
+ 121              		.align	2
+ 122              	.L11:
+ 123 0014 00000000 		.word	__start_pureinitcall
+ 124 0018 00000000 		.word	__end_pureinitcall
+ 125              		.cfi_endproc
+ 126              	.LFE1076:
+ 128              		.section	.text.do_coreinitcall,"ax",%progbits
+ 129              		.align	1
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	do_coreinitcall:
+ 135              	.LFB1077:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_coreinitcall(void){
+ 136              		.loc 2 10 34 is_stmt 1 view -0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140 0000 10B5     		push	{r4, lr}
+ 141              	.LCFI2:
+ 142              		.cfi_def_cfa_offset 8
+ 143              		.cfi_offset 4, -8
+ 144              		.cfi_offset 14, -4
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_coreinitcall; fn != __end_coreinitcall; fn++) 
+ 145              		.loc 2 11 5 view .LVU25
+ 146              	.LBB4:
+ 147              		.loc 2 11 10 view .LVU26
+ 148              	.LVL10:
+ 149              		.loc 2 11 22 is_stmt 0 view .LVU27
+ 150 0002 044C     		ldr	r4, .L17
+ 151              		.loc 2 11 5 view .LVU28
+ 152 0004 02E0     		b	.L14
+ 153              	.LVL11:
+ 154              	.L15:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 155              		.loc 2 12 9 is_stmt 1 view .LVU29
+ 156              		.loc 2 12 10 is_stmt 0 view .LVU30
+ 157 0006 54F8043B 		ldr	r3, [r4], #4
+ 158              	.LVL12:
+ 159              		.loc 2 12 10 view .LVU31
+ 160 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 4
+
+
+ 161              	.LVL13:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_coreinitcall; fn != __end_coreinitcall; fn++) 
+ 162              		.loc 2 11 77 is_stmt 1 discriminator 3 view .LVU32
+ 163              	.L14:
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_coreinitcall; fn != __end_coreinitcall; fn++) 
+ 164              		.loc 2 11 52 discriminator 1 view .LVU33
+ 165 000c 024B     		ldr	r3, .L17+4
+ 166 000e 9C42     		cmp	r4, r3
+ 167 0010 F9D1     		bne	.L15
+ 168              	.LBE4:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 169              		.loc 2 13 1 is_stmt 0 view .LVU34
+ 170 0012 10BD     		pop	{r4, pc}
+ 171              	.LVL14:
+ 172              	.L18:
+ 173              		.loc 2 13 1 view .LVU35
+ 174              		.align	2
+ 175              	.L17:
+ 176 0014 00000000 		.word	__start_coreinitcall
+ 177 0018 00000000 		.word	__end_coreinitcall
+ 178              		.cfi_endproc
+ 179              	.LFE1077:
+ 181              		.section	.text.do_core_initcall_sync,"ax",%progbits
+ 182              		.align	1
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	do_core_initcall_sync:
+ 188              	.LFB1078:
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_core_initcall_sync(void){
+ 189              		.loc 2 14 40 is_stmt 1 view -0
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193 0000 10B5     		push	{r4, lr}
+ 194              	.LCFI3:
+ 195              		.cfi_def_cfa_offset 8
+ 196              		.cfi_offset 4, -8
+ 197              		.cfi_offset 14, -4
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_core_initcall_sync; fn != __end_core_initcall_sync; fn++) 
+ 198              		.loc 2 15 5 view .LVU37
+ 199              	.LBB5:
+ 200              		.loc 2 15 10 view .LVU38
+ 201              	.LVL15:
+ 202              		.loc 2 15 22 is_stmt 0 view .LVU39
+ 203 0002 044C     		ldr	r4, .L23
+ 204              		.loc 2 15 5 view .LVU40
+ 205 0004 02E0     		b	.L20
+ 206              	.LVL16:
+ 207              	.L21:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 208              		.loc 2 16 9 is_stmt 1 view .LVU41
+ 209              		.loc 2 16 10 is_stmt 0 view .LVU42
+ 210 0006 54F8043B 		ldr	r3, [r4], #4
+ 211              	.LVL17:
+ 212              		.loc 2 16 10 view .LVU43
+ 213 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 5
+
+
+ 214              	.LVL18:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_core_initcall_sync; fn != __end_core_initcall_sync; fn++) 
+ 215              		.loc 2 15 89 is_stmt 1 discriminator 3 view .LVU44
+ 216              	.L20:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_core_initcall_sync; fn != __end_core_initcall_sync; fn++) 
+ 217              		.loc 2 15 58 discriminator 1 view .LVU45
+ 218 000c 024B     		ldr	r3, .L23+4
+ 219 000e 9C42     		cmp	r4, r3
+ 220 0010 F9D1     		bne	.L21
+ 221              	.LBE5:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 222              		.loc 2 17 1 is_stmt 0 view .LVU46
+ 223 0012 10BD     		pop	{r4, pc}
+ 224              	.LVL19:
+ 225              	.L24:
+ 226              		.loc 2 17 1 view .LVU47
+ 227              		.align	2
+ 228              	.L23:
+ 229 0014 00000000 		.word	__start_core_initcall_sync
+ 230 0018 00000000 		.word	__end_core_initcall_sync
+ 231              		.cfi_endproc
+ 232              	.LFE1078:
+ 234              		.section	.text.do_postcoreinitcall,"ax",%progbits
+ 235              		.align	1
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	do_postcoreinitcall:
+ 241              	.LFB1079:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_postcoreinitcall(void){
+ 242              		.loc 2 18 38 is_stmt 1 view -0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246 0000 10B5     		push	{r4, lr}
+ 247              	.LCFI4:
+ 248              		.cfi_def_cfa_offset 8
+ 249              		.cfi_offset 4, -8
+ 250              		.cfi_offset 14, -4
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcoreinitcall; fn != __end_postcoreinitcall; fn++) 
+ 251              		.loc 2 19 5 view .LVU49
+ 252              	.LBB6:
+ 253              		.loc 2 19 10 view .LVU50
+ 254              	.LVL20:
+ 255              		.loc 2 19 22 is_stmt 0 view .LVU51
+ 256 0002 044C     		ldr	r4, .L29
+ 257              		.loc 2 19 5 view .LVU52
+ 258 0004 02E0     		b	.L26
+ 259              	.LVL21:
+ 260              	.L27:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 261              		.loc 2 20 9 is_stmt 1 view .LVU53
+ 262              		.loc 2 20 10 is_stmt 0 view .LVU54
+ 263 0006 54F8043B 		ldr	r3, [r4], #4
+ 264              	.LVL22:
+ 265              		.loc 2 20 10 view .LVU55
+ 266 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 6
+
+
+ 267              	.LVL23:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcoreinitcall; fn != __end_postcoreinitcall; fn++) 
+ 268              		.loc 2 19 85 is_stmt 1 discriminator 3 view .LVU56
+ 269              	.L26:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcoreinitcall; fn != __end_postcoreinitcall; fn++) 
+ 270              		.loc 2 19 56 discriminator 1 view .LVU57
+ 271 000c 024B     		ldr	r3, .L29+4
+ 272 000e 9C42     		cmp	r4, r3
+ 273 0010 F9D1     		bne	.L27
+ 274              	.LBE6:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 275              		.loc 2 21 1 is_stmt 0 view .LVU58
+ 276 0012 10BD     		pop	{r4, pc}
+ 277              	.LVL24:
+ 278              	.L30:
+ 279              		.loc 2 21 1 view .LVU59
+ 280              		.align	2
+ 281              	.L29:
+ 282 0014 00000000 		.word	__start_postcoreinitcall
+ 283 0018 00000000 		.word	__end_postcoreinitcall
+ 284              		.cfi_endproc
+ 285              	.LFE1079:
+ 287              		.section	.text.do_postcore_initcall_sync,"ax",%progbits
+ 288              		.align	1
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 293              	do_postcore_initcall_sync:
+ 294              	.LFB1080:
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_postcore_initcall_sync(void){
+ 295              		.loc 2 22 44 is_stmt 1 view -0
+ 296              		.cfi_startproc
+ 297              		@ args = 0, pretend = 0, frame = 0
+ 298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299 0000 10B5     		push	{r4, lr}
+ 300              	.LCFI5:
+ 301              		.cfi_def_cfa_offset 8
+ 302              		.cfi_offset 4, -8
+ 303              		.cfi_offset 14, -4
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcore_initcall_sync; fn != __end_postcore_initcall_sync; fn++)
+ 304              		.loc 2 23 5 view .LVU61
+ 305              	.LBB7:
+ 306              		.loc 2 23 10 view .LVU62
+ 307              	.LVL25:
+ 308              		.loc 2 23 22 is_stmt 0 view .LVU63
+ 309 0002 044C     		ldr	r4, .L35
+ 310              		.loc 2 23 5 view .LVU64
+ 311 0004 02E0     		b	.L32
+ 312              	.LVL26:
+ 313              	.L33:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 314              		.loc 2 24 9 is_stmt 1 view .LVU65
+ 315              		.loc 2 24 10 is_stmt 0 view .LVU66
+ 316 0006 54F8043B 		ldr	r3, [r4], #4
+ 317              	.LVL27:
+ 318              		.loc 2 24 10 view .LVU67
+ 319 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 7
+
+
+ 320              	.LVL28:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcore_initcall_sync; fn != __end_postcore_initcall_sync; fn++)
+ 321              		.loc 2 23 97 is_stmt 1 discriminator 3 view .LVU68
+ 322              	.L32:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_postcore_initcall_sync; fn != __end_postcore_initcall_sync; fn++)
+ 323              		.loc 2 23 62 discriminator 1 view .LVU69
+ 324 000c 024B     		ldr	r3, .L35+4
+ 325 000e 9C42     		cmp	r4, r3
+ 326 0010 F9D1     		bne	.L33
+ 327              	.LBE7:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 328              		.loc 2 25 1 is_stmt 0 view .LVU70
+ 329 0012 10BD     		pop	{r4, pc}
+ 330              	.LVL29:
+ 331              	.L36:
+ 332              		.loc 2 25 1 view .LVU71
+ 333              		.align	2
+ 334              	.L35:
+ 335 0014 00000000 		.word	__start_postcore_initcall_sync
+ 336 0018 00000000 		.word	__end_postcore_initcall_sync
+ 337              		.cfi_endproc
+ 338              	.LFE1080:
+ 340              		.section	.text.do_archinitcall,"ax",%progbits
+ 341              		.align	1
+ 342              		.syntax unified
+ 343              		.thumb
+ 344              		.thumb_func
+ 346              	do_archinitcall:
+ 347              	.LFB1081:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_archinitcall(void){
+ 348              		.loc 2 26 34 is_stmt 1 view -0
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352 0000 10B5     		push	{r4, lr}
+ 353              	.LCFI6:
+ 354              		.cfi_def_cfa_offset 8
+ 355              		.cfi_offset 4, -8
+ 356              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_archinitcall; fn != __end_archinitcall; fn++) 
+ 357              		.loc 2 27 5 view .LVU73
+ 358              	.LBB8:
+ 359              		.loc 2 27 10 view .LVU74
+ 360              	.LVL30:
+ 361              		.loc 2 27 22 is_stmt 0 view .LVU75
+ 362 0002 044C     		ldr	r4, .L41
+ 363              		.loc 2 27 5 view .LVU76
+ 364 0004 02E0     		b	.L38
+ 365              	.LVL31:
+ 366              	.L39:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 367              		.loc 2 28 9 is_stmt 1 view .LVU77
+ 368              		.loc 2 28 10 is_stmt 0 view .LVU78
+ 369 0006 54F8043B 		ldr	r3, [r4], #4
+ 370              	.LVL32:
+ 371              		.loc 2 28 10 view .LVU79
+ 372 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 8
+
+
+ 373              	.LVL33:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_archinitcall; fn != __end_archinitcall; fn++) 
+ 374              		.loc 2 27 77 is_stmt 1 discriminator 3 view .LVU80
+ 375              	.L38:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_archinitcall; fn != __end_archinitcall; fn++) 
+ 376              		.loc 2 27 52 discriminator 1 view .LVU81
+ 377 000c 024B     		ldr	r3, .L41+4
+ 378 000e 9C42     		cmp	r4, r3
+ 379 0010 F9D1     		bne	.L39
+ 380              	.LBE8:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 381              		.loc 2 29 1 is_stmt 0 view .LVU82
+ 382 0012 10BD     		pop	{r4, pc}
+ 383              	.LVL34:
+ 384              	.L42:
+ 385              		.loc 2 29 1 view .LVU83
+ 386              		.align	2
+ 387              	.L41:
+ 388 0014 00000000 		.word	__start_archinitcall
+ 389 0018 00000000 		.word	__end_archinitcall
+ 390              		.cfi_endproc
+ 391              	.LFE1081:
+ 393              		.section	.text.do_arch_initcall_sync,"ax",%progbits
+ 394              		.align	1
+ 395              		.syntax unified
+ 396              		.thumb
+ 397              		.thumb_func
+ 399              	do_arch_initcall_sync:
+ 400              	.LFB1082:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_arch_initcall_sync(void){
+ 401              		.loc 2 30 40 is_stmt 1 view -0
+ 402              		.cfi_startproc
+ 403              		@ args = 0, pretend = 0, frame = 0
+ 404              		@ frame_needed = 0, uses_anonymous_args = 0
+ 405 0000 10B5     		push	{r4, lr}
+ 406              	.LCFI7:
+ 407              		.cfi_def_cfa_offset 8
+ 408              		.cfi_offset 4, -8
+ 409              		.cfi_offset 14, -4
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_arch_initcall_sync; fn != __end_arch_initcall_sync; fn++) 
+ 410              		.loc 2 31 5 view .LVU85
+ 411              	.LBB9:
+ 412              		.loc 2 31 10 view .LVU86
+ 413              	.LVL35:
+ 414              		.loc 2 31 22 is_stmt 0 view .LVU87
+ 415 0002 044C     		ldr	r4, .L47
+ 416              		.loc 2 31 5 view .LVU88
+ 417 0004 02E0     		b	.L44
+ 418              	.LVL36:
+ 419              	.L45:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 420              		.loc 2 32 9 is_stmt 1 view .LVU89
+ 421              		.loc 2 32 10 is_stmt 0 view .LVU90
+ 422 0006 54F8043B 		ldr	r3, [r4], #4
+ 423              	.LVL37:
+ 424              		.loc 2 32 10 view .LVU91
+ 425 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 9
+
+
+ 426              	.LVL38:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_arch_initcall_sync; fn != __end_arch_initcall_sync; fn++) 
+ 427              		.loc 2 31 89 is_stmt 1 discriminator 3 view .LVU92
+ 428              	.L44:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_arch_initcall_sync; fn != __end_arch_initcall_sync; fn++) 
+ 429              		.loc 2 31 58 discriminator 1 view .LVU93
+ 430 000c 024B     		ldr	r3, .L47+4
+ 431 000e 9C42     		cmp	r4, r3
+ 432 0010 F9D1     		bne	.L45
+ 433              	.LBE9:
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 434              		.loc 2 33 1 is_stmt 0 view .LVU94
+ 435 0012 10BD     		pop	{r4, pc}
+ 436              	.LVL39:
+ 437              	.L48:
+ 438              		.loc 2 33 1 view .LVU95
+ 439              		.align	2
+ 440              	.L47:
+ 441 0014 00000000 		.word	__start_arch_initcall_sync
+ 442 0018 00000000 		.word	__end_arch_initcall_sync
+ 443              		.cfi_endproc
+ 444              	.LFE1082:
+ 446              		.section	.text.do_subsysinitcall,"ax",%progbits
+ 447              		.align	1
+ 448              		.syntax unified
+ 449              		.thumb
+ 450              		.thumb_func
+ 452              	do_subsysinitcall:
+ 453              	.LFB1083:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_subsysinitcall(void){
+ 454              		.loc 2 34 36 is_stmt 1 view -0
+ 455              		.cfi_startproc
+ 456              		@ args = 0, pretend = 0, frame = 0
+ 457              		@ frame_needed = 0, uses_anonymous_args = 0
+ 458 0000 10B5     		push	{r4, lr}
+ 459              	.LCFI8:
+ 460              		.cfi_def_cfa_offset 8
+ 461              		.cfi_offset 4, -8
+ 462              		.cfi_offset 14, -4
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsysinitcall; fn != __end_subsysinitcall; fn++)
+ 463              		.loc 2 35 5 view .LVU97
+ 464              	.LBB10:
+ 465              		.loc 2 35 10 view .LVU98
+ 466              	.LVL40:
+ 467              		.loc 2 35 22 is_stmt 0 view .LVU99
+ 468 0002 044C     		ldr	r4, .L53
+ 469              		.loc 2 35 5 view .LVU100
+ 470 0004 02E0     		b	.L50
+ 471              	.LVL41:
+ 472              	.L51:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 473              		.loc 2 36 9 is_stmt 1 view .LVU101
+ 474              		.loc 2 36 10 is_stmt 0 view .LVU102
+ 475 0006 54F8043B 		ldr	r3, [r4], #4
+ 476              	.LVL42:
+ 477              		.loc 2 36 10 view .LVU103
+ 478 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 10
+
+
+ 479              	.LVL43:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsysinitcall; fn != __end_subsysinitcall; fn++)
+ 480              		.loc 2 35 81 is_stmt 1 discriminator 3 view .LVU104
+ 481              	.L50:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsysinitcall; fn != __end_subsysinitcall; fn++)
+ 482              		.loc 2 35 54 discriminator 1 view .LVU105
+ 483 000c 024B     		ldr	r3, .L53+4
+ 484 000e 9C42     		cmp	r4, r3
+ 485 0010 F9D1     		bne	.L51
+ 486              	.LBE10:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 487              		.loc 2 37 1 is_stmt 0 view .LVU106
+ 488 0012 10BD     		pop	{r4, pc}
+ 489              	.LVL44:
+ 490              	.L54:
+ 491              		.loc 2 37 1 view .LVU107
+ 492              		.align	2
+ 493              	.L53:
+ 494 0014 00000000 		.word	__start_subsysinitcall
+ 495 0018 00000000 		.word	__end_subsysinitcall
+ 496              		.cfi_endproc
+ 497              	.LFE1083:
+ 499              		.section	.text.do_subsys_initcall_sync,"ax",%progbits
+ 500              		.align	1
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 505              	do_subsys_initcall_sync:
+ 506              	.LFB1084:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_subsys_initcall_sync(void){
+ 507              		.loc 2 38 42 is_stmt 1 view -0
+ 508              		.cfi_startproc
+ 509              		@ args = 0, pretend = 0, frame = 0
+ 510              		@ frame_needed = 0, uses_anonymous_args = 0
+ 511 0000 10B5     		push	{r4, lr}
+ 512              	.LCFI9:
+ 513              		.cfi_def_cfa_offset 8
+ 514              		.cfi_offset 4, -8
+ 515              		.cfi_offset 14, -4
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsys_initcall_sync; fn != __end_subsys_initcall_sync; fn++) 
+ 516              		.loc 2 39 5 view .LVU109
+ 517              	.LBB11:
+ 518              		.loc 2 39 10 view .LVU110
+ 519              	.LVL45:
+ 520              		.loc 2 39 22 is_stmt 0 view .LVU111
+ 521 0002 044C     		ldr	r4, .L59
+ 522              		.loc 2 39 5 view .LVU112
+ 523 0004 02E0     		b	.L56
+ 524              	.LVL46:
+ 525              	.L57:
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 526              		.loc 2 40 9 is_stmt 1 view .LVU113
+ 527              		.loc 2 40 10 is_stmt 0 view .LVU114
+ 528 0006 54F8043B 		ldr	r3, [r4], #4
+ 529              	.LVL47:
+ 530              		.loc 2 40 10 view .LVU115
+ 531 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 11
+
+
+ 532              	.LVL48:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsys_initcall_sync; fn != __end_subsys_initcall_sync; fn++) 
+ 533              		.loc 2 39 93 is_stmt 1 discriminator 3 view .LVU116
+ 534              	.L56:
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_subsys_initcall_sync; fn != __end_subsys_initcall_sync; fn++) 
+ 535              		.loc 2 39 60 discriminator 1 view .LVU117
+ 536 000c 024B     		ldr	r3, .L59+4
+ 537 000e 9C42     		cmp	r4, r3
+ 538 0010 F9D1     		bne	.L57
+ 539              	.LBE11:
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 540              		.loc 2 41 1 is_stmt 0 view .LVU118
+ 541 0012 10BD     		pop	{r4, pc}
+ 542              	.LVL49:
+ 543              	.L60:
+ 544              		.loc 2 41 1 view .LVU119
+ 545              		.align	2
+ 546              	.L59:
+ 547 0014 00000000 		.word	__start_subsys_initcall_sync
+ 548 0018 00000000 		.word	__end_subsys_initcall_sync
+ 549              		.cfi_endproc
+ 550              	.LFE1084:
+ 552              		.section	.text.do_fsinitcall,"ax",%progbits
+ 553              		.align	1
+ 554              		.syntax unified
+ 555              		.thumb
+ 556              		.thumb_func
+ 558              	do_fsinitcall:
+ 559              	.LFB1085:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_fsinitcall(void){
+ 560              		.loc 2 42 32 is_stmt 1 view -0
+ 561              		.cfi_startproc
+ 562              		@ args = 0, pretend = 0, frame = 0
+ 563              		@ frame_needed = 0, uses_anonymous_args = 0
+ 564 0000 10B5     		push	{r4, lr}
+ 565              	.LCFI10:
+ 566              		.cfi_def_cfa_offset 8
+ 567              		.cfi_offset 4, -8
+ 568              		.cfi_offset 14, -4
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fsinitcall; fn != __end_fsinitcall; fn++) 
+ 569              		.loc 2 43 5 view .LVU121
+ 570              	.LBB12:
+ 571              		.loc 2 43 10 view .LVU122
+ 572              	.LVL50:
+ 573              		.loc 2 43 22 is_stmt 0 view .LVU123
+ 574 0002 044C     		ldr	r4, .L65
+ 575              		.loc 2 43 5 view .LVU124
+ 576 0004 02E0     		b	.L62
+ 577              	.LVL51:
+ 578              	.L63:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 579              		.loc 2 44 9 is_stmt 1 view .LVU125
+ 580              		.loc 2 44 10 is_stmt 0 view .LVU126
+ 581 0006 54F8043B 		ldr	r3, [r4], #4
+ 582              	.LVL52:
+ 583              		.loc 2 44 10 view .LVU127
+ 584 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 12
+
+
+ 585              	.LVL53:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fsinitcall; fn != __end_fsinitcall; fn++) 
+ 586              		.loc 2 43 73 is_stmt 1 discriminator 3 view .LVU128
+ 587              	.L62:
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fsinitcall; fn != __end_fsinitcall; fn++) 
+ 588              		.loc 2 43 50 discriminator 1 view .LVU129
+ 589 000c 024B     		ldr	r3, .L65+4
+ 590 000e 9C42     		cmp	r4, r3
+ 591 0010 F9D1     		bne	.L63
+ 592              	.LBE12:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 593              		.loc 2 45 1 is_stmt 0 view .LVU130
+ 594 0012 10BD     		pop	{r4, pc}
+ 595              	.LVL54:
+ 596              	.L66:
+ 597              		.loc 2 45 1 view .LVU131
+ 598              		.align	2
+ 599              	.L65:
+ 600 0014 00000000 		.word	__start_fsinitcall
+ 601 0018 00000000 		.word	__end_fsinitcall
+ 602              		.cfi_endproc
+ 603              	.LFE1085:
+ 605              		.section	.text.do_fs_initcall_sync,"ax",%progbits
+ 606              		.align	1
+ 607              		.syntax unified
+ 608              		.thumb
+ 609              		.thumb_func
+ 611              	do_fs_initcall_sync:
+ 612              	.LFB1086:
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_fs_initcall_sync(void){
+ 613              		.loc 2 46 38 is_stmt 1 view -0
+ 614              		.cfi_startproc
+ 615              		@ args = 0, pretend = 0, frame = 0
+ 616              		@ frame_needed = 0, uses_anonymous_args = 0
+ 617 0000 10B5     		push	{r4, lr}
+ 618              	.LCFI11:
+ 619              		.cfi_def_cfa_offset 8
+ 620              		.cfi_offset 4, -8
+ 621              		.cfi_offset 14, -4
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fs_initcall_sync; fn != __end_fs_initcall_sync; fn++) 
+ 622              		.loc 2 47 5 view .LVU133
+ 623              	.LBB13:
+ 624              		.loc 2 47 10 view .LVU134
+ 625              	.LVL55:
+ 626              		.loc 2 47 22 is_stmt 0 view .LVU135
+ 627 0002 044C     		ldr	r4, .L71
+ 628              		.loc 2 47 5 view .LVU136
+ 629 0004 02E0     		b	.L68
+ 630              	.LVL56:
+ 631              	.L69:
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 632              		.loc 2 48 9 is_stmt 1 view .LVU137
+ 633              		.loc 2 48 10 is_stmt 0 view .LVU138
+ 634 0006 54F8043B 		ldr	r3, [r4], #4
+ 635              	.LVL57:
+ 636              		.loc 2 48 10 view .LVU139
+ 637 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 13
+
+
+ 638              	.LVL58:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fs_initcall_sync; fn != __end_fs_initcall_sync; fn++) 
+ 639              		.loc 2 47 85 is_stmt 1 discriminator 3 view .LVU140
+ 640              	.L68:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_fs_initcall_sync; fn != __end_fs_initcall_sync; fn++) 
+ 641              		.loc 2 47 56 discriminator 1 view .LVU141
+ 642 000c 024B     		ldr	r3, .L71+4
+ 643 000e 9C42     		cmp	r4, r3
+ 644 0010 F9D1     		bne	.L69
+ 645              	.LBE13:
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 646              		.loc 2 49 1 is_stmt 0 view .LVU142
+ 647 0012 10BD     		pop	{r4, pc}
+ 648              	.LVL59:
+ 649              	.L72:
+ 650              		.loc 2 49 1 view .LVU143
+ 651              		.align	2
+ 652              	.L71:
+ 653 0014 00000000 		.word	__start_fs_initcall_sync
+ 654 0018 00000000 		.word	__end_fs_initcall_sync
+ 655              		.cfi_endproc
+ 656              	.LFE1086:
+ 658              		.section	.text.rootfs_init,"ax",%progbits
+ 659              		.align	1
+ 660              		.syntax unified
+ 661              		.thumb
+ 662              		.thumb_func
+ 664              	rootfs_init:
+ 665              	.LFB1087:
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void rootfs_init(void){
+ 666              		.loc 2 50 30 is_stmt 1 view -0
+ 667              		.cfi_startproc
+ 668              		@ args = 0, pretend = 0, frame = 0
+ 669              		@ frame_needed = 0, uses_anonymous_args = 0
+ 670 0000 10B5     		push	{r4, lr}
+ 671              	.LCFI12:
+ 672              		.cfi_def_cfa_offset 8
+ 673              		.cfi_offset 4, -8
+ 674              		.cfi_offset 14, -4
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_rootfsinitcall; fn != __end_rootfsinitcall; fn++) 
+ 675              		.loc 2 51 5 view .LVU145
+ 676              	.LBB14:
+ 677              		.loc 2 51 10 view .LVU146
+ 678              	.LVL60:
+ 679              		.loc 2 51 22 is_stmt 0 view .LVU147
+ 680 0002 044C     		ldr	r4, .L77
+ 681              		.loc 2 51 5 view .LVU148
+ 682 0004 02E0     		b	.L74
+ 683              	.LVL61:
+ 684              	.L75:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 685              		.loc 2 52 9 is_stmt 1 view .LVU149
+ 686              		.loc 2 52 10 is_stmt 0 view .LVU150
+ 687 0006 54F8043B 		ldr	r3, [r4], #4
+ 688              	.LVL62:
+ 689              		.loc 2 52 10 view .LVU151
+ 690 000a 9847     		blx	r3
+ARM GAS  /tmp/ccbbwrMK.s 			page 14
+
+
+ 691              	.LVL63:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_rootfsinitcall; fn != __end_rootfsinitcall; fn++) 
+ 692              		.loc 2 51 81 is_stmt 1 discriminator 3 view .LVU152
+ 693              	.L74:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_rootfsinitcall; fn != __end_rootfsinitcall; fn++) 
+ 694              		.loc 2 51 54 discriminator 1 view .LVU153
+ 695 000c 024B     		ldr	r3, .L77+4
+ 696 000e 9C42     		cmp	r4, r3
+ 697 0010 F9D1     		bne	.L75
+ 698              	.LBE14:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 699              		.loc 2 53 1 is_stmt 0 view .LVU154
+ 700 0012 10BD     		pop	{r4, pc}
+ 701              	.LVL64:
+ 702              	.L78:
+ 703              		.loc 2 53 1 view .LVU155
+ 704              		.align	2
+ 705              	.L77:
+ 706 0014 00000000 		.word	__start_rootfsinitcall
+ 707 0018 00000000 		.word	__end_rootfsinitcall
+ 708              		.cfi_endproc
+ 709              	.LFE1087:
+ 711              		.section	.text.do_deviceinitcall,"ax",%progbits
+ 712              		.align	1
+ 713              		.syntax unified
+ 714              		.thumb
+ 715              		.thumb_func
+ 717              	do_deviceinitcall:
+ 718              	.LFB1088:
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** initcall_fn(deviceinitcall);
+ 719              		.loc 2 54 1 is_stmt 1 view -0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 0
+ 722              		@ frame_needed = 0, uses_anonymous_args = 0
+ 723 0000 10B5     		push	{r4, lr}
+ 724              	.LCFI13:
+ 725              		.cfi_def_cfa_offset 8
+ 726              		.cfi_offset 4, -8
+ 727              		.cfi_offset 14, -4
+ 728              		.loc 2 54 1 view .LVU157
+ 729              	.LBB15:
+ 730              		.loc 2 54 1 view .LVU158
+ 731              	.LVL65:
+ 732              		.loc 2 54 1 is_stmt 0 view .LVU159
+ 733 0002 044C     		ldr	r4, .L83
+ 734 0004 02E0     		b	.L80
+ 735              	.LVL66:
+ 736              	.L81:
+ 737              		.loc 2 54 1 is_stmt 1 discriminator 3 view .LVU160
+ 738 0006 54F8043B 		ldr	r3, [r4], #4
+ 739              	.LVL67:
+ 740              		.loc 2 54 1 is_stmt 0 discriminator 3 view .LVU161
+ 741 000a 9847     		blx	r3
+ 742              	.LVL68:
+ 743              		.loc 2 54 1 is_stmt 1 discriminator 3 view .LVU162
+ 744              	.L80:
+ 745              		.loc 2 54 1 discriminator 2 view .LVU163
+ARM GAS  /tmp/ccbbwrMK.s 			page 15
+
+
+ 746 000c 024B     		ldr	r3, .L83+4
+ 747 000e 9C42     		cmp	r4, r3
+ 748 0010 F9D1     		bne	.L81
+ 749              	.LBE15:
+ 750              		.loc 2 54 1 is_stmt 0 view .LVU164
+ 751 0012 10BD     		pop	{r4, pc}
+ 752              	.LVL69:
+ 753              	.L84:
+ 754              		.loc 2 54 1 view .LVU165
+ 755              		.align	2
+ 756              	.L83:
+ 757 0014 00000000 		.word	__start_deviceinitcall
+ 758 0018 00000000 		.word	__end_deviceinitcall
+ 759              		.cfi_endproc
+ 760              	.LFE1088:
+ 762              		.section	.text.do_device_initcall_sync,"ax",%progbits
+ 763              		.align	1
+ 764              		.syntax unified
+ 765              		.thumb
+ 766              		.thumb_func
+ 768              	do_device_initcall_sync:
+ 769              	.LFB1089:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_device_initcall_sync(void){
+ 770              		.loc 2 55 42 is_stmt 1 view -0
+ 771              		.cfi_startproc
+ 772              		@ args = 0, pretend = 0, frame = 0
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774 0000 10B5     		push	{r4, lr}
+ 775              	.LCFI14:
+ 776              		.cfi_def_cfa_offset 8
+ 777              		.cfi_offset 4, -8
+ 778              		.cfi_offset 14, -4
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_device_initcall_sync; fn != __end_device_initcall_sync; fn++) 
+ 779              		.loc 2 56 5 view .LVU167
+ 780              	.LBB16:
+ 781              		.loc 2 56 10 view .LVU168
+ 782              	.LVL70:
+ 783              		.loc 2 56 22 is_stmt 0 view .LVU169
+ 784 0002 044C     		ldr	r4, .L89
+ 785              		.loc 2 56 5 view .LVU170
+ 786 0004 02E0     		b	.L86
+ 787              	.LVL71:
+ 788              	.L87:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 789              		.loc 2 57 9 is_stmt 1 view .LVU171
+ 790              		.loc 2 57 10 is_stmt 0 view .LVU172
+ 791 0006 54F8043B 		ldr	r3, [r4], #4
+ 792              	.LVL72:
+ 793              		.loc 2 57 10 view .LVU173
+ 794 000a 9847     		blx	r3
+ 795              	.LVL73:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_device_initcall_sync; fn != __end_device_initcall_sync; fn++) 
+ 796              		.loc 2 56 93 is_stmt 1 discriminator 3 view .LVU174
+ 797              	.L86:
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_device_initcall_sync; fn != __end_device_initcall_sync; fn++) 
+ 798              		.loc 2 56 60 discriminator 1 view .LVU175
+ 799 000c 024B     		ldr	r3, .L89+4
+ARM GAS  /tmp/ccbbwrMK.s 			page 16
+
+
+ 800 000e 9C42     		cmp	r4, r3
+ 801 0010 F9D1     		bne	.L87
+ 802              	.LBE16:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 803              		.loc 2 58 1 is_stmt 0 view .LVU176
+ 804 0012 10BD     		pop	{r4, pc}
+ 805              	.LVL74:
+ 806              	.L90:
+ 807              		.loc 2 58 1 view .LVU177
+ 808              		.align	2
+ 809              	.L89:
+ 810 0014 00000000 		.word	__start_device_initcall_sync
+ 811 0018 00000000 		.word	__end_device_initcall_sync
+ 812              		.cfi_endproc
+ 813              	.LFE1089:
+ 815              		.section	.text.do_lateinitcall,"ax",%progbits
+ 816              		.align	1
+ 817              		.syntax unified
+ 818              		.thumb
+ 819              		.thumb_func
+ 821              	do_lateinitcall:
+ 822              	.LFB1090:
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_lateinitcall(void){
+ 823              		.loc 2 59 34 is_stmt 1 view -0
+ 824              		.cfi_startproc
+ 825              		@ args = 0, pretend = 0, frame = 0
+ 826              		@ frame_needed = 0, uses_anonymous_args = 0
+ 827 0000 10B5     		push	{r4, lr}
+ 828              	.LCFI15:
+ 829              		.cfi_def_cfa_offset 8
+ 830              		.cfi_offset 4, -8
+ 831              		.cfi_offset 14, -4
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_lateinitcall; fn != __end_lateinitcall; fn++){
+ 832              		.loc 2 60 5 view .LVU179
+ 833              	.LBB17:
+ 834              		.loc 2 60 10 view .LVU180
+ 835              	.LVL75:
+ 836              		.loc 2 60 22 is_stmt 0 view .LVU181
+ 837 0002 044C     		ldr	r4, .L95
+ 838              		.loc 2 60 5 view .LVU182
+ 839 0004 02E0     		b	.L92
+ 840              	.LVL76:
+ 841              	.L93:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 842              		.loc 2 61 9 is_stmt 1 view .LVU183
+ 843              		.loc 2 61 10 is_stmt 0 view .LVU184
+ 844 0006 54F8043B 		ldr	r3, [r4], #4
+ 845              	.LVL77:
+ 846              		.loc 2 61 10 view .LVU185
+ 847 000a 9847     		blx	r3
+ 848              	.LVL78:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_lateinitcall; fn != __end_lateinitcall; fn++){
+ 849              		.loc 2 60 77 is_stmt 1 discriminator 3 view .LVU186
+ 850              	.L92:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_lateinitcall; fn != __end_lateinitcall; fn++){
+ 851              		.loc 2 60 52 discriminator 1 view .LVU187
+ 852 000c 024B     		ldr	r3, .L95+4
+ARM GAS  /tmp/ccbbwrMK.s 			page 17
+
+
+ 853 000e 9C42     		cmp	r4, r3
+ 854 0010 F9D1     		bne	.L93
+ 855              	.LBE17:
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     }
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 856              		.loc 2 63 1 is_stmt 0 view .LVU188
+ 857 0012 10BD     		pop	{r4, pc}
+ 858              	.LVL79:
+ 859              	.L96:
+ 860              		.loc 2 63 1 view .LVU189
+ 861              		.align	2
+ 862              	.L95:
+ 863 0014 00000000 		.word	__start_lateinitcall
+ 864 0018 00000000 		.word	__end_lateinitcall
+ 865              		.cfi_endproc
+ 866              	.LFE1090:
+ 868              		.section	.text.do_late_initcall_sync,"ax",%progbits
+ 869              		.align	1
+ 870              		.syntax unified
+ 871              		.thumb
+ 872              		.thumb_func
+ 874              	do_late_initcall_sync:
+ 875              	.LFB1091:
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** static void do_late_initcall_sync(void){
+ 876              		.loc 2 65 40 is_stmt 1 view -0
+ 877              		.cfi_startproc
+ 878              		@ args = 0, pretend = 0, frame = 0
+ 879              		@ frame_needed = 0, uses_anonymous_args = 0
+ 880 0000 10B5     		push	{r4, lr}
+ 881              	.LCFI16:
+ 882              		.cfi_def_cfa_offset 8
+ 883              		.cfi_offset 4, -8
+ 884              		.cfi_offset 14, -4
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_late_initcall_sync; fn != __end_late_initcall_sync; fn++) 
+ 885              		.loc 2 66 5 view .LVU191
+ 886              	.LBB18:
+ 887              		.loc 2 66 10 view .LVU192
+ 888              	.LVL80:
+ 889              		.loc 2 66 22 is_stmt 0 view .LVU193
+ 890 0002 044C     		ldr	r4, .L101
+ 891              		.loc 2 66 5 view .LVU194
+ 892 0004 02E0     		b	.L98
+ 893              	.LVL81:
+ 894              	.L99:
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****         (*fn)();
+ 895              		.loc 2 67 9 is_stmt 1 view .LVU195
+ 896              		.loc 2 67 10 is_stmt 0 view .LVU196
+ 897 0006 54F8043B 		ldr	r3, [r4], #4
+ 898              	.LVL82:
+ 899              		.loc 2 67 10 view .LVU197
+ 900 000a 9847     		blx	r3
+ 901              	.LVL83:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_late_initcall_sync; fn != __end_late_initcall_sync; fn++) 
+ 902              		.loc 2 66 89 is_stmt 1 discriminator 3 view .LVU198
+ 903              	.L98:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h ****     for (initcall_t *fn = __start_late_initcall_sync; fn != __end_late_initcall_sync; fn++) 
+ARM GAS  /tmp/ccbbwrMK.s 			page 18
+
+
+ 904              		.loc 2 66 58 discriminator 1 view .LVU199
+ 905 000c 024B     		ldr	r3, .L101+4
+ 906 000e 9C42     		cmp	r4, r3
+ 907 0010 F9D1     		bne	.L99
+ 908              	.LBE18:
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.h **** }
+ 909              		.loc 2 68 1 is_stmt 0 view .LVU200
+ 910 0012 10BD     		pop	{r4, pc}
+ 911              	.LVL84:
+ 912              	.L102:
+ 913              		.loc 2 68 1 view .LVU201
+ 914              		.align	2
+ 915              	.L101:
+ 916 0014 00000000 		.word	__start_late_initcall_sync
+ 917 0018 00000000 		.word	__end_late_initcall_sync
+ 918              		.cfi_endproc
+ 919              	.LFE1091:
+ 921              		.section	.text.Init_Kernel,"ax",%progbits
+ 922              		.align	1
+ 923              		.global	Init_Kernel
+ 924              		.syntax unified
+ 925              		.thumb
+ 926              		.thumb_func
+ 928              	Init_Kernel:
+ 929              	.LVL85:
+ 930              	.LFB1097:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/types.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/libfdt.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/init.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/fs.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/kthread.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/loader.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <linux/irqflags.h>
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include <generated/autoconf.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** #include "main.h"
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void  arch_init(void);
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern size_t get_global_heap_size(void);
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern int printk_service_init(void);
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern int  main_tty_dev_init(void);
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void base_out_opt_device_init(void);
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void SysTick_init(void);
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void sys_expand_heap_init(void);
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void sys_heap_init(void);
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** extern void IRQ_int_router(void);
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** int __get_task_using_cpu_core();
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** void print_GCC_Message()
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** {
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     pr_info("gcc version %d.%d.%d (%sGCC Compiler:%s )# %s %s %s %s\n",
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__, PREFIX,__VERSION__,
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         COMPILE_TIME,PLATFORM,STRUCT,
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         #if defined(__x86_64__) || defined(__aarch64__)
+ARM GAS  /tmp/ccbbwrMK.s 			page 19
+
+
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         "64-bit target "
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         #else
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         "32-bit target "
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         #endif
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         );
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     pr_info("RAM:0x%0x - 0x%0x FLASH:0x%0x - 0x%0x  \n",
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****             CONFIG_LD_RAM_START_ADDRESS,CONFIG_LD_RAM_START_ADDRESS+CONFIG_LD_KERNEL_USE_RAM_SIZE*1
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****             ,CONFIG_LD_FLASH_START_ADDRESS,CONFIG_LD_FLASH_START_ADDRESS+CONFIG_LD_KERNEL_USE_FLASH
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         );
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     pr_info("Start from core:%d \n",__get_task_using_cpu_core());
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** static void device_tree_init(){
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     if((&__dtb_file_start_address[0] == &__dtb_file_end_address[0]) || (fdt_check_header(__dtb_file
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     {while(1){}}
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** static void memory_init(void){
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     sys_heap_init();
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     sys_expand_heap_init();
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** static  void printk_init()
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** {
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     printk_service_init();
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     printk(KERN_INFO "printk init\n");
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** int test_task(void)
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** {
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     return 1;
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** int Init_Kernel(void* argv)
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** {
+ 931              		.loc 1 67 1 is_stmt 1 view -0
+ 932              		.cfi_startproc
+ 933              		@ args = 0, pretend = 0, frame = 0
+ 934              		@ frame_needed = 0, uses_anonymous_args = 0
+ 935              		.loc 1 67 1 is_stmt 0 view .LVU203
+ 936 0000 08B5     		push	{r3, lr}
+ 937              	.LCFI17:
+ 938              		.cfi_def_cfa_offset 8
+ 939              		.cfi_offset 3, -8
+ 940              		.cfi_offset 14, -4
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_archinitcall();
+ 941              		.loc 1 69 5 is_stmt 1 view .LVU204
+ 942 0002 FFF7FEFF 		bl	do_archinitcall
+ 943              	.LVL86:
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_arch_initcall_sync();
+ 944              		.loc 1 71 5 view .LVU205
+ 945 0006 FFF7FEFF 		bl	do_arch_initcall_sync
+ 946              	.LVL87:
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_subsysinitcall();
+ARM GAS  /tmp/ccbbwrMK.s 			page 20
+
+
+ 947              		.loc 1 72 5 view .LVU206
+ 948 000a FFF7FEFF 		bl	do_subsysinitcall
+ 949              	.LVL88:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_subsys_initcall_sync();
+ 950              		.loc 1 73 5 view .LVU207
+ 951 000e FFF7FEFF 		bl	do_subsys_initcall_sync
+ 952              	.LVL89:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_deviceinitcall();
+ 953              		.loc 1 75 5 view .LVU208
+ 954 0012 FFF7FEFF 		bl	do_deviceinitcall
+ 955              	.LVL90:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_device_initcall_sync();
+ 956              		.loc 1 76 5 view .LVU209
+ 957 0016 FFF7FEFF 		bl	do_device_initcall_sync
+ 958              	.LVL91:
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_lateinitcall();
+ 959              		.loc 1 78 5 view .LVU210
+ 960 001a FFF7FEFF 		bl	do_lateinitcall
+ 961              	.LVL92:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_late_initcall_sync();
+ 962              		.loc 1 79 5 view .LVU211
+ 963 001e FFF7FEFF 		bl	do_late_initcall_sync
+ 964              	.LVL93:
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     return 0;
+ 965              		.loc 1 81 5 view .LVU212
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 966              		.loc 1 82 1 is_stmt 0 view .LVU213
+ 967 0022 0020     		movs	r0, #0
+ 968 0024 08BD     		pop	{r3, pc}
+ 969              		.cfi_endproc
+ 970              	.LFE1097:
+ 972              		.section	.text.local_irq_disable,"ax",%progbits
+ 973              		.align	1
+ 974              		.syntax unified
+ 975              		.thumb
+ 976              		.thumb_func
+ 978              	local_irq_disable:
+ 979              	.LFB292:
+ 980              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** #ifndef  __IRQFLAG_H_
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** #define  __IRQFLAG_H_
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** extern void __enable_irq();
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** extern void __disable_irq();
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** static void local_irq_disable(){
+ 981              		.loc 3 7 32 is_stmt 1 view -0
+ 982              		.cfi_startproc
+ 983              		@ args = 0, pretend = 0, frame = 0
+ 984              		@ frame_needed = 0, uses_anonymous_args = 0
+ 985 0000 08B5     		push	{r3, lr}
+ 986              	.LCFI18:
+ 987              		.cfi_def_cfa_offset 8
+ 988              		.cfi_offset 3, -8
+ARM GAS  /tmp/ccbbwrMK.s 			page 21
+
+
+ 989              		.cfi_offset 14, -4
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h ****     __disable_irq();
+ 990              		.loc 3 8 5 view .LVU215
+ 991 0002 FFF7FEFF 		bl	__disable_irq
+ 992              	.LVL94:
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** }
+ 993              		.loc 3 9 1 is_stmt 0 view .LVU216
+ 994 0006 08BD     		pop	{r3, pc}
+ 995              		.cfi_endproc
+ 996              	.LFE292:
+ 998              		.section	.text.device_tree_init,"ax",%progbits
+ 999              		.align	1
+ 1000              		.syntax unified
+ 1001              		.thumb
+ 1002              		.thumb_func
+ 1004              	device_tree_init:
+ 1005              	.LFB1093:
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     if((&__dtb_file_start_address[0] == &__dtb_file_end_address[0]) || (fdt_check_header(__dtb_file
+ 1006              		.loc 1 44 31 is_stmt 1 view -0
+ 1007              		.cfi_startproc
+ 1008              		@ args = 0, pretend = 0, frame = 0
+ 1009              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1010 0000 08B5     		push	{r3, lr}
+ 1011              	.LCFI19:
+ 1012              		.cfi_def_cfa_offset 8
+ 1013              		.cfi_offset 3, -8
+ 1014              		.cfi_offset 14, -4
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     {while(1){}}
+ 1015              		.loc 1 45 5 view .LVU218
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     {while(1){}}
+ 1016              		.loc 1 45 7 is_stmt 0 view .LVU219
+ 1017 0002 054A     		ldr	r2, .L111
+ 1018 0004 054B     		ldr	r3, .L111+4
+ 1019 0006 9A42     		cmp	r2, r3
+ 1020 0008 03D0     		beq	.L108
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     {while(1){}}
+ 1021              		.loc 1 45 73 discriminator 1 view .LVU220
+ 1022 000a 1046     		mov	r0, r2
+ 1023 000c FFF7FEFF 		bl	fdt_check_header
+ 1024              	.LVL95:
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     {while(1){}}
+ 1025              		.loc 1 45 69 discriminator 1 view .LVU221
+ 1026 0010 00B1     		cbz	r0, .L107
+ 1027              	.L108:
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1028              		.loc 1 46 6 is_stmt 1 view .LVU222
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1029              		.loc 1 46 15 view .LVU223
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1030              		.loc 1 46 11 view .LVU224
+ 1031 0012 FEE7     		b	.L108
+ 1032              	.L107:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 1033              		.loc 1 47 1 is_stmt 0 view .LVU225
+ 1034 0014 08BD     		pop	{r3, pc}
+ 1035              	.L112:
+ 1036 0016 00BF     		.align	2
+ARM GAS  /tmp/ccbbwrMK.s 			page 22
+
+
+ 1037              	.L111:
+ 1038 0018 00000000 		.word	__dtb_file_start_address
+ 1039 001c 00000000 		.word	__dtb_file_end_address
+ 1040              		.cfi_endproc
+ 1041              	.LFE1093:
+ 1043              		.section	.text.memory_init,"ax",%progbits
+ 1044              		.align	1
+ 1045              		.syntax unified
+ 1046              		.thumb
+ 1047              		.thumb_func
+ 1049              	memory_init:
+ 1050              	.LFB1094:
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     sys_heap_init();
+ 1051              		.loc 1 49 30 is_stmt 1 view -0
+ 1052              		.cfi_startproc
+ 1053              		@ args = 0, pretend = 0, frame = 0
+ 1054              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1055 0000 08B5     		push	{r3, lr}
+ 1056              	.LCFI20:
+ 1057              		.cfi_def_cfa_offset 8
+ 1058              		.cfi_offset 3, -8
+ 1059              		.cfi_offset 14, -4
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     sys_expand_heap_init();
+ 1060              		.loc 1 50 5 view .LVU227
+ 1061 0002 FFF7FEFF 		bl	sys_heap_init
+ 1062              	.LVL96:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1063              		.loc 1 51 5 view .LVU228
+ 1064 0006 FFF7FEFF 		bl	sys_expand_heap_init
+ 1065              	.LVL97:
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 1066              		.loc 1 52 1 is_stmt 0 view .LVU229
+ 1067 000a 08BD     		pop	{r3, pc}
+ 1068              		.cfi_endproc
+ 1069              	.LFE1094:
+ 1071              		.section	.text.local_irq_enable,"ax",%progbits
+ 1072              		.align	1
+ 1073              		.syntax unified
+ 1074              		.thumb
+ 1075              		.thumb_func
+ 1077              	local_irq_enable:
+ 1078              	.LFB293:
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** static void local_irq_enable(){
+ 1079              		.loc 3 11 31 is_stmt 1 view -0
+ 1080              		.cfi_startproc
+ 1081              		@ args = 0, pretend = 0, frame = 0
+ 1082              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1083 0000 08B5     		push	{r3, lr}
+ 1084              	.LCFI21:
+ 1085              		.cfi_def_cfa_offset 8
+ 1086              		.cfi_offset 3, -8
+ 1087              		.cfi_offset 14, -4
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h ****     __enable_irq();
+ 1088              		.loc 3 12 5 view .LVU231
+ 1089 0002 FFF7FEFF 		bl	__enable_irq
+ 1090              	.LVL98:
+ARM GAS  /tmp/ccbbwrMK.s 			page 23
+
+
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/irqflags.h **** }
+ 1091              		.loc 3 13 1 is_stmt 0 view .LVU232
+ 1092 0006 08BD     		pop	{r3, pc}
+ 1093              		.cfi_endproc
+ 1094              	.LFE293:
+ 1096              		.section	.rodata.printk_init.str1.4,"aMS",%progbits,1
+ 1097              		.align	2
+ 1098              	.LC0:
+ 1099 0000 7072696E 		.ascii	"printk init\012\000"
+ 1099      746B2069 
+ 1099      6E69740A 
+ 1099      00
+ 1100              		.section	.text.printk_init,"ax",%progbits
+ 1101              		.align	1
+ 1102              		.syntax unified
+ 1103              		.thumb
+ 1104              		.thumb_func
+ 1106              	printk_init:
+ 1107              	.LFB1095:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     printk_service_init();
+ 1108              		.loc 1 55 1 is_stmt 1 view -0
+ 1109              		.cfi_startproc
+ 1110              		@ args = 0, pretend = 0, frame = 0
+ 1111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1112 0000 08B5     		push	{r3, lr}
+ 1113              	.LCFI22:
+ 1114              		.cfi_def_cfa_offset 8
+ 1115              		.cfi_offset 3, -8
+ 1116              		.cfi_offset 14, -4
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     printk(KERN_INFO "printk init\n");
+ 1117              		.loc 1 56 5 view .LVU234
+ 1118 0002 FFF7FEFF 		bl	printk_service_init
+ 1119              	.LVL99:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1120              		.loc 1 57 5 view .LVU235
+ 1121 0006 0249     		ldr	r1, .L119
+ 1122 0008 0620     		movs	r0, #6
+ 1123 000a FFF7FEFF 		bl	printk
+ 1124              	.LVL100:
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 1125              		.loc 1 58 1 is_stmt 0 view .LVU236
+ 1126 000e 08BD     		pop	{r3, pc}
+ 1127              	.L120:
+ 1128              		.align	2
+ 1129              	.L119:
+ 1130 0010 00000000 		.word	.LC0
+ 1131              		.cfi_endproc
+ 1132              	.LFE1095:
+ 1134              		.section	.text.kthread_run,"ax",%progbits
+ 1135              		.align	1
+ 1136              		.syntax unified
+ 1137              		.thumb
+ 1138              		.thumb_func
+ 1140              	kthread_run:
+ 1141              	.LVL101:
+ 1142              	.LFB1074:
+ 1143              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h"
+ARM GAS  /tmp/ccbbwrMK.s 			page 24
+
+
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #ifndef _KTHREADS_H_
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #define _KTHREADS_H_
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #include <linux/sched.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #include <linux/sprintf.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #include <linux/stdarg.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #include <generated/autoconf.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #define KTHREAD_DEFAULT_PRIORITY CONFIG_KTHREAD_DEFAULT_PRIORITY
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #define KTHREAD_DEFAULT_STACK_SIZE 1024*CONFIG_KTHREAD_DEFAULT_STACK_SIZE
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** #define default_core_number CONFIG_KTHREAD_DEFAULT_USE_CPU_CORE
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** static struct task_struct *kthread_run(
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     int (*threadfn)(void *data), void *data, const char namefmt[],...)
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** {
+ 1144              		.loc 4 15 1 is_stmt 1 view -0
+ 1145              		.cfi_startproc
+ 1146              		@ args = 4, pretend = 8, frame = 136
+ 1147              		@ frame_needed = 0, uses_anonymous_args = 1
+ 1148              		.loc 4 15 1 is_stmt 0 view .LVU238
+ 1149 0000 0CB4     		push	{r2, r3}
+ 1150              	.LCFI23:
+ 1151              		.cfi_def_cfa_offset 8
+ 1152              		.cfi_offset 2, -8
+ 1153              		.cfi_offset 3, -4
+ 1154 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 1155              	.LCFI24:
+ 1156              		.cfi_def_cfa_offset 32
+ 1157              		.cfi_offset 4, -32
+ 1158              		.cfi_offset 5, -28
+ 1159              		.cfi_offset 6, -24
+ 1160              		.cfi_offset 7, -20
+ 1161              		.cfi_offset 8, -16
+ 1162              		.cfi_offset 14, -12
+ 1163 0006 A6B0     		sub	sp, sp, #152
+ 1164              	.LCFI25:
+ 1165              		.cfi_def_cfa_offset 184
+ 1166 0008 0646     		mov	r6, r0
+ 1167 000a 0F46     		mov	r7, r1
+ 1168 000c 2CAC     		add	r4, sp, #176
+ 1169 000e 54F8045B 		ldr	r5, [r4], #4
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     block_scheduler(NULL);
+ 1170              		.loc 4 16 5 is_stmt 1 view .LVU239
+ 1171 0012 0020     		movs	r0, #0
+ 1172              	.LVL102:
+ 1173              		.loc 4 16 5 is_stmt 0 view .LVU240
+ 1174 0014 FFF7FEFF 		bl	block_scheduler
+ 1175              	.LVL103:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     char name[128];
+ 1176              		.loc 4 17 5 is_stmt 1 view .LVU241
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     va_list args;
+ 1177              		.loc 4 18 5 view .LVU242
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     va_start(args, namefmt);
+ 1178              		.loc 4 19 5 view .LVU243
+ 1179 0018 0594     		str	r4, [sp, #20]
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     vsnprintf(name, sizeof(name), namefmt, args);
+ 1180              		.loc 4 20 5 view .LVU244
+ARM GAS  /tmp/ccbbwrMK.s 			page 25
+
+
+ 1181 001a 0DF11808 		add	r8, sp, #24
+ 1182 001e 2346     		mov	r3, r4
+ 1183 0020 2A46     		mov	r2, r5
+ 1184 0022 8021     		movs	r1, #128
+ 1185 0024 4046     		mov	r0, r8
+ 1186 0026 FFF7FEFF 		bl	vsnprintf
+ 1187              	.LVL104:
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     va_end(args);
+ 1188              		.loc 4 21 5 view .LVU245
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     struct task_struct *t = task_run(
+ 1189              		.loc 4 22 5 view .LVU246
+ 1190              		.loc 4 22 29 is_stmt 0 view .LVU247
+ 1191 002a 0025     		movs	r5, #0
+ 1192 002c 0295     		str	r5, [sp, #8]
+ 1193 002e 0195     		str	r5, [sp, #4]
+ 1194 0030 CDF80080 		str	r8, [sp]
+ 1195 0034 0823     		movs	r3, #8
+ 1196 0036 3A46     		mov	r2, r7
+ 1197 0038 4FF40051 		mov	r1, #8192
+ 1198 003c 3046     		mov	r0, r6
+ 1199 003e FFF7FEFF 		bl	task_run
+ 1200              	.LVL105:
+ 1201 0042 0446     		mov	r4, r0
+ 1202              	.LVL106:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     threadfn,KTHREAD_DEFAULT_STACK_SIZE,data,KTHREAD_DEFAULT_PRIORITY,name,default_core_number,0);
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     run_scheduler(NULL);
+ 1203              		.loc 4 24 5 is_stmt 1 view .LVU248
+ 1204 0044 2846     		mov	r0, r5
+ 1205              	.LVL107:
+ 1206              		.loc 4 24 5 is_stmt 0 view .LVU249
+ 1207 0046 FFF7FEFF 		bl	run_scheduler
+ 1208              	.LVL108:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h ****     return t;
+ 1209              		.loc 4 25 5 is_stmt 1 view .LVU250
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/kthread.h **** }
+ 1210              		.loc 4 26 1 is_stmt 0 view .LVU251
+ 1211 004a 2046     		mov	r0, r4
+ 1212 004c 26B0     		add	sp, sp, #152
+ 1213              	.LCFI26:
+ 1214              		.cfi_def_cfa_offset 32
+ 1215              		@ sp needed
+ 1216 004e BDE8F041 		pop	{r4, r5, r6, r7, r8, lr}
+ 1217              	.LCFI27:
+ 1218              		.cfi_restore 14
+ 1219              		.cfi_restore 8
+ 1220              		.cfi_restore 7
+ 1221              		.cfi_restore 6
+ 1222              		.cfi_restore 5
+ 1223              		.cfi_restore 4
+ 1224              		.cfi_def_cfa_offset 8
+ 1225              	.LVL109:
+ 1226              		.loc 4 26 1 view .LVU252
+ 1227 0052 02B0     		add	sp, sp, #8
+ 1228              	.LCFI28:
+ 1229              		.cfi_restore 3
+ 1230              		.cfi_restore 2
+ 1231              		.cfi_def_cfa_offset 0
+ARM GAS  /tmp/ccbbwrMK.s 			page 26
+
+
+ 1232 0054 7047     		bx	lr
+ 1233              		.cfi_endproc
+ 1234              	.LFE1074:
+ 1236              		.section	.rodata.print_GCC_Message.str1.4,"aMS",%progbits,1
+ 1237              		.align	2
+ 1238              	.LC1:
+ 1239 0000 67636320 		.ascii	"gcc version %d.%d.%d (%sGCC Compiler:%s )# %s %s %s"
+ 1239      76657273 
+ 1239      696F6E20 
+ 1239      25642E25 
+ 1239      642E2564 
+ 1240 0033 2025730A 		.ascii	" %s\012\000"
+ 1240      00
+ 1241              		.align	2
+ 1242              	.LC2:
+ 1243 0038 33322D62 		.ascii	"32-bit target \000"
+ 1243      69742074 
+ 1243      61726765 
+ 1243      742000
+ 1244 0047 00       		.align	2
+ 1245              	.LC3:
+ 1246 0048 61726D5F 		.ascii	"arm_m\000"
+ 1246      6D00
+ 1247 004e 0000     		.align	2
+ 1248              	.LC4:
+ 1249 0050 72703233 		.ascii	"rp2350\000"
+ 1249      353000
+ 1250 0057 00       		.align	2
+ 1251              	.LC5:
+ 1252 0058 32303235 		.ascii	"2025-09-20 10:16:19\000"
+ 1252      2D30392D 
+ 1252      32302031 
+ 1252      303A3136 
+ 1252      3A313900 
+ 1253              		.align	2
+ 1254              	.LC6:
+ 1255 006c 31332E32 		.ascii	"13.2.1 20231009\000"
+ 1255      2E312032 
+ 1255      30323331 
+ 1255      30303900 
+ 1256              		.align	2
+ 1257              	.LC7:
+ 1258 007c 61726D2D 		.ascii	"arm-none-eabi-\000"
+ 1258      6E6F6E65 
+ 1258      2D656162 
+ 1258      692D00
+ 1259 008b 00       		.align	2
+ 1260              	.LC8:
+ 1261 008c 52414D3A 		.ascii	"RAM:0x%0x - 0x%0x FLASH:0x%0x - 0x%0x  \012\000"
+ 1261      30782530 
+ 1261      78202D20 
+ 1261      30782530 
+ 1261      7820464C 
+ 1262 00b5 000000   		.align	2
+ 1263              	.LC9:
+ 1264 00b8 53746172 		.ascii	"Start from core:%d \012\000"
+ 1264      74206672 
+ARM GAS  /tmp/ccbbwrMK.s 			page 27
+
+
+ 1264      6F6D2063 
+ 1264      6F72653A 
+ 1264      2564200A 
+ 1265              		.section	.text.print_GCC_Message,"ax",%progbits
+ 1266              		.align	1
+ 1267              		.global	print_GCC_Message
+ 1268              		.syntax unified
+ 1269              		.thumb
+ 1270              		.thumb_func
+ 1272              	print_GCC_Message:
+ 1273              	.LFB1092:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     pr_info("gcc version %d.%d.%d (%sGCC Compiler:%s )# %s %s %s %s\n",
+ 1274              		.loc 1 27 1 is_stmt 1 view -0
+ 1275              		.cfi_startproc
+ 1276              		@ args = 0, pretend = 0, frame = 0
+ 1277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1278 0000 00B5     		push	{lr}
+ 1279              	.LCFI29:
+ 1280              		.cfi_def_cfa_offset 4
+ 1281              		.cfi_offset 14, -4
+ 1282 0002 89B0     		sub	sp, sp, #36
+ 1283              	.LCFI30:
+ 1284              		.cfi_def_cfa_offset 40
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****         __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__, PREFIX,__VERSION__,
+ 1285              		.loc 1 28 5 view .LVU254
+ 1286 0004 144B     		ldr	r3, .L125
+ 1287 0006 0693     		str	r3, [sp, #24]
+ 1288 0008 144B     		ldr	r3, .L125+4
+ 1289 000a 0593     		str	r3, [sp, #20]
+ 1290 000c 144B     		ldr	r3, .L125+8
+ 1291 000e 0493     		str	r3, [sp, #16]
+ 1292 0010 144B     		ldr	r3, .L125+12
+ 1293 0012 0393     		str	r3, [sp, #12]
+ 1294 0014 144B     		ldr	r3, .L125+16
+ 1295 0016 0293     		str	r3, [sp, #8]
+ 1296 0018 144B     		ldr	r3, .L125+20
+ 1297 001a 0193     		str	r3, [sp, #4]
+ 1298 001c 0123     		movs	r3, #1
+ 1299 001e 0093     		str	r3, [sp]
+ 1300 0020 0223     		movs	r3, #2
+ 1301 0022 0D22     		movs	r2, #13
+ 1302 0024 1249     		ldr	r1, .L125+24
+ 1303 0026 0620     		movs	r0, #6
+ 1304 0028 FFF7FEFF 		bl	printk
+ 1305              	.LVL110:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****             CONFIG_LD_RAM_START_ADDRESS,CONFIG_LD_RAM_START_ADDRESS+CONFIG_LD_KERNEL_USE_RAM_SIZE*1
+ 1306              		.loc 1 37 5 view .LVU255
+ 1307 002c 4FF08253 		mov	r3, #272629760
+ 1308 0030 0193     		str	r3, [sp, #4]
+ 1309 0032 A3F54013 		sub	r3, r3, #3145728
+ 1310 0036 0093     		str	r3, [sp]
+ 1311 0038 0E4B     		ldr	r3, .L125+28
+ 1312 003a 0F4A     		ldr	r2, .L125+32
+ 1313 003c 0F49     		ldr	r1, .L125+36
+ 1314 003e 0620     		movs	r0, #6
+ 1315 0040 FFF7FEFF 		bl	printk
+ 1316              	.LVL111:
+ARM GAS  /tmp/ccbbwrMK.s 			page 28
+
+
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1317              		.loc 1 41 5 view .LVU256
+ 1318 0044 FFF7FEFF 		bl	__get_task_using_cpu_core
+ 1319              	.LVL112:
+ 1320 0048 0246     		mov	r2, r0
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1321              		.loc 1 41 5 is_stmt 0 discriminator 1 view .LVU257
+ 1322 004a 0D49     		ldr	r1, .L125+40
+ 1323 004c 0620     		movs	r0, #6
+ 1324 004e FFF7FEFF 		bl	printk
+ 1325              	.LVL113:
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 1326              		.loc 1 42 1 view .LVU258
+ 1327 0052 09B0     		add	sp, sp, #36
+ 1328              	.LCFI31:
+ 1329              		.cfi_def_cfa_offset 4
+ 1330              		@ sp needed
+ 1331 0054 5DF804FB 		ldr	pc, [sp], #4
+ 1332              	.L126:
+ 1333              		.align	2
+ 1334              	.L125:
+ 1335 0058 38000000 		.word	.LC2
+ 1336 005c 48000000 		.word	.LC3
+ 1337 0060 50000000 		.word	.LC4
+ 1338 0064 58000000 		.word	.LC5
+ 1339 0068 6C000000 		.word	.LC6
+ 1340 006c 7C000000 		.word	.LC7
+ 1341 0070 00000000 		.word	.LC1
+ 1342 0074 00000820 		.word	537395200
+ 1343 0078 00800020 		.word	536903680
+ 1344 007c 8C000000 		.word	.LC8
+ 1345 0080 B8000000 		.word	.LC9
+ 1346              		.cfi_endproc
+ 1347              	.LFE1092:
+ 1349              		.section	.text.test_task,"ax",%progbits
+ 1350              		.align	1
+ 1351              		.global	test_task
+ 1352              		.syntax unified
+ 1353              		.thumb
+ 1354              		.thumb_func
+ 1356              	test_task:
+ 1357              	.LFB1096:
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     return 1;
+ 1358              		.loc 1 61 1 is_stmt 1 view -0
+ 1359              		.cfi_startproc
+ 1360              		@ args = 0, pretend = 0, frame = 0
+ 1361              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1362              		@ link register save eliminated.
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1363              		.loc 1 62 5 view .LVU260
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 1364              		.loc 1 63 1 is_stmt 0 view .LVU261
+ 1365 0000 0120     		movs	r0, #1
+ 1366 0002 7047     		bx	lr
+ 1367              		.cfi_endproc
+ 1368              	.LFE1096:
+ 1370              		.section	.rodata.Kernel_Start.str1.4,"aMS",%progbits,1
+ARM GAS  /tmp/ccbbwrMK.s 			page 29
+
+
+ 1371              		.align	2
+ 1372              	.LC10:
+ 1373 0000 696E6974 		.ascii	"init\000"
+ 1373      00
+ 1374              		.section	.text.Kernel_Start,"ax",%progbits
+ 1375              		.align	1
+ 1376              		.global	Kernel_Start
+ 1377              		.syntax unified
+ 1378              		.thumb
+ 1379              		.thumb_func
+ 1381              	Kernel_Start:
+ 1382              	.LFB1098:
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** int Kernel_Start(void)     
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** {
+ 1383              		.loc 1 87 1 is_stmt 1 view -0
+ 1384              		.cfi_startproc
+ 1385              		@ args = 0, pretend = 0, frame = 0
+ 1386              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1387 0000 08B5     		push	{r3, lr}
+ 1388              	.LCFI32:
+ 1389              		.cfi_def_cfa_offset 8
+ 1390              		.cfi_offset 3, -8
+ 1391              		.cfi_offset 14, -4
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     local_irq_disable();
+ 1392              		.loc 1 88 5 view .LVU263
+ 1393 0002 FFF7FEFF 		bl	local_irq_disable
+ 1394              	.LVL114:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     print_GCC_Message();
+ 1395              		.loc 1 90 5 view .LVU264
+ 1396 0006 FFF7FEFF 		bl	print_GCC_Message
+ 1397              	.LVL115:
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     IRQ_int_router();
+ 1398              		.loc 1 92 5 view .LVU265
+ 1399 000a FFF7FEFF 		bl	IRQ_int_router
+ 1400              	.LVL116:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_initcallearly();
+ 1401              		.loc 1 94 5 view .LVU266
+ 1402 000e FFF7FEFF 		bl	do_initcallearly
+ 1403              	.LVL117:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_pureinitcall();
+ 1404              		.loc 1 95 5 view .LVU267
+ 1405 0012 FFF7FEFF 		bl	do_pureinitcall
+ 1406              	.LVL118:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     device_tree_init();
+ 1407              		.loc 1 97 5 view .LVU268
+ 1408 0016 FFF7FEFF 		bl	device_tree_init
+ 1409              	.LVL119:
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     memory_init();  
+ 1410              		.loc 1 98 5 view .LVU269
+ 1411 001a FFF7FEFF 		bl	memory_init
+ARM GAS  /tmp/ccbbwrMK.s 			page 30
+
+
+ 1412              	.LVL120:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     arch_init();
+ 1413              		.loc 1 100 5 view .LVU270
+ 1414 001e FFF7FEFF 		bl	arch_init
+ 1415              	.LVL121:
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****   
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     local_irq_enable();
+ 1416              		.loc 1 103 5 view .LVU271
+ 1417 0022 FFF7FEFF 		bl	local_irq_enable
+ 1418              	.LVL122:
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     base_out_opt_device_init();  
+ 1419              		.loc 1 105 5 view .LVU272
+ 1420 0026 FFF7FEFF 		bl	base_out_opt_device_init
+ 1421              	.LVL123:
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     SysTick_init();
+ 1422              		.loc 1 106 5 view .LVU273
+ 1423 002a FFF7FEFF 		bl	SysTick_init
+ 1424              	.LVL124:
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_fsinitcall();
+ 1425              		.loc 1 108 5 view .LVU274
+ 1426 002e FFF7FEFF 		bl	do_fsinitcall
+ 1427              	.LVL125:
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_fs_initcall_sync();
+ 1428              		.loc 1 109 5 view .LVU275
+ 1429 0032 FFF7FEFF 		bl	do_fs_initcall_sync
+ 1430              	.LVL126:
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     rootfs_init();
+ 1431              		.loc 1 111 5 view .LVU276
+ 1432 0036 FFF7FEFF 		bl	rootfs_init
+ 1433              	.LVL127:
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     main_tty_dev_init(); 
+ 1434              		.loc 1 113 5 view .LVU277
+ 1435 003a FFF7FEFF 		bl	main_tty_dev_init
+ 1436              	.LVL128:
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     printk_init();    
+ 1437              		.loc 1 114 5 view .LVU278
+ 1438 003e FFF7FEFF 		bl	printk_init
+ 1439              	.LVL129:
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_coreinitcall();  
+ 1440              		.loc 1 116 5 view .LVU279
+ 1441 0042 FFF7FEFF 		bl	do_coreinitcall
+ 1442              	.LVL130:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_core_initcall_sync();
+ 1443              		.loc 1 117 5 view .LVU280
+ 1444 0046 FFF7FEFF 		bl	do_core_initcall_sync
+ 1445              	.LVL131:
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     kthread_run(Init_Kernel,NULL,"init");
+ 1446              		.loc 1 119 5 view .LVU281
+ 1447 004a 064A     		ldr	r2, .L130
+ARM GAS  /tmp/ccbbwrMK.s 			page 31
+
+
+ 1448 004c 0021     		movs	r1, #0
+ 1449 004e 0648     		ldr	r0, .L130+4
+ 1450 0050 FFF7FEFF 		bl	kthread_run
+ 1451              	.LVL132:
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_postcoreinitcall();
+ 1452              		.loc 1 121 5 view .LVU282
+ 1453 0054 FFF7FEFF 		bl	do_postcoreinitcall
+ 1454              	.LVL133:
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     msp_init();
+ 1455              		.loc 1 123 5 view .LVU283
+ 1456 0058 FFF7FEFF 		bl	msp_init
+ 1457              	.LVL134:
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     do_postcore_initcall_sync();
+ 1458              		.loc 1 125 5 view .LVU284
+ 1459 005c FFF7FEFF 		bl	do_postcore_initcall_sync
+ 1460              	.LVL135:
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** 
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c ****     return 0; //never return 
+ 1461              		.loc 1 127 5 view .LVU285
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/init/main.c **** }
+ 1462              		.loc 1 128 1 is_stmt 0 view .LVU286
+ 1463 0060 0020     		movs	r0, #0
+ 1464 0062 08BD     		pop	{r3, pc}
+ 1465              	.L131:
+ 1466              		.align	2
+ 1467              	.L130:
+ 1468 0064 00000000 		.word	.LC10
+ 1469 0068 00000000 		.word	Init_Kernel
+ 1470              		.cfi_endproc
+ 1471              	.LFE1098:
+ 1473              		.text
+ 1474              	.Letext0:
+ 1475              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/stdarg.h"
+ 1476              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 1477              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 1478              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 1479              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/init.h"
+ 1480              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/libfdt.h"
+ 1481              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 1482              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 1483              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 1484              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sprintf.h"
+ 1485              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h"
+ 1486              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 1487              		.file 17 "<built-in>"
+ARM GAS  /tmp/ccbbwrMK.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccbbwrMK.s:22     .text.do_initcallearly:00000000 $t
+     /tmp/ccbbwrMK.s:27     .text.do_initcallearly:00000000 do_initcallearly
+     /tmp/ccbbwrMK.s:70     .text.do_initcallearly:00000014 $d
+     /tmp/ccbbwrMK.s:76     .text.do_pureinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:81     .text.do_pureinitcall:00000000 do_pureinitcall
+     /tmp/ccbbwrMK.s:123    .text.do_pureinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:129    .text.do_coreinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:134    .text.do_coreinitcall:00000000 do_coreinitcall
+     /tmp/ccbbwrMK.s:176    .text.do_coreinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:182    .text.do_core_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:187    .text.do_core_initcall_sync:00000000 do_core_initcall_sync
+     /tmp/ccbbwrMK.s:229    .text.do_core_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:235    .text.do_postcoreinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:240    .text.do_postcoreinitcall:00000000 do_postcoreinitcall
+     /tmp/ccbbwrMK.s:282    .text.do_postcoreinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:288    .text.do_postcore_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:293    .text.do_postcore_initcall_sync:00000000 do_postcore_initcall_sync
+     /tmp/ccbbwrMK.s:335    .text.do_postcore_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:341    .text.do_archinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:346    .text.do_archinitcall:00000000 do_archinitcall
+     /tmp/ccbbwrMK.s:388    .text.do_archinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:394    .text.do_arch_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:399    .text.do_arch_initcall_sync:00000000 do_arch_initcall_sync
+     /tmp/ccbbwrMK.s:441    .text.do_arch_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:447    .text.do_subsysinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:452    .text.do_subsysinitcall:00000000 do_subsysinitcall
+     /tmp/ccbbwrMK.s:494    .text.do_subsysinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:500    .text.do_subsys_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:505    .text.do_subsys_initcall_sync:00000000 do_subsys_initcall_sync
+     /tmp/ccbbwrMK.s:547    .text.do_subsys_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:553    .text.do_fsinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:558    .text.do_fsinitcall:00000000 do_fsinitcall
+     /tmp/ccbbwrMK.s:600    .text.do_fsinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:606    .text.do_fs_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:611    .text.do_fs_initcall_sync:00000000 do_fs_initcall_sync
+     /tmp/ccbbwrMK.s:653    .text.do_fs_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:659    .text.rootfs_init:00000000 $t
+     /tmp/ccbbwrMK.s:664    .text.rootfs_init:00000000 rootfs_init
+     /tmp/ccbbwrMK.s:706    .text.rootfs_init:00000014 $d
+     /tmp/ccbbwrMK.s:712    .text.do_deviceinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:717    .text.do_deviceinitcall:00000000 do_deviceinitcall
+     /tmp/ccbbwrMK.s:757    .text.do_deviceinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:763    .text.do_device_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:768    .text.do_device_initcall_sync:00000000 do_device_initcall_sync
+     /tmp/ccbbwrMK.s:810    .text.do_device_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:816    .text.do_lateinitcall:00000000 $t
+     /tmp/ccbbwrMK.s:821    .text.do_lateinitcall:00000000 do_lateinitcall
+     /tmp/ccbbwrMK.s:863    .text.do_lateinitcall:00000014 $d
+     /tmp/ccbbwrMK.s:869    .text.do_late_initcall_sync:00000000 $t
+     /tmp/ccbbwrMK.s:874    .text.do_late_initcall_sync:00000000 do_late_initcall_sync
+     /tmp/ccbbwrMK.s:916    .text.do_late_initcall_sync:00000014 $d
+     /tmp/ccbbwrMK.s:922    .text.Init_Kernel:00000000 $t
+     /tmp/ccbbwrMK.s:928    .text.Init_Kernel:00000000 Init_Kernel
+     /tmp/ccbbwrMK.s:973    .text.local_irq_disable:00000000 $t
+     /tmp/ccbbwrMK.s:978    .text.local_irq_disable:00000000 local_irq_disable
+ARM GAS  /tmp/ccbbwrMK.s 			page 33
+
+
+     /tmp/ccbbwrMK.s:999    .text.device_tree_init:00000000 $t
+     /tmp/ccbbwrMK.s:1004   .text.device_tree_init:00000000 device_tree_init
+     /tmp/ccbbwrMK.s:1038   .text.device_tree_init:00000018 $d
+     /tmp/ccbbwrMK.s:1044   .text.memory_init:00000000 $t
+     /tmp/ccbbwrMK.s:1049   .text.memory_init:00000000 memory_init
+     /tmp/ccbbwrMK.s:1072   .text.local_irq_enable:00000000 $t
+     /tmp/ccbbwrMK.s:1077   .text.local_irq_enable:00000000 local_irq_enable
+     /tmp/ccbbwrMK.s:1097   .rodata.printk_init.str1.4:00000000 $d
+     /tmp/ccbbwrMK.s:1101   .text.printk_init:00000000 $t
+     /tmp/ccbbwrMK.s:1106   .text.printk_init:00000000 printk_init
+     /tmp/ccbbwrMK.s:1130   .text.printk_init:00000010 $d
+     /tmp/ccbbwrMK.s:1135   .text.kthread_run:00000000 $t
+     /tmp/ccbbwrMK.s:1140   .text.kthread_run:00000000 kthread_run
+     /tmp/ccbbwrMK.s:1237   .rodata.print_GCC_Message.str1.4:00000000 $d
+     /tmp/ccbbwrMK.s:1266   .text.print_GCC_Message:00000000 $t
+     /tmp/ccbbwrMK.s:1272   .text.print_GCC_Message:00000000 print_GCC_Message
+     /tmp/ccbbwrMK.s:1335   .text.print_GCC_Message:00000058 $d
+     /tmp/ccbbwrMK.s:1350   .text.test_task:00000000 $t
+     /tmp/ccbbwrMK.s:1356   .text.test_task:00000000 test_task
+     /tmp/ccbbwrMK.s:1371   .rodata.Kernel_Start.str1.4:00000000 $d
+     /tmp/ccbbwrMK.s:1375   .text.Kernel_Start:00000000 $t
+     /tmp/ccbbwrMK.s:1381   .text.Kernel_Start:00000000 Kernel_Start
+     /tmp/ccbbwrMK.s:1468   .text.Kernel_Start:00000064 $d
+
+UNDEFINED SYMBOLS
+__start_initcallearly
+__end_initcallearly
+__start_pureinitcall
+__end_pureinitcall
+__start_coreinitcall
+__end_coreinitcall
+__start_core_initcall_sync
+__end_core_initcall_sync
+__start_postcoreinitcall
+__end_postcoreinitcall
+__start_postcore_initcall_sync
+__end_postcore_initcall_sync
+__start_archinitcall
+__end_archinitcall
+__start_arch_initcall_sync
+__end_arch_initcall_sync
+__start_subsysinitcall
+__end_subsysinitcall
+__start_subsys_initcall_sync
+__end_subsys_initcall_sync
+__start_fsinitcall
+__end_fsinitcall
+__start_fs_initcall_sync
+__end_fs_initcall_sync
+__start_rootfsinitcall
+__end_rootfsinitcall
+__start_deviceinitcall
+__end_deviceinitcall
+__start_device_initcall_sync
+__end_device_initcall_sync
+__start_lateinitcall
+__end_lateinitcall
+ARM GAS  /tmp/ccbbwrMK.s 			page 34
+
+
+__start_late_initcall_sync
+__end_late_initcall_sync
+__disable_irq
+fdt_check_header
+__dtb_file_start_address
+__dtb_file_end_address
+sys_heap_init
+sys_expand_heap_init
+__enable_irq
+printk_service_init
+printk
+block_scheduler
+vsnprintf
+task_run
+run_scheduler
+__get_task_using_cpu_core
+IRQ_int_router
+arch_init
+base_out_opt_device_init
+SysTick_init
+main_tty_dev_init
+msp_init

@@ -1,0 +1,302 @@
+ARM GAS  /tmp/cc5hYRV0.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"m33_spinlock.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_
+  21              		.section	.rodata.__hardful_spinlock_init.str1.4,"aMS",%progbits,1
+  22              		.align	2
+  23              	.LC0:
+  24 0000 7370696E 		.ascii	"spin_lock_blocking\000"
+  24      5F6C6F63 
+  24      6B5F626C 
+  24      6F636B69 
+  24      6E6700
+  25 0013 00       		.align	2
+  26              	.LC1:
+  27 0014 7370696E 		.ascii	"spin_unlock\000"
+  27      5F756E6C 
+  27      6F636B00 
+  28              		.section	.text.__hardful_spinlock_init,"ax",%progbits
+  29              		.align	1
+  30              		.global	__hardful_spinlock_init
+  31              		.syntax unified
+  32              		.thumb
+  33              		.thumb_func
+  35              	__hardful_spinlock_init:
+  36              	.LVL0:
+  37              	.LFB31:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** #include <linux/types.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** #include <linux/irqflags.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** #include <linux/symbl.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** #include <asm-generic/barrier.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** static uint32_t (*hard_spinlock_blocking)(volatile int8_t *lock) = NULL;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** static void (*hard_spin_unlock)(volatile int8_t *lock, uint32_t saved_irq) = NULL;
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** void __hardful_spinlock_init(volatile int8_t *lock)
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** {
+  38              		.loc 1 14 1 view -0
+ARM GAS  /tmp/cc5hYRV0.s 			page 2
+
+
+  39              		.cfi_startproc
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42              		.loc 1 14 1 is_stmt 0 view .LVU1
+  43 0000 08B5     		push	{r3, lr}
+  44              	.LCFI0:
+  45              		.cfi_def_cfa_offset 8
+  46              		.cfi_offset 3, -8
+  47              		.cfi_offset 14, -4
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     hard_spinlock_blocking = find_symbol_by_fnname_from_bootloader("spin_lock_blocking");
+  48              		.loc 1 15 5 is_stmt 1 view .LVU2
+  49              		.loc 1 15 30 is_stmt 0 view .LVU3
+  50 0002 0548     		ldr	r0, .L3
+  51              	.LVL1:
+  52              		.loc 1 15 30 view .LVU4
+  53 0004 FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+  54              	.LVL2:
+  55              		.loc 1 15 28 discriminator 1 view .LVU5
+  56 0008 044B     		ldr	r3, .L3+4
+  57 000a 1860     		str	r0, [r3]
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     hard_spin_unlock = find_symbol_by_fnname_from_bootloader("spin_unlock");
+  58              		.loc 1 16 5 is_stmt 1 view .LVU6
+  59              		.loc 1 16 24 is_stmt 0 view .LVU7
+  60 000c 0448     		ldr	r0, .L3+8
+  61 000e FFF7FEFF 		bl	find_symbol_by_fnname_from_bootloader
+  62              	.LVL3:
+  63              		.loc 1 16 22 discriminator 1 view .LVU8
+  64 0012 044B     		ldr	r3, .L3+12
+  65 0014 1860     		str	r0, [r3]
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** }
+  66              		.loc 1 17 1 view .LVU9
+  67 0016 08BD     		pop	{r3, pc}
+  68              	.L4:
+  69              		.align	2
+  70              	.L3:
+  71 0018 00000000 		.word	.LC0
+  72 001c 00000000 		.word	hard_spinlock_blocking
+  73 0020 14000000 		.word	.LC1
+  74 0024 00000000 		.word	hard_spin_unlock
+  75              		.cfi_endproc
+  76              	.LFE31:
+  78              		.section	.text.try_atomic_set_flag,"ax",%progbits
+  79              		.align	1
+  80              		.global	try_atomic_set_flag
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	try_atomic_set_flag:
+  86              	.LVL4:
+  87              	.LFB32:
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** #define SPINLOCK_ID 1
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** 
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** int try_atomic_set_flag(int* lock, int flag)
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** {
+  88              		.loc 1 23 1 is_stmt 1 view -0
+ARM GAS  /tmp/cc5hYRV0.s 			page 3
+
+
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92              		.loc 1 23 1 is_stmt 0 view .LVU11
+  93 0000 38B5     		push	{r3, r4, r5, lr}
+  94              	.LCFI1:
+  95              		.cfi_def_cfa_offset 16
+  96              		.cfi_offset 3, -16
+  97              		.cfi_offset 4, -12
+  98              		.cfi_offset 5, -8
+  99              		.cfi_offset 14, -4
+ 100 0002 0446     		mov	r4, r0
+ 101 0004 0D46     		mov	r5, r1
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     uint32_t irq_flag = 0;
+ 102              		.loc 1 24 5 is_stmt 1 view .LVU12
+ 103              	.LVL5:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if(hard_spinlock_blocking!= NULL)
+ 104              		.loc 1 25 5 view .LVU13
+ 105              		.loc 1 25 30 is_stmt 0 view .LVU14
+ 106 0006 0C4B     		ldr	r3, .L12
+ 107 0008 1B68     		ldr	r3, [r3]
+ 108              		.loc 1 25 7 view .LVU15
+ 109 000a 83B1     		cbz	r3, .L9
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     irq_flag = hard_spinlock_blocking(SPINLOCK_ID);
+ 110              		.loc 1 26 5 is_stmt 1 view .LVU16
+ 111              		.loc 1 26 16 is_stmt 0 view .LVU17
+ 112 000c 0120     		movs	r0, #1
+ 113              	.LVL6:
+ 114              		.loc 1 26 16 view .LVU18
+ 115 000e 9847     		blx	r3
+ 116              	.LVL7:
+ 117              		.loc 1 26 16 view .LVU19
+ 118 0010 0146     		mov	r1, r0
+ 119              	.LVL8:
+ 120              	.L6:
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     barrier();
+ 121              		.loc 1 27 5 is_stmt 1 view .LVU20
+ 122              	.LBB6:
+ 123              	.LBI6:
+ 124              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** #ifndef _ALPHA_RWONCE_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** #define _ALPHA_RWONCE_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void sync(void)
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("sync" : : : "memory");
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** }
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void eieio(void)
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("eieio" : : : "memory");
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** }
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** static inline void barrier(void)
+ 125              		.loc 2 16 20 view .LVU21
+ARM GAS  /tmp/cc5hYRV0.s 			page 4
+
+
+ 126              	.LBB7:
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** 	asm volatile("" : : : "memory");
+ 127              		.loc 2 18 2 view .LVU22
+ 128              	.LBE7:
+ 129              	.LBE6:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     int ret = -1;
+ 130              		.loc 1 28 5 view .LVU23
+ 131              	.LVL9:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if (*lock != flag) {
+ 132              		.loc 1 29 5 view .LVU24
+ 133              		.loc 1 29 9 is_stmt 0 view .LVU25
+ 134 0012 2368     		ldr	r3, [r4]
+ 135              		.loc 1 29 8 view .LVU26
+ 136 0014 AB42     		cmp	r3, r5
+ 137 0016 0CD0     		beq	.L10
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****         *lock = flag;
+ 138              		.loc 1 30 9 is_stmt 1 view .LVU27
+ 139              		.loc 1 30 15 is_stmt 0 view .LVU28
+ 140 0018 2560     		str	r5, [r4]
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****         ret = 0;
+ 141              		.loc 1 31 9 is_stmt 1 view .LVU29
+ 142              	.LVL10:
+ 143              		.loc 1 31 13 is_stmt 0 view .LVU30
+ 144 001a 0024     		movs	r4, #0
+ 145              	.LVL11:
+ 146              	.L7:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     }
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     barrier();
+ 147              		.loc 1 33 5 is_stmt 1 view .LVU31
+ 148              	.LBB8:
+ 149              	.LBI8:
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/rwonce.h **** {
+ 150              		.loc 2 16 20 view .LVU32
+ 151              	.LBB9:
+ 152              		.loc 2 18 2 view .LVU33
+ 153              	.LBE9:
+ 154              	.LBE8:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if(hard_spinlock_blocking!= NULL)
+ 155              		.loc 1 34 5 view .LVU34
+ 156              		.loc 1 34 30 is_stmt 0 view .LVU35
+ 157 001c 064B     		ldr	r3, .L12
+ 158 001e 1B68     		ldr	r3, [r3]
+ 159              		.loc 1 34 7 view .LVU36
+ 160 0020 1BB1     		cbz	r3, .L5
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     hard_spin_unlock(SPINLOCK_ID,irq_flag);
+ 161              		.loc 1 35 5 is_stmt 1 view .LVU37
+ 162 0022 064B     		ldr	r3, .L12+4
+ 163 0024 1B68     		ldr	r3, [r3]
+ 164 0026 0120     		movs	r0, #1
+ 165 0028 9847     		blx	r3
+ 166              	.LVL12:
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     return ret;
+ 167              		.loc 1 36 5 view .LVU38
+ 168              	.L5:
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c **** }
+ 169              		.loc 1 37 1 is_stmt 0 view .LVU39
+ARM GAS  /tmp/cc5hYRV0.s 			page 5
+
+
+ 170 002a 2046     		mov	r0, r4
+ 171 002c 38BD     		pop	{r3, r4, r5, pc}
+ 172              	.LVL13:
+ 173              	.L9:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if(hard_spinlock_blocking!= NULL)
+ 174              		.loc 1 24 14 view .LVU40
+ 175 002e 0021     		movs	r1, #0
+ 176              	.LVL14:
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if(hard_spinlock_blocking!= NULL)
+ 177              		.loc 1 24 14 view .LVU41
+ 178 0030 EFE7     		b	.L6
+ 179              	.LVL15:
+ 180              	.L10:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if (*lock != flag) {
+ 181              		.loc 1 28 9 view .LVU42
+ 182 0032 4FF0FF34 		mov	r4, #-1
+ 183              	.LVL16:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/mach-raspberrypi/rp2350/m33_spinlock.c ****     if (*lock != flag) {
+ 184              		.loc 1 28 9 view .LVU43
+ 185 0036 F1E7     		b	.L7
+ 186              	.L13:
+ 187              		.align	2
+ 188              	.L12:
+ 189 0038 00000000 		.word	hard_spinlock_blocking
+ 190 003c 00000000 		.word	hard_spin_unlock
+ 191              		.cfi_endproc
+ 192              	.LFE32:
+ 194              		.section	.bss.hard_spin_unlock,"aw",%nobits
+ 195              		.align	2
+ 198              	hard_spin_unlock:
+ 199 0000 00000000 		.space	4
+ 200              		.section	.bss.hard_spinlock_blocking,"aw",%nobits
+ 201              		.align	2
+ 204              	hard_spinlock_blocking:
+ 205 0000 00000000 		.space	4
+ 206              		.text
+ 207              	.Letext0:
+ 208              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 209              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 210              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/symbl.h"
+ARM GAS  /tmp/cc5hYRV0.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 m33_spinlock.c
+     /tmp/cc5hYRV0.s:22     .rodata.__hardful_spinlock_init.str1.4:00000000 $d
+     /tmp/cc5hYRV0.s:29     .text.__hardful_spinlock_init:00000000 $t
+     /tmp/cc5hYRV0.s:35     .text.__hardful_spinlock_init:00000000 __hardful_spinlock_init
+     /tmp/cc5hYRV0.s:71     .text.__hardful_spinlock_init:00000018 $d
+     /tmp/cc5hYRV0.s:204    .bss.hard_spinlock_blocking:00000000 hard_spinlock_blocking
+     /tmp/cc5hYRV0.s:198    .bss.hard_spin_unlock:00000000 hard_spin_unlock
+     /tmp/cc5hYRV0.s:79     .text.try_atomic_set_flag:00000000 $t
+     /tmp/cc5hYRV0.s:85     .text.try_atomic_set_flag:00000000 try_atomic_set_flag
+     /tmp/cc5hYRV0.s:189    .text.try_atomic_set_flag:00000038 $d
+     /tmp/cc5hYRV0.s:195    .bss.hard_spin_unlock:00000000 $d
+     /tmp/cc5hYRV0.s:201    .bss.hard_spinlock_blocking:00000000 $d
+
+UNDEFINED SYMBOLS
+find_symbol_by_fnname_from_bootloader

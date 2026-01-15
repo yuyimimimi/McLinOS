@@ -1,0 +1,1336 @@
+ARM GAS  /tmp/ccWVHFWC.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"kini.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c"
+  21              		.section	.text.goto_next_char,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	goto_next_char:
+  28              	.LFB1032:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #include <linux/kernel.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #include <linux/fs.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #include <linux/init.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #include <linux/module.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #include <linux/err.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** #define KEY_VALUE_MAX_LENGTH 64
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* goto_next_char(char* data,char c,char limit)
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+  29              		.loc 1 11 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LVL0:
+  35              		.loc 1 11 1 is_stmt 0 view .LVU1
+  36 0000 00E0     		b	.L3
+  37              	.LVL1:
+  38              	.L5:
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = data;
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while(1){
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == '\0')
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == limit)
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == c){
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           return index;            
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ARM GAS  /tmp/ccWVHFWC.s 			page 2
+
+
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         else
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index++;
+  39              		.loc 1 22 9 is_stmt 1 view .LVU2
+  40              		.loc 1 22 14 is_stmt 0 view .LVU3
+  41 0002 0130     		adds	r0, r0, #1
+  42              	.LVL2:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == '\0')
+  43              		.loc 1 13 10 is_stmt 1 view .LVU4
+  44              	.L3:
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == '\0')
+  45              		.loc 1 13 5 view .LVU5
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+  46              		.loc 1 14 9 view .LVU6
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+  47              		.loc 1 14 17 is_stmt 0 view .LVU7
+  48 0004 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+  49              		.loc 1 14 11 view .LVU8
+  50 0006 23B1     		cbz	r3, .L4
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+  51              		.loc 1 16 9 is_stmt 1 view .LVU9
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+  52              		.loc 1 16 11 is_stmt 0 view .LVU10
+  53 0008 9342     		cmp	r3, r2
+  54 000a 03D0     		beq	.L2
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           return index;            
+  55              		.loc 1 18 9 is_stmt 1 view .LVU11
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           return index;            
+  56              		.loc 1 18 11 is_stmt 0 view .LVU12
+  57 000c 8B42     		cmp	r3, r1
+  58 000e F8D1     		bne	.L5
+  59 0010 00E0     		b	.L2
+  60              	.L4:
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == limit)
+  61              		.loc 1 15 20 view .LVU13
+  62 0012 0020     		movs	r0, #0
+  63              	.LVL3:
+  64              	.L2:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+  65              		.loc 1 24 1 view .LVU14
+  66 0014 7047     		bx	lr
+  67              		.cfi_endproc
+  68              	.LFE1032:
+  70              		.section	.text.goto_next_string,"ax",%progbits
+  71              		.align	1
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  76              	goto_next_string:
+  77              	.LFB1034:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** char* __goto_next_char(char* data,char c,char limit)
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* goto_next_string(char* data,char limit)
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ARM GAS  /tmp/ccWVHFWC.s 			page 3
+
+
+  78              		.loc 1 30 1 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		@ link register save eliminated.
+  83              	.LVL4:
+  84              		.loc 1 30 1 is_stmt 0 view .LVU16
+  85 0000 07E0     		b	.L10
+  86              	.LVL5:
+  87              	.L8:
+  88              		.loc 1 30 1 view .LVU17
+  89 0002 5F2B     		cmp	r3, #95
+  90 0004 18D0     		beq	.L6
+  91 0006 03D3     		bcc	.L9
+  92 0008 613B     		subs	r3, r3, #97
+  93 000a DBB2     		uxtb	r3, r3
+  94 000c 192B     		cmp	r3, #25
+  95 000e 13D9     		bls	.L6
+  96              	.L9:
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = data;
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while(1)
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == '\0'){
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index[0] == limit){
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****            return NULL;            
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if ((index[0] >= '0' && index[0] <='9') 
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] >= 'a' && index[0] <='z') 
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] >= 'A' && index[0] <='Z') 
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] == '_')
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] == '\"' )
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] == '/' )
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         )
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         return index;
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         else
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index++;
+  97              		.loc 1 50 9 is_stmt 1 view .LVU18
+  98              		.loc 1 50 14 is_stmt 0 view .LVU19
+  99 0010 0130     		adds	r0, r0, #1
+ 100              	.LVL6:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 101              		.loc 1 32 10 is_stmt 1 view .LVU20
+ 102              	.L10:
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 103              		.loc 1 32 5 view .LVU21
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+ 104              		.loc 1 34 9 view .LVU22
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+ 105              		.loc 1 34 17 is_stmt 0 view .LVU23
+ 106 0012 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+ 107              		.loc 1 34 11 view .LVU24
+ 108 0014 6BB1     		cbz	r3, .L11
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****            return NULL;            
+ARM GAS  /tmp/ccWVHFWC.s 			page 4
+
+
+ 109              		.loc 1 37 9 is_stmt 1 view .LVU25
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****            return NULL;            
+ 110              		.loc 1 37 11 is_stmt 0 view .LVU26
+ 111 0016 8B42     		cmp	r3, r1
+ 112 0018 0DD0     		beq	.L12
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****           ||(index[0] >= 'a' && index[0] <='z') 
+ 113              		.loc 1 41 9 is_stmt 1 view .LVU27
+ 114 001a 5A2B     		cmp	r3, #90
+ 115 001c F1D8     		bhi	.L8
+ 116 001e 412B     		cmp	r3, #65
+ 117 0020 0AD2     		bcs	.L6
+ 118 0022 222B     		cmp	r3, #34
+ 119 0024 08D0     		beq	.L6
+ 120 0026 F3D3     		bcc	.L9
+ 121 0028 2F3B     		subs	r3, r3, #47
+ 122 002a DBB2     		uxtb	r3, r3
+ 123 002c 0A2B     		cmp	r3, #10
+ 124 002e EFD8     		bhi	.L9
+ 125 0030 7047     		bx	lr
+ 126              	.L11:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 127              		.loc 1 35 20 is_stmt 0 view .LVU28
+ 128 0032 0020     		movs	r0, #0
+ 129              	.LVL7:
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 130              		.loc 1 35 20 view .LVU29
+ 131 0034 7047     		bx	lr
+ 132              	.LVL8:
+ 133              	.L12:
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 134              		.loc 1 38 19 view .LVU30
+ 135 0036 0020     		movs	r0, #0
+ 136              	.LVL9:
+ 137              	.L6:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }   
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 138              		.loc 1 52 1 view .LVU31
+ 139 0038 7047     		bx	lr
+ 140              		.cfi_endproc
+ 141              	.LFE1034:
+ 143              		.section	.text.copy_string_data,"ax",%progbits
+ 144              		.align	1
+ 145              		.syntax unified
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	copy_string_data:
+ 150              	.LVL10:
+ 151              	.LFB1036:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** char* __goto_next_string(char* data,char limit){
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_string( data, limit);
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static int copy_string_data(char* from,char* to)
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 152              		.loc 1 58 1 is_stmt 1 view -0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccWVHFWC.s 			page 5
+
+
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              		.loc 1 58 1 is_stmt 0 view .LVU33
+ 157 0000 00B5     		push	{lr}
+ 158              	.LCFI0:
+ 159              		.cfi_def_cfa_offset 4
+ 160              		.cfi_offset 14, -4
+ 161 0002 8646     		mov	lr, r0
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* index = from;
+ 162              		.loc 1 59 5 is_stmt 1 view .LVU34
+ 163              	.LVL11:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     int i=0;
+ 164              		.loc 1 60 5 view .LVU35
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index[0] == '\"')
+ 165              		.loc 1 62 5 view .LVU36
+ 166              		.loc 1 62 13 is_stmt 0 view .LVU37
+ 167 0004 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 168              		.loc 1 62 7 view .LVU38
+ 169 0006 222B     		cmp	r3, #34
+ 170 0008 01D0     		beq	.L26
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     int i=0;
+ 171              		.loc 1 60 9 view .LVU39
+ 172 000a 0020     		movs	r0, #0
+ 173              	.LVL12:
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     int i=0;
+ 174              		.loc 1 60 9 view .LVU40
+ 175 000c 15E0     		b	.L18
+ 176              	.LVL13:
+ 177              	.L26:
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index++;
+ 178              		.loc 1 64 9 is_stmt 1 view .LVU41
+ 179              		.loc 1 64 14 is_stmt 0 view .LVU42
+ 180 000e 00F1010E 		add	lr, r0, #1
+ 181              	.LVL14:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         for(;
+ 182              		.loc 1 65 9 is_stmt 1 view .LVU43
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     
+ 183              		.loc 1 60 9 is_stmt 0 view .LVU44
+ 184 0012 0020     		movs	r0, #0
+ 185              	.LVL15:
+ 186              		.loc 1 65 9 view .LVU45
+ 187 0014 01E0     		b	.L19
+ 188              	.LVL16:
+ 189              	.L21:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\0' && 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\n' && 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\"'
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ;i++)
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             to[i] = index[i];
+ 190              		.loc 1 71 13 is_stmt 1 view .LVU46
+ 191              		.loc 1 71 19 is_stmt 0 view .LVU47
+ 192 0016 8B54     		strb	r3, [r1, r2]
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+ 193              		.loc 1 69 11 is_stmt 1 view .LVU48
+ 194 0018 0130     		adds	r0, r0, #1
+ARM GAS  /tmp/ccWVHFWC.s 			page 6
+
+
+ 195              	.LVL17:
+ 196              	.L19:
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\"'
+ 197              		.loc 1 67 30 view .LVU49
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\0' && 
+ 198              		.loc 1 66 18 is_stmt 0 view .LVU50
+ 199 001a 0246     		mov	r2, r0
+ 200 001c 1EF80030 		ldrb	r3, [lr, r0]	@ zero_extendqisi2
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\"'
+ 201              		.loc 1 67 30 view .LVU51
+ 202 0020 1BB1     		cbz	r3, .L20
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\0' && 
+ 203              		.loc 1 66 30 view .LVU52
+ 204 0022 0A2B     		cmp	r3, #10
+ 205 0024 01D0     		beq	.L20
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] != '\"'
+ 206              		.loc 1 67 30 view .LVU53
+ 207 0026 222B     		cmp	r3, #34
+ 208 0028 F5D1     		bne	.L21
+ 209              	.L20:
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         to[i] ='\0';
+ 210              		.loc 1 73 9 is_stmt 1 view .LVU54
+ 211              		.loc 1 73 15 is_stmt 0 view .LVU55
+ 212 002a 0023     		movs	r3, #0
+ 213 002c 8B54     		strb	r3, [r1, r2]
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         i+=2;
+ 214              		.loc 1 74 9 is_stmt 1 view .LVU56
+ 215              		.loc 1 74 10 is_stmt 0 view .LVU57
+ 216 002e 0230     		adds	r0, r0, #2
+ 217              	.LVL18:
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         return i;   
+ 218              		.loc 1 75 9 is_stmt 1 view .LVU58
+ 219              	.L17:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     else
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         for(;(
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             index[i] >= '0' && index[i] <='9') 
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] == '_')
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ;i++)
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             to[i] = index[i];
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }  
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         to[i] ='\0';
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         return i;      
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 220              		.loc 1 95 1 is_stmt 0 view .LVU59
+ 221 0030 5DF804FB 		ldr	pc, [sp], #4
+ 222              	.LVL19:
+ARM GAS  /tmp/ccWVHFWC.s 			page 7
+
+
+ 223              	.L23:
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }  
+ 224              		.loc 1 89 13 is_stmt 1 view .LVU60
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }  
+ 225              		.loc 1 89 19 is_stmt 0 view .LVU61
+ 226 0034 01F80C20 		strb	r2, [r1, ip]
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+ 227              		.loc 1 87 11 is_stmt 1 view .LVU62
+ 228 0038 0130     		adds	r0, r0, #1
+ 229              	.LVL20:
+ 230              	.L18:
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 231              		.loc 1 85 9 view .LVU63
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+ 232              		.loc 1 80 18 is_stmt 0 view .LVU64
+ 233 003a 8446     		mov	ip, r0
+ 234 003c 1EF80020 		ldrb	r2, [lr, r0]	@ zero_extendqisi2
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'a' && index[i] <='z') 
+ 235              		.loc 1 80 29 view .LVU65
+ 236 0040 A2F13003 		sub	r3, r2, #48
+ 237 0044 DBB2     		uxtb	r3, r3
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 238              		.loc 1 85 9 view .LVU66
+ 239 0046 092B     		cmp	r3, #9
+ 240 0048 F4D9     		bls	.L23
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+ 241              		.loc 1 81 28 view .LVU67
+ 242 004a A2F16103 		sub	r3, r2, #97
+ 243 004e DBB2     		uxtb	r3, r3
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] >= 'A' && index[i] <='Z') 
+ 244              		.loc 1 81 9 view .LVU68
+ 245 0050 192B     		cmp	r3, #25
+ 246 0052 EFD9     		bls	.L23
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+ 247              		.loc 1 82 28 view .LVU69
+ 248 0054 A2F14103 		sub	r3, r2, #65
+ 249 0058 DBB2     		uxtb	r3, r3
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > '!' && index[i] <= '/' ) 
+ 250              		.loc 1 82 9 view .LVU70
+ 251 005a 192B     		cmp	r3, #25
+ 252 005c EAD9     		bls	.L23
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+ 253              		.loc 1 83 27 view .LVU71
+ 254 005e A2F12203 		sub	r3, r2, #34
+ 255 0062 DBB2     		uxtb	r3, r3
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] > ':' && index[i] <= '@' )
+ 256              		.loc 1 83 9 view .LVU72
+ 257 0064 0D2B     		cmp	r3, #13
+ 258 0066 E5D9     		bls	.L23
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] == '_')
+ 259              		.loc 1 84 27 view .LVU73
+ 260 0068 A2F13B03 		sub	r3, r2, #59
+ 261 006c DBB2     		uxtb	r3, r3
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         ||(index[i] == '_')
+ 262              		.loc 1 84 9 view .LVU74
+ 263 006e 052B     		cmp	r3, #5
+ 264 0070 E0D9     		bls	.L23
+ARM GAS  /tmp/ccWVHFWC.s 			page 8
+
+
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 265              		.loc 1 85 9 view .LVU75
+ 266 0072 5F2A     		cmp	r2, #95
+ 267 0074 DED0     		beq	.L23
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+ 268              		.loc 1 91 9 is_stmt 1 view .LVU76
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         //pr_info("to: %s\n",to);
+ 269              		.loc 1 91 15 is_stmt 0 view .LVU77
+ 270 0076 0023     		movs	r3, #0
+ 271 0078 0B54     		strb	r3, [r1, r0]
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 272              		.loc 1 93 9 is_stmt 1 view .LVU78
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 273              		.loc 1 93 16 is_stmt 0 view .LVU79
+ 274 007a D9E7     		b	.L17
+ 275              		.cfi_endproc
+ 276              	.LFE1036:
+ 278              		.section	.text.get_next_head,"ax",%progbits
+ 279              		.align	1
+ 280              		.syntax unified
+ 281              		.thumb
+ 282              		.thumb_func
+ 284              	get_next_head:
+ 285              	.LVL21:
+ 286              	.LFB1038:
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** int __copy_string_data(char* from,char* to)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return copy_string_data(from, to);
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_next_head(char *text_data,char *buffer)
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 287              		.loc 1 103 1 is_stmt 1 view -0
+ 288              		.cfi_startproc
+ 289              		@ args = 0, pretend = 0, frame = 0
+ 290              		@ frame_needed = 0, uses_anonymous_args = 0
+ 291              		.loc 1 103 1 is_stmt 0 view .LVU81
+ 292 0000 38B5     		push	{r3, r4, r5, lr}
+ 293              	.LCFI1:
+ 294              		.cfi_def_cfa_offset 16
+ 295              		.cfi_offset 3, -16
+ 296              		.cfi_offset 4, -12
+ 297              		.cfi_offset 5, -8
+ 298              		.cfi_offset 14, -4
+ 299 0002 0D46     		mov	r5, r1
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 300              		.loc 1 104 5 is_stmt 1 view .LVU82
+ 301              	.LVL22:
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_char(index,'[',']');
+ 302              		.loc 1 105 5 view .LVU83
+ 303              		.loc 1 105 13 is_stmt 0 view .LVU84
+ 304 0004 5D22     		movs	r2, #93
+ 305 0006 5B21     		movs	r1, #91
+ 306              	.LVL23:
+ 307              		.loc 1 105 13 view .LVU85
+ 308 0008 FFF7FEFF 		bl	goto_next_char
+ARM GAS  /tmp/ccWVHFWC.s 			page 9
+
+
+ 309              	.LVL24:
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 310              		.loc 1 106 5 is_stmt 1 view .LVU86
+ 311              		.loc 1 106 7 is_stmt 0 view .LVU87
+ 312 000c 0446     		mov	r4, r0
+ 313 000e A8B1     		cbz	r0, .L27
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index++;
+ 314              		.loc 1 107 5 is_stmt 1 view .LVU88
+ 315              	.LVL25:
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_string(index,']');
+ 316              		.loc 1 108 5 view .LVU89
+ 317              		.loc 1 108 13 is_stmt 0 view .LVU90
+ 318 0010 5D21     		movs	r1, #93
+ 319 0012 0130     		adds	r0, r0, #1
+ 320              	.LVL26:
+ 321              		.loc 1 108 13 view .LVU91
+ 322 0014 FFF7FEFF 		bl	goto_next_string
+ 323              	.LVL27:
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 324              		.loc 1 109 5 is_stmt 1 view .LVU92
+ 325              		.loc 1 109 7 is_stmt 0 view .LVU93
+ 326 0018 0446     		mov	r4, r0
+ 327 001a 78B1     		cbz	r0, .L27
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     int length = copy_string_data(index,buffer);
+ 328              		.loc 1 110 5 is_stmt 1 view .LVU94
+ 329              		.loc 1 110 18 is_stmt 0 view .LVU95
+ 330 001c 2946     		mov	r1, r5
+ 331 001e FFF7FEFF 		bl	copy_string_data
+ 332              	.LVL28:
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index +=length;
+ 333              		.loc 1 111 5 is_stmt 1 view .LVU96
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_char(index,']','\0');
+ 334              		.loc 1 112 5 view .LVU97
+ 335              		.loc 1 112 13 is_stmt 0 view .LVU98
+ 336 0022 0022     		movs	r2, #0
+ 337 0024 5D21     		movs	r1, #93
+ 338 0026 2044     		add	r0, r0, r4
+ 339              	.LVL29:
+ 340              		.loc 1 112 13 view .LVU99
+ 341 0028 FFF7FEFF 		bl	goto_next_char
+ 342              	.LVL30:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 343              		.loc 1 113 5 is_stmt 1 view .LVU100
+ 344              		.loc 1 113 7 is_stmt 0 view .LVU101
+ 345 002c 0546     		mov	r5, r0
+ 346              	.LVL31:
+ 347              		.loc 1 113 7 view .LVU102
+ 348 002e 48B1     		cbz	r0, .L29
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* new_index;
+ 349              		.loc 1 114 5 is_stmt 1 view .LVU103
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     new_index = goto_next_char(index,'\n','\0');
+ 350              		.loc 1 115 5 view .LVU104
+ 351              		.loc 1 115 17 is_stmt 0 view .LVU105
+ 352 0030 0022     		movs	r2, #0
+ 353 0032 0A21     		movs	r1, #10
+ 354 0034 FFF7FEFF 		bl	goto_next_char
+ 355              	.LVL32:
+ARM GAS  /tmp/ccWVHFWC.s 			page 10
+
+
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(new_index == NULL) return index;
+ 356              		.loc 1 116 5 is_stmt 1 view .LVU106
+ 357              		.loc 1 116 7 is_stmt 0 view .LVU107
+ 358 0038 0446     		mov	r4, r0
+ 359 003a 08B1     		cbz	r0, .L31
+ 360              	.LVL33:
+ 361              	.L27:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     else             return new_index;
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 362              		.loc 1 118 1 view .LVU108
+ 363 003c 2046     		mov	r0, r4
+ 364 003e 38BD     		pop	{r3, r4, r5, pc}
+ 365              	.LVL34:
+ 366              	.L31:
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(new_index == NULL) return index;
+ 367              		.loc 1 116 34 discriminator 1 view .LVU109
+ 368 0040 2C46     		mov	r4, r5
+ 369 0042 FBE7     		b	.L27
+ 370              	.LVL35:
+ 371              	.L29:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* new_index;
+ 372              		.loc 1 113 30 discriminator 1 view .LVU110
+ 373 0044 0446     		mov	r4, r0
+ 374 0046 F9E7     		b	.L27
+ 375              		.cfi_endproc
+ 376              	.LFE1038:
+ 378              		.section	.text.get_next_key,"ax",%progbits
+ 379              		.align	1
+ 380              		.syntax unified
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	get_next_key:
+ 385              	.LVL36:
+ 386              	.LFB1039:
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_next_key(char *text_data,char *buffer)
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 387              		.loc 1 123 1 is_stmt 1 view -0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 0
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391              		.loc 1 123 1 is_stmt 0 view .LVU112
+ 392 0000 38B5     		push	{r3, r4, r5, lr}
+ 393              	.LCFI2:
+ 394              		.cfi_def_cfa_offset 16
+ 395              		.cfi_offset 3, -16
+ 396              		.cfi_offset 4, -12
+ 397              		.cfi_offset 5, -8
+ 398              		.cfi_offset 14, -4
+ 399 0002 0D46     		mov	r5, r1
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 400              		.loc 1 124 5 is_stmt 1 view .LVU113
+ 401              	.LVL37:
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_string(index,'[');
+ 402              		.loc 1 125 5 view .LVU114
+ARM GAS  /tmp/ccWVHFWC.s 			page 11
+
+
+ 403              		.loc 1 125 13 is_stmt 0 view .LVU115
+ 404 0004 5B21     		movs	r1, #91
+ 405              	.LVL38:
+ 406              		.loc 1 125 13 view .LVU116
+ 407 0006 FFF7FEFF 		bl	goto_next_string
+ 408              	.LVL39:
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL){
+ 409              		.loc 1 126 5 is_stmt 1 view .LVU117
+ 410              		.loc 1 126 7 is_stmt 0 view .LVU118
+ 411 000a 0446     		mov	r4, r0
+ 412 000c 18B1     		cbz	r0, .L32
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****          return NULL;
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     int length = copy_string_data(index,buffer);
+ 413              		.loc 1 129 5 is_stmt 1 view .LVU119
+ 414              		.loc 1 129 18 is_stmt 0 view .LVU120
+ 415 000e 2946     		mov	r1, r5
+ 416 0010 FFF7FEFF 		bl	copy_string_data
+ 417              	.LVL40:
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index +=length;  
+ 418              		.loc 1 130 5 is_stmt 1 view .LVU121
+ 419              		.loc 1 130 11 is_stmt 0 view .LVU122
+ 420 0014 0444     		add	r4, r4, r0
+ 421              	.LVL41:
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 422              		.loc 1 131 5 is_stmt 1 view .LVU123
+ 423              	.L32:
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 424              		.loc 1 132 1 is_stmt 0 view .LVU124
+ 425 0016 2046     		mov	r0, r4
+ 426 0018 38BD     		pop	{r3, r4, r5, pc}
+ 427              		.loc 1 132 1 view .LVU125
+ 428              		.cfi_endproc
+ 429              	.LFE1039:
+ 431              		.section	.text.get_head_start,"ax",%progbits
+ 432              		.align	1
+ 433              		.syntax unified
+ 434              		.thumb
+ 435              		.thumb_func
+ 437              	get_head_start:
+ 438              	.LVL42:
+ 439              	.LFB1042:
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_key(char *text_data,char *data)
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char key_data[32]; 
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     key_data[31] = '\0';
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (1)
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index = get_next_key(index,key_data);
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(strcmp(data,key_data)==0){
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index = goto_next_char(index,'\n','\0');
+ARM GAS  /tmp/ccWVHFWC.s 			page 12
+
+
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index++;
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return NULL;
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* index = text_data;
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index =get_key(index,key);
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index++;
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = get_next_key(index,value);
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_head_start(char* text_data,char* head)
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 440              		.loc 1 166 1 is_stmt 1 view -0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 64
+ 443              		@ frame_needed = 0, uses_anonymous_args = 0
+ 444              		.loc 1 166 1 is_stmt 0 view .LVU127
+ 445 0000 30B5     		push	{r4, r5, lr}
+ 446              	.LCFI3:
+ 447              		.cfi_def_cfa_offset 12
+ 448              		.cfi_offset 4, -12
+ 449              		.cfi_offset 5, -8
+ 450              		.cfi_offset 14, -4
+ 451 0002 91B0     		sub	sp, sp, #68
+ 452              	.LCFI4:
+ 453              		.cfi_def_cfa_offset 80
+ 454 0004 0446     		mov	r4, r0
+ 455 0006 0D46     		mov	r5, r1
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 456              		.loc 1 167 5 is_stmt 1 view .LVU128
+ 457              	.LVL43:
+ 458              	.L37:
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char buffer[KEY_VALUE_MAX_LENGTH];
+ 459              		.loc 1 168 5 view .LVU129
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (1)
+ 460              		.loc 1 169 5 view .LVU130
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index = get_next_head(index,buffer);           
+ 461              		.loc 1 171 9 view .LVU131
+ 462              		.loc 1 171 17 is_stmt 0 view .LVU132
+ 463 0008 6946     		mov	r1, sp
+ 464 000a 2046     		mov	r0, r4
+ 465 000c FFF7FEFF 		bl	get_next_head
+ 466              	.LVL44:
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 467              		.loc 1 172 9 is_stmt 1 view .LVU133
+ 468              		.loc 1 172 11 is_stmt 0 view .LVU134
+ 469 0010 0446     		mov	r4, r0
+ 470 0012 28B1     		cbz	r0, .L36
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+ARM GAS  /tmp/ccWVHFWC.s 			page 13
+
+
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(strcmp(buffer,head) == 0)
+ 471              		.loc 1 176 9 is_stmt 1 view .LVU135
+ 472              		.loc 1 176 12 is_stmt 0 view .LVU136
+ 473 0014 2946     		mov	r1, r5
+ 474 0016 6846     		mov	r0, sp
+ 475              	.LVL45:
+ 476              		.loc 1 176 12 view .LVU137
+ 477 0018 FFF7FEFF 		bl	strcmp
+ 478              	.LVL46:
+ 479              		.loc 1 176 11 discriminator 1 view .LVU138
+ 480 001c 0028     		cmp	r0, #0
+ 481 001e F3D1     		bne	.L37
+ 482              	.L36:
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         {
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         // else
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         // {
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         //     pr_info("needhead:%s,headdata:%s\n",head,buffer);
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         // }
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 483              		.loc 1 185 1 view .LVU139
+ 484 0020 2046     		mov	r0, r4
+ 485 0022 11B0     		add	sp, sp, #68
+ 486              	.LCFI5:
+ 487              		.cfi_def_cfa_offset 12
+ 488              		@ sp needed
+ 489 0024 30BD     		pop	{r4, r5, pc}
+ 490              		.loc 1 185 1 view .LVU140
+ 491              		.cfi_endproc
+ 492              	.LFE1042:
+ 494              		.section	.text.get_key,"ax",%progbits
+ 495              		.align	1
+ 496              		.syntax unified
+ 497              		.thumb
+ 498              		.thumb_func
+ 500              	get_key:
+ 501              	.LVL47:
+ 502              	.LFB1040:
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char key_data[32]; 
+ 503              		.loc 1 135 1 is_stmt 1 view -0
+ 504              		.cfi_startproc
+ 505              		@ args = 0, pretend = 0, frame = 32
+ 506              		@ frame_needed = 0, uses_anonymous_args = 0
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char key_data[32]; 
+ 507              		.loc 1 135 1 is_stmt 0 view .LVU142
+ 508 0000 30B5     		push	{r4, r5, lr}
+ 509              	.LCFI6:
+ 510              		.cfi_def_cfa_offset 12
+ 511              		.cfi_offset 4, -12
+ 512              		.cfi_offset 5, -8
+ 513              		.cfi_offset 14, -4
+ 514 0002 89B0     		sub	sp, sp, #36
+ 515              	.LCFI7:
+ARM GAS  /tmp/ccWVHFWC.s 			page 14
+
+
+ 516              		.cfi_def_cfa_offset 48
+ 517 0004 0D46     		mov	r5, r1
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     key_data[31] = '\0';
+ 518              		.loc 1 136 5 is_stmt 1 view .LVU143
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 519              		.loc 1 137 5 view .LVU144
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *index = text_data;
+ 520              		.loc 1 137 18 is_stmt 0 view .LVU145
+ 521 0006 0023     		movs	r3, #0
+ 522 0008 8DF81F30 		strb	r3, [sp, #31]
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (1)
+ 523              		.loc 1 138 5 is_stmt 1 view .LVU146
+ 524              	.LVL48:
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (1)
+ 525              		.loc 1 138 5 is_stmt 0 view .LVU147
+ 526 000c 00E0     		b	.L41
+ 527              	.LVL49:
+ 528              	.L43:
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 529              		.loc 1 150 9 is_stmt 1 view .LVU148
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 530              		.loc 1 150 14 is_stmt 0 view .LVU149
+ 531 000e 0130     		adds	r0, r0, #1
+ 532              	.LVL50:
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 533              		.loc 1 139 11 is_stmt 1 view .LVU150
+ 534              	.L41:
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 535              		.loc 1 139 5 view .LVU151
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 536              		.loc 1 141 9 view .LVU152
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 537              		.loc 1 141 17 is_stmt 0 view .LVU153
+ 538 0010 6946     		mov	r1, sp
+ 539 0012 FFF7FEFF 		bl	get_next_key
+ 540              	.LVL51:
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 541              		.loc 1 142 9 is_stmt 1 view .LVU154
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 542              		.loc 1 142 11 is_stmt 0 view .LVU155
+ 543 0016 0446     		mov	r4, r0
+ 544 0018 60B1     		cbz	r0, .L39
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 545              		.loc 1 144 9 is_stmt 1 view .LVU156
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 546              		.loc 1 144 12 is_stmt 0 view .LVU157
+ 547 001a 6946     		mov	r1, sp
+ 548 001c 2846     		mov	r0, r5
+ 549              	.LVL52:
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 550              		.loc 1 144 12 view .LVU158
+ 551 001e FFF7FEFF 		bl	strcmp
+ 552              	.LVL53:
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return index;
+ 553              		.loc 1 144 11 discriminator 1 view .LVU159
+ 554 0022 38B1     		cbz	r0, .L39
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ARM GAS  /tmp/ccWVHFWC.s 			page 15
+
+
+ 555              		.loc 1 147 9 is_stmt 1 view .LVU160
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL)
+ 556              		.loc 1 147 17 is_stmt 0 view .LVU161
+ 557 0024 0022     		movs	r2, #0
+ 558 0026 0A21     		movs	r1, #10
+ 559 0028 2046     		mov	r0, r4
+ 560 002a FFF7FEFF 		bl	goto_next_char
+ 561              	.LVL54:
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 562              		.loc 1 148 9 is_stmt 1 view .LVU162
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         break;
+ 563              		.loc 1 148 11 is_stmt 0 view .LVU163
+ 564 002e 0446     		mov	r4, r0
+ 565 0030 0028     		cmp	r0, #0
+ 566 0032 ECD1     		bne	.L43
+ 567              	.LVL55:
+ 568              	.L39:
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 569              		.loc 1 153 1 view .LVU164
+ 570 0034 2046     		mov	r0, r4
+ 571 0036 09B0     		add	sp, sp, #36
+ 572              	.LCFI8:
+ 573              		.cfi_def_cfa_offset 12
+ 574              		@ sp needed
+ 575 0038 30BD     		pop	{r4, r5, pc}
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* get_value(char *text_data,char *key,char* value)
+ 576              		.loc 1 153 1 view .LVU165
+ 577              		.cfi_endproc
+ 578              	.LFE1040:
+ 580              		.section	.text.get_value,"ax",%progbits
+ 581              		.align	1
+ 582              		.syntax unified
+ 583              		.thumb
+ 584              		.thumb_func
+ 586              	get_value:
+ 587              	.LVL56:
+ 588              	.LFB1041:
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* index = text_data;
+ 589              		.loc 1 155 1 is_stmt 1 view -0
+ 590              		.cfi_startproc
+ 591              		@ args = 0, pretend = 0, frame = 0
+ 592              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* index = text_data;
+ 593              		.loc 1 155 1 is_stmt 0 view .LVU167
+ 594 0000 10B5     		push	{r4, lr}
+ 595              	.LCFI9:
+ 596              		.cfi_def_cfa_offset 8
+ 597              		.cfi_offset 4, -8
+ 598              		.cfi_offset 14, -4
+ 599 0002 1446     		mov	r4, r2
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index =get_key(index,key);
+ 600              		.loc 1 156 5 is_stmt 1 view .LVU168
+ 601              	.LVL57:
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 602              		.loc 1 157 5 view .LVU169
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL) return NULL;
+ 603              		.loc 1 157 12 is_stmt 0 view .LVU170
+ARM GAS  /tmp/ccWVHFWC.s 			page 16
+
+
+ 604 0004 FFF7FEFF 		bl	get_key
+ 605              	.LVL58:
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 606              		.loc 1 158 5 is_stmt 1 view .LVU171
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = goto_next_char(index,'=','\n');
+ 607              		.loc 1 158 7 is_stmt 0 view .LVU172
+ 608 0008 38B1     		cbz	r0, .L44
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index++;
+ 609              		.loc 1 159 5 is_stmt 1 view .LVU173
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index++;
+ 610              		.loc 1 159 13 is_stmt 0 view .LVU174
+ 611 000a 0A22     		movs	r2, #10
+ 612 000c 3D21     		movs	r1, #61
+ 613 000e FFF7FEFF 		bl	goto_next_char
+ 614              	.LVL59:
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = get_next_key(index,value);
+ 615              		.loc 1 160 5 is_stmt 1 view .LVU175
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 616              		.loc 1 161 5 view .LVU176
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 617              		.loc 1 161 13 is_stmt 0 view .LVU177
+ 618 0012 2146     		mov	r1, r4
+ 619 0014 0130     		adds	r0, r0, #1
+ 620              	.LVL60:
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 621              		.loc 1 161 13 view .LVU178
+ 622 0016 FFF7FEFF 		bl	get_next_key
+ 623              	.LVL61:
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 624              		.loc 1 162 5 is_stmt 1 view .LVU179
+ 625              	.L44:
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 626              		.loc 1 163 1 is_stmt 0 view .LVU180
+ 627 001a 10BD     		pop	{r4, pc}
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 628              		.loc 1 163 1 view .LVU181
+ 629              		.cfi_endproc
+ 630              	.LFE1041:
+ 632              		.section	.text.__goto_next_char,"ax",%progbits
+ 633              		.align	1
+ 634              		.global	__goto_next_char
+ 635              		.syntax unified
+ 636              		.thumb
+ 637              		.thumb_func
+ 639              	__goto_next_char:
+ 640              	.LVL62:
+ 641              	.LFB1033:
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+ 642              		.loc 1 26 1 is_stmt 1 view -0
+ 643              		.cfi_startproc
+ 644              		@ args = 0, pretend = 0, frame = 0
+ 645              		@ frame_needed = 0, uses_anonymous_args = 0
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_char(data,c, limit);
+ 646              		.loc 1 26 1 is_stmt 0 view .LVU183
+ 647 0000 08B5     		push	{r3, lr}
+ 648              	.LCFI10:
+ 649              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccWVHFWC.s 			page 17
+
+
+ 650              		.cfi_offset 3, -8
+ 651              		.cfi_offset 14, -4
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 652              		.loc 1 27 5 is_stmt 1 view .LVU184
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 653              		.loc 1 27 12 is_stmt 0 view .LVU185
+ 654 0002 FFF7FEFF 		bl	goto_next_char
+ 655              	.LVL63:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** static char* goto_next_string(char* data,char limit)
+ 656              		.loc 1 28 1 view .LVU186
+ 657 0006 08BD     		pop	{r3, pc}
+ 658              		.cfi_endproc
+ 659              	.LFE1033:
+ 661              		.section	.text.__goto_next_string,"ax",%progbits
+ 662              		.align	1
+ 663              		.global	__goto_next_string
+ 664              		.syntax unified
+ 665              		.thumb
+ 666              		.thumb_func
+ 668              	__goto_next_string:
+ 669              	.LVL64:
+ 670              	.LFB1035:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_string( data, limit);
+ 671              		.loc 1 53 48 is_stmt 1 view -0
+ 672              		.cfi_startproc
+ 673              		@ args = 0, pretend = 0, frame = 0
+ 674              		@ frame_needed = 0, uses_anonymous_args = 0
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return goto_next_string( data, limit);
+ 675              		.loc 1 53 48 is_stmt 0 view .LVU188
+ 676 0000 08B5     		push	{r3, lr}
+ 677              	.LCFI11:
+ 678              		.cfi_def_cfa_offset 8
+ 679              		.cfi_offset 3, -8
+ 680              		.cfi_offset 14, -4
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 681              		.loc 1 54 5 is_stmt 1 view .LVU189
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 682              		.loc 1 54 12 is_stmt 0 view .LVU190
+ 683 0002 FFF7FEFF 		bl	goto_next_string
+ 684              	.LVL65:
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 685              		.loc 1 55 1 view .LVU191
+ 686 0006 08BD     		pop	{r3, pc}
+ 687              		.cfi_endproc
+ 688              	.LFE1035:
+ 690              		.section	.text.__copy_string_data,"ax",%progbits
+ 691              		.align	1
+ 692              		.global	__copy_string_data
+ 693              		.syntax unified
+ 694              		.thumb
+ 695              		.thumb_func
+ 697              	__copy_string_data:
+ 698              	.LVL66:
+ 699              	.LFB1037:
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return copy_string_data(from, to);
+ 700              		.loc 1 98 1 is_stmt 1 view -0
+ 701              		.cfi_startproc
+ARM GAS  /tmp/ccWVHFWC.s 			page 18
+
+
+ 702              		@ args = 0, pretend = 0, frame = 0
+ 703              		@ frame_needed = 0, uses_anonymous_args = 0
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return copy_string_data(from, to);
+ 704              		.loc 1 98 1 is_stmt 0 view .LVU193
+ 705 0000 08B5     		push	{r3, lr}
+ 706              	.LCFI12:
+ 707              		.cfi_def_cfa_offset 8
+ 708              		.cfi_offset 3, -8
+ 709              		.cfi_offset 14, -4
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 710              		.loc 1 99 5 is_stmt 1 view .LVU194
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 711              		.loc 1 99 12 is_stmt 0 view .LVU195
+ 712 0002 FFF7FEFF 		bl	copy_string_data
+ 713              	.LVL67:
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 714              		.loc 1 100 1 view .LVU196
+ 715 0006 08BD     		pop	{r3, pc}
+ 716              		.cfi_endproc
+ 717              	.LFE1037:
+ 719              		.section	.rodata.get_value_from_ini.str1.4,"aMS",%progbits,1
+ 720              		.align	2
+ 721              	.LC0:
+ 722 0000 63616E20 		.ascii	"can not get this file head\012\000"
+ 722      6E6F7420 
+ 722      67657420 
+ 722      74686973 
+ 722      2066696C 
+ 723              		.align	2
+ 724              	.LC1:
+ 725 001c 63616E20 		.ascii	"can not get value\012\000"
+ 725      6E6F7420 
+ 725      67657420 
+ 725      76616C75 
+ 725      650A00
+ 726              		.section	.text.get_value_from_ini,"ax",%progbits
+ 727              		.align	1
+ 728              		.global	get_value_from_ini
+ 729              		.syntax unified
+ 730              		.thumb
+ 731              		.thumb_func
+ 733              	get_value_from_ini:
+ 734              	.LVL68:
+ 735              	.LFB1043:
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** char* get_value_from_ini(char *text_data,char *grou,char* key,char* value)
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 736              		.loc 1 188 1 is_stmt 1 view -0
+ 737              		.cfi_startproc
+ 738              		@ args = 0, pretend = 0, frame = 0
+ 739              		@ frame_needed = 0, uses_anonymous_args = 0
+ 740              		.loc 1 188 1 is_stmt 0 view .LVU198
+ 741 0000 70B5     		push	{r4, r5, r6, lr}
+ 742              	.LCFI13:
+ 743              		.cfi_def_cfa_offset 16
+ 744              		.cfi_offset 4, -16
+ 745              		.cfi_offset 5, -12
+ARM GAS  /tmp/ccWVHFWC.s 			page 19
+
+
+ 746              		.cfi_offset 6, -8
+ 747              		.cfi_offset 14, -4
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(text_data == NULL  || key == NULL || value == NULL) 
+ 748              		.loc 1 189 5 is_stmt 1 view .LVU199
+ 749              		.loc 1 189 7 is_stmt 0 view .LVU200
+ 750 0002 0446     		mov	r4, r0
+ 751 0004 78B1     		cbz	r0, .L53
+ 752 0006 1546     		mov	r5, r2
+ 753 0008 1E46     		mov	r6, r3
+ 754              		.loc 1 189 27 discriminator 1 view .LVU201
+ 755 000a C2B1     		cbz	r2, .L57
+ 756              		.loc 1 189 42 discriminator 2 view .LVU202
+ 757 000c CBB1     		cbz	r3, .L58
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return NULL;
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char* index = text_data;
+ 758              		.loc 1 192 5 is_stmt 1 view .LVU203
+ 759              	.LVL69:
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(grou != NULL){
+ 760              		.loc 1 193 5 view .LVU204
+ 761              		.loc 1 193 7 is_stmt 0 view .LVU205
+ 762 000e 19B1     		cbz	r1, .L55
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         index = get_head_start(index,grou); //获取起始头部
+ 763              		.loc 1 194 9 is_stmt 1 view .LVU206
+ 764              		.loc 1 194 17 is_stmt 0 view .LVU207
+ 765 0010 FFF7FEFF 		bl	get_head_start
+ 766              	.LVL70:
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if(index == NULL){
+ 767              		.loc 1 195 9 is_stmt 1 view .LVU208
+ 768              		.loc 1 195 11 is_stmt 0 view .LVU209
+ 769 0014 0446     		mov	r4, r0
+ 770              	.LVL71:
+ 771              		.loc 1 195 11 view .LVU210
+ 772 0016 40B1     		cbz	r0, .L60
+ 773              	.L55:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             pr_err("can not get this file head\n");
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;               
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     index = get_value(index,key,value);  
+ 774              		.loc 1 200 5 is_stmt 1 view .LVU211
+ 775              		.loc 1 200 13 is_stmt 0 view .LVU212
+ 776 0018 3246     		mov	r2, r6
+ 777 001a 2946     		mov	r1, r5
+ 778 001c 2046     		mov	r0, r4
+ 779              		.loc 1 200 13 view .LVU213
+ 780 001e FFF7FEFF 		bl	get_value
+ 781              	.LVL72:
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     if(index == NULL){
+ 782              		.loc 1 201 5 is_stmt 1 view .LVU214
+ 783              		.loc 1 201 7 is_stmt 0 view .LVU215
+ 784 0022 0446     		mov	r4, r0
+ 785 0024 30B1     		cbz	r0, .L61
+ 786              	.LVL73:
+ 787              	.L53:
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ARM GAS  /tmp/ccWVHFWC.s 			page 20
+
+
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     return index;
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 788              		.loc 1 205 1 view .LVU216
+ 789 0026 2046     		mov	r0, r4
+ 790 0028 70BD     		pop	{r4, r5, r6, pc}
+ 791              	.LVL74:
+ 792              	.L60:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;               
+ 793              		.loc 1 196 13 is_stmt 1 view .LVU217
+ 794 002a 0749     		ldr	r1, .L62
+ 795 002c 0320     		movs	r0, #3
+ 796              	.LVL75:
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             return NULL;               
+ 797              		.loc 1 196 13 is_stmt 0 view .LVU218
+ 798 002e FFF7FEFF 		bl	printk
+ 799              	.LVL76:
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 800              		.loc 1 197 13 is_stmt 1 view .LVU219
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 801              		.loc 1 197 20 is_stmt 0 view .LVU220
+ 802 0032 F8E7     		b	.L53
+ 803              	.LVL77:
+ 804              	.L61:
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 805              		.loc 1 202 9 is_stmt 1 view .LVU221
+ 806 0034 0549     		ldr	r1, .L62+4
+ 807 0036 0320     		movs	r0, #3
+ 808              	.LVL78:
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         pr_err("can not get value\n");    
+ 809              		.loc 1 202 9 is_stmt 0 view .LVU222
+ 810 0038 FFF7FEFF 		bl	printk
+ 811              	.LVL79:
+ 812 003c F3E7     		b	.L53
+ 813              	.LVL80:
+ 814              	.L57:
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     
+ 815              		.loc 1 190 12 view .LVU223
+ 816 003e 1446     		mov	r4, r2
+ 817 0040 F1E7     		b	.L53
+ 818              	.L58:
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     
+ 819              		.loc 1 190 12 view .LVU224
+ 820 0042 1C46     		mov	r4, r3
+ 821 0044 EFE7     		b	.L53
+ 822              	.L63:
+ 823 0046 00BF     		.align	2
+ 824              	.L62:
+ 825 0048 00000000 		.word	.LC0
+ 826 004c 1C000000 		.word	.LC1
+ 827              		.cfi_endproc
+ 828              	.LFE1043:
+ 830              		.section	.text.preprocess_ini_data,"ax",%progbits
+ 831              		.align	1
+ 832              		.global	preprocess_ini_data
+ 833              		.syntax unified
+ 834              		.thumb
+ 835              		.thumb_func
+ARM GAS  /tmp/ccWVHFWC.s 			page 21
+
+
+ 837              	preprocess_ini_data:
+ 838              	.LVL81:
+ 839              	.LFB1044:
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** 
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** void preprocess_ini_data(char *data)
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** {
+ 840              		.loc 1 208 1 is_stmt 1 view -0
+ 841              		.cfi_startproc
+ 842              		@ args = 0, pretend = 0, frame = 0
+ 843              		@ frame_needed = 0, uses_anonymous_args = 0
+ 844              		@ link register save eliminated.
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *src = data;
+ 845              		.loc 1 209 5 view .LVU226
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *dst = data;
+ 846              		.loc 1 210 5 view .LVU227
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (*src != '\0') 
+ 847              		.loc 1 211 5 view .LVU228
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     char *dst = data;
+ 848              		.loc 1 210 11 is_stmt 0 view .LVU229
+ 849 0000 0246     		mov	r2, r0
+ 850              		.loc 1 211 11 view .LVU230
+ 851 0002 04E0     		b	.L65
+ 852              	.LVL82:
+ 853              	.L70:
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     {
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         if (*src == '#' || *src == ';' ) {
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****                 src++;
+ 854              		.loc 1 215 17 is_stmt 1 view .LVU231
+ 855              		.loc 1 215 20 is_stmt 0 view .LVU232
+ 856 0004 0130     		adds	r0, r0, #1
+ 857              	.LVL83:
+ 858              	.L68:
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****                 src++;
+ 859              		.loc 1 214 33 is_stmt 1 view .LVU233
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****                 src++;
+ 860              		.loc 1 214 20 is_stmt 0 view .LVU234
+ 861 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****                 src++;
+ 862              		.loc 1 214 33 view .LVU235
+ 863 0008 0BB1     		cbz	r3, .L65
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****                 src++;
+ 864              		.loc 1 214 33 discriminator 1 view .LVU236
+ 865 000a 0A2B     		cmp	r3, #10
+ 866 000c FAD1     		bne	.L70
+ 867              	.L65:
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (*src != '\0') 
+ 868              		.loc 1 211 17 is_stmt 1 view .LVU237
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (*src != '\0') 
+ 869              		.loc 1 211 12 is_stmt 0 view .LVU238
+ 870 000e 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     while (*src != '\0') 
+ 871              		.loc 1 211 17 view .LVU239
+ 872 0010 3BB1     		cbz	r3, .L73
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 873              		.loc 1 213 9 is_stmt 1 view .LVU240
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ARM GAS  /tmp/ccWVHFWC.s 			page 22
+
+
+ 874              		.loc 1 213 12 is_stmt 0 view .LVU241
+ 875 0012 232B     		cmp	r3, #35
+ 876 0014 F7D0     		beq	.L68
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             while (*src != '\0' && *src != '\n') {
+ 877              		.loc 1 213 25 discriminator 1 view .LVU242
+ 878 0016 3B2B     		cmp	r3, #59
+ 879 0018 F5D0     		beq	.L68
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             }
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         } 
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         else {
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****             *dst++ = *src++;
+ 880              		.loc 1 219 13 is_stmt 1 view .LVU243
+ 881              		.loc 1 219 26 is_stmt 0 view .LVU244
+ 882 001a 0130     		adds	r0, r0, #1
+ 883              	.LVL84:
+ 884              		.loc 1 219 20 view .LVU245
+ 885 001c 02F8013B 		strb	r3, [r2], #1
+ 886              	.LVL85:
+ 887              		.loc 1 219 20 view .LVU246
+ 888 0020 F5E7     		b	.L65
+ 889              	.L73:
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****         }
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     }
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c ****     *dst = '\0'; 
+ 890              		.loc 1 222 5 is_stmt 1 view .LVU247
+ 891              		.loc 1 222 10 is_stmt 0 view .LVU248
+ 892 0022 1370     		strb	r3, [r2]
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/lib/script/kini.c **** }
+ 893              		.loc 1 223 1 view .LVU249
+ 894 0024 7047     		bx	lr
+ 895              		.cfi_endproc
+ 896              	.LFE1044:
+ 898              		.text
+ 899              	.Letext0:
+ 900              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 901              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ARM GAS  /tmp/ccWVHFWC.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 kini.c
+     /tmp/ccWVHFWC.s:22     .text.goto_next_char:00000000 $t
+     /tmp/ccWVHFWC.s:27     .text.goto_next_char:00000000 goto_next_char
+     /tmp/ccWVHFWC.s:71     .text.goto_next_string:00000000 $t
+     /tmp/ccWVHFWC.s:76     .text.goto_next_string:00000000 goto_next_string
+     /tmp/ccWVHFWC.s:144    .text.copy_string_data:00000000 $t
+     /tmp/ccWVHFWC.s:149    .text.copy_string_data:00000000 copy_string_data
+     /tmp/ccWVHFWC.s:279    .text.get_next_head:00000000 $t
+     /tmp/ccWVHFWC.s:284    .text.get_next_head:00000000 get_next_head
+     /tmp/ccWVHFWC.s:379    .text.get_next_key:00000000 $t
+     /tmp/ccWVHFWC.s:384    .text.get_next_key:00000000 get_next_key
+     /tmp/ccWVHFWC.s:432    .text.get_head_start:00000000 $t
+     /tmp/ccWVHFWC.s:437    .text.get_head_start:00000000 get_head_start
+     /tmp/ccWVHFWC.s:495    .text.get_key:00000000 $t
+     /tmp/ccWVHFWC.s:500    .text.get_key:00000000 get_key
+     /tmp/ccWVHFWC.s:581    .text.get_value:00000000 $t
+     /tmp/ccWVHFWC.s:586    .text.get_value:00000000 get_value
+     /tmp/ccWVHFWC.s:633    .text.__goto_next_char:00000000 $t
+     /tmp/ccWVHFWC.s:639    .text.__goto_next_char:00000000 __goto_next_char
+     /tmp/ccWVHFWC.s:662    .text.__goto_next_string:00000000 $t
+     /tmp/ccWVHFWC.s:668    .text.__goto_next_string:00000000 __goto_next_string
+     /tmp/ccWVHFWC.s:691    .text.__copy_string_data:00000000 $t
+     /tmp/ccWVHFWC.s:697    .text.__copy_string_data:00000000 __copy_string_data
+     /tmp/ccWVHFWC.s:720    .rodata.get_value_from_ini.str1.4:00000000 $d
+     /tmp/ccWVHFWC.s:727    .text.get_value_from_ini:00000000 $t
+     /tmp/ccWVHFWC.s:733    .text.get_value_from_ini:00000000 get_value_from_ini
+     /tmp/ccWVHFWC.s:825    .text.get_value_from_ini:00000048 $d
+     /tmp/ccWVHFWC.s:831    .text.preprocess_ini_data:00000000 $t
+     /tmp/ccWVHFWC.s:837    .text.preprocess_ini_data:00000000 preprocess_ini_data
+
+UNDEFINED SYMBOLS
+strcmp
+printk

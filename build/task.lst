@@ -1,0 +1,1261 @@
+ARM GAS  /tmp/ccpYdOeJ.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv4-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"task.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c"
+  21              		.section	.text.init_task_context,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	init_task_context:
+  28              	.LVL0:
+  29              	.LFB106:
+  30              		.file 2 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #ifndef __CONTEXT_H__
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** #define __CONTEXT_H__                
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** extern void __init_Taskcontext(struct task_struct* task_data,uint32_t pic_offset);
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** static void init_task_context(struct task_struct* task_data,uint32_t pic_offset){
+  31              		.loc 2 6 81 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 2 6 81 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 3, -8
+  40              		.cfi_offset 14, -4
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h ****     __init_Taskcontext(task_data,pic_offset);
+  41              		.loc 2 7 5 is_stmt 1 view .LVU2
+  42 0002 FFF7FEFF 		bl	__init_Taskcontext
+  43              	.LVL1:
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/context.h **** } 
+  44              		.loc 2 8 1 is_stmt 0 view .LVU3
+  45 0006 08BD     		pop	{r3, pc}
+  46              		.cfi_endproc
+  47              	.LFE106:
+  49              		.section	.rodata.__new_task_create.str1.4,"aMS",%progbits,1
+  50              		.align	2
+  51              	.LC0:
+ARM GAS  /tmp/ccpYdOeJ.s 			page 2
+
+
+  52 0000 63616E20 		.ascii	"can not create t\012\000"
+  52      6E6F7420 
+  52      63726561 
+  52      74652074 
+  52      0A00
+  53 0012 0000     		.align	2
+  54              	.LC1:
+  55 0014 63616E20 		.ascii	"can not alloc memory: need %d kb\012\015\000"
+  55      6E6F7420 
+  55      616C6C6F 
+  55      63206D65 
+  55      6D6F7279 
+  56              		.section	.text.__new_task_create,"ax",%progbits
+  57              		.align	1
+  58              		.global	__new_task_create
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	__new_task_create:
+  64              	.LVL2:
+  65              	.LFB742:
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/printk.h>
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/sched.h>
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/slab.h>
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/error.h>
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/string.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** #include <linux/atomic.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** static uint32_t id_count = 1;
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** struct task_struct* __new_task_create(
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             int (*entry)(void*), 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             int stack_size,
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             void *argv,
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             int priority,
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             char *name,
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             uint32_t offset
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****             )
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** {
+  66              		.loc 1 17 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 8, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		.loc 1 17 1 is_stmt 0 view .LVU5
+  71 0000 2DE9F846 		push	{r3, r4, r5, r6, r7, r9, r10, lr}
+  72              	.LCFI1:
+  73              		.cfi_def_cfa_offset 32
+  74              		.cfi_offset 3, -32
+  75              		.cfi_offset 4, -28
+  76              		.cfi_offset 5, -24
+  77              		.cfi_offset 6, -20
+  78              		.cfi_offset 7, -16
+  79              		.cfi_offset 9, -12
+  80              		.cfi_offset 10, -8
+  81              		.cfi_offset 14, -4
+  82 0004 089F     		ldr	r7, [sp, #32]
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(entry == NULL || name == NULL){
+  83              		.loc 1 18 5 is_stmt 1 view .LVU6
+ARM GAS  /tmp/ccpYdOeJ.s 			page 3
+
+
+  84              		.loc 1 18 7 is_stmt 0 view .LVU7
+  85 0006 90B3     		cbz	r0, .L4
+  86 0008 9146     		mov	r9, r2
+  87 000a 1E46     		mov	r6, r3
+  88 000c 8246     		mov	r10, r0
+  89              		.loc 1 18 22 discriminator 1 view .LVU8
+  90 000e 77B3     		cbz	r7, .L4
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         pr_info(KERN_INFO "can not create t\n");
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -1;
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     stack_size += 64;
+  91              		.loc 1 22 5 is_stmt 1 view .LVU9
+  92              	.LVL3:
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     stack_size += sizeof(struct task_struct);
+  93              		.loc 1 23 5 view .LVU10
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     stack_size = (stack_size + 127) & ~127; 
+  94              		.loc 1 24 5 view .LVU11
+  95 0010 01F26B11 		addw	r1, r1, #363
+  96              	.LVL4:
+  97              		.loc 1 24 5 is_stmt 0 view .LVU12
+  98 0014 21F07F05 		bic	r5, r1, #127
+  99              	.LVL5:
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     struct task_struct *new_task = kmalloc(stack_size, GFP_NOWAIT);
+ 100              		.loc 1 27 5 is_stmt 1 view .LVU13
+ 101              	.LBB6:
+ 102              	.LBI6:
+ 103              		.file 3 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Written by Mark Hemment, 1996 (markhe@nextd.demon.co.uk).
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) SGI 2006, Christoph Lameter
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	Cleaned up and restructured to ease the addition of alternative
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * 	implementations of SLAB allocators.
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * (C) Linux Foundation 2008-2013
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *      Unified interface for all slab allocators
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef _LINUX_SLAB_H
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define	_LINUX_SLAB_H
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/cache.h>
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/overflow.h>
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/types.h>
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/raid/pq.h>
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/gfp_types.h>
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/numa.h>
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/reciprocal_div.h>
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #include <linux/spinlock.h>
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** enum _slab_flag_bits {
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CONSISTENCY_CHECKS,
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RED_ZONE,
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_POISON,
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KMALLOC,
+ARM GAS  /tmp/ccpYdOeJ.s 			page 4
+
+
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_HWCACHE_ALIGN,
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA,
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CACHE_DMA32,
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_STORE_USER,
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_PANIC,
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TYPESAFE_BY_RCU,
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_TRACE,
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_DEBUG_OBJECTS,
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NOLEAKTRACE,
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_MERGE,
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FAILSLAB,
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_ACCOUNT,
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_KASAN,
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_USER_FLAGS,
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_SKIP_KFENCE,
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_RECLAIM_ACCOUNT,
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_OBJECT_POISON,
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_CMPXCHG_DOUBLE,
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_NO_OBJ_EXT,
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	_SLAB_FLAGS_LAST_BIT
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_BIT(nr)	((slab_flags_t __force)(1U << (nr)))
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define __SLAB_FLAG_UNUSED	((slab_flags_t __force)(0U))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Flags to pass to kmem_cache_create().
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * The ones marked DEBUG need CONFIG_SLUB_DEBUG enabled, otherwise are no-op
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Perform (expensive) checks on alloc/free */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CONSISTENCY_CHECKS	__SLAB_FLAG_BIT(_SLAB_CONSISTENCY_CHECKS)
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Red zone objs in a cache */
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RED_ZONE		__SLAB_FLAG_BIT(_SLAB_RED_ZONE)
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Poison objects */
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_POISON		__SLAB_FLAG_BIT(_SLAB_POISON)
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Indicate a kmalloc slab */
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KMALLOC		__SLAB_FLAG_BIT(_SLAB_KMALLOC)
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_HWCACHE_ALIGN - Align objects on cache line boundaries.
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Sufficiently large objects are aligned on cache line boundary. For object
+ARM GAS  /tmp/ccpYdOeJ.s 			page 5
+
+
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * size smaller than a half of cache line size, the alignment is on the half of
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cache line size. In general, if object size is smaller than 1/2^n of cache
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * line size, the alignment is adjusted to 1/2^n.
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * If explicit alignment is also requested by the respective
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * &struct kmem_cache_args field, the greater of both is alignments is applied.
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA memory */
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA		__SLAB_FLAG_BIT(_SLAB_CACHE_DMA)
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Use GFP_DMA32 memory */
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* DEBUG: Store the last owner for bug hunting */
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Panic if kmem_cache_create() fails */
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_TYPESAFE_BY_RCU - **WARNING** READ THIS!
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This delays freeing the SLAB page by a grace period, it does _NOT_
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * delay object freeing. This means that if you do kmem_cache_free()
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * that memory location is free to be reused at any time. Thus it may
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * be possible to see another object there in the same RCU grace period.
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 110:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This feature only ensures the memory location backing the object
+ 111:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * stays valid, the trick to using this is relying on an independent
+ 112:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * object validation pass. Something like:
+ 113:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 114:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ::
+ 115:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 116:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  begin:
+ 117:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   rcu_read_lock();
+ 118:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   obj = lockless_lookup(key);
+ 119:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   if (obj) {
+ 120:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (!try_get_ref(obj)) // might fail for free objects
+ 121:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 122:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 123:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 124:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     if (obj->key != key) { // not the object we expected
+ 125:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       put_ref(obj);
+ 126:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       rcu_read_unlock();
+ 127:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *       goto begin;
+ 128:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *     }
+ 129:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   }
+ 130:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *  rcu_read_unlock();
+ 131:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 132:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * This is useful if we need to approach a kernel structure obliquely,
+ 133:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * from its address obtained without the usual locking. We can lock
+ 134:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the structure to stabilize it and check it's still at the given address,
+ 135:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * only if we can be sure that the memory has not been meanwhile reused
+ 136:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * for some other kind of object (which our subsystem's lock might corrupt).
+ 137:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 138:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * rcu_read_lock before reading the address, then rcu_read_unlock after
+ 139:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * taking the spinlock within the structure expected at that address.
+ 140:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 141:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that it is not possible to acquire a lock within a structure
+ 142:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * allocated with SLAB_TYPESAFE_BY_RCU without first acquiring a reference
+ARM GAS  /tmp/ccpYdOeJ.s 			page 6
+
+
+ 143:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * as described above.  The reason is that SLAB_TYPESAFE_BY_RCU pages
+ 144:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * are not zeroed before being given to the slab, which means that any
+ 145:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * locks must be initialized after each and every kmem_struct_alloc().
+ 146:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Alternatively, make the ctor passed to kmem_cache_create() initialize
+ 147:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * the locks at page-allocation time, as is done in __i915_request_ctor(),
+ 148:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * sighand_ctor(), and anon_vma_ctor().  Such a ctor permits readers
+ 149:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * to safely acquire those ctor-initialized locks under rcu_read_lock()
+ 150:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * protection.
+ 151:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 152:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+ 153:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 154:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+ 155:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Trace allocations and frees */
+ 156:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
+ 157:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 158:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Flag to prevent checks on free */
+ 159:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_DEBUG_OBJECTS
+ 160:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_BIT(_SLAB_DEBUG_OBJECTS)
+ 161:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 162:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_DEBUG_OBJECTS	__SLAB_FLAG_UNUSED
+ 163:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 164:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 165:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Avoid kmemleak tracing */
+ 166:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NOLEAKTRACE	__SLAB_FLAG_BIT(_SLAB_NOLEAKTRACE)
+ 167:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 168:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 169:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Prevent merging with compatible kmem caches. This flag should be used
+ 170:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * cautiously. Valid use cases:
+ 171:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 172:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - caches created for self-tests (e.g. kunit)
+ 173:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - general caches created and used by a subsystem, only when a
+ 174:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   (subsystem-specific) debug option is enabled
+ 175:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * - performance critical caches, should be very rare and consulted with slab
+ 176:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *   maintainers, and not used together with CONFIG_SLUB_TINY
+ 177:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 178:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_MERGE		__SLAB_FLAG_BIT(_SLAB_NO_MERGE)
+ 179:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 180:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Fault injection mark */
+ 181:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_FAILSLAB
+ 182:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_BIT(_SLAB_FAILSLAB)
+ 183:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 184:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_FAILSLAB		__SLAB_FLAG_UNUSED
+ 185:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 186:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 187:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_ACCOUNT - Account allocations to memcg.
+ 188:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 189:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * All object allocations from this cache will be memcg accounted, regardless of
+ 190:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * __GFP_ACCOUNT being or not being passed to individual allocations.
+ 191:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 192:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_MEMCG
+ 193:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
+ 194:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 195:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
+ 196:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 197:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 198:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KASAN_GENERIC
+ 199:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_BIT(_SLAB_KASAN)
+ARM GAS  /tmp/ccpYdOeJ.s 			page 7
+
+
+ 200:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 201:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_KASAN		__SLAB_FLAG_UNUSED
+ 202:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 203:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 204:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 205:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Ignore user specified debugging flags.
+ 206:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Intended for caches created for self-tests so they have only flags
+ 207:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * specified in the code and other flags are ignored.
+ 208:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 209:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_USER_FLAGS	__SLAB_FLAG_BIT(_SLAB_NO_USER_FLAGS)
+ 210:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 211:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_KFENCE
+ 212:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_BIT(_SLAB_SKIP_KFENCE)
+ 213:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 214:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_SKIP_KFENCE	__SLAB_FLAG_UNUSED
+ 215:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 216:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 217:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* The following flags affect the page allocator grouping pages by mobility */
+ 218:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /**
+ 219:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * define SLAB_RECLAIM_ACCOUNT - Objects are reclaimable.
+ 220:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 221:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Use this flag for caches that have an associated shrinker. As a result, slab
+ 222:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+ 223:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
+ 224:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 225:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifndef CONFIG_SLUB_TINY
+ 226:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+ 227:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 228:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+ 229:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 230:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 231:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 232:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /* Slab created using create_boot_cache */
+ 233:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLAB_OBJ_EXT
+ 234:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+ 235:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 236:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+ 237:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 238:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 239:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 240:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * freeptr_t represents a SLUB freelist pointer, which might be encoded
+ 241:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
+ 242:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 243:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** typedef struct { unsigned long v; } freeptr_t;
+ 244:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 245:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 246:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+ 247:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 248:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+ 249:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  *
+ 250:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+ 251:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  * Both make kfree a no-op.
+ 252:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h ****  */
+ 253:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_SIZE_PTR ((void *)16)
+ 254:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 255:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+ 256:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 				(unsigned long)ZERO_SIZE_PTR)
+ARM GAS  /tmp/ccpYdOeJ.s 			page 8
+
+
+ 257:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 258:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 259:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 260:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 261:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 262:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_CPU_PARTIAL
+ 263:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			((c)->partial)
+ 264:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 265:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)		\
+ 266:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** ({						\
+ 267:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	slub_percpu_partial(c) = (p)->next;	\
+ 268:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** })
+ 269:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 270:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
+ 271:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #else
+ 272:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial(c)			NULL
+ 273:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 274:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_set_percpu_partial(c, p)
+ 275:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 276:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define slub_percpu_partial_read_once(c)	NULL
+ 277:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 278:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 279:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif // CONFIG_SLUB_CPU_PARTIAL
+ 280:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 281:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** /*
+ 282:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* Word size structure that can be atomically updated or read and that
+ 283:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* contains both the order and the number of objects that a slab of the
+ 284:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	* given order would contain.
+ 285:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	*/				
+ 286:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_order_objects {
+ 287:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned int x;
+ 288:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 289:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 290:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache_node {
+ 291:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	spinlock_t list_lock;
+ 292:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	unsigned long nr_partial;
+ 293:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head partial;
+ 294:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #ifdef CONFIG_SLUB_DEBUG
+ 295:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t nr_slabs;
+ 296:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	atomic_long_t total_objects;
+ 297:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	struct list_head full;
+ 298:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #endif
+ 299:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** };
+ 300:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 301:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** struct kmem_cache {
+ 302:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifndef CONFIG_SLUB_TINY
+ 303:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	//	struct kmem_cache_cpu __percpu *cpu_slab;
+ 304:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 305:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Used for retrieving partial slabs, etc. */
+ 306:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		slab_flags_t flags;
+ 307:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long min_partial;
+ 308:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int size;		/* Object size including metadata */
+ 309:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int object_size;	/* Object size without metadata */
+ 310:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct reciprocal_value reciprocal_size;
+ 311:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int offset;		/* Free pointer offset */
+ 312:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLUB_CPU_PARTIAL
+ 313:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial objects to keep around */
+ARM GAS  /tmp/ccpYdOeJ.s 			page 9
+
+
+ 314:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial;
+ 315:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Number of per cpu partial slabs to keep around */
+ 316:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int cpu_partial_slabs;
+ 317:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 318:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects oo;
+ 319:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 320:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/* Allocation and freeing of slabs */
+ 321:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_order_objects min;
+ 322:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		gfp_t allocflags;		/* gfp flags to use on each alloc */
+ 323:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		int refcount;			/* Refcount for slab cache destroy */
+ 324:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		void (*ctor)(void *object);	/* Object constructor */
+ 325:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int inuse;		/* Offset to metadata */
+ 326:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int align;		/* Alignment */
+ 327:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int red_left_pad;	/* Left redzone padding size */
+ 328:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		const char *name;		/* Name (only for display!) */
+ 329:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct list_head list;		/* List of slab caches */
+ 330:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SYSFS
+ 331:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kobject kobj;		/* For sysfs */
+ 332:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 333:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 334:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned long random;
+ 335:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 336:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 337:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_NUMA
+ 338:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		/*
+ 339:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			* Defragmentation by allocating from a remote node.
+ 340:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 			*/
+ 341:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int remote_node_defrag_ratio;
+ 342:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 343:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 344:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_SLAB_FREELIST_RANDOM
+ 345:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int *random_seq;
+ 346:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 347:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 348:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_KASAN_GENERIC
+ 349:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kasan_cache kasan_info;
+ 350:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 351:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 352:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#ifdef CONFIG_HARDENED_USERCOPY
+ 353:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int useroffset;	/* Usercopy region offset */
+ 354:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		unsigned int usersize;		/* Usercopy region size */
+ 355:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	#endif
+ 356:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	
+ 357:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 		struct kmem_cache_node *node[MAX_NUMNODES];
+ 358:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	};
+ 359:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 					
+ 360:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 361:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 362:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 363:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 364:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** #define KMALLOC_WAIT 1
+ 365:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 366:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 367:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void* __smalloc__(u32 size, gfp_t flags);
+ 368:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** extern void  __sfree__(void* addr);
+ 369:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 370:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ARM GAS  /tmp/ccpYdOeJ.s 			page 10
+
+
+ 371:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *vmalloc(unsigned long size){
+ 372:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__(size,GFP_TRANSHUGE_LIGHT);
+ 373:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 374:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 375:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline vfree(void *addr){
+ 376:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	__sfree__(addr);
+ 377:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** }
+ 378:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 
+ 379:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** static void inline *kmalloc(size_t size, gfp_t flags){
+ 104              		.loc 3 379 21 view .LVU14
+ 105              	.LBB7:
+ 380:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/slab.h **** 	return __smalloc__((u32)size,flags);
+ 106              		.loc 3 380 2 view .LVU15
+ 107              		.loc 3 380 9 is_stmt 0 view .LVU16
+ 108 0018 4FF42051 		mov	r1, #10240
+ 109 001c 2846     		mov	r0, r5
+ 110              	.LVL6:
+ 111              		.loc 3 380 9 view .LVU17
+ 112 001e FFF7FEFF 		bl	__smalloc__
+ 113              	.LVL7:
+ 114              		.loc 3 380 9 view .LVU18
+ 115              	.LBE7:
+ 116              	.LBE6:
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if (new_task == NULL){
+ 117              		.loc 1 28 5 is_stmt 1 view .LVU19
+ 118              		.loc 1 28 8 is_stmt 0 view .LVU20
+ 119 0022 0446     		mov	r4, r0
+ 120 0024 58B3     		cbz	r0, .L15
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         pr_info("can not alloc memory: need %d kb\n\r",stack_size/1024);
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -ENOMEM;
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }  
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(priority == 0)
+ 121              		.loc 1 32 5 is_stmt 1 view .LVU21
+ 122              		.loc 1 32 7 is_stmt 0 view .LVU22
+ 123 0026 06B9     		cbnz	r6, .L9
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         priority = defauld_thread_priority;   
+ 124              		.loc 1 33 18 view .LVU23
+ 125 0028 0826     		movs	r6, #8
+ 126              	.LVL8:
+ 127              	.L9:
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->stack_ptr = (void*)new_task + sizeof(struct task_struct);
+ 128              		.loc 1 34 5 is_stmt 1 view .LVU24
+ 129              		.loc 1 34 43 is_stmt 0 view .LVU25
+ 130 002a 04F1AC03 		add	r3, r4, #172
+ 131              		.loc 1 34 25 view .LVU26
+ 132 002e 6365     		str	r3, [r4, #84]
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->magic  = task_struct_magic;
+ 133              		.loc 1 35 5 is_stmt 1 view .LVU27
+ 134              		.loc 1 35 22 is_stmt 0 view .LVU28
+ 135 0030 324B     		ldr	r3, .L17
+ 136 0032 2360     		str	r3, [r4]
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->id     = id_count++;
+ 137              		.loc 1 36 5 is_stmt 1 view .LVU29
+ 138              		.loc 1 36 32 is_stmt 0 view .LVU30
+ 139 0034 324A     		ldr	r2, .L17+4
+ 140 0036 1368     		ldr	r3, [r2]
+ 141 0038 591C     		adds	r1, r3, #1
+ARM GAS  /tmp/ccpYdOeJ.s 			page 11
+
+
+ 142 003a 1160     		str	r1, [r2]
+ 143              		.loc 1 36 22 view .LVU31
+ 144 003c 6360     		str	r3, [r4, #4]
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->pid    = new_task->id; 
+ 145              		.loc 1 37 5 is_stmt 1 view .LVU32
+ 146              		.loc 1 37 22 is_stmt 0 view .LVU33
+ 147 003e A360     		str	r3, [r4, #8]
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->entry  = entry;
+ 148              		.loc 1 38 5 is_stmt 1 view .LVU34
+ 149              		.loc 1 38 22 is_stmt 0 view .LVU35
+ 150 0040 C4F85CA0 		str	r10, [r4, #92]
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->arg    = argv;
+ 151              		.loc 1 39 5 is_stmt 1 view .LVU36
+ 152              		.loc 1 39 22 is_stmt 0 view .LVU37
+ 153 0044 C4F86090 		str	r9, [r4, #96]
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->priority = priority;
+ 154              		.loc 1 40 5 is_stmt 1 view .LVU38
+ 155              		.loc 1 40 24 is_stmt 0 view .LVU39
+ 156 0048 E666     		str	r6, [r4, #108]
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->stack_Top = (void*)new_task + stack_size;
+ 157              		.loc 1 41 5 is_stmt 1 view .LVU40
+ 158              		.loc 1 41 43 is_stmt 0 view .LVU41
+ 159 004a 2544     		add	r5, r5, r4
+ 160              	.LVL9:
+ 161              		.loc 1 41 25 view .LVU42
+ 162 004c A565     		str	r5, [r4, #88]
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->offset  = offset;
+ 163              		.loc 1 42 5 is_stmt 1 view .LVU43
+ 164              		.loc 1 42 23 is_stmt 0 view .LVU44
+ 165 004e 099B     		ldr	r3, [sp, #36]
+ 166 0050 C4F8A830 		str	r3, [r4, #168]
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->comm    = new_task->task_name;
+ 167              		.loc 1 43 5 is_stmt 1 view .LVU45
+ 168              		.loc 1 43 25 is_stmt 0 view .LVU46
+ 169 0054 04F10C05 		add	r5, r4, #12
+ 170              		.loc 1 43 23 view .LVU47
+ 171 0058 E564     		str	r5, [r4, #76]
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(strlen(name) < task_name_max_len){   
+ 172              		.loc 1 45 5 is_stmt 1 view .LVU48
+ 173              		.loc 1 45 8 is_stmt 0 view .LVU49
+ 174 005a 3846     		mov	r0, r7
+ 175              	.LVL10:
+ 176              		.loc 1 45 8 view .LVU50
+ 177 005c FFF7FEFF 		bl	strlen
+ 178              	.LVL11:
+ 179              		.loc 1 45 7 discriminator 1 view .LVU51
+ 180 0060 3F28     		cmp	r0, #63
+ 181 0062 1AD8     		bhi	.L10
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         strcpy(new_task->task_name,name); 
+ 182              		.loc 1 46 9 is_stmt 1 view .LVU52
+ 183 0064 3946     		mov	r1, r7
+ 184 0066 2846     		mov	r0, r5
+ 185 0068 FFF7FEFF 		bl	strcpy
+ 186              	.LVL12:
+ 187 006c 3BE0     		b	.L11
+ 188              	.LVL13:
+ARM GAS  /tmp/ccpYdOeJ.s 			page 12
+
+
+ 189              	.L4:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -1;
+ 190              		.loc 1 19 9 view .LVU53
+ 191 006e 254A     		ldr	r2, .L17+8
+ 192              	.LVL14:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -1;
+ 193              		.loc 1 19 9 is_stmt 0 view .LVU54
+ 194 0070 0621     		movs	r1, #6
+ 195              	.LVL15:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -1;
+ 196              		.loc 1 19 9 view .LVU55
+ 197 0072 0846     		mov	r0, r1
+ 198              	.LVL16:
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -1;
+ 199              		.loc 1 19 9 view .LVU56
+ 200 0074 FFF7FEFF 		bl	printk
+ 201              	.LVL17:
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 202              		.loc 1 20 9 is_stmt 1 view .LVU57
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 203              		.loc 1 20 16 is_stmt 0 view .LVU58
+ 204 0078 4FF0FF34 		mov	r4, #-1
+ 205 007c 3AE0     		b	.L3
+ 206              	.LVL18:
+ 207              	.L15:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -ENOMEM;
+ 208              		.loc 1 29 9 is_stmt 1 view .LVU59
+ 209 007e 2A46     		mov	r2, r5
+ 210 0080 002D     		cmp	r5, #0
+ 211 0082 07DB     		blt	.L16
+ 212              	.L8:
+ 213 0084 9212     		asrs	r2, r2, #10
+ 214 0086 2049     		ldr	r1, .L17+12
+ 215 0088 0620     		movs	r0, #6
+ 216              	.LVL19:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -ENOMEM;
+ 217              		.loc 1 29 9 is_stmt 0 view .LVU60
+ 218 008a FFF7FEFF 		bl	printk
+ 219              	.LVL20:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }  
+ 220              		.loc 1 30 9 is_stmt 1 view .LVU61
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }  
+ 221              		.loc 1 30 16 is_stmt 0 view .LVU62
+ 222 008e 6FF00B04 		mvn	r4, #11
+ 223              	.LVL21:
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }  
+ 224              		.loc 1 30 16 view .LVU63
+ 225 0092 2FE0     		b	.L3
+ 226              	.LVL22:
+ 227              	.L16:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -ENOMEM;
+ 228              		.loc 1 29 9 view .LVU64
+ 229 0094 05F2FF32 		addw	r2, r5, #1023
+ 230              	.LVL23:
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return -ENOMEM;
+ 231              		.loc 1 29 9 view .LVU65
+ 232 0098 F4E7     		b	.L8
+ARM GAS  /tmp/ccpYdOeJ.s 			page 13
+
+
+ 233              	.LVL24:
+ 234              	.L10:
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     else{  
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         memcpy(new_task->task_name,name,task_name_max_len -1);
+ 235              		.loc 1 49 9 is_stmt 1 view .LVU66
+ 236 009a BC46     		mov	ip, r7
+ 237 009c 2846     		mov	r0, r5
+ 238 009e 3037     		adds	r7, r7, #48
+ 239              	.LVL25:
+ 240              	.L12:
+ 241              		.loc 1 49 9 is_stmt 0 view .LVU67
+ 242 00a0 DCF80050 		ldr	r5, [ip]	@ unaligned
+ 243 00a4 DCF80410 		ldr	r1, [ip, #4]	@ unaligned
+ 244 00a8 DCF80820 		ldr	r2, [ip, #8]	@ unaligned
+ 245 00ac DCF80C30 		ldr	r3, [ip, #12]	@ unaligned
+ 246 00b0 0560     		str	r5, [r0]	@ unaligned
+ 247 00b2 4160     		str	r1, [r0, #4]	@ unaligned
+ 248 00b4 8260     		str	r2, [r0, #8]	@ unaligned
+ 249 00b6 C360     		str	r3, [r0, #12]	@ unaligned
+ 250 00b8 0CF1100C 		add	ip, ip, #16
+ 251 00bc 1030     		adds	r0, r0, #16
+ 252 00be BC45     		cmp	ip, r7
+ 253 00c0 EED1     		bne	.L12
+ 254 00c2 DCF80010 		ldr	r1, [ip]	@ unaligned
+ 255 00c6 DCF80420 		ldr	r2, [ip, #4]	@ unaligned
+ 256 00ca DCF80830 		ldr	r3, [ip, #8]	@ unaligned
+ 257 00ce 0160     		str	r1, [r0]	@ unaligned
+ 258 00d0 4260     		str	r2, [r0, #4]	@ unaligned
+ 259 00d2 8360     		str	r3, [r0, #8]	@ unaligned
+ 260 00d4 BCF80C20 		ldrh	r2, [ip, #12]	@ unaligned
+ 261 00d8 9CF80E30 		ldrb	r3, [ip, #14]	@ zero_extendqisi2
+ 262 00dc 8281     		strh	r2, [r0, #12]	@ unaligned
+ 263 00de 8373     		strb	r3, [r0, #14]
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         new_task->task_name[task_name_max_len -1] = '\0';
+ 264              		.loc 1 50 9 is_stmt 1 view .LVU68
+ 265              		.loc 1 50 51 is_stmt 0 view .LVU69
+ 266 00e0 0023     		movs	r3, #0
+ 267 00e2 84F84B30 		strb	r3, [r4, #75]
+ 268              	.L11:
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     init_task_context(new_task,offset);
+ 269              		.loc 1 52 5 is_stmt 1 view .LVU70
+ 270 00e6 0999     		ldr	r1, [sp, #36]
+ 271 00e8 2046     		mov	r0, r4
+ 272 00ea FFF7FEFF 		bl	init_task_context
+ 273              	.LVL26:
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     new_task->state = TASK_READY;
+ 274              		.loc 1 53 5 view .LVU71
+ 275              		.loc 1 53 21 is_stmt 0 view .LVU72
+ 276 00ee 0223     		movs	r3, #2
+ 277 00f0 84F86430 		strb	r3, [r4, #100]
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     return new_task;
+ 278              		.loc 1 55 5 is_stmt 1 view .LVU73
+ 279              	.LVL27:
+ 280              	.L3:
+ARM GAS  /tmp/ccpYdOeJ.s 			page 14
+
+
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** }
+ 281              		.loc 1 56 1 is_stmt 0 view .LVU74
+ 282 00f4 2046     		mov	r0, r4
+ 283 00f6 BDE8F886 		pop	{r3, r4, r5, r6, r7, r9, r10, pc}
+ 284              	.L18:
+ 285 00fa 00BF     		.align	2
+ 286              	.L17:
+ 287 00fc 40E20100 		.word	123456
+ 288 0100 00000000 		.word	id_count
+ 289 0104 00000000 		.word	.LC0
+ 290 0108 14000000 		.word	.LC1
+ 291              		.cfi_endproc
+ 292              	.LFE742:
+ 294              		.section	.text.__destory_task,"ax",%progbits
+ 295              		.align	1
+ 296              		.global	__destory_task
+ 297              		.syntax unified
+ 298              		.thumb
+ 299              		.thumb_func
+ 301              	__destory_task:
+ 302              	.LVL28:
+ 303              	.LFB743:
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** void __Kill_Task(struct task_struct* new);
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** void __destory_task(struct task_struct *t) 
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** {
+ 304              		.loc 1 62 1 is_stmt 1 view -0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 0
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(t == NULL) return;
+ 308              		.loc 1 63 5 view .LVU76
+ 309              		.loc 1 63 7 is_stmt 0 view .LVU77
+ 310 0000 18B1     		cbz	r0, .L22
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(t == NULL) return;
+ 311              		.loc 1 62 1 view .LVU78
+ 312 0002 08B5     		push	{r3, lr}
+ 313              	.LCFI2:
+ 314              		.cfi_def_cfa_offset 8
+ 315              		.cfi_offset 3, -8
+ 316              		.cfi_offset 14, -4
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     __Kill_Task(t);
+ 317              		.loc 1 64 5 is_stmt 1 view .LVU79
+ 318 0004 FFF7FEFF 		bl	__Kill_Task
+ 319              	.LVL29:
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** }
+ 320              		.loc 1 65 1 is_stmt 0 view .LVU80
+ 321 0008 08BD     		pop	{r3, pc}
+ 322              	.LVL30:
+ 323              	.L22:
+ 324              	.LCFI3:
+ 325              		.cfi_def_cfa_offset 0
+ 326              		.cfi_restore 3
+ 327              		.cfi_restore 14
+ 328              		.loc 1 65 1 view .LVU81
+ARM GAS  /tmp/ccpYdOeJ.s 			page 15
+
+
+ 329 000a 7047     		bx	lr
+ 330              		.cfi_endproc
+ 331              	.LFE743:
+ 333              		.section	.text.__register_task,"ax",%progbits
+ 334              		.align	1
+ 335              		.global	__register_task
+ 336              		.syntax unified
+ 337              		.thumb
+ 338              		.thumb_func
+ 340              	__register_task:
+ 341              	.LVL31:
+ 342              	.LFB744:
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** void __save_Task(struct task_struct* new);
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** int __register_task(struct task_struct* new_task ,struct scheduler* scheduler)
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** {
+ 343              		.loc 1 70 1 is_stmt 1 view -0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347              		.loc 1 70 1 is_stmt 0 view .LVU83
+ 348 0000 38B5     		push	{r3, r4, r5, lr}
+ 349              	.LCFI4:
+ 350              		.cfi_def_cfa_offset 16
+ 351              		.cfi_offset 3, -16
+ 352              		.cfi_offset 4, -12
+ 353              		.cfi_offset 5, -8
+ 354              		.cfi_offset 14, -4
+ 355 0002 0546     		mov	r5, r0
+ 356 0004 0C46     		mov	r4, r1
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****    __save_Task(new_task);
+ 357              		.loc 1 71 4 is_stmt 1 view .LVU84
+ 358 0006 FFF7FEFF 		bl	__save_Task
+ 359              	.LVL32:
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****    return scheduler->t_pop->add_task(new_task,scheduler);
+ 360              		.loc 1 72 4 view .LVU85
+ 361              		.loc 1 72 20 is_stmt 0 view .LVU86
+ 362 000a 2369     		ldr	r3, [r4, #16]
+ 363              		.loc 1 72 27 view .LVU87
+ 364 000c 5B68     		ldr	r3, [r3, #4]
+ 365              		.loc 1 72 11 view .LVU88
+ 366 000e 2146     		mov	r1, r4
+ 367 0010 2846     		mov	r0, r5
+ 368 0012 9847     		blx	r3
+ 369              	.LVL33:
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** }
+ 370              		.loc 1 73 1 view .LVU89
+ 371 0014 38BD     		pop	{r3, r4, r5, pc}
+ 372              		.loc 1 73 1 view .LVU90
+ 373              		.cfi_endproc
+ 374              	.LFE744:
+ 376              		.section	.text.exit,"ax",%progbits
+ 377              		.align	1
+ 378              		.global	exit
+ 379              		.syntax unified
+ 380              		.thumb
+ARM GAS  /tmp/ccpYdOeJ.s 			page 16
+
+
+ 381              		.thumb_func
+ 383              	exit:
+ 384              	.LFB745:
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** void exit(){
+ 385              		.loc 1 76 12 is_stmt 1 view -0
+ 386              		.cfi_startproc
+ 387              		@ Volatile: function does not return.
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390 0000 08B5     		push	{r3, lr}
+ 391              	.LCFI5:
+ 392              		.cfi_def_cfa_offset 8
+ 393              		.cfi_offset 3, -8
+ 394              		.cfi_offset 14, -4
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     __default_Task_return_function();
+ 395              		.loc 1 77 5 view .LVU92
+ 396 0002 FFF7FEFF 		bl	__default_Task_return_function
+ 397              	.LVL34:
+  78:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** }
+ 398              		.loc 1 78 1 is_stmt 0 view .LVU93
+ 399 0006 FFDE     		.inst	0xdeff
+ 400              		.cfi_endproc
+ 401              	.LFE745:
+ 403              		.section	.rodata.task_run.str1.4,"aMS",%progbits,1
+ 404              		.align	2
+ 405              	.LC2:
+ 406 0000 63707520 		.ascii	"cpu number err\012\000"
+ 406      6E756D62 
+ 406      65722065 
+ 406      72720A00 
+ 407              		.align	2
+ 408              	.LC3:
+ 409 0010 73636865 		.ascii	"sched: task : %s(%d) has create\012\000"
+ 409      643A2074 
+ 409      61736B20 
+ 409      3A202573 
+ 409      28256429 
+ 410              		.section	.text.task_run,"ax",%progbits
+ 411              		.align	1
+ 412              		.global	task_run
+ 413              		.syntax unified
+ 414              		.thumb
+ 415              		.thumb_func
+ 417              	task_run:
+ 418              	.LVL35:
+ 419              	.LFB746:
+  79:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  80:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** 
+  81:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** struct task_struct* task_run(       
+  82:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** int (*entry)(void*), 
+  83:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** int stack_size,
+  84:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** void *argv,
+  85:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** int priority,
+  86:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** char *name,
+  87:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** uint32_t core_id,
+ARM GAS  /tmp/ccpYdOeJ.s 			page 17
+
+
+  88:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** uint32_t offset
+  89:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** )
+  90:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** {
+ 420              		.loc 1 90 1 is_stmt 1 view -0
+ 421              		.cfi_startproc
+ 422              		@ args = 12, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424              		.loc 1 90 1 is_stmt 0 view .LVU95
+ 425 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 426              	.LCFI6:
+ 427              		.cfi_def_cfa_offset 28
+ 428              		.cfi_offset 4, -28
+ 429              		.cfi_offset 5, -24
+ 430              		.cfi_offset 6, -20
+ 431              		.cfi_offset 7, -16
+ 432              		.cfi_offset 8, -12
+ 433              		.cfi_offset 9, -8
+ 434              		.cfi_offset 14, -4
+ 435 0004 83B0     		sub	sp, sp, #12
+ 436              	.LCFI7:
+ 437              		.cfi_def_cfa_offset 40
+ 438 0006 0446     		mov	r4, r0
+ 439 0008 0D46     		mov	r5, r1
+ 440 000a 9146     		mov	r9, r2
+ 441 000c 1E46     		mov	r6, r3
+ 442 000e 0A9F     		ldr	r7, [sp, #40]
+  91:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     struct scheduler * schedule = 
+ 443              		.loc 1 91 5 is_stmt 1 view .LVU96
+  92:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     get_scheduler_by_cpu_core_id(core_id);
+ 444              		.loc 1 92 5 is_stmt 0 view .LVU97
+ 445 0010 0B98     		ldr	r0, [sp, #44]
+ 446              	.LVL36:
+ 447              		.loc 1 92 5 view .LVU98
+ 448 0012 FFF7FEFF 		bl	get_scheduler_by_cpu_core_id
+ 449              	.LVL37:
+  93:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(schedule == NULL){
+ 450              		.loc 1 93 5 is_stmt 1 view .LVU99
+ 451              		.loc 1 93 7 is_stmt 0 view .LVU100
+ 452 0016 8046     		mov	r8, r0
+ 453 0018 D8B1     		cbz	r0, .L34
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         pr_err("cpu number err\n");
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return NULL;
+  96:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+  97:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     struct task_struct* task =
+ 454              		.loc 1 97 5 is_stmt 1 view .LVU101
+  98:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     __new_task_create(entry,stack_size,argv,priority,name,offset);
+ 455              		.loc 1 98 5 is_stmt 0 view .LVU102
+ 456 001a 0C9B     		ldr	r3, [sp, #48]
+ 457 001c 0193     		str	r3, [sp, #4]
+ 458 001e 0097     		str	r7, [sp]
+ 459 0020 3346     		mov	r3, r6
+ 460 0022 4A46     		mov	r2, r9
+ 461 0024 2946     		mov	r1, r5
+ 462 0026 2046     		mov	r0, r4
+ 463              	.LVL38:
+ 464              		.loc 1 98 5 view .LVU103
+ 465 0028 FFF7FEFF 		bl	__new_task_create
+ARM GAS  /tmp/ccpYdOeJ.s 			page 18
+
+
+ 466              	.LVL39:
+ 467 002c 0446     		mov	r4, r0
+ 468              	.LVL40:
+  99:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if(IS_ERR(task)){
+ 469              		.loc 1 99 5 is_stmt 1 view .LVU104
+ 470              	.LBB8:
+ 471              	.LBI8:
+ 472              		.file 4 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h"
+   1:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* SPDX-License-Identifier: GPL-2.0 */
+   2:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef _LINUX_ERR_H
+   3:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define _LINUX_ERR_H
+   4:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   5:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler_attributes.h>
+   6:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/compiler.h>
+   7:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <linux/types.h>
+   8:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+   9:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #include <asm/errno.h>
+  10:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  11:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /*
+  12:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Kernel pointers have redundant information, so we can use a
+  13:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * scheme where we can return either an error code or a normal
+  14:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * pointer with the same return value.
+  15:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  16:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * This should be a per-architecture thing, to allow different
+  17:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * error and pointer decisions.
+  18:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  19:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define MAX_ERRNO	4095
+  20:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  21:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef __ASSEMBLY__
+  22:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  23:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  24:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR_VALUE - Detect an error pointer.
+  25:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @x: The pointer to check.
+  26:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  27:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Like IS_ERR(), but does not generate a compiler warning if result is unused.
+  28:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  29:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  30:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef unlikely
+  31:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define unlikely(x) __builtin_expect(!!(x), 0)
+  32:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  33:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  34:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #ifndef likely
+  35:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #  define likely(x) __builtin_expect(!!(x), 1)
+  36:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #endif
+  37:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  38:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+  39:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  40:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  41:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * ERR_PTR - Create an error pointer.
+  42:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @error: A negative error code.
+  43:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  44:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Encodes @error into a pointer value. Users should consider the result
+  45:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * opaque and not assume anything about how the error is encoded.
+  46:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  *
+  47:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: A pointer with @error encoded within its value.
+  48:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  49:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline void * __must_check ERR_PTR(long error)
+ARM GAS  /tmp/ccpYdOeJ.s 			page 19
+
+
+  50:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  51:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (void *) error;
+  52:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  53:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  54:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Return the pointer in the percpu address space. */
+  55:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
+  56:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  57:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  58:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * PTR_ERR - Extract the error code from an error pointer.
+  59:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: An error pointer.
+  60:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: The error code within @ptr.
+  61:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  62:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline long __must_check PTR_ERR(__force const void *ptr)
+  63:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  64:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return (long) ptr;
+  65:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** }
+  66:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  67:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /* Read an error pointer from the percpu address space. */
+  68:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
+  69:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 
+  70:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** /**
+  71:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * IS_ERR - Detect an error pointer.
+  72:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * @ptr: The pointer to check.
+  73:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  * Return: true if @ptr is an error pointer, false otherwise.
+  74:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h ****  */
+  75:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** static inline bool __must_check IS_ERR(__force const void *ptr)
+ 473              		.loc 4 75 33 view .LVU105
+ 474              	.LBB9:
+  76:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** {
+  77:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/err.h **** 	return IS_ERR_VALUE((unsigned long)ptr);
+ 475              		.loc 4 77 2 view .LVU106
+ 476              		.loc 4 77 2 is_stmt 0 view .LVU107
+ 477              	.LBE9:
+ 478              	.LBE8:
+ 479              		.loc 1 99 7 discriminator 1 view .LVU108
+ 480 002e 10F5805F 		cmn	r0, #4096
+ 481 0032 0AD8     		bhi	.L29
+ 100:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return task;   
+ 101:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 102:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     if( __register_task(task,schedule) < 0)
+ 482              		.loc 1 102 5 is_stmt 1 view .LVU109
+ 483              		.loc 1 102 9 is_stmt 0 view .LVU110
+ 484 0034 4146     		mov	r1, r8
+ 485 0036 FFF7FEFF 		bl	__register_task
+ 486              	.LVL41:
+ 487              		.loc 1 102 7 discriminator 1 view .LVU111
+ 488 003a 0028     		cmp	r0, #0
+ 489 003c 0FDB     		blt	.L35
+ 103:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     {
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         __destory_task(task);
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return NULL;
+ 106:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 107:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     pr_info("sched: task : %s(%d) has create\n" ,name,task->id);
+ 490              		.loc 1 107 5 is_stmt 1 view .LVU112
+ 491 003e 6368     		ldr	r3, [r4, #4]
+ 492 0040 3A46     		mov	r2, r7
+ 493 0042 0949     		ldr	r1, .L36
+ARM GAS  /tmp/ccpYdOeJ.s 			page 20
+
+
+ 494 0044 0620     		movs	r0, #6
+ 495 0046 FFF7FEFF 		bl	printk
+ 496              	.LVL42:
+ 108:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     return task;
+ 497              		.loc 1 108 5 view .LVU113
+ 498              	.L29:
+ 109:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c **** }
+ 499              		.loc 1 109 1 is_stmt 0 view .LVU114
+ 500 004a 2046     		mov	r0, r4
+ 501 004c 03B0     		add	sp, sp, #12
+ 502              	.LCFI8:
+ 503              		.cfi_remember_state
+ 504              		.cfi_def_cfa_offset 28
+ 505              		@ sp needed
+ 506 004e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 507              	.LVL43:
+ 508              	.L34:
+ 509              	.LCFI9:
+ 510              		.cfi_restore_state
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return NULL;
+ 511              		.loc 1 94 9 is_stmt 1 view .LVU115
+ 512 0052 0649     		ldr	r1, .L36+4
+ 513 0054 0320     		movs	r0, #3
+ 514              	.LVL44:
+  94:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return NULL;
+ 515              		.loc 1 94 9 is_stmt 0 view .LVU116
+ 516 0056 FFF7FEFF 		bl	printk
+ 517              	.LVL45:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 518              		.loc 1 95 9 is_stmt 1 view .LVU117
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 519              		.loc 1 95 16 is_stmt 0 view .LVU118
+ 520 005a 4446     		mov	r4, r8
+ 521              	.LVL46:
+  95:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 522              		.loc 1 95 16 view .LVU119
+ 523 005c F5E7     		b	.L29
+ 524              	.LVL47:
+ 525              	.L35:
+ 104:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****         return NULL;
+ 526              		.loc 1 104 9 is_stmt 1 view .LVU120
+ 527 005e 2046     		mov	r0, r4
+ 528 0060 FFF7FEFF 		bl	__destory_task
+ 529              	.LVL48:
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 530              		.loc 1 105 9 view .LVU121
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 531              		.loc 1 105 16 is_stmt 0 view .LVU122
+ 532 0064 0024     		movs	r4, #0
+ 533              	.LVL49:
+ 105:/mnt/c/Users/31740/Documents/codes/newcore-rp2350/kernel/sched/task.c ****     }
+ 534              		.loc 1 105 16 view .LVU123
+ 535 0066 F0E7     		b	.L29
+ 536              	.L37:
+ 537              		.align	2
+ 538              	.L36:
+ 539 0068 10000000 		.word	.LC3
+ARM GAS  /tmp/ccpYdOeJ.s 			page 21
+
+
+ 540 006c 00000000 		.word	.LC2
+ 541              		.cfi_endproc
+ 542              	.LFE746:
+ 544              		.section	.data.id_count,"aw"
+ 545              		.align	2
+ 548              	id_count:
+ 549 0000 01000000 		.word	1
+ 550              		.text
+ 551              	.Letext0:
+ 552              		.file 5 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/int-l64.h"
+ 553              		.file 6 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/asm-generic/posix_types.h"
+ 554              		.file 7 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/types.h"
+ 555              		.file 8 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/time64.h"
+ 556              		.file 9 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/sched.h"
+ 557              		.file 10 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/sched.h"
+ 558              		.file 11 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/spinlock.h"
+ 559              		.file 12 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types_raw.h"
+ 560              		.file 13 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/spinlock_types.h"
+ 561              		.file 14 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/mutex.h"
+ 562              		.file 15 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/error.h"
+ 563              		.file 16 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/arch/arm_m/include/asm/string.h"
+ 564              		.file 17 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/string.h"
+ 565              		.file 18 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/printk.h"
+ 566              		.file 19 "/mnt/c/Users/31740/Documents/codes/newcore-rp2350/include/linux/gfp_types.h"
+ARM GAS  /tmp/ccpYdOeJ.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 task.c
+     /tmp/ccpYdOeJ.s:22     .text.init_task_context:00000000 $t
+     /tmp/ccpYdOeJ.s:27     .text.init_task_context:00000000 init_task_context
+     /tmp/ccpYdOeJ.s:50     .rodata.__new_task_create.str1.4:00000000 $d
+     /tmp/ccpYdOeJ.s:57     .text.__new_task_create:00000000 $t
+     /tmp/ccpYdOeJ.s:63     .text.__new_task_create:00000000 __new_task_create
+     /tmp/ccpYdOeJ.s:287    .text.__new_task_create:000000fc $d
+     /tmp/ccpYdOeJ.s:548    .data.id_count:00000000 id_count
+     /tmp/ccpYdOeJ.s:295    .text.__destory_task:00000000 $t
+     /tmp/ccpYdOeJ.s:301    .text.__destory_task:00000000 __destory_task
+     /tmp/ccpYdOeJ.s:334    .text.__register_task:00000000 $t
+     /tmp/ccpYdOeJ.s:340    .text.__register_task:00000000 __register_task
+     /tmp/ccpYdOeJ.s:377    .text.exit:00000000 $t
+     /tmp/ccpYdOeJ.s:383    .text.exit:00000000 exit
+     /tmp/ccpYdOeJ.s:404    .rodata.task_run.str1.4:00000000 $d
+     /tmp/ccpYdOeJ.s:411    .text.task_run:00000000 $t
+     /tmp/ccpYdOeJ.s:417    .text.task_run:00000000 task_run
+     /tmp/ccpYdOeJ.s:539    .text.task_run:00000068 $d
+     /tmp/ccpYdOeJ.s:545    .data.id_count:00000000 $d
+
+UNDEFINED SYMBOLS
+__init_Taskcontext
+__smalloc__
+strlen
+strcpy
+printk
+__Kill_Task
+__save_Task
+__default_Task_return_function
+get_scheduler_by_cpu_core_id

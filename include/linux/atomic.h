@@ -1,11 +1,17 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Atomic operations usable in machine independent code */
+
+
 #ifndef _LINUX_ATOMIC_H
 #define _LINUX_ATOMIC_H
-#include <linux/types.h>
 
+#define __KERNEL__
+
+#include <linux/types.h>
+#include <linux/compiler.h>
 #include <asm/atomic.h>
 #include <asm/barrier.h> 
+
 
 /*
  * Relaxed variants of xchg, cmpxchg and some atomic operations.

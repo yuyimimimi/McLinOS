@@ -3,7 +3,6 @@
 .fpu softvfp
 .thumb
 
-.global Scheduler_Task
 
 .global PendSV_Handler
 .thumb_func
@@ -40,13 +39,6 @@ __sched:
     isb
     str r1, [r0]
     bx lr   
-
-
-
-
-
-
-
 
 
 

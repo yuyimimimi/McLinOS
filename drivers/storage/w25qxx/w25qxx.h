@@ -4,7 +4,7 @@
 
 struct w25qxx_dev
 {
-    u8 status; 
+    int status; 
     struct file *spi_dev;
     struct file *gpio_cs_dev;
     struct spi_ioc_transfer xfer;
@@ -52,6 +52,7 @@ static int spi_write_enable(struct w25qxx_dev *w25qxx_dev,char *name ,uint32_t s
     w25qxx_dev->xfer.delay_usecs = 0;
     w25qxx_dev->xfer.bits_per_word = 8;
     w25qxx_dev->xfer.cs_change = 0;
+    return 0;
 }
 
 
@@ -62,6 +63,7 @@ static int w25qxx_device_init(struct w25qxx_dev *dev,char *spi_dev,int cs_pin_nu
         pr_info("cs_pin_init failed\n\r");
         return -1;
     }
+
     dev->status = spi_write_enable(dev,spi_dev, 1000000);
     if(dev->status < 0){
         pr_info("spi_write_enable failed\n\r");
@@ -139,25 +141,21 @@ struct w25qxx_dev *new_w25qxx_dev(char *spi_dev,int cs_pin_num)
         pr_info("malloc failed\n\r");
         return NULL;
     }
+
     w25qxx_dev->send_data = w25qxx_send_data;
     w25qxx_dev->read_data = w25qxx_read_data;
     w25qxx_dev->send_start = set_cs_pin_low;
     w25qxx_dev->send_stop = set_cs_pin_high;
+
     w25qxx_dev->status = w25qxx_device_init(w25qxx_dev,spi_dev,cs_pin_num);
     
-    if( w25qxx_read_id(w25qxx_dev) < 0 )
+    if(w25qxx_dev->status < 0 || w25qxx_read_id(w25qxx_dev) < 0 )
     {
         pr_err("can not read w25qxx spi flash \n");
-        filp_close(w25qxx_dev->gpio_cs_dev,NULL);
-        filp_close(w25qxx_dev->spi_dev,NULL);
         kfree(w25qxx_dev);
         return NULL;
     }
     
-    if(w25qxx_dev->status < 0){
-        kfree(w25qxx_dev);
-        return NULL;
-    }
     return w25qxx_dev;
 }
 
