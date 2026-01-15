@@ -6,11 +6,9 @@
 
 目标为让代码一次编写，多处运行，不再需要区分rtos和嵌入式linux。
 
-内核最小flash要求:60kb ram需求 40kb(需要通过kconfig进行裁剪)
 
 架构图:
 ![image](https://github.com/user-attachments/assets/48daf958-3b1d-46b4-8db9-042537d7472e)
-
 
 
 内核空间中你可以使用/linux/xx.h 进行程序的开发。注意内核空间无c语言标准库支持
