@@ -634,8 +634,6 @@ static int  initramfs_getattr (struct mnt_idmap *dmp, const struct path * path,s
 static struct dentry_operations initramfs_dentry_operation = {
     .d_release = initramfs_release_dentry,
 };
-\
-
 
 
 
@@ -647,8 +645,8 @@ static int __init initramfs_ops_init(void){
 fs_initcall(initramfs_ops_init);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("你");
-MODULE_DESCRIPTION("简易设备文件系统 initramfs 测试");
+MODULE_AUTHOR("yuyimimimi");
+MODULE_DESCRIPTION("initramfs ");
 
 
 
