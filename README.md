@@ -36,7 +36,7 @@ System Architecture:
 
 用户程序可以使用c语言标准库，但是必须单独编译为独立app。
 
-🛠 Build Instructions
+ Build Instructions
 
 1. Prerequisites
 
@@ -73,7 +73,7 @@ VENDOR    = st       # or raspberrypi
 
 5.Final Build: Execute make to generate the firmware image.
 
-
+6.Enter the bootloader directory, navigate to the corresponding device name, and use the make command to compile the bootloader.
 
 
 编译步骤：
@@ -105,6 +105,8 @@ VENDOR    = raspberrypi
 11.执行``` make rootfs ```编译根文件系统，它们默认会被直接嵌入固件，有initramfs管理
 
 12.执行``` make ```编译出最终固件。
+
+13.进入bootloader目录旋转对应的设备名称，使用make命令编译出bootloader
 
 
 Development Guide
