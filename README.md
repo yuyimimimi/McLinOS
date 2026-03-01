@@ -5,10 +5,14 @@ McLinOS is an experimental, cross-platform operating system kernel designed for 
 
  [!CAUTION] This is an experimental project and is not recommended for production environments.
 
- Key Features Architecture Support: STM32F407 (Cortex-M4), STM32H743 (Cortex-M7), and RP2350 (Cortex-M33). Linux API Compatibility: Provides ~150 standard Linux 5.4 kernel headers. Develop drivers using standard linux/xx.h and asm/xx.h patterns. Unix-like Subsystems: Virtual File System (VFS), devfs, initramfs, and Unix-style process management. 
-Decoupled Environments: Strict separation between Kernel Space (No Libc) and User Space (Standard Libc supported).
+ 1.Key Features Architecture Support: STM32F407 (Cortex-M4), STM32H743 (Cortex-M7), and RP2350 (Cortex-M33). 
+ 
+ 2.Linux API Compatibility: Provides ~150 standard Linux 5.4 kernel headers. Develop drivers using standard linux/xx.h and asm/xx.h patterns.
+ 
+ 3.Unix-like Subsystems: Virtual File System (VFS), devfs, initramfs, and Unix-style process management.
 
-Hardware Abstraction: Modern hardware description using Device Trees (DTS) and a Kconfig-based configuration system.
+ 4.Decoupled Environments: Strict separation between Kernel Space (No Libc) and User Space (Standard Libc supported).
+
 
 这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境
 
