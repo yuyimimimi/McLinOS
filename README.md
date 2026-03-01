@@ -1,6 +1,8 @@
-<img width="865" height="698" alt="image" src="https://github.com/user-attachments/assets/45953cc0-2192-4ab1-a3b0-aec40bb2660e" />这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境
+这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境
 
 内核设计为跨平台
+
+支持了stm32f407 stm32h743 rp2350
 
 本内核模仿了linux内核空间以及开发环境。提供类unix操作系统的功能。并且提供真正的linux内核空间api。
 
