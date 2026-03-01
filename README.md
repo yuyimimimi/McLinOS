@@ -8,7 +8,8 @@
 
 
 架构图:
-![image](https://github.com/user-attachments/assets/48daf958-3b1d-46b4-8db9-042537d7472e)
+<img width="1019" height="834" alt="image" src="https://github.com/user-attachments/assets/81cd849b-5d47-4aa2-8f79-1e63bc3156bb" />
+
 
 
 内核空间中你可以使用/linux/xx.h 进行程序的开发。注意内核空间无c语言标准库支持
