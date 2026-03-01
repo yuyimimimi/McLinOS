@@ -25,21 +25,29 @@
 
 3.之后你需要下载自己对应平台的gcc编译器
 
-4.使用``` make installtools ```自动安装其它依赖的程序
+4.打开根makefile配置参数，例如: 
+STRUCT    = arm_m
+# PLATFORM  = stm32f4
+PLATFORM  = rp2350
+PREFIX    = arm-none-eabi-
+# VENDOR    = st
+VENDOR    = raspberrypi
 
-5.使用``` make menuconfig ```指令进行配置。进行内存参数配置，你需要配置内存布局，外设中断数量，内核参数，驱动，子系统，调度器等以及许多其它选项
+5.使用``` make installtools ```自动安装其它依赖的程序
 
-6.你可以进入/user/rootfs/boot 配置config.txt文件。你可以通过它配置加载器以及内核启动的第一个用户程序所在路径
+6.使用``` make menuconfig ```指令进行配置。进行内存参数配置，你需要配置内存布局，外设中断数量，内核参数，驱动，子系统，调度器等以及许多其它选项
 
-7.你可以将你编译的用户程序放在/user/rootfs/bin目录下
+7.你可以进入/user/rootfs/boot 配置config.txt文件。你可以通过它配置加载器以及内核启动的第一个用户程序所在路径
 
-7.你可以进入/arch/$(STRUCT)/boot/dts/$(PLATFORM).dts 配置你所使用平台的设备树文件
+8.你可以将你编译的用户程序放在/user/rootfs/bin目录下
 
-8.使用``` make dtbs ```生成并编译设备树
+9.你可以进入/arch/$(STRUCT)/boot/dts/$(PLATFORM).dts 配置你所使用平台的设备树文件
 
-9.执行``` make rootfs ```编译根文件系统，它们默认会被直接嵌入固件，有initramfs管理
+10.使用``` make dtbs ```生成并编译设备树
 
-10.执行``` make ```编译出最终固件。
+11.执行``` make rootfs ```编译根文件系统，它们默认会被直接嵌入固件，有initramfs管理
+
+12.执行``` make ```编译出最终固件。
 
 用户程序开发环境在
 
