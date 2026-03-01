@@ -1,4 +1,4 @@
-这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境
+<img width="865" height="698" alt="image" src="https://github.com/user-attachments/assets/45953cc0-2192-4ab1-a3b0-aec40bb2660e" />这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境
 
 内核设计为跨平台
 
@@ -8,7 +8,7 @@
 
 
 架构图:
-<img width="1019" height="834" alt="image" src="https://github.com/user-attachments/assets/81cd849b-5d47-4aa2-8f79-1e63bc3156bb" />
+<img width="865" height="698" alt="image" src="https://github.com/user-attachments/assets/5122d652-739e-4cc8-a6a3-22a34c6289eb" />
 
 
 
@@ -59,6 +59,8 @@
 我提供了大约150个linux内核中的标准的头文件和linux5.4兼容，你可以使用它们，并使用开发linux内核模块的方式和习惯开发内核，你需要将它当作linux开发内核模块。
 
  
+效果：
+<img width="829" height="2113" alt="image" src="https://github.com/user-attachments/assets/a69293c5-0b19-4d53-94c2-986ed71021ae" />
 
 
 
