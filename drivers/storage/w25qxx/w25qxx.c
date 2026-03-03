@@ -193,7 +193,7 @@ module_init(w25qxx_init);
 module_exit(w25qxx_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Yuyimimimi(github)");
+MODULE_AUTHOR("Yuyimimimi");
 MODULE_DESCRIPTION("W25QXX SPI Flash Block Device Driver");
 MODULE_VERSION("1.0");
 #endif
