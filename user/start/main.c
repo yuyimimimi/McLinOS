@@ -8,7 +8,7 @@
 
 char data[] = "hello_test\n";
 
-int main(void) 
+int main(int argc, char *argv[]) 
 {
     int fp = open("/dev/ttyS0", O_RDWR); 
     write(fp,data,sizeof(data));
