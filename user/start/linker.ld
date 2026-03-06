@@ -1,4 +1,4 @@
-ENTRY(reset_handler)
+ENTRY(Start_App)
 
 _Min_Heap_Size = 0x800;      /* 2KB */
 _Min_Stack_Size = 0x1000; 
@@ -53,10 +53,6 @@ SECTIONS
     KEEP(*(.data))
     PROVIDE(_data_end = .);
     }
-
-
-
-
 
 
     .bss (NOLOAD) : ALIGN(4) {

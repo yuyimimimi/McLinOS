@@ -14,9 +14,9 @@ typedef struct {
 } AppMeta;
 
 
-extern int main(void);
-static void reset_handler(void* argv){
-    main();
+extern int main(int argc,char* argv[]);
+static void Start_App(int argc,char* argv[]){
+    main(argc,argv);
 }
 
 extern uint32_t _got_start[];
@@ -29,7 +29,7 @@ AppMeta __attribute__((__section__(".appmeta"))) head = {
     .cmd          =  1,
     .arch_flags   =  7,
     .stack_size   =  8*1024,                
-    .start        = reset_handler,
+    .start        =  Start_App,
     .got_start    = _got_start,
     .got_end      = _got_end,
     .program_size = __end_program,
