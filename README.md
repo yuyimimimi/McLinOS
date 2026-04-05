@@ -1,4 +1,4 @@
-McLinOS: A Linux-Compatible Micro-Kernel for MCUs
+McLinOS: A Linux-Compatible  for MCUs
 
 McLinOS is an experimental, cross-platform operating system kernel designed for Microcontroller Units (MCUs).  McLinOS is architected as a General-Purpose Operating System (GPOS) while maintaining deterministic hard real-time capabilities.The core philosophy of McLinOS is to bridge the gap between RTOS and Embedded Linux, enabling "Write Once, Run Anywhere" by providing a native Linux-compatible kernel environment on resource-constrained hardware.
 
