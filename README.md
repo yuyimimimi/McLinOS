@@ -149,7 +149,7 @@ User Space
 <img width="829" height="2113" alt="image" src="https://github.com/user-attachments/assets/a69293c5-0b19-4d53-94c2-986ed71021ae" />
 
 
-
+新版本还在开发中，会是一次大重构，参考sel4和autosar架构，而不是山寨一个linux。
 
 
 
