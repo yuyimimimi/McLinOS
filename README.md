@@ -2,7 +2,9 @@ McLinOS: A Linux-Compatible  for MCUs
 
 As a kind of trial, I started this project to dive deeper into learning the implementation and concepts of the Linux kernel.
 
-McLinOS is an experimental, cross-platform operating system kernel designed for Microcontroller Units (MCUs).  McLinOS is architected as a General-Purpose Operating System (GPOS) while maintaining deterministic hard real-time capabilities.The core philosophy of McLinOS is to bridge the gap between RTOS and Embedded Linux, enabling "Write Once, Run Anywhere" by providing a native Linux-compatible kernel environment on resource-constrained hardware.
+With a codebase of approximately 570,000 lines, McLinOS is an experimental, full-featured, Unix-like, cross-platform operating system kernel designed for microcontrollers (MCUs).
+
+McLinOS is architected as a General-Purpose Operating System (GPOS) while maintaining deterministic hard real-time capabilities.The core philosophy of McLinOS is to bridge the gap between RTOS and Embedded Linux, enabling "Write Once, Run Anywhere" by providing a native Linux-compatible kernel environment on resource-constrained hardware.
 
 
  [!CAUTION] This is an experimental project and is not recommended for production environments.
@@ -16,9 +18,13 @@ McLinOS is an experimental, cross-platform operating system kernel designed for 
  4.Decoupled Environments: Strict separation between Kernel Space (No Libc) and User Space (Standard Libc supported).
 
 
-这是一个实验性的单片机内核。属于通用操作系统而不是rtos(实际也支持硬实时)，不建议用于生产环境.
+McLinOS 项目是一款为微控制器（MCU）设计的实验性的跨平台操作系统内核。同时本项目也包含了bootloader，以及用户程序的加载器，以及用户程序的开发环境。
 
-作为一次试炼，为了深入学习linux内核的实现和思想，我启动了这个项目。
+作为一款完整的类unix操作系统内核，其内核部分代码量大约57k行。不但包含了unix系统的核心架构，还包含了多核调度，设备树等一些列现代的高级功能。
+
+作为一款实验性的操作系统，我不建议任何人在任何生产环境中使用它，如果因为使用本项目导致了任何损失，我不承当任何责任.
+
+作为一次试炼，为了深入学习linux内核的实现和思想，我于2024年9月启动了这个项目，用于锻炼我对计算机底层的理解，以及对大型项目的管理能力。本项目不依赖任何ai代码。
 
 内核目前已经支持了stm32f407 stm32h743 rp2350 三款mcu
 
