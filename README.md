@@ -2,7 +2,7 @@ McLinOS: A Linux-Compatible  for MCUs
 
 As a kind of trial, I started this project to dive deeper into learning the implementation and concepts of the Linux kernel.
 
-With a codebase of approximately 570,000 lines, McLinOS is an experimental, full-featured, Unix-like, cross-platform operating system kernel designed for microcontrollers (MCUs).
+With a codebase of approximately 570,00 lines, McLinOS is an experimental, full-featured, Unix-like, cross-platform operating system kernel designed for microcontrollers (MCUs).
 
 McLinOS is architected as a General-Purpose Operating System (GPOS) while maintaining deterministic hard real-time capabilities.The core philosophy of McLinOS is to bridge the gap between RTOS and Embedded Linux, enabling "Write Once, Run Anywhere" by providing a native Linux-compatible kernel environment on resource-constrained hardware.
 
